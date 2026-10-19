@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>حساب‌کتاب</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0F2748">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="حساب‌کتاب">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+  html,body{margin:0;padding:0;background:#F1F4F9;color:#0F2748;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;font-weight:700}
+  #box{max-width:560px;margin:0 auto;padding:28px 18px 40px;text-align:center}
+  .logo{width:112px;height:112px;border-radius:26px;box-shadow:0 6px 22px rgba(15,39,72,.28)}
+  h1{font-size:2.1rem;margin:14px 0 6px}
+  p,li{font-size:1.28rem;line-height:2.1}
+  ol{text-align:right;padding-right:26px;margin:10px 0 18px}
+  .card{background:#fff;border-radius:22px;padding:20px 16px;box-shadow:0 2px 14px rgba(15,39,72,.12);margin-top:18px}
+  .btn{display:block;width:100%;box-sizing:border-box;border:0;border-radius:18px;padding:20px 12px;font:inherit;font-size:1.5rem;font-weight:800;color:#fff;background:#15803D;cursor:pointer;margin-top:14px}
+  .btn.gray{background:#475569;font-size:1.15rem;padding:14px 10px}
+  .msg{margin-top:16px;font-size:1.25rem;line-height:2}
+  .err{color:#B91C1C}.ok{color:#15803D}
+  .spin{display:inline-block;width:34px;height:34px;border:5px solid #CBD5E1;border-top-color:#0F2748;border-radius:50%;animation:sp 1s linear infinite;vertical-align:middle;margin-left:10px}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  small{display:block;font-size:1.02rem;font-weight:600;color:#475569;line-height:1.9;margin-top:12px}
+</style>
+</head>
+<body>
+<div id="box"><div class="msg"><span class="spin"></span> در حال باز کردن…</div></div>
+<script>
+(function () {
+  'use strict';
+  var DBN = 'hesab_pwa', ST = 'kv', LS_KEY = 'hesab_db_v1';
+  var box = document.getElementById('box');
+
+  /* ---------- a tiny key/value store in IndexedDB (the big data blocks of the owner's own file live here, never on the server) ---------- */
+  var dbp = null;
+  function idb() {
+    if (!dbp) dbp = new Promise(function (res, rej) {
+      var r = indexedDB.open(DBN, 1);
+      r.onupgradeneeded = function () { r.result.createObjectStore(ST); };
+      r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); };
+    });
+    return dbp;
+  }
+  function get(k) { return idb().then(function (db) { return new Promise(function (res, rej) { var q = db.transaction(ST, 'readonly').objectStore(ST).get(k); q.onsuccess = function () { res(q.result); }; q.onerror = function () { rej(q.error); }; }); }); }
+  function put(k, v) { return idb().then(function (db) { return new Promise(function (res, rej) { var t = db.transaction(ST, 'readwrite'); t.objectStore(ST).put(v, k); t.oncomplete = function () { res(); }; t.onerror = function () { rej(t.error); }; t.onabort = function () { rej(t.error); }; }); }); }
+  function del(k) { return idb().then(function (db) { return new Promise(function (res, rej) { var t = db.transaction(ST, 'readwrite'); t.objectStore(ST).delete(k); t.oncomplete = function () { res(); }; t.onerror = function () { rej(t.error); }; }); }); }
+
+  /* ---------- bytes <-> text, hashing, decrypting ---------- */
+  function b64u8(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
+  function hex(buf) { var u = new Uint8Array(buf), s = ''; for (var i = 0; i < u.length; i++) s += (u[i] < 16 ? '0' : '') + u[i].toString(16); return s; }
+  function sha256(buf) { return crypto.subtle.digest('SHA-256', buf).then(hex); }
+  /* app.enc = 12 byte IV + AES-GCM( gzip( program text ) ) ; the key is the one carried inside the owner's own file */
+  function decrypt(buf, keyB64) {
+    var u = new Uint8Array(buf);
+    return crypto.subtle.importKey('raw', b64u8(keyB64), 'AES-GCM', false, ['decrypt']).then(function (k) {
+      return crypto.subtle.decrypt({ name: 'AES-GCM', iv: u.slice(0, 12) }, k, u.slice(12));
+    }).then(function (plain) {
+      return new Response(new Blob([plain]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+    });
+  }
+
+  /* ---------- the encrypted program on the server ---------- */
+  function download() {
+    return fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('version ' + r.status); return r.json(); }).then(function (v) {
+      return fetch('app.enc?v=' + String(v.sha).slice(0, 12), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('app ' + r.status); return r.arrayBuffer(); }).then(function (buf) {
+        return sha256(buf).then(function (h) { if (h !== v.sha) throw new Error('فایل ناقص دانلود شد'); return { buf: buf, sha: h, v: v.v, build: v.build }; });
+      });
+    });
+  }
+
+  /* ---------- screens ---------- */
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function say(h) { box.innerHTML = h; }
+  function busy(t) { say('<div class="msg"><span class="spin"></span> ' + esc(t) + '</div>'); }
+  function head() { return '<img class="logo" src="icon-192.png" alt=""><h1>حساب‌کتاب</h1>'; }
+  function showErr(t, extra) {
+    say(head() + '<div class="card"><div class="msg err">' + t + '</div>' +
+      '<button class="btn" id="retry">🔄 دوباره تلاش کن</button>' + (extra || '') +
+      '<button class="btn gray" id="again">📂 انتخاب دوبارهٔ فایل برنامه</button></div>');
+    document.getElementById('retry').onclick = function () { location.reload(); };
+    document.getElementById('again').onclick = function () { showImport(); };
+  }
+  function showImport(note) {
+    say(head() +
+      '<div class="card"><p>برای <b>یک‌بار</b> فایل برنامهٔ خودتان را انتخاب کنید:</p>' +
+      '<ol><li>دکمهٔ سبز را بزنید.</li><li>فایل HTML برنامه را انتخاب کنید (همانی که Claude فرستاده، یا آخرین «نسخهٔ کامل» برنامه).</li></ol>' +
+      '<label class="btn" for="pick">📂 انتخاب فایل برنامه</label>' +
+      '<input id="pick" type="file" accept=".html,.htm,text/html" style="display:none">' +
+      '<div class="msg ' + (note && note.err ? 'err' : '') + '" id="note">' + (note ? note.t : '') + '</div>' +
+      '<small>این کار فقط یک بار لازم است. بعد از آن، هر بار فقط آیکون را بزنید و هر نسخهٔ تازه خودش می‌آید.</small></div>');
+    document.getElementById('pick').onchange = function (e) { var f = e.target.files && e.target.files[0]; if (f) importFile(f); };
+  }
+
+  function block(t, id) {
+    var i = t.indexOf('<script id="' + id + '"'); if (i < 0) return null;
+    var s = t.indexOf('>', i) + 1, e = t.indexOf('</' + 'script>', s); if (s <= 0 || e < 0) return null;
+    return t.slice(s, e);
+  }
+  function importFile(f) {
+    busy('در حال خواندن فایل…');
+    var rd = new FileReader();
+    rd.onerror = function () { showImport({ err: 1, t: 'فایل خوانده نشد. دوباره انتخاب کنید.' }); };
+    rd.onload = function () {
+      var t = String(rd.result || ''), ini = block(t, 'initial-data'), xl = block(t, 'xl-pack'), key = (block(t, 'pwa-key') || '').trim(), snap = block(t, 'snapshot-data');
+      if (ini == null || xl == null) return showImport({ err: 1, t: '⚠ این فایل، فایل برنامهٔ حساب‌کتاب نیست.' });
+      if (!/^[A-Za-z0-9+\/]{42,44}={0,2}$/.test(key)) return showImport({ err: 1, t: '⚠ این فایل کهنه است. آخرین فایلی را که Claude فرستاده انتخاب کنید.' });
+      busy('در حال بررسی…');
+      download().then(function (app) {
+        return decrypt(app.buf, key).then(function (T) {
+          if (T.indexOf('@@PWA_INI@@') < 0) throw new Error('bad');
+          var cfg = { key: key, ini: ini, xl: xl, snap: (snap && snap.trim()) ? snap : null, at: Date.now() };
+          return put('cfg', cfg).then(function () { return put('app', app); }).then(function () { return del('next'); }).then(function () { launch(cfg); });
+        }, function () { showImport({ err: 1, t: '⚠ این فایل با این برنامه جور نیست.' }); });
+      }).catch(function (e) { showImport({ err: 1, t: '⚠ برنامه از اینترنت نیامد. اینترنت را نگاه کنید و دوباره انتخاب کنید.' }); });
+    };
+    rd.readAsText(f);
+  }
+
+  /* ---------- building the page and starting it ---------- */
+  var HEAD_ADD = '<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="حساب‌کتاب"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png">';
+  var TAIL = '<script id="pwa-tail">(' + function () {
+    var DBN = 'hesab_pwa', ST = 'kv', CHECK = 20 * 60 * 1000;
+    function idb() { return new Promise(function (res, rej) { var r = indexedDB.open(DBN, 1); r.onupgradeneeded = function () { r.result.createObjectStore(ST); }; r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); }
+    function get(k) { return idb().then(function (db) { return new Promise(function (res, rej) { var q = db.transaction(ST, 'readonly').objectStore(ST).get(k); q.onsuccess = function () { res(q.result); }; q.onerror = function () { rej(q.error); }; }); }); }
+    function put(k, v) { return idb().then(function (db) { return new Promise(function (res, rej) { var t = db.transaction(ST, 'readwrite'); t.objectStore(ST).put(v, k); t.oncomplete = function () { res(); }; t.onerror = function () { rej(t.error); }; }); }); }
+    function hex(buf) { var u = new Uint8Array(buf), s = ''; for (var i = 0; i < u.length; i++) s += (u[i] < 16 ? '0' : '') + u[i].toString(16); return s; }
+    /* 1) the one-time copy of the data that came with the owner's file is forgotten once the program has saved its own */
+    setTimeout(function () { try { if (window.App && App.saveNow) Promise.resolve(App.saveNow()).catch(function () { }); } catch (e) { } }, 3500);
+    var forgot = false;
+    function forget() { try { if (forgot || !localStorage.getItem('hesab_db_v1')) return; forgot = true; get('cfg').then(function (c) { if (c && c.snap) { c.snap = null; return put('cfg', c); } }); } catch (e) { } }
+    [6000, 15000, 40000, 90000].forEach(function (ms) { setTimeout(forget, ms); });
+    /* 2) a newer version is fetched quietly; it starts by itself the next time the icon is opened, or at once from the green button */
+    function banner(v) {
+      if (document.getElementById('pwaNew')) return;
+      var d = document.createElement('div'); d.id = 'pwaNew';
+      d.setAttribute('style', 'position:fixed;left:8px;right:8px;bottom:max(10px,env(safe-area-inset-bottom));z-index:2147483000;background:#0F2748;color:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 6px 24px rgba(0,0,0,.4);font:800 1.15rem/1.9 system-ui,Tahoma,sans-serif;text-align:center;direction:rtl');
+      d.innerHTML = '✔ نسخهٔ تازهٔ برنامه آماده است' + (v && v.v ? ' (' + String(v.v).replace(/[<>&]/g, '') + ')' : '') + '<br><button id="pwaNewGo" style="margin-top:6px;font:inherit;border:0;border-radius:14px;padding:12px 22px;background:#15803D;color:#fff;font-weight:800">همین حالا اعمال کن</button> <button id="pwaNewLater" style="margin-top:6px;font:inherit;border:0;border-radius:14px;padding:12px 18px;background:#475569;color:#fff;font-weight:700">بعداً</button>';
+      document.body.appendChild(d);
+      document.getElementById('pwaNewGo').onclick = function () { location.reload(); };
+      document.getElementById('pwaNewLater').onclick = function () { d.remove(); };
+    }
+    var busy = false;
+    function check() {
+      if (busy || (navigator.onLine === false)) return; busy = true;
+      fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (v) {
+        if (!v || !v.sha) return;
+        return Promise.all([get('app'), get('next')]).then(function (a) {
+          var app = a[0], next = a[1];
+          if (app && app.sha === v.sha) return;
+          if (next && next.sha === v.sha) return banner(v);
+          return fetch('app.enc?v=' + String(v.sha).slice(0, 12), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); }).then(function (buf) {
+            return crypto.subtle.digest('SHA-256', buf).then(function (h) {
+              if (hex(h) !== v.sha) throw 0;
+              return put('next', { buf: buf, sha: v.sha, v: v.v, build: v.build }).then(function () { banner(v); });
+            });
+          });
+        });
+      }).catch(function () { }).then(function () { busy = false; });
+    }
+    window.__pwaCheck = check;
+    setTimeout(check, 4000); setInterval(check, CHECK);
+    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') setTimeout(check, 1500); });
+  }.toString() + ')();<' + '/script>';
+
+  function assemble(T, cfg) {
+    var t = T.replace('@@PWA_INI@@', function () { return cfg.ini; }).replace('@@PWA_XL@@', function () { return cfg.xl; }).replace('@@PWA_KEY@@', function () { return cfg.key; });
+    if (cfg.snap) {
+      var i = t.indexOf('<script id="initial-data"'), j = i < 0 ? -1 : t.indexOf('</' + 'script>', i);
+      if (j > 0) { j += 9; t = t.slice(0, j) + '\n<script id="snapshot-data" type="application/json">' + cfg.snap + '</' + 'script>' + t.slice(j); }
+    }
+    var m = t.indexOf('<meta charset="utf-8">'); if (m >= 0 && m < 3000) { m += 22; t = t.slice(0, m) + HEAD_ADD + t.slice(m); }
+    var b = t.lastIndexOf('</body>'); if (b >= 0) t = t.slice(0, b) + TAIL + t.slice(b);
+    return t;
+  }
+  function start(T, cfg) {
+    var html = assemble(T, cfg);
+    document.open(); document.write(html); document.close();
+  }
+  function launch(cfg) {
+    busy('در حال باز کردن برنامه…');
+    return Promise.all([get('app'), get('next')]).then(function (a) {
+      var app = a[0], next = a[1];
+      if (next) { app = next; return put('app', next).then(function () { return del('next'); }).then(function () { return app; }); }
+      return app;
+    }).then(function (app) {
+      if (app) return app;
+      return download().then(function (n) { return put('app', n).then(function () { return n; }); });
+    }).then(function (app) {
+      return decrypt(app.buf, cfg.key).catch(function () {
+        /* the saved copy is damaged or the key does not fit: try one fresh copy from the server */
+        return download().then(function (n) { return decrypt(n.buf, cfg.key).then(function (T) { return put('app', n).then(function () { return T; }); }); });
+      });
+    }).then(function (T) { start(T, cfg); }, function (e) {
+      var off = (navigator.onLine === false);
+      showErr(off ? '⚠ اینترنت وصل نیست و هنوز نسخهٔ برنامه روی گوشی ذخیره نشده است.' : '⚠ برنامه باز نشد. ' + esc(e && e.message ? e.message : ''));
+    });
+  }
+
+  /* ---------- go ---------- */
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) { }
+  try { if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () { }); } catch (e) { }
+  if (!window.indexedDB || !window.crypto || !crypto.subtle || typeof DecompressionStream !== 'function') {
+    say(head() + '<div class="card"><div class="msg err">⚠ این مرورگر برای برنامه قدیمی است. Safari یا Chrome را به‌روز کنید.</div></div>');
+  } else {
+    get('cfg').then(function (cfg) { if (cfg && cfg.key && cfg.ini != null) launch(cfg); else showImport(); }, function () { showImport({ err: 1, t: '⚠ حافظهٔ مرورگر در دسترس نیست.' }); });
+  }
+})();
+</script>
+</body>
+</html>
