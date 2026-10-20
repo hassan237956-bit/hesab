@@ -1,7 +1,7 @@
 {
-  "name": "حساب‌کتاب",
-  "short_name": "حساب‌کتاب",
-  "description": "دفتر حساب شخصی",
+  "name": "صورت‌های مالی",
+  "short_name": "صورت‌های مالی",
+  "description": "صورت‌های مالی حسن مولایی",
   "lang": "fa",
   "dir": "rtl",
   "start_url": "./",

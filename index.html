@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>حساب‌کتاب</title>
+<title>صورت‌های مالی</title>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0F2748">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="حساب‌کتاب">
+<meta name="apple-mobile-web-app-title" content="صورت‌های مالی">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icon-192.png">
@@ -78,7 +78,7 @@
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function say(h) { box.innerHTML = h; }
   function busy(t) { say('<div class="msg"><span class="spin"></span> ' + esc(t) + '</div>'); }
-  function head() { return '<img class="logo" src="icon-192.png" alt=""><h1>حساب‌کتاب</h1>'; }
+  function head() { return '<img class="logo" src="icon-192.png" alt=""><h1>صورت‌های مالی</h1>'; }
   function showErr(t, extra) {
     say(head() + '<div class="card"><div class="msg err">' + t + '</div>' +
       '<button class="btn" id="retry">🔄 دوباره تلاش کن</button>' + (extra || '') +
@@ -108,7 +108,7 @@
     rd.onerror = function () { showImport({ err: 1, t: 'فایل خوانده نشد. دوباره انتخاب کنید.' }); };
     rd.onload = function () {
       var t = String(rd.result || ''), ini = block(t, 'initial-data'), xl = block(t, 'xl-pack'), key = (block(t, 'pwa-key') || '').trim(), snap = block(t, 'snapshot-data');
-      if (ini == null || xl == null) return showImport({ err: 1, t: '⚠ این فایل، فایل برنامهٔ حساب‌کتاب نیست.' });
+      if (ini == null || xl == null) return showImport({ err: 1, t: '⚠ این فایل، فایل برنامهٔ صورت‌های مالی نیست.' });
       if (!/^[A-Za-z0-9+\/]{42,44}={0,2}$/.test(key)) return showImport({ err: 1, t: '⚠ این فایل کهنه است. آخرین فایلی را که Claude فرستاده انتخاب کنید.' });
       busy('در حال بررسی…');
       download().then(function (app) {
@@ -123,7 +123,7 @@
   }
 
   /* ---------- building the page and starting it ---------- */
-  var HEAD_ADD = '<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="حساب‌کتاب"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png">';
+  var HEAD_ADD = '<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png">';
   var TAIL = '<script id="pwa-tail">(' + function () {
     var DBN = 'hesab_pwa', ST = 'kv', CHECK = 20 * 60 * 1000;
     function idb() { return new Promise(function (res, rej) { var r = indexedDB.open(DBN, 1); r.onupgradeneeded = function () { r.result.createObjectStore(ST); }; r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); }
