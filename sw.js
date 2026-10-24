@@ -1,6 +1,6 @@
 /* Shell cache only: the page that opens the program, the manifest and the icons.
    The program itself (app.enc) and version.json are handled by index.html (kept in the phone's own storage). */
-var V = 'hesab-shell-1';
+var V = 'hesab-shell-2';
 var SHELL = ['index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
 function abs(p) { return new URL(p, self.registration.scope).href; }
 self.addEventListener('install', function (e) {
@@ -12,6 +12,7 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   var r = e.request; if (r.method !== 'GET') return;
   var u = new URL(r.url); if (u.origin !== location.origin) return;
+  if (u.pathname.indexOf('/khaam/') >= 0) return;   /* the blank copy for other people has its own worker */
   var key = r.mode === 'navigate' ? abs('index.html') : u.origin + u.pathname;
   var isShell = r.mode === 'navigate' || SHELL.some(function (p) { return abs(p) === key; });
   if (!isShell) return;
