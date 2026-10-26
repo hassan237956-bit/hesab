@@ -2572,7 +2572,7 @@ table.akt tfoot td *{color:#FDE68A !important}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "44.3"; window.APP_BUILD = "1405/08/02 13:13";
+window.APP_VERSION = "44.4"; window.APP_BUILD = "1405/08/04 07:44";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -11326,19 +11326,33 @@ function unfold(d) {
 /* ---------------------------------------------------------------- 🆕 today's entries (midnight → now) */
 function today(name, kind) {
   const t = tT(), credit = isCredit(kind, name), unit = kind === 'asset' ? (((App.db.assets || []).find(a => a.name === name) || {}).unit || '') : '';
-  const es = App.db.entries.filter(e => e.date === t && (e.dr === name || e.cr === name)).sort((x, y) => (y.id || 0) - (x.id || 0));
+  /* v44.3: every leg of the calculation that touches this account today — not only rows where it is written as بدهکار / بستانکار.
+     A loan installment paid from a bank also comes off the owner's capital (the engine's third leg): that row is listed on the owner's page too,
+     and an installment written without an amount («as in the loan table») shows its real amount instead of 0. */
+  let list = [];
+  if (kind === 'asset') list = App.db.entries.filter(e => e.date === t && (e.dr === name || e.cr === name)).map(e => ({ e, d: null }));
+  else (App.C.rows || []).forEach(r => {
+    const e = r.e; if (!e || e.virtual || r.date !== t || !r.a) return;
+    let d = 0, hit = false; for (let i = 0; i < 4; i++) if (r.a[i] === name && r.m[i]) { d += r.m[i]; hit = true; }
+    if (hit && Math.abs(d) > 0.004) list.push({ e, d });
+  });
+  list.sort((x, y) => (y.e.id || 0) - (x.e.id || 0));
   let inn = 0, out = 0;
-  const rows = es.map(e => {
-    const isDr = e.dr === name, up = credit ? !isDr : isDr, q = +e.qty || 0, v = e.amt != null && e.amt !== '' ? +e.amt || 0 : Math.round(q * (+e.price || 0));
+  const rows = list.map(({ e, d }) => {
+    const isDr = e.dr === name, q = +e.qty || 0;
+    const up = d === null ? (credit ? !isDr : isDr) : (credit ? d < 0 : d > 0);
+    const v = d === null ? (e.amt != null && e.amt !== '' ? +e.amt || 0 : Math.round(q * (+e.price || 0))) : Math.abs(d);
     if (kind === 'asset') { if (up) inn += q; else out += q; } else { if (up) inn += v; else out += v; }
-    const cp0 = isDr ? e.cr : e.dr, cp = /^loan-own:/.test(String(e.auto || '')) ? ((String(e.desc || '').match(/به حساب «(.+)»$/) || [])[1] || cp0) : cp0, main = kind === 'asset' ? H.fmtq(q) + ' ' + esc(unit) : fmt(v);
+    const leg = e.dr !== name && e.cr !== name;                                    // e.g. the owner's part of an installment paid from a bank
+    const cp0 = leg ? '«' + e.dr + '»' + (e.cr ? ' — پرداخت از «' + e.cr + '»' : '') : (isDr ? e.cr : e.dr);
+    const cp = /^loan-own:/.test(String(e.auto || '')) ? ((String(e.desc || '').match(/به حساب «(.+)»$/) || [])[1] || cp0) : cp0, main = kind === 'asset' ? H.fmtq(q) + ' ' + esc(unit) : fmt(v);
     return '<div class="ax-r ' + (up ? 'up' : 'dn') + '"><span class="ax-ra"><i>' + (up ? '▲' : '▼') + '</i><b class="num">' + main + '</b>' + (kind === 'asset' && e.price ? '<small class="num">× ' + fmt(+e.price) + '</small>' : '') + '</span>' +
-      '<span class="ax-rd"><b>' + esc(e.desc || '—') + '</b>' + (cp ? '<small>' + (up ? 'از ' : 'به ') + esc(cp) + '</small>' : '') + '</span>' +
+      '<span class="ax-rd"><b>' + esc(e.desc || '—') + '</b>' + (cp ? '<small>' + (leg ? 'از حساب شما کم شد · ' + esc(cp) : (up ? 'از ' : 'به ') + esc(cp)) + '</small>' : '') + '</span>' +
       '<button type="button" class="ax-re" data-act="edit-entry" data-id="' + e.id + '" title="ویرایش این ثبت" aria-label="ویرایش">✎</button></div>';
   });
   const fmtv = v => kind === 'asset' ? H.fmtq(v) + ' ' + esc(unit) : fmt(v);
-  const sub = es.length ? FA(es.length) + ' ثبت' + (inn ? ' · <span class="up">▲ ' + fmtv(inn) + '</span>' : '') + (out ? ' · <span class="dn">▼ ' + fmtv(out) + '</span>' : '') : 'امروز ثبتی نیست';
-  return { n: es.length, sub, node: el('div', 'ax-rows', rows.join('') || '<div class="ax-empty">از ساعت ۱۲ شب تا الان، در این حساب ثبتی نیست.</div>') };
+  const sub = list.length ? FA(list.length) + ' ثبت' + (inn ? ' · <span class="up">▲ ' + fmtv(inn) + '</span>' : '') + (out ? ' · <span class="dn">▼ ' + fmtv(out) + '</span>' : '') : 'امروز ثبتی نیست';
+  return { n: list.length, sub, node: el('div', 'ax-rows', rows.join('') || '<div class="ax-empty">از ساعت ۱۲ شب تا الان، در این حساب ثبتی نیست.</div>') };
 }
 
 /* ---------------------------------------------------------------- the tiles */
@@ -11376,7 +11390,9 @@ function shape(page, name) {
     cards.classList.add('ax-kpi');
     if (kind === 'member') {
       const r = (E.memberTable(App.C) || []).find(x => x.name === name);
-      if (r) cards.insertAdjacentHTML('beforeend', tile('c-green', '⬆', 'جمع واریز', fmt(r.dep), FA(r.cnt) + ' ردیف') + tile('c-red', '⬇', 'جمع برداشت', fmt(r.wd), ''));
+      /* v44.4: the two totals are every row of this member's own list — a loan installment, the profit paid to the others, a transfer — so «جمع واریز − جمع برداشت = مانده» (before, an installment was in the balance but not in «جمع برداشت») */
+      if (r) { let dep = 0, wd = 0, n = 0, ins = 0; (App.C.memRows[name] || []).forEach(k => { const x = App.C.rows[k], v = +x.eff; if (!isFinite(v) || !v) return; n++; if (v > 0) dep += v; else { wd -= v; if (x.X === 3 || /^loan-own:/.test(String((x.e || {}).auto || ''))) ins -= v; } });
+        cards.insertAdjacentHTML('beforeend', tile('c-green', '⬆', 'جمع واریز', fmt(dep), FA(n) + ' ردیف') + tile('c-red', '⬇', 'جمع برداشت', fmt(wd), ins > 0.5 ? 'شامل اقساط وام: ' + fmt(ins) : '')); }
       const hn = cards.nextElementSibling; if (hn && hn.classList.contains('hint')) hn.remove();
     }
   }
@@ -13121,7 +13137,7 @@ const selBtns = it => {
 };
 function itemSub(it) {
   if (it.kind === 'profit') return 'سررسید ' + esc(it.date) + ' · به حساب عضو اضافه و از سرمایهٔ ' + esc(ownerNm()) + ' کم می‌شود';
-  return 'سررسید ' + esc(it.date) + ' · قسط ' + it.k + ' از ' + it.n + ' · ' + (!it.bank ? '<span class="abd">بانک مشخص نیست</span>' : it.isMem ? 'به حساب سرمایهٔ «' + esc(it.bank) + '» اضافه و از حساب «' + esc(ownerNm()) + '» کم می‌شود' : 'از «' + esc(it.bank) + '» · موجودی ' + fmt(it.bal) + (it.low ? ' <span class="abd">⚠ کافی نیست</span>' : ''));
+  return 'سررسید ' + esc(it.date) + ' · قسط ' + it.k + ' از ' + it.n + ' · ' + (!it.bank ? '<span class="abd">بانک مشخص نیست</span>' : it.isMem ? 'به حساب سرمایهٔ «' + esc(it.bank) + '» اضافه و از حساب «' + esc(ownerNm()) + '» کم می‌شود' : 'از «' + esc(it.bank) + '» و از حساب «' + esc(ownerNm()) + '» · موجودی ' + fmt(it.bal) + (it.low ? ' <span class="abd">⚠ کافی نیست</span>' : ''));
 }
 const itemTitle = it => it.kind === 'loan' ? 'قسط «' + esc(it.title) + '»' : 'سود «' + esc(it.nm) + '» برای ' + E.MONTHS[it.m - 1];
 /* v43.3 — pay or edit right where the due item is shown: amount, date and bank (or the member's own account) can be changed, then one button registers it */
