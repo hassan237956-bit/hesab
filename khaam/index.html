@@ -2572,7 +2572,7 @@ table.akt tfoot td *{color:#FDE68A !important}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "44.4"; window.APP_BUILD = "1405/08/04 07:44";
+window.APP_VERSION = "44.5"; window.APP_BUILD = "1405/08/07 21:05";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -5881,11 +5881,47 @@ function profitThrough(r) {
   const d = E.serToJ(r.T); return { t: E.monthStart(d[0], d[1]) - 1, est: true };       // no month named: assume it paid for the month before the entry
 }
 function profitRowsOf(name) {
-  return memo('pr:' + name, () => memberEvents(name).filter(x => x.cls === 'prof').map(x => {
-    const r = App.C.rows[x.k], th = profitThrough(r);
-    return { k: x.k, t: r.T, id: docOf(r), date: r.date, desc: r.desc, amt: x.amt, through: th.t, est: th.est };
-  }));
+  return memo('pr:' + name, () => {
+    const cr = memberEvents(name).filter(x => x.cls === 'prof').map(x => {
+      const r = App.C.rows[x.k], th = profitThrough(r);
+      return { k: x.k, t: r.T, id: docOf(r), date: r.date, desc: r.desc, amt: x.amt, through: th.t, est: th.est };
+    });
+    /* v44.5: profit the owner paid OUT to this member from his own account («سود —», بدهکار = the owner) — the member's account is not credited,
+       so these rows are only in the owner's list.  Without them «the last profit paid» of such a member was months old (and «accrued since» far too big).
+       A row that is just the owner's half of a credited profit (same amount, within a week) is not counted twice. */
+    const out = (paidOutAll()[name] || []).filter(o => !cr.some(c => Math.abs(c.amt - o.amt) < 1 && Math.abs(c.t - o.r.T) <= 7)).map(o => {
+      const th = profitThrough(o.r);
+      return { k: o.k, t: o.r.T, id: docOf(o.r), date: o.r.date, desc: o.r.desc, amt: o.amt, through: th.t, est: th.est, out: true };
+    });
+    const all = cr.concat(out);
+    /* v44.5: a member paid on another day than the 1st (— on the 9th, — on the 26th) is paid «from due day to due day»:
+       a payment settles the profit up to the day before the due day it was paid for (paid 1405/07/10 → up to 1405/07/08, the next one from the 9th). */
+    const D = App.profitDay ? App.profitDay(name) : 1;
+    if (D > 1) all.forEach(p => { if (p.t > 0) { p.through = dueOnOrBefore(p.t + 5, D) - 1; p.est = false; } });
+    return all;
+  });
 }
+function dueOnOrBefore(t, D) {
+  const [y, m] = E.serToJ(t), on = (yy, mm) => { const ms = E.monthStart(yy, mm), len = E.nextMonthStart(yy, mm) - ms; return ms + Math.min(D, len) - 1; };
+  const a = on(y, m); if (a <= t) return a;
+  return m === 1 ? on(y - 1, 12) : on(y, m - 1);
+}
+App.dueOnOrBefore = dueOnOrBefore;
+function paidOutAll() {
+  return memo('po', () => {
+    const C = App.C, own = C.owner, res = {}; if (!own) return res;
+    const mem = C.members.filter(n => n !== own).map(n => ({ n, k: nrm(n) })).filter(x => x.k).sort((a, b) => b.k.length - a.k.length);
+    for (const k of (C.memRows[own] || [])) {
+      const r = C.rows[k], e = r.e || {}; if (!(+r.eff < 0) || e.dr !== own || e.virtual) continue;
+      if (/^(profit-owner|loan)/.test(String(e.auto || ''))) continue;
+      const d = nrm(r.desc); if (d.indexOf('سود') < 0) continue;
+      const m = mem.find(x => d.indexOf(x.k) >= 0); if (!m) continue;
+      (res[m.n] = res[m.n] || []).push({ k, r, amt: -r.eff });
+    }
+    return res;
+  });
+}
+App.profitPaidRows = name => profitRowsOf(name);
 /* v40.3: the day from which a member's profit is tracked (db.profitFrom[name], «1405/08/01»); 0 = from the first day of the account.
    Profit before it was paid outside the program, so it is never computed, shown as overdue or registered automatically. */
 App.profitFrom = nm => { const v = ((App.db && App.db.profitFrom) || {})[nm]; const s = v ? E.jser(v) : 0; return s > 0 ? s : 0; };
@@ -5920,6 +5956,11 @@ function profitCalc(info, to) {
 /* when the profit of the month that contains «from» falls due (only for a whole finished month) */
 function dueInfo(info) {
   const f = info.from; if (!(f > 0)) return null;
+  if (info.dueDay > 1 && !info.pfOn) {                                    // v44.5: «from due day to due day»
+    const [y, m] = E.serToJ(f), ny = m === 12 ? y + 1 : y, nm = m === 12 ? 1 : m + 1, ms = E.monthStart(ny, nm), len = E.nextMonthStart(ny, nm) - ms, due = ms + Math.min(info.dueDay, len) - 1;
+    if (due > App.today + 31) return null;
+    return { due, month: E.MONTHS[m - 1], y, left: due - App.today };
+  }
   const d = E.serToJ(f), ms = E.monthStart(d[0], d[1]), nx = E.nextMonthStart(d[0], d[1]);
   if ((f !== ms && !(info.pfOn && f === info.pf)) || nx > App.today) return null;
   const ny = d[1] === 12 ? d[0] + 1 : d[0], nm = d[1] === 12 ? 1 : d[1] + 1, len = E.nextMonthStart(ny, nm) - E.monthStart(ny, nm), due = E.monthStart(ny, nm) + Math.min(info.dueDay, len) - 1;
@@ -6322,7 +6363,7 @@ function pfMemberHTML(info) {
     h += '<div class="pfbig num">' + fmt(Math.round(cal.amt)) + ' <small>ریال</small></div><div class="pfs">برابر ' + fmt(Math.round(cal.amt / 10)) + ' تومان · <b>' + cal.days + ' روز</b>: از ' + dtx(cal.from) + ' تا ' + dtx(to - 1) + '<br>نرخ <span class="num">' + info.rate + '</span>٪ سالانه · مانده <span class="num">' + fmt(info.bal) + '</span></div>';
     if (cal.future) h += '<div class="pfs warn">این تاریخ هنوز نرسیده؛ عدد برآورد است (مانده و نرخ امروز تا آن روز ثابت فرض شده).</div>';
   } else h += '<div class="pfbig muted">روزی برای حساب نیست</div><div class="pfs">سودِ او تا ' + (cal.from > 0 ? dtx(cal.from - 1) : '—') + ' پرداخت شده؛ تاریخ بعدتری بنویسید.</div>';
-  h += '<div class="pfs2">سود تا «شبِ قبلِ» تاریخ بالا حساب می‌شود، مثل کارت «سود این ماه تا امروز».</div>';
+  h += '<div class="pfs2">سود تا «شبِ قبلِ» تاریخ بالا حساب می‌شود.</div>';
   h += '</div></div>';
   h += '<div class="bar noprint pfbar"><button type="button" class="btn green pfpay"' + (can ? '' : ' disabled') + '>✔ ثبت این سود' + (can ? ' (' + fmt(roundStep(cal.amt)) + ' ریال)' : '') + '</button><button type="button" class="btn sm ghost" data-act="go" data-to="/tasks">ثبت ماهانهٔ همهٔ اعضا</button></div>';
   if (info.closed) h += '<div class="hint">این حساب بسته‌شده است؛ ثبت سود برایش بسته است.</div>';
@@ -11475,14 +11516,18 @@ function shape(page, name) {
     tdS.open = true; tdS.classList.add('ax-auto');
     let touched = false; const mark = () => { touched = true; tdS.classList.remove('ax-auto'); };
     ['pointerdown', 'wheel', 'touchstart', 'keydown'].forEach(ev => tdS.addEventListener(ev, mark, { passive: true }));
-    setTimeout(() => { if (!touched && tdS.isConnected && tdS.open) { tdS.open = false; } tdS.classList.remove('ax-auto'); }, 10000);
+    setTimeout(() => { if (!touched && tdS.isConnected && tdS.open && tdS.classList.contains('ax-auto')) { tdS.open = false; } tdS.classList.remove('ax-auto'); }, 10000);
   }
 }
 function redraw() { CH.forEach(c => { try { if (c.host && c.host.isConnected && c.host.clientWidth > 0) c.redraw(); } catch (e) { } }); }
 
 /* one fold open at a time; an opened fold redraws its charts and comes into view */
 document.addEventListener('toggle', ev => {
-  const d = ev.target; if (!d || !d.classList || !d.classList.contains('ax-s') || !d.open) return;
+  const d = ev.target;
+  if (d && d.dataset && d.dataset.rs) {                                  /* v44.5: opened again after a redraw of the same page — no closing of others, no jumping */
+    delete d.dataset.rs; if (d.open && d.querySelector && d.querySelector('.ax-chrow')) requestAnimationFrame(redraw); return;
+  }
+  if (!d || !d.classList || !d.classList.contains('ax-s') || !d.open) return;
   $$('.ax-secs > details.ax-s[open]').forEach(x => { if (x !== d) x.open = false; });
   requestAnimationFrame(() => {
     if (d.querySelector('.ax-chrow')) redraw();
@@ -11607,11 +11652,13 @@ document.addEventListener('click', ev => { const b = ev.target && ev.target.clos
 document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && T && ev.target && (ev.target.id === 'axtA' || ev.target.id === 'axtDesc')) { ev.preventDefault(); save(); } });
 App.transferSides = sides;
 })();
-/* ---------------------------------------------------------------- v44.0 — profit «from the start of the year» on the investor pages
-   The investor pages showed «سود تجمعی» = all the profit since the very first day.  the owner wants the profit of THIS year: from 1 Farvardin until today,
-   starting again from zero when the new year begins.  On the investors list (card + column) and on each investor's page (tile) the number is now
-   the year's profit (accrued with the same engine, Engine.windowProfit), and the tile says how much of it was already booked as profit this year.
-   Everything else (reports, Excel, the engine) keeps the full cumulative figure. */
+/* ---------------------------------------------------------------- v44.0 / v44.5 — the profit numbers of an investor
+   the owner (1405/08/07): on an investor's page —
+     · «سود پرداختی از اول سال»: the profit PAID to him from 1 Farvardin (credited to his account, or paid out by me from my account like «سود —»);
+       it starts again from zero in the new year.  The profit that accrued this year is shown under it.
+     · «سود تا این لحظه»: from his PREVIOUS DUE DAY until now — — from the 9th, — from the 26th, everybody else from the 1st —
+       and about how much it will be on the next due day.
+   The investors list shows the same two numbers.  Reports, Excel and the engine are not changed. */
 (function () {
 'use strict';
 const App = window.App, E = window.Engine, H = App.H, fmt = H.fmt, P = App.pages;
@@ -11620,27 +11667,48 @@ const yearOf = () => +E.serToText(App.today).slice(0, 4);
 App.profitYear = function (name) {
   const y = yearOf(), from = +E.jser(y + '/01/01'), to = +E.jser((y + 1) + '/01/01');
   let acc = 0; try { acc = E.windowProfit(App.C, name, from, to); } catch (e) { acc = 0; }
-  const y0 = y + '/01/01', booked = App.db.entries.filter(e => e.cr === name && /^profit/.test(String(e.auto || '')) && String(e.date || '') >= y0).reduce((s, e) => s + (+e.amt || 0), 0);
-  return { y, acc, booked };
+  let paid = 0; try { (App.profitPaidRows(name) || []).forEach(p => { if (p.t >= from && p.t < to) paid += +p.amt || 0; }); } catch (e) { paid = 0; }
+  return { y, acc, booked: paid, paid };
 };
-function withYear(fn, self, args) {
+/* the due day of this month or of the month before (the day is clamped to the month's length) */
+function dueOn(y, m, d) { const ms = E.monthStart(y, m), len = E.nextMonthStart(y, m) - ms; return ms + Math.min(d, len) - 1; }
+App.profitSinceDue = function (name) {
+  const D = (App.profitDay && App.profitDay(name)) || 1, t = App.today, [y, m] = E.serToJ(t);
+  let prev = dueOn(y, m, D), py = y, pm = m;
+  if (prev > t) { pm = m === 1 ? 12 : m - 1; py = m === 1 ? y - 1 : y; prev = dueOn(py, pm, D); }
+  const ny = pm === 12 ? py + 1 : py, nm = pm === 12 ? 1 : pm + 1, next = dueOn(ny, nm, D);
+  let amt = 0; try { amt = E.windowProfit(App.C, name, prev, t); } catch (e) { amt = 0; }
+  const bal = Math.max(0, App.C.balance(name) || 0), rate = App.C.eng.rateOn(name, t), daily = bal * rate / 36500;
+  return { D, prev, next, amt, est: amt + daily * Math.max(0, next - t), days: t - prev };
+};
+function withNumbers(fn, self, args) {
   const omt = E.memberTable; if (typeof omt !== 'function') return fn.apply(self, args);
-  E.memberTable = function () { return (omt.apply(this, arguments) || []).map(r => Object.assign({}, r, { cum: App.profitYear(r.name).acc })); };
+  E.memberTable = function () {
+    return (omt.apply(this, arguments) || []).map(r => { const py = App.profitYear(r.name), sd = App.profitSinceDue(r.name); return Object.assign({}, r, { cum: py.paid, mtd: sd.amt, est: sd.est }); });
+  };
   try { return fn.apply(self, args); } finally { E.memberTable = omt; }
 }
 const pms = P.members;
 if (typeof pms === 'function') P.members = function () {
-  const r = withYear(pms, this, arguments), y = FA(yearOf());
-  if (r && typeof r.html === 'string') r.html = r.html.replace('سود تجمعی همه', 'سود همه از اول سال ' + y).replace(/<th class="prf">سود تجمعی<\/th>/g, '<th class="prf">سود از اول سال ' + y + '</th>');
+  const r = withNumbers(pms, this, arguments), y = FA(yearOf());
+  if (r && typeof r.html === 'string') r.html = r.html
+    .replace("سود این ماه تا امروز</div>", "سود تا این لحظه (همه)</div>").replace('برآورد کل ماه: ', 'تا سررسید بعدیِ هر نفر حدود ')
+    .replace('سود تجمعی همه', 'سود پرداختی همه از اول سال ' + y)
+    .replace(/<th class="prf">سود این ماه تا امروز<\/th>/g, '<th class="prf">سود تا این لحظه <small>(از سررسید قبلی)</small></th>')
+    .replace(/<th class="prf">برآورد کل ماه<\/th>/g, '<th class="prf">تا سررسید بعدی <small>(حدود)</small></th>')
+    .replace(/<th class="prf">سود تجمعی<\/th>/g, '<th class="prf">سود پرداختی از اول سال ' + y + '</th>');
   return r;
 };
 const pm = P.member;
 if (typeof pm === 'function') P.member = function (name) {
-  const r = withYear(pm, this, arguments);
+  const r = withNumbers(pm, this, arguments);
   if (r && typeof r.html === 'string') {
-    const py = App.profitYear(name), y = FA(py.y);
-    r.html = r.html.replace(/سود تجمعی تا امروز/, 'سود از اول سال ' + y);
-    if (py.booked > 0) { const k = r.html.indexOf('سود از اول سال ' + y); if (k >= 0) { const s = r.html.indexOf('<div class="s">', k); if (s >= 0 && s - k < 400) r.html = r.html.slice(0, s + 15) + 'ثبت‌شده امسال: ' + fmt(py.booked) + ' ' + r.html.slice(s + 15); } }
+    const py = App.profitYear(name), y = FA(py.y), sd = App.profitSinceDue(name), dt = s => E.serToText(s);
+    r.html = r.html.replace('سود این ماه تا امروز</div>', 'سود تا این لحظه</div>')
+      .replace('برآورد کل ماه: ', 'از سررسید ' + dt(sd.prev) + ' · تا سررسید ' + dt(sd.next) + ' حدود ')
+      .replace(/سود تجمعی تا امروز/, 'سود پرداختی از اول سال ' + y);
+    const k = r.html.indexOf('سود پرداختی از اول سال ' + y);
+    if (k >= 0) { const s = r.html.indexOf('<div class="s">', k); if (s >= 0 && s - k < 400) r.html = r.html.slice(0, s + 15) + 'تعلق‌گرفته امسال: ' + fmt(py.acc) + ' ' + r.html.slice(s + 15); }
   }
   return r;
 };
@@ -12080,6 +12148,47 @@ document.addEventListener('click', ev => {
 });
 document.addEventListener('change', ev => { const t = ev.target; if (!t || !t.classList || !t.classList.contains('stx-u')) return; const d = t.closest('.stx'); if (!d) return; d._st.div = +t.value || 1; draw(d); });
 document.addEventListener('keydown', ev => { const t = ev.target; if (ev.key !== 'Enter' || !t || !t.closest || !t.closest('.stx-dates')) return; ev.preventDefault(); const b = t.closest('.stx').querySelector('[data-stx=apply]'); if (b) b.click(); });
+})();
+/* ---------------------------------------------------------------- v44.5 — an open fold stays open
+   the owner (1405/08/07): «I open a fold (e.g. سود این عضو), scroll, and it closes by itself».
+   Every save in the background (the Google Drive / Telegram backup, the alert marks, the automatic registration …) redraws the page,
+   and a redrawn page had every fold closed again.  Now, when the SAME page is redrawn, every fold that was open is opened again,
+   the one that was closed stays closed, and the page stays where it was.  Going to another page is not touched. */
+(function () {
+'use strict';
+const App = window.App; if (!App || typeof App.emit !== 'function') return;
+const page = () => document.getElementById('page');
+function keyOf(d, i) {
+  if (d.dataset && d.dataset.k) return 'k:' + d.dataset.k;
+  const s = d.querySelector(':scope > summary');
+  return 'i:' + i + ':' + ((s && s.textContent) || '').replace(/[\s\d۰-۹,٬.]+/g, '').slice(0, 40);
+}
+function snap() {
+  const p = page(); if (!p) return null;
+  const all = Array.prototype.slice.call(p.querySelectorAll('details')), st = {};
+  all.forEach((d, i) => { st[keyOf(d, i)] = { open: !!d.open, auto: d.classList.contains('ax-auto') }; });
+  return { hash: location.hash, y: window.scrollY, st };
+}
+function restore(s) {
+  const p = page(); if (!s || !p || location.hash !== s.hash) return;
+  const all = Array.prototype.slice.call(p.querySelectorAll('details'));
+  let changed = false;
+  all.forEach((d, i) => {
+    const k = keyOf(d, i); if (!(k in s.st)) return;
+    const want = s.st[k].open;
+    if (!!d.open !== want) { d.dataset.rs = '1'; d.open = want; changed = true; }
+    if (!want || !s.st[k].auto) d.classList.remove('ax-auto');           // a fold the person opened himself is not closed by the 10-second timer
+  });
+  if (changed) { window.scrollTo(0, s.y); requestAnimationFrame(() => window.scrollTo(0, s.y)); }
+}
+const oe = App.emit;
+App.emit = function () {
+  const s = snap();
+  const r = oe.apply(this, arguments);
+  try { restore(s); } catch (e) { console.error(e); }
+  return r;
+};
+App.keepOpenTest = { snap, restore };
 })();
 
 
@@ -12812,11 +12921,22 @@ function profitRows(y, m, step) {
     if (others.some(o => d.indexOf(o) >= 0)) return false;
     return E.jser(e.date) < nxt + 45;
   };
+  const nmK = {}; C.members.forEach(n => { nmK[n] = norm(n); });
+  const whoIn = d => { let best = '', bl = 0; C.members.forEach(n => { const k = nmK[n]; if (n !== owner && k && d.indexOf(k) >= 0 && k.length > bl) { best = n; bl = k.length; } }); return best; };
+  const isOutPaid = (e, nm) => {
+    if (e.dr !== owner || e.cr === nm || !e.amt || !e.date || /^(profit-owner|loan)/.test(String(e.auto || ''))) return false;
+    const d = norm(e.desc); if (d.indexOf(norm('سود')) < 0 || whoIn(d) !== nm) return false;
+    const t = E.jser(e.date), d2 = d.split(nmK[nm]).join(' ');           // the month is looked for without the name («—» has «دی» in it)
+    if (d2.indexOf(mname) >= 0) return t >= start;
+    if (others.some(o => d2.indexOf(o) >= 0)) return false;
+    return t >= nxt - 5 && t < nxt + 45;
+  };
   const closed = new Set(db.closedMembers || []); const out = [];
   C.members.forEach(nm => {
     const pfm = App.profitFrom ? App.profitFrom(nm) : 0; if (pfm > 0 && nxt <= pfm) return;      // v40.3: paid outside the program
     const calc = E.cumProfit(C, nm, nxt) - E.cumProfit(C, nm, pfm > start ? pfm : start);
-    const have = db.entries.filter(e => isMine(e, nm));
+    let have = db.entries.filter(e => isMine(e, nm));
+    if (!have.length && nm !== owner) have = db.entries.filter(e => isOutPaid(e, nm));
     const nn = norm(nm);
     const rel = have.length ? [] : db.entries.filter(e => e.amt && e.date && E.jser(e.date) >= start && E.jser(e.date) < nxt + 45 && norm(e.desc).indexOf('سود') >= 0 && norm(e.desc).indexOf(nn) >= 0);
     if (calc < 0.5 && !have.length) return;
