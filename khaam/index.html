@@ -2565,6 +2565,11 @@ table.akt tfoot td *{color:#FDE68A !important}
 .locx .lch > b{flex:1 1 150px;min-width:0}
 .locx .lch > .num{margin-inline-start:auto}
 
+/* v44.6: the number of days of «سود تا این لحظه» in the corner of the tile, and under it in the investors list */
+.card .pdays{position:absolute;top:8px;left:10px;background:#FFEDD5;color:#9A3412;border:1.5px solid #FDBA74;border-radius:999px;padding:1px 9px;font-size:.88rem;font-weight:900;line-height:1.5;white-space:nowrap}
+.card:has(.pdays){position:relative}
+.card:has(.pdays) .t{padding-left:66px}
+td .pdd{display:block;font-size:.8rem;font-weight:800;color:#9A3412;white-space:nowrap;direction:rtl;text-align:left}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -2572,7 +2577,7 @@ table.akt tfoot td *{color:#FDE68A !important}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "44.5"; window.APP_BUILD = "1405/08/07 21:05";
+window.APP_VERSION = "44.6"; window.APP_BUILD = "1405/08/08 20:25";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -11528,6 +11533,7 @@ document.addEventListener('toggle', ev => {
     delete d.dataset.rs; if (d.open && d.querySelector && d.querySelector('.ax-chrow')) requestAnimationFrame(redraw); return;
   }
   if (!d || !d.classList || !d.classList.contains('ax-s') || !d.open) return;
+  if (d.classList.contains('ax-auto')) { if (d.querySelector('.ax-chrow')) requestAnimationFrame(redraw); return; }   /* v44.6: opening by itself («ثبت‌های امروز») never closes a fold the person opened */
   $$('.ax-secs > details.ax-s[open]').forEach(x => { if (x !== d) x.open = false; });
   requestAnimationFrame(() => {
     if (d.querySelector('.ax-chrow')) redraw();
@@ -11689,8 +11695,19 @@ function withNumbers(fn, self, args) {
   try { return fn.apply(self, args); } finally { E.memberTable = omt; }
 }
 const pms = P.members;
+function listDays() {                                                     /* v44.6: under each «سود تا این لحظه» of the list, how many days it is */
+  document.querySelectorAll('#page table.tbl').forEach(t => {
+    const ths = Array.prototype.slice.call(t.querySelectorAll('thead th')), ci = ths.findIndex(th => /سود تا این لحظه/.test(th.textContent)); if (ci < 0) return;
+    t.querySelectorAll('tbody tr').forEach(tr => {
+      const a = tr.querySelector('a[data-to^="/member/"]'), td = tr.children[ci]; if (!a || !td || td.querySelector('.pdd')) return;
+      const nm = (a.textContent || '').trim(); if (!App.C.accts.has(nm)) return;
+      const sd = App.profitSinceDue(nm); td.insertAdjacentHTML('beforeend', '<small class="pdd">' + FA(sd.days) + ' روز · از ' + E.serToText(sd.prev) + '</small>');
+    });
+  });
+}
 if (typeof pms === 'function') P.members = function () {
   const r = withNumbers(pms, this, arguments), y = FA(yearOf());
+  if (r && typeof r.html === 'string') { const p0 = r.post; r.post = function () { try { if (p0) p0.apply(this, arguments); } finally { try { listDays(); } catch (e) { console.error(e); } } }; }
   if (r && typeof r.html === 'string') r.html = r.html
     .replace("سود این ماه تا امروز</div>", "سود تا این لحظه (همه)</div>").replace('برآورد کل ماه: ', 'تا سررسید بعدیِ هر نفر حدود ')
     .replace('سود تجمعی همه', 'سود پرداختی همه از اول سال ' + y)
@@ -11704,7 +11721,7 @@ if (typeof pm === 'function') P.member = function (name) {
   const r = withNumbers(pm, this, arguments);
   if (r && typeof r.html === 'string') {
     const py = App.profitYear(name), y = FA(py.y), sd = App.profitSinceDue(name), dt = s => E.serToText(s);
-    r.html = r.html.replace('سود این ماه تا امروز</div>', 'سود تا این لحظه</div>')
+    r.html = r.html.replace('سود این ماه تا امروز</div>', 'سود تا این لحظه<span class="pdays" title="تعداد روز از سررسید قبلی تا امروز">' + FA(sd.days) + ' روز</span></div>')
       .replace('برآورد کل ماه: ', 'از سررسید ' + dt(sd.prev) + ' · تا سررسید ' + dt(sd.next) + ' حدود ')
       .replace(/سود تجمعی تا امروز/, 'سود پرداختی از اول سال ' + y);
     const k = r.html.indexOf('سود پرداختی از اول سال ' + y);
@@ -12067,6 +12084,7 @@ function span(k) {
   return ['', ''];
 }
 const LIMIT = 60;
+const KEEP = {};                                                       // v44.6: the range chosen for an account survives a redraw of the page (a background save)
 App.stmtNode = function (name) {
   const d = document.createElement('div'); d.className = 'stx'; d.dataset.name = name;
   d.innerHTML = '<div class="stx-rng">' + RANGES.map(r => '<button type="button" data-r="' + r[0] + '"' + (r[0] === 'all' ? ' class="on"' : '') + '>' + r[1] + '</button>').join('') + '</div>' +
@@ -12077,7 +12095,10 @@ App.stmtNode = function (name) {
     '<div class="stx-view"></div>' +
     '<div class="stx-btns noprint"><button type="button" class="btn teal" data-stx="xlsx">📊 اکسل همین صورت‌حساب</button><button type="button" class="btn violet" data-stx="share">📤 ارسال (واتساپ، تلگرام …)</button>' +
     '<button type="button" class="btn green" data-stx="wa">💬 متن در واتساپ</button><button type="button" class="btn ghost" data-stx="print">🖨 چاپ / PDF</button></div>';
-  d._st = { r: 'all', from: '', to: '', div: 1, all: false };
+  d._st = KEEP[name] || (KEEP[name] = { r: 'all', from: '', to: '', div: 1, all: false });
+  { const S = d._st; d.querySelectorAll('.stx-rng button').forEach(b => b.classList.toggle('on', b.dataset.r === S.r));
+    if (S.r === 'cus') { d.querySelector('.stx-dates').classList.add('show'); if (S.from) d.querySelector('.stx-from').value = S.from; if (S.to) d.querySelector('.stx-to').value = S.to; }
+    const u = d.querySelector('.stx-u'); if (u) u.value = String(S.div); }
   setTimeout(() => draw(d), 0);
   return d;
 };
