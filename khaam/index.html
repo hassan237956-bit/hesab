@@ -2569,7 +2569,8 @@ table.akt tfoot td *{color:#FDE68A !important}
 .card .pdays{position:absolute;top:8px;left:10px;background:#FFEDD5;color:#9A3412;border:1.5px solid #FDBA74;border-radius:999px;padding:1px 9px;font-size:.88rem;font-weight:900;line-height:1.5;white-space:nowrap}
 .card:has(.pdays){position:relative}
 .card:has(.pdays) .t{padding-left:66px}
-td .pdd{display:block;font-size:.8rem;font-weight:800;color:#9A3412;white-space:nowrap;direction:rtl;text-align:left}
+td .pdd{display:block;font-size:.8rem;font-weight:800;color:#9A3412;white-space:normal;line-height:1.55;direction:rtl;text-align:left}
+td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v44.8: on a phone (and with large letters) it wraps inside its box instead of running out of it */
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -2577,7 +2578,7 @@ td .pdd{display:block;font-size:.8rem;font-weight:800;color:#9A3412;white-space:
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "44.7"; window.APP_BUILD = "1405/08/09 06:50";
+window.APP_VERSION = "44.8"; window.APP_BUILD = "1405/08/09 09:25";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -11701,7 +11702,7 @@ function listDays() {                                                     /* v44
     t.querySelectorAll('tbody tr').forEach(tr => {
       const a = tr.querySelector('a[data-to^="/member/"]'), td = tr.children[ci]; if (!a || !td || td.querySelector('.pdd')) return;
       const nm = (a.textContent || '').trim(); if (!App.C.accts.has(nm)) return;
-      const sd = App.profitSinceDue(nm); td.insertAdjacentHTML('beforeend', '<small class="pdd">' + FA(sd.days) + ' روز · از ' + E.serToText(sd.prev) + '</small>');
+      const sd = App.profitSinceDue(nm); td.insertAdjacentHTML('beforeend', '<small class="pdd"><span>' + FA(sd.days) + ' روز</span> · <span>از ' + E.serToText(sd.prev) + '</span></small>');
     });
   });
 }
@@ -12930,7 +12931,7 @@ function nextOf(y, m) { return m === 12 ? [y + 1, 1] : [y, m + 1]; }
 
 /* ---------------------------------------------------------------- profit rows for one month */
 App.profitRowsFor = (y, m, step) => profitRows(y, m, step);
-function profitRows(y, m, step) {
+function profitRows(y, m, step, noRel) {
   const C = App.C, db = App.db, owner = db.meta.owner;
   const start = E.monthStart(y, m), nxt = E.nextMonthStart(y, m), tag = 'profit:' + monthKey(y, m), mname = norm(E.MONTHS[m - 1]);
   const others = E.MONTHS.filter((_, i) => i !== m - 1).map(norm);
@@ -12952,6 +12953,17 @@ function profitRows(y, m, step) {
     if (others.some(o => d2.indexOf(o) >= 0)) return false;
     return t >= nxt - 5 && t < nxt + 45;
   };
+  const thisKey = monthKey(y, m); let prevSet = null;
+  const spc = v => String(v == null ? '' : v).replace(/[\u200c\u200d\u200e\u200f]/g, ' ').replace(/ي/g, 'ی').replace(/ك/g, 'ک');
+  const wre = mn => new RegExp('[^\u0621-\u063a\u0641-\u064a\u067e\u0686\u0698\u06a9\u06af\u06c0-\u06d3]' + spc(mn) + '[^\u0621-\u063a\u0641-\u064a\u067e\u0686\u0698\u06a9\u06af\u06c0-\u06d3]'), reThis = wre(E.MONTHS[m - 1]), reOth = E.MONTHS.filter((_, i) => i !== m - 1).map(wre);
+  const prevHave = () => { if (!prevSet) { const [py, pm] = m === 1 ? [y - 1, 12] : [y, m - 1]; prevSet = new Set(); profitRows(py, pm, 1, true).forEach(r => r.have.forEach(e => prevSet.add(e))); } return prevSet; };
+  const otherMonth = (e, nm) => {
+    const t = /^profit(?:-owner)?:(\d{4}\/\d{2})/.exec(String(e.auto || '')); if (t) return t[1] !== thisKey;
+    /* months are looked for as whole words, without the member's name («—» has «دی») and without the bank «مهر ایران» */
+    const d2 = ' ' + spc(e.desc).split(spc(nm)).join(' ').replace(/مهر\s*ایران/g, ' ') + ' ';
+    if (!reThis.test(d2) && reOth.some(r => r.test(d2))) return true;
+    return prevHave().has(e);
+  };
   const closed = new Set(db.closedMembers || []); const out = [];
   C.members.forEach(nm => {
     const pfm = App.profitFrom ? App.profitFrom(nm) : 0; if (pfm > 0 && nxt <= pfm) return;      // v40.3: paid outside the program
@@ -12959,7 +12971,7 @@ function profitRows(y, m, step) {
     let have = db.entries.filter(e => isMine(e, nm));
     if (!have.length && nm !== owner) have = db.entries.filter(e => isOutPaid(e, nm));
     const nn = norm(nm);
-    const rel = have.length ? [] : db.entries.filter(e => e.amt && e.date && E.jser(e.date) >= start && E.jser(e.date) < nxt + 45 && norm(e.desc).indexOf('سود') >= 0 && norm(e.desc).indexOf(nn) >= 0);
+    const rel = (have.length || noRel) ? [] : db.entries.filter(e => e.amt && e.date && E.jser(e.date) >= start && E.jser(e.date) < nxt + 45 && norm(e.desc).indexOf('سود') >= 0 && norm(e.desc).indexOf(nn) >= 0 && !otherMonth(e, nm));
     if (calc < 0.5 && !have.length) return;
     const manual = !!(App.profitDone && App.profitDone(y, m, nm));                     // v40.5: marked as settled by the person
     const amt = step > 1 ? Math.round(calc / step) * step : Math.round(calc);
@@ -13026,8 +13038,8 @@ P.tasks = function (arg, q) {
         '<td class="c num">' + r.rate + '٪</td><td class="n bal">' + fmt(r.bal) + '</td><td class="n prf">' + fmt(Math.round(r.calc)) + '</td>' +
         '<td><input type="text" class="yellow num pa" value="' + fmt(r.amt) + '" inputmode="numeric" style="width:215px"><div class="hint pt"></div></td>' +
         '<td class="c"><input type="text" class="yellow num pd" value="' + r.dueTxt + '" style="width:150px"><div class="hint">سررسید: روز ' + r.day + ' ماه' + (r.isOwner ? '' : (r.dueSer > App.today ? ' · <span class="warn">' + (r.dueSer - App.today) + ' روز دیگر</span>' : r.dueSer === App.today ? ' · <b class="bad">امروز</b>' : ' · <span class="bad">' + (App.today - r.dueSer) + ' روز گذشته</span>')) + '</div></td>' +
-        '<td>' + (r.manual ? '<span class="ok">✔ پرداخت‌شده (طبق تأیید شما)</span> <button type="button" class="btn sm ghost" data-act="task-pundo" data-y="' + y + '" data-m="' + m + '" data-nm="' + esc(r.nm) + '">↩ برگردان</button>' : r.dup ? '<span class="ok">✔ قبلاً ثبت شده: ' + r.have.map(e => fmt(e.amt) + ' (' + esc(e.date) + ')').join('، ') + '</span>' : (r.rel.length ? '<span class="warn">⚠ در دفتر ردیفی با شرح مشابه هست: ' + r.rel.map(e => '«' + esc(e.desc) + '» ' + esc(e.date) + ' ' + fmt(e.amt)).join('، ') + ' — اگر همان سود است تیک نزنید</span>' : r.isOwner ? '<span class="hint">معمولاً ثبت نمی‌شود</span>' : (r.dueSer > App.today ? '<span class="hint">هنوز سررسید نرسیده (تیک نخورده)</span>' : '<span class="warn">ثبت نشده</span>'))) +
-          (!r.dup && !r.isOwner && !r.isClosed ? '<div style="margin-top:5px"><button type="button" class="btn sm blue" data-act="task-pdone" data-y="' + y + '" data-m="' + m + '" data-nm="' + esc(r.nm) + '" title="سودِ این ماه را خودم داده‌ام یا جور دیگری ثبت کرده‌ام؛ دیگر در هشدارها نیاید">✔ ' + (r.rel.length ? 'همین ردیف همان سود است' : 'پرداخت شده، دیگر نشان نده') + '</button></div>' : '') + '</td></tr>';
+        '<td>' + (r.manual ? '<span class="ok">✔ پرداخت‌شده (طبق تأیید شما)</span>' + (r.have.length ? '' : ' <small class="warn">ولی ردیفِ پرداختش در دفتر نیست' + (r.dueSer > App.today ? ' — سررسیدش ' + r.dueTxt + ' است' : '') + '؛ اگر هنوز نداده‌اید «↩ برگردان» را بزنید</small>') + ' <button type="button" class="btn sm ghost" data-act="task-pundo" data-y="' + y + '" data-m="' + m + '" data-nm="' + esc(r.nm) + '">↩ برگردان</button>' : r.dup ? '<span class="ok">✔ قبلاً ثبت شده: ' + r.have.map(e => fmt(e.amt) + ' (' + esc(e.date) + ')').join('، ') + '</span>' : (r.rel.length ? '<span class="warn">⚠ در دفتر ردیفی با شرح مشابه هست: ' + r.rel.map(e => '«' + esc(e.desc) + '» ' + esc(e.date) + ' ' + fmt(e.amt)).join('، ') + ' — اگر همان سود است تیک نزنید</span>' : r.isOwner ? '<span class="hint">معمولاً ثبت نمی‌شود</span>' : (r.dueSer > App.today ? '<span class="hint">هنوز سررسید نرسیده (تیک نخورده)</span>' : '<span class="warn">ثبت نشده</span>'))) +
+          (!r.dup && !r.isOwner && !r.isClosed && (r.rel.length || r.dueSer <= App.today) ? '<div style="margin-top:5px"><button type="button" class="btn sm blue" data-act="task-pdone" data-y="' + y + '" data-m="' + m + '" data-nm="' + esc(r.nm) + '" title="سودِ این ماه را خودم داده‌ام یا جور دیگری ثبت کرده‌ام؛ دیگر در هشدارها نیاید">✔ ' + (r.rel.length ? 'همین ردیف همان سود است' : 'پرداخت شده، دیگر نشان نده') + '</button></div>' : '') + '</td></tr>';
     });
     h += '</tbody></table></div><div id="tk_psum" class="status info" style="margin:10px 0"></div>';
     h += '<div class="bar noprint"><button class="btn green" data-act="task-profit" data-y="' + y + '" data-m="' + m + '" style="font-size:1.1rem;padding:9px 24px">✔ ثبت سودِ تیک‌خورده‌ها</button></div>';
@@ -13201,10 +13213,18 @@ function cand0(lo, hi) {
   let [y, m] = monthBefore(hi);
   for (let i = 0; i < 3; i++) {
     profitRows(y, m, 100000).forEach(r => {
+      /* v44.8: a month marked «پرداخت‌شده» with no payment row in the book — on its due day (and the day before, and 3 days after) the alert says
+         why it is not registered, with «↩ علامت را بردار و ثبت کن» (the owner 1405/08/09: Amir's Mehr profit was skipped without a word) */
+      if (r.manual && !r.have.length && !r.isOwner && !r.isClosed && r.amt > 0 && r.dueSer >= lo && r.dueSer <= hi && r.dueSer >= App.today - 3 && r.dueSer <= App.today + 1) {
+        const key = keyP(y, m, r.nm);
+        if (seenGet('pm|' + key) !== '1') out.push({ kind: 'profit', key, nm: r.nm, date: r.dueTxt, dueSer: r.dueSer, amt: r.amt, y, m, marked: true,
+          block: 'این ماه را قبلاً «✔ پرداخت‌شده» علامت زده‌اید، ولی در دفتر ردیفِ پرداختش نیست؛ برای همین خودکار ثبت نمی‌شود.' });
+        return;
+      }
       if (r.isOwner || r.isClosed || r.dup || !(r.amt > 0) || r.dueSer < lo || r.dueSer > hi) return;
       const it = { kind: 'profit', key: keyP(y, m, r.nm), nm: r.nm, date: r.dueTxt, dueSer: r.dueSer, amt: r.amt, y, m };
       /* a «similar» row only counts when it is not the program's own profit row of ANOTHER month and does not name another month */
-      const rel = r.rel.filter(e => { if (/^profit(-owner)?:/.test(e.auto || '')) return false; const d = norm(e.desc); return !E.MONTHS.some((mn, i) => i !== m - 1 && d.indexOf(norm(mn)) >= 0); });
+      const rel = r.rel.filter(e => { if (/^profit(-owner)?:/.test(e.auto || '')) return false; const d = norm(e.desc).split(norm(r.nm) || '\u0000').join(' '); return d.indexOf(norm(E.MONTHS[m - 1])) >= 0 || !E.MONTHS.some((mn, i) => i !== m - 1 && d.indexOf(norm(mn)) >= 0); });
       if (rel.length) { it.block = 'در دفتر ردیفی با شرح مشابه سود هست؛ خودکار ثبت نمی‌شود، خودتان نگاه کنید.'; it.relRows = rel.slice(0, 3).map(e => ({ date: e.date, desc: e.desc, amt: e.amt, dr: e.dr, cr: e.cr })); }
       out.push(it);
     });
@@ -13290,6 +13310,7 @@ function itemSub(it) {
 const itemTitle = it => it.kind === 'loan' ? 'قسط «' + esc(it.title) + '»' : 'سود «' + esc(it.nm) + '» برای ' + E.MONTHS[it.m - 1];
 /* v43.3 — pay or edit right where the due item is shown: amount, date and bank (or the member's own account) can be changed, then one button registers it */
 const payBtn = (it, first) => '<span class="asel noprint" style="margin-top:6px"><button type="button" class="asb yes' + (first ? ' on' : '') + '" data-act="auto-pay" data-key="' + esc(it.key) + '">✎ ' + (it.kind === 'loan' ? 'ویرایش و پرداخت قسط' : 'ویرایش و پرداخت سود') + '</button></span>';
+const markBtns = it => '<span class="asel noprint" style="flex-wrap:wrap;gap:6px;margin-top:6px"><button type="button" class="asb yes on" data-act="auto-punmark" data-key="' + esc(it.key) + '" data-y="' + it.y + '" data-m="' + it.m + '" data-nm="' + esc(it.nm) + '">↩ علامت را بردار' + (it.dueSer <= App.today ? ' و ثبت کن' : '') + '</button><button type="button" class="asb no" data-act="auto-pok" data-key="' + esc(it.key) + '">✔ درست است، داده‌ام</button></span>';
 const parseAmt = v => { const x = H.parseAmount(String(v == null ? '' : v)); return isNaN(x) ? NaN : x; };
 const findItem = key => cand(0, App.today + 1).concat(cand(App.today + 1, App.today + 1)).map(judge).find(it => it.key === key) || null;
 const bankOpts = cur => '<option value="">— انتخاب کنید —</option><optgroup label="از بانک (نقدی)">' + bankNames().map(b => '<option value="' + esc(b) + '"' + (b === cur ? ' selected' : '') + '>' + esc(b) + '</option>').join('') +
@@ -13334,7 +13355,7 @@ function tomorrowSec() {
   const t = cand(App.today + 1, App.today + 1).map(judge); if (!t.length) return '';
   const anyOn = t.some(i => i.mode !== 'off');
   return '<div class="aub tm"><h3>⏰ فردا سررسید است <small>' + esc(E.serToText(App.today + 1)) + '</small></h3>' +
-    t.map(it => '<div class="aui"><span class="aik">' + (it.kind === 'loan' ? '🏦' : '💰') + '</span><span class="aix">' + itemTitle(it) + '<small>' + itemSub(it) + '</small>' + (it.block ? '<small class="abd">' + esc(it.block) + '</small>' : '') + '</span><b class="num">' + (it.kind === 'profit' ? '≈ ' : '') + fmt(it.amt) + '</b>' + (it.block ? '' : selBtns(it)) + payBtn(it) + '</div>').join('') +
+    t.map(it => '<div class="aui"><span class="aik">' + (it.kind === 'loan' ? '🏦' : '💰') + '</span><span class="aix">' + itemTitle(it) + '<small>' + itemSub(it) + '</small>' + (it.block ? '<small class="abd">' + esc(it.block) + '</small>' : '') + '</span><b class="num">' + (it.kind === 'profit' ? '≈ ' : '') + fmt(it.amt) + '</b>' + (it.marked ? markBtns(it) : (it.block ? '' : selBtns(it)) + payBtn(it)) + '</div>').join('') +
     (anyOn ? '<div class="hint">' + (t.some(i => i.kind === "profit") ? 'مبلغ سود تقریبی است و روز سررسید دقیق حساب می‌شود. ' : '') + 'هر کدام را «✔ خودکار ثبت شود» کنید، فردا که برنامه را باز کنید خودش (دوطرفه) ثبت می‌شود؛ «✋ دستی» بماند ثبت نمی‌شود تا خودتان بزنید. تغییرش همین حالا ذخیره می‌شود.</div>' : '<div class="hint">ثبت خودکار خاموش است؛ در «کارهای ماهانه» خودتان ثبت کنید.</div>') + '</div>';
 }
 function needSec() {
@@ -13343,7 +13364,7 @@ function needSec() {
   const rows = it => (it.relRows && it.relRows.length) ? '<div class="abrel" style="margin:6px 0;padding:8px 10px;border-radius:10px;background:#fff;border:1px solid #fca5a5;line-height:1.9;font-size:1.02rem;font-weight:700">📒 در دفتر این ردیف‌ها هست:<br>' + it.relRows.map(r => '• <span class="num">' + esc(r.date || '') + '</span> · ' + esc(r.desc || '') + ' · <b class="num">' + fmt(r.amt || 0) + '</b> <small>(' + esc(r.dr || '') + ' ← ' + esc(r.cr || '') + ')</small>').join('<br>') + '</div>' : '';
   const what = it => it.kind === 'profit' && it.block ? '<div class="hint" style="line-height:1.9;font-size:1.02rem;font-weight:700">برنامه مطمئن نیست این سود قبلاً پرداخت/ثبت شده یا نه. اگر آن ردیف‌ها همین سود است «✔ این همان سود است» را بزن تا دیگر نیاید؛ اگر سود هنوز ثبت نشده «✋ دستی» را بزن و در «کارهای ماهانه» ثبتش کن.</div>' : '';
   return '<div class="aub nd"><h3>⚠ سررسید رسیده، ولی ثبت نشد <small>تصمیم با شماست</small></h3>' +
-    n.map(it => '<div class="aui" style="flex-wrap:wrap"><span class="aik">⚠</span><span class="aix">' + itemTitle(it) + '<small>' + itemSub(it) + '</small><small class="abd">' + esc(it.why) + '</small></span><b class="num">' + (it.kind === 'profit' ? '≈ ' : '') + fmt(it.amt) + '</b>' + rows(it) + what(it) +
+    n.map(it => it.marked ? '<div class="aui" style="flex-wrap:wrap"><span class="aik">⚠</span><span class="aix">' + itemTitle(it) + '<small>' + itemSub(it) + '</small><small class="abd">' + esc(it.why) + '</small></span><b class="num">' + fmt(it.amt) + '</b>' + markBtns(it) + '</div>' : '<div class="aui" style="flex-wrap:wrap"><span class="aik">⚠</span><span class="aix">' + itemTitle(it) + '<small>' + itemSub(it) + '</small><small class="abd">' + esc(it.why) + '</small></span><b class="num">' + (it.kind === 'profit' ? '≈ ' : '') + fmt(it.amt) + '</b>' + rows(it) + what(it) +
       '<span class="asel noprint" style="flex-wrap:wrap;gap:6px">' + payBtn(it, true) + (it.can ? '<button type="button" class="asb yes on" data-act="auto-now" data-key="' + esc(it.key) + '">✔ همین حالا ثبت کن</button>' : '') +
       (it.kind === 'profit' ? '<button type="button" class="asb yes' + (it.block ? ' on' : '') + '" data-act="auto-pdone" data-y="' + it.y + '" data-m="' + it.m + '" data-nm="' + esc(it.nm) + '">✔ ' + (it.block ? 'این همان سود است' : 'پرداخت شده، دیگر نشان نده') + '</button>' : '') +
       '<button type="button" class="asb no" data-act="go" data-to="/tasks">✋ دستی در «کارهای ماهانه»</button></span></div>').join('') + '</div>';
@@ -13393,6 +13414,17 @@ document.addEventListener('click', ev => {
     App.toast('✔ «' + nm + '» برای این ماه پرداخت‌شده ماند؛ دیگر هشدار نمی‌دهد (در «کارهای ماهانه» با «↩ برگردان» برمی‌گردد)'); redrawPanel();
     setTimeout(() => { if (!document.querySelector('.autotm .aui')) { const x = document.querySelector('.autotm'); if (x && !document.querySelector('.aub')) App.closeModal(); } }, 60);
   }
+  else if (act === 'auto-punmark') {
+    const k = d.y + '/' + (+d.m < 10 ? '0' : '') + (+d.m), nm = d.nm, key = d.key;
+    App.commit('برگرداندن علامت پرداخت سود', db => { const a = (db.profitDone || {})[k]; if (!a) return; const i = a.indexOf(nm); if (i >= 0) a.splice(i, 1); if (!a.length) delete db.profitDone[k]; });
+    const it = findItem(key);
+    if (it && it.dueSer <= App.today && !it.block) {
+      if (modeOf('profit') === 'off') { App.closeModal(); payModal(key, false); }
+      else { setSel(key, 'yes'); App.closeModal(); App.__autoTry = 0; App.tasksAuto(); }
+      App.toast('↩ علامت برداشته شد');
+    } else { redrawPanel(); App.toast('↩ علامت برداشته شد' + (it && it.dueSer > App.today ? '؛ روز سررسید ثبت می‌شود' : '')); }
+  }
+  else if (act === 'auto-pok') { seenSet('pm|' + d.key, '1'); _cc = { C: null, m: new Map() }; redrawPanel(); App.toast('✔ باشد؛ دیگر برای این ماه یادآوری نمی‌شود'); }
   else if (act === 'auto-later') App.closeModal();
   else if (act === 'auto-pay') payModal(d.key, !!b.closest('#modalBg'));
   else if (act === 'auto-pay-do') payDo(d.key);
@@ -13507,7 +13539,7 @@ App.tasksBox = function () {
   if (!s.due && !s.soon && !s.pend && !s.psoon && !t.length && !un) return '';
   const parts = [];
   if (un) parts.push('<b>' + un + ' ثبت خودکار</b> را هنوز تأیید نکرده‌اید (در «وقایع روزانه» هم هست)');
-  if (t.length) parts.push('⏰ <b>فردا سررسید:</b> ' + t.map(it => itemTitle(it)).join('، '));
+  if (t.length) parts.push('⏰ <b>فردا سررسید:</b> ' + t.map(it => itemTitle(it) + (it.marked ? ' <small>(علامت «پرداخت‌شده» دارد)</small>' : '')).join('، '));
   if (s.due) parts.push('<b>' + s.due + ' قسط وام</b> سررسید شده و ثبت نشده');
   if (s.soon) parts.push(s.soon + ' قسط تا ۷ روز دیگر');
   if (s.pend) parts.push('سود <b>' + E.MONTHS[s.m - 1] + '</b> برای ' + s.pend + ' نفر هنوز ثبت نشده');
