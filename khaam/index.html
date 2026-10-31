@@ -2577,7 +2577,7 @@ td .pdd{display:block;font-size:.8rem;font-weight:800;color:#9A3412;white-space:
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "44.6"; window.APP_BUILD = "1405/08/08 20:25";
+window.APP_VERSION = "44.7"; window.APP_BUILD = "1405/08/09 06:50";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -13182,11 +13182,18 @@ function cand(lo, hi) {
   const ck = lo + ':' + hi + ':' + App.today; if (_cc.m.has(ck)) return _cc.m.get(ck).map(x => Object.assign({}, x));
   const r = cand0(lo, hi); _cc.m.set(ck, r); return r.map(x => Object.assign({}, x));
 }
+function defBank() {                                                     // the bank of the last installment paid from a bank; else the bank with the most money
+  const lb = App.db.meta.loanBank || {}, ok = n => !!n && App.C.accts.has(n) && !App.C.members.includes(n);
+  if (ok(lb._all)) return lb._all;
+  const banks = App.db.accounts.filter(a => a.group === App.G.CASH).map(a => a.name).sort((x, y) => App.C.balance(y) - App.C.balance(x));
+  return banks[0] || '';
+}
 function cand0(lo, hi) {
   const lb = App.db.meta.loanBank || {}, out = [];
   E.loanStatus(App.C).filter(l => !l.done && l.dueSer > 0 && l.dueSer >= lo && l.dueSer <= hi).forEach(l => {
-    const bank = lb[l.title] || memberOfTitle(l.title), isMem = !!bank && App.C.members.includes(bank);
-    const it = { kind: 'loan', key: keyL(l.title, l.nextDue), title: l.title, bank, isMem, date: l.nextDue, dueSer: l.dueSer, amt: l.nextAmt, k: l.cnt + 1, n: l.n };
+    /* v44.7: a loan with no bank of its own yet is paid from the bank of the last installment (the owner: «it does not matter which bank — register it») */
+    const own = lb[l.title] || memberOfTitle(l.title), bank = own || defBank(), isMem = !!bank && App.C.members.includes(bank);
+    const it = { kind: 'loan', key: keyL(l.title, l.nextDue), title: l.title, bank, isMem, date: l.nextDue, dueSer: l.dueSer, amt: l.nextAmt, k: l.cnt + 1, n: l.n, defBank: !own && !!bank };
     if (!bank) it.block = 'معلوم نیست از کدام بانک پرداخت می‌شود — «✎ ویرایش و پرداخت» را بزنید و بانک را انتخاب کنید؛ بانکش یادش می‌ماند.';
     else if (!isMem) { it.bal = App.C.balance(bank); it.low = it.bal < it.amt - 0.5; }
     out.push(it);
@@ -13228,7 +13235,7 @@ function autoPass(items, batch) {
       if (x.kind === 'loan') {
         const e = mkA(x.date, x.isMem ? 'اقساط ' + ownerNm() + ' — ' + x.title : 'قسط ' + x.title, x.title, x.bank, null, 'loan:' + x.title); e.id = db.meta.nextId++; App.insertEntry(db, e);
         const lb = db.meta.loanBank = db.meta.loanBank || {}; lb[x.title] = x.bank;
-        batch.items.push({ kind: 'loan', key: x.key, text: 'قسط «' + x.title + '» — قسط ' + x.k + ' از ' + x.n, amt: x.amt, date: x.date, ids: [e.id] }); ids.push(e.id);
+        batch.items.push({ kind: 'loan', key: x.key, text: 'قسط «' + x.title + '» — قسط ' + x.k + ' از ' + x.n + ' · از «' + x.bank + '»', amt: x.amt, date: x.date, ids: [e.id] }); ids.push(e.id);
       } else {
         const tag = 'profit:' + monthKey(x.y, x.m);
         const e = mkA(x.date, 'سود ' + E.MONTHS[x.m - 1] + ' ' + x.y, db.special.CLEAR, x.nm, x.amt, tag); e.id = db.meta.nextId++; App.insertEntry(db, e);
@@ -13278,7 +13285,7 @@ const selBtns = it => {
 };
 function itemSub(it) {
   if (it.kind === 'profit') return 'سررسید ' + esc(it.date) + ' · به حساب عضو اضافه و از سرمایهٔ ' + esc(ownerNm()) + ' کم می‌شود';
-  return 'سررسید ' + esc(it.date) + ' · قسط ' + it.k + ' از ' + it.n + ' · ' + (!it.bank ? '<span class="abd">بانک مشخص نیست</span>' : it.isMem ? 'به حساب سرمایهٔ «' + esc(it.bank) + '» اضافه و از حساب «' + esc(ownerNm()) + '» کم می‌شود' : 'از «' + esc(it.bank) + '» و از حساب «' + esc(ownerNm()) + '» · موجودی ' + fmt(it.bal) + (it.low ? ' <span class="abd">⚠ کافی نیست</span>' : ''));
+  return 'سررسید ' + esc(it.date) + ' · قسط ' + it.k + ' از ' + it.n + ' · ' + (!it.bank ? '<span class="abd">بانک مشخص نیست</span>' : it.isMem ? 'به حساب سرمایهٔ «' + esc(it.bank) + '» اضافه و از حساب «' + esc(ownerNm()) + '» کم می‌شود' : 'از «' + esc(it.bank) + '»' + (it.defBank ? ' <small>(بانکِ آخرین قسط؛ اگر بانک دیگری است «✎ ویرایش و پرداخت»)</small>' : '') + ' و از حساب «' + esc(ownerNm()) + '» · موجودی ' + fmt(it.bal) + (it.low ? ' <span class="abd">⚠ کافی نیست</span>' : ''));
 }
 const itemTitle = it => it.kind === 'loan' ? 'قسط «' + esc(it.title) + '»' : 'سود «' + esc(it.nm) + '» برای ' + E.MONTHS[it.m - 1];
 /* v43.3 — pay or edit right where the due item is shown: amount, date and bank (or the member's own account) can be changed, then one button registers it */
