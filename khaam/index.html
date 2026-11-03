@@ -2597,7 +2597,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "45.1"; window.APP_BUILD = "1405/08/12 10:04";
+window.APP_VERSION = "45.2"; window.APP_BUILD = "1405/08/12 15:16";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -12401,12 +12401,10 @@ async function check(lsAt, from) {
   let d = null; try { d = JSON.parse(rec.txt); } catch (e) { return; }
   const at = (d.meta && d.meta.savedAt) || rec.at || '';
   if (from === 'ls' && !(at > (lsAt || ''))) return;                                  // the browser memory is as new as the database copy
-  if (from !== 'ls') {                                                                 // the browser memory was empty: the database copy is the data
+  if (from !== 'ls') {                                                                 // the browser memory was empty: the data came from the file itself
     if (!(d.entries && d.entries.length)) return;
-    App.replaceDb(d, 'برگرداندن از نسخهٔ دوم');
-    report({ add: [] }, 'اطلاعات از نسخهٔ دوم برگشت');
-    App.toast('✔ ' + d.entries.length + ' ثبت از نسخهٔ دومِ گوشی برگشت');
-    return;
+    if (!(at > (lsAt || ''))) return;                                                  // the file's own data is newer: keep it
+    /* v45.2: merged, never replaced — the database copy may be from another installation of the app (an old file, another password) */
   }
   const P = App.mergePlan(d);
   const n = P.add.length + P.upd.length + P.del.length + (P.mvAdd || []).length + (P.mvUpd || []).length + (P.mvDel || []).length + P.cfg.length + P.accAdd.length;
@@ -12459,6 +12457,67 @@ function add() {
 }
 new MutationObserver(add).observe(document.documentElement, { childList: true, subtree: true });
 setTimeout(add, 500);
+})();
+/* ---------------------------------------------------------------- v45.2 — the Google Drive key finds its way back by itself
+   the owner (1405/08/12): after the app was installed again, a data file from another installation was loaded; it carried a different «key of the
+   script» (made by that installation), so every send to Drive said «کلید اسکریپت با برنامه نمی‌خواند».  The right key was still on the phone
+   (inside the program file's own data, and it had worked that morning).
+   Now: every key that has worked is remembered on this phone (outside the data, so a loaded file cannot erase it); when Drive answers «wrong key»
+   the program tries those keys and the ones inside the program file and the second copy, and keeps the one Drive accepts. */
+(function () {
+'use strict';
+const App = window.App; if (!App) return;
+const LK = 'hesabk_gdkeys';
+const lsGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { } };
+const known = () => { try { const a = JSON.parse(lsGet(LK) || '[]'); return Array.isArray(a) ? a.filter(x => typeof x === 'string' && x.length >= 8) : []; } catch (e) { return []; } };
+const remember = k => { if (!k || k.length < 8) return; const a = known().filter(x => x !== k); a.unshift(k); lsSet(LK, JSON.stringify(a.slice(0, 6))); };
+const keysOf = d => { const m = (d && d.meta) || {}, out = []; if (m.gdKey) out.push(m.gdKey); const g = m.ls && m.ls.gd; if (g && g.key) out.push(g.key); return out; };
+const badKey = () => { const g = App.gd; return !!(g && g.err && String(g.err).indexOf('کلید اسکریپت') >= 0); };
+
+/* a key that worked is remembered: Drive answered and there is no error */
+let lastAt = null;
+setInterval(() => { try { const g = App.gd; if (!g || !g.key || !g.at || g.err) return; if (g.at !== lastAt) { lastAt = g.at; remember(g.key); } } catch (e) { } }, 4000);
+
+async function probe(key) {
+  const g = App.gd; if (!g || !g.url) return 'no';
+  const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 45000);
+  try {
+    const r = await fetch(g.url + (g.url.indexOf('?') < 0 ? '?' : '&') + 'key=' + encodeURIComponent(key) + '&get=info', { signal: ctl.signal });
+    const j = JSON.parse(await r.text());
+    if (j && (j.ok || j.error === 'no-file' || j.error === 'no-folder')) return 'ok';
+    return j && j.error === 'bad-key' ? 'bad' : 'no';
+  } catch (e) { return 'net'; } finally { clearTimeout(t); }
+}
+async function candidates() {
+  const c = known().slice();
+  try { const t = App.embedded && App.embedded('initial-data'); if (t && t.trim().charAt(0) === '{') keysOf(JSON.parse(t)).forEach(k => c.push(k)); } catch (e) { }
+  try { if (App.durRead) { const r = await App.durRead(); if (r && r.txt) keysOf(JSON.parse(r.txt)).forEach(k => c.push(k)); } } catch (e) { }
+  const cur = App.gd && App.gd.key;
+  return c.filter((k, i) => k && k !== cur && c.indexOf(k) === i);
+}
+let busy = false, tried = 0;
+App.gdKeyFix = async function (manual) {
+  if (busy || !App.gd || !App.gd.url) return false; busy = true; tried = Date.now();
+  try {
+    const list = await candidates();
+    for (const k of list) {
+      const r = await probe(k);
+      if (r === 'net') return false;                                  // no internet now: try again later
+      if (r !== 'ok') continue;
+      App.gdSet('key', k); try { App.db.meta.gdKey = k; } catch (e) { }
+      App.gd.err = null; App.gd.conflict = false; remember(k);
+      try { App.saveNow(); } catch (e) { }
+      setTimeout(() => { try { App.gdSend('latest', false); } catch (e) { } }, 300);   // what waited goes now
+      App.toast('✔ کلید گوگل‌درایو درست شد؛ ارسال دوباره راه افتاد');
+      try { App.emit(); } catch (e) { }
+      return true;
+    }
+    if (manual) App.toast('کلید درستی پیدا نشد', true);
+    return false;
+  } finally { busy = false; }
+};
+setInterval(() => { if (badKey() && Date.now() - tried > 10 * 60 * 1000) App.gdKeyFix(false); }, 15000);
 })();
 
 
