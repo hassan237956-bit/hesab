@@ -2597,7 +2597,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "44.9"; window.APP_BUILD = "1405/08/11 22:52";
+window.APP_VERSION = "45.0"; window.APP_BUILD = "1405/08/12 07:49";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -3472,6 +3472,7 @@ App.saveNow = () => persistNow();
 async function persistNow() {
   const db = App.db; ensureUids(db); db.meta.savedAt = new Date().toISOString();
   const txt = JSON.stringify(db);
+  if (App.durSave) try { App.durSave(txt, db.meta.savedAt); } catch (e) { }
   try { localStorage.setItem(LS_KEY, txt); const back = localStorage.getItem(LS_KEY); if (back === null || back.length !== txt.length) throw new Error('حافظهٔ گوشی آن را نگه نداشت'); App.saveState.err = null; App.saveState.localAt = new Date(); } catch (e) { App.saveState.err = 'ذخیره در مرورگر ناموفق بود: ' + e.message; if (App.saveFailed) try { App.saveFailed(e); } catch (x) { } }
   if (App.fileHandle && App.fileOk) {
     try { const w = await App.fileHandle.createWritable(); await w.write(txt); await w.close(); App.saveState.mode = 'file'; App.saveState.at = App.saveState.fileAt = new Date(); db.meta.lastBackup = new Date().toISOString(); }
@@ -12347,6 +12348,92 @@ App.saveFailed = function (e) {
     '<br>ثبت‌ها الان فقط در همین صفحهٔ باز هستند. <b>برنامه را نبندید</b> و همین حالا از «🛡 پشتیبان» یک نسخه بگیرید (تلگرام / درایو / فایل).</div>';
   App.modal('⚠ ذخیره نشد', b, '<button class="btn gold big" data-act="go" data-to="/backup">🛡 رفتن به پشتیبان</button><button class="btn ghost" data-act="modal-close">بستن</button>', { width: '620px' });
 };
+})();
+/* ---------------------------------------------------------------- v45.0 — a second, sure copy of every save
+   the owner (1405/08/11 and 08/12): entries registered in the phone app (the green «✔ ثبت و ذخیره شد» was shown, they were in the list) were gone
+   when the app was opened again — no deletion, no «بازگردانی», nothing in the activity log: the phone never kept them.  On an iPhone a home-screen
+   app is often closed by the phone itself when another app is opened (the bank app, the camera …); what was written to the browser memory
+   («localStorage») just before that can be lost — the browser gives no sign when it is really on the disk.
+   Now every save is ALSO written to the phone's database (IndexedDB), which says when the copy is really kept.  When the program opens it
+   compares the two: if the database holds a newer save, the missing entries are brought back by themselves and a window lists them. */
+(function () {
+'use strict';
+const App = window.App; if (!App) return;
+const DBN = 'hesabk_dur', ST = 'kv', KEY = 'db';
+let dbp = null;
+function idb() {
+  if (!window.indexedDB) return Promise.reject(new Error('no IndexedDB'));
+  if (!dbp) dbp = new Promise((res, rej) => { const r = indexedDB.open(DBN, 1); r.onupgradeneeded = () => r.result.createObjectStore(ST); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); r.onblocked = () => rej(new Error('blocked')); });
+  return dbp;
+}
+const get = k => idb().then(db => new Promise((res, rej) => { const q = db.transaction(ST, 'readonly').objectStore(ST).get(k); q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); }));
+const put = (k, v) => idb().then(db => new Promise((res, rej) => { const t = db.transaction(ST, 'readwrite'); t.objectStore(ST).put(v, k); t.oncomplete = () => res(); t.onerror = () => rej(t.error); t.onabort = () => rej(t.error || new Error('abort')); }));
+
+/* ---- writing: one at a time, always the newest text; nothing is written before the opening check has looked at the old copy ---- */
+let ready = false, busy = false, pend = null;
+App.durState = { at: null, err: null, n: 0 };
+function pump() {
+  if (!ready || busy || !pend) return;
+  const job = pend; pend = null; busy = true;
+  put(KEY, job).then(() => { App.durState.at = new Date(); App.durState.err = null; App.durState.n++; }, e => { App.durState.err = String((e && e.message) || e); })
+    .then(() => { busy = false; pump(); });
+}
+App.durSave = function (txt, at) { pend = { txt, at: at || new Date().toISOString(), v: 1 }; pump(); };
+App.durRead = () => get(KEY);
+
+/* ---- opening: is the database copy newer than what the browser memory gave? ---- */
+const esc = s => App.H.esc(String(s == null ? '' : s));
+function report(P, label) {
+  const ents = (P.add || []).slice().sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  const fmt = v => App.H.fmt(Math.round(+v || 0));
+  const amtOf = e => (+e.amt > 0 ? +e.amt : (+e.qty || 0) * (+e.price || 0));
+  const rows = ents.slice(0, 40).map(e => '<tr><td class="num">' + esc(e.date) + '</td><td>' + esc(e.desc || '') + '</td><td class="n">' + (amtOf(e) ? fmt(amtOf(e)) : '') + '</td></tr>').join('');
+  const n = ents.length, u = (P.upd || []).length, d = (P.del || []).length;
+  const b = '<div class="status ok durrep" style="line-height:2;font-size:1.2rem;font-weight:900">✔ ' + (n ? n + ' ثبتِ آخر' : 'تغییرهای آخر') + ' برگشت.</div>' +
+    '<div style="line-height:2;font-size:1.08rem;font-weight:700">گوشی آخرین ذخیره را در حافظهٔ اصلیِ برنامه نگه نداشته بود (معمولاً وقتی برنامه با باز کردن برنامهٔ دیگری بسته می‌شود). از نسخهٔ دومی که برنامه نگه می‌دارد برگردانده شد؛ لازم نیست دوباره ثبت کنید.' +
+    (u || d ? '<br>' + (u ? u + ' ثبت به‌روز شد. ' : '') + (d ? d + ' ثبتی که پاک کرده بودید دوباره پاک شد.' : '') : '') + '</div>' +
+    (n ? '<div class="wrap" style="margin-top:8px"><table class="tbl"><thead><tr><th>تاریخ</th><th>شرح</th><th>مبلغ</th></tr></thead><tbody>' + rows + '</tbody></table></div>' : '');
+  App.modal('✔ ' + label, b, '<button class="btn green big" data-act="modal-close">باشه</button>', { width: '700px' });
+}
+async function check(lsAt, from) {
+  let rec = null; try { rec = await get(KEY); } catch (e) { rec = null; }
+  if (!rec || typeof rec.txt !== 'string') return;
+  let d = null; try { d = JSON.parse(rec.txt); } catch (e) { return; }
+  const at = (d.meta && d.meta.savedAt) || rec.at || '';
+  if (from === 'ls' && !(at > (lsAt || ''))) return;                                  // the browser memory is as new as the database copy
+  if (from !== 'ls') {                                                                 // the browser memory was empty: the database copy is the data
+    if (!(d.entries && d.entries.length)) return;
+    App.replaceDb(d, 'برگرداندن از نسخهٔ دوم');
+    report({ add: [] }, 'اطلاعات از نسخهٔ دوم برگشت');
+    App.toast('✔ ' + d.entries.length + ' ثبت از نسخهٔ دومِ گوشی برگشت');
+    return;
+  }
+  const P = App.mergePlan(d);
+  const n = P.add.length + P.upd.length + P.del.length + (P.mvAdd || []).length + (P.mvUpd || []).length + (P.mvDel || []).length + P.cfg.length + P.accAdd.length;
+  if (!n) return;
+  const R = App.mergeApply(d, 'برگرداندن آخرین ذخیره') || P;
+  report(R, 'ثبت‌های آخر برگشت');
+}
+let settled = false, t00 = 0;
+const oi = App.init;
+App.init = function () {
+  const r = oi.apply(this, arguments);
+  const lsAt = (App.db && App.db.meta && App.db.meta.savedAt) || '', from = App.loadedFrom; t00 = Date.now();
+  check(lsAt, from).catch(e => console.error(e)).then(() => {
+    settled = true; ready = true;
+    try { App.durSave(JSON.stringify(App.db), App.db.meta.savedAt); } catch (e) { }      // from now on the database copy follows every save
+  });
+  return r;
+};
+/* the automatic registration of instalments / profit waits for that check (at most 8 seconds) */
+const ta = App.tasksAuto;
+if (typeof ta === 'function') App.tasksAuto = function () {
+  if (!settled && t00 && Date.now() - t00 < 8000) { setTimeout(() => App.tasksAuto(), 400); return; }
+  if (document.querySelector('#modalBg.show .durrep') && Date.now() - t00 < 120000) { setTimeout(() => App.tasksAuto(), 800); return; }   // first the window about the entries that came back
+  return ta.apply(this, arguments);
+};
+/* leaving the app: write the copy right away */
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && ready && App.db) { try { App.durSave(JSON.stringify(App.db), App.db.meta.savedAt); } catch (e) { } } });
 })();
 
 
