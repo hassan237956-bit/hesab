@@ -2597,7 +2597,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "45.2"; window.APP_BUILD = "1405/08/12 15:16";
+window.APP_VERSION = "45.3"; window.APP_BUILD = "1405/08/12 20:45";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -11397,9 +11397,13 @@ function today(name, kind) {
      A loan installment paid from a bank also comes off the owner's capital (the engine's third leg): that row is listed on the owner's page too,
      and an installment written without an amount («as in the loan table») shows its real amount instead of 0. */
   let list = [];
-  if (kind === 'asset') list = App.db.entries.filter(e => e.date === t && (e.dr === name || e.cr === name)).map(e => ({ e, d: null }));
+  /* v45.3: «ثبت‌های امروز» = what was REGISTERED today, whatever its document date (the owner 1405/08/12: an installment due tomorrow, registered
+     today with tomorrow's date, was missing from his list, so it looked as if his account had not been charged) */
+  const real = E.todaySerial(), dayOf = iso => { try { return E.todaySerial(new Date(iso)); } catch (x) { return 0; } };
+  const isToday = (e, date) => date === t || (App.today === real && !!e.m && dayOf(e.m) === real);
+  if (kind === 'asset') list = App.db.entries.filter(e => isToday(e, e.date) && (e.dr === name || e.cr === name)).map(e => ({ e, d: null }));
   else (App.C.rows || []).forEach(r => {
-    const e = r.e; if (!e || e.virtual || r.date !== t || !r.a) return;
+    const e = r.e; if (!e || e.virtual || !r.a || !isToday(e, r.date)) return;
     let d = 0, hit = false; for (let i = 0; i < 4; i++) if (r.a[i] === name && r.m[i]) { d += r.m[i]; hit = true; }
     if (hit && Math.abs(d) > 0.004) list.push({ e, d });
   });
@@ -11414,7 +11418,7 @@ function today(name, kind) {
     const cp0 = leg ? '«' + e.dr + '»' + (e.cr ? ' — پرداخت از «' + e.cr + '»' : '') : (isDr ? e.cr : e.dr);
     const cp = /^loan-own:/.test(String(e.auto || '')) ? ((String(e.desc || '').match(/به حساب «(.+)»$/) || [])[1] || cp0) : cp0, main = kind === 'asset' ? H.fmtq(q) + ' ' + esc(unit) : fmt(v);
     return '<div class="ax-r ' + (up ? 'up' : 'dn') + '"><span class="ax-ra"><i>' + (up ? '▲' : '▼') + '</i><b class="num">' + main + '</b>' + (kind === 'asset' && e.price ? '<small class="num">× ' + fmt(+e.price) + '</small>' : '') + '</span>' +
-      '<span class="ax-rd"><b>' + esc(e.desc || '—') + '</b>' + (cp ? '<small>' + (leg ? 'از حساب شما کم شد · ' + esc(cp) : (up ? 'از ' : 'به ') + esc(cp)) + '</small>' : '') + '</span>' +
+      '<span class="ax-rd"><b>' + esc(e.desc || '—') + '</b>' + (e.date && e.date !== t ? '<small class="ax-dd">📅 تاریخ سند ' + esc(e.date) + '</small>' : '') + (cp ? '<small>' + (leg ? 'از حساب شما کم شد · ' + esc(cp) : (up ? 'از ' : 'به ') + esc(cp)) + '</small>' : '') + '</span>' +
       '<button type="button" class="ax-re" data-act="edit-entry" data-id="' + e.id + '" title="ویرایش این ثبت" aria-label="ویرایش">✎</button></div>';
   });
   const fmtv = v => kind === 'asset' ? H.fmtq(v) + ' ' + esc(unit) : fmt(v);
@@ -13326,7 +13330,7 @@ P.tasks = function (arg, q) {
         '<td class="c"><span class="num">' + esc(l.nextDue) + '</span>' + (l.warn ? '<div class="' + (l.dueSer < App.today ? 'bad' : 'warn') + '">' + esc(l.warn) + '</div>' : '') + '<div class="noprint"><button class="btn sm gold" data-act="loan-edit" data-slot="' + l.slot + '">✎ تغییر سررسید</button></div></td>' +
         '<td class="n wd lamt" data-amt="' + l.nextAmt + '">' + fmt(l.nextAmt) + '</td>' +
         '<td><select class="lb">' + popt(bank) + '</select></td>' +
-        '<td><input type="text" class="yellow num ld" value="' + esc(l.nextDue) + '" style="width:170px"></td></tr>';
+        '<td><input type="text" class="yellow num ld" value="' + esc(l.dueSer > App.today ? tdate : l.nextDue) + '" style="width:170px"></td></tr>';
     });
     h += '</tbody></table></div><div id="tk_lsum" class="status info" style="margin:10px 0"></div>';
     h += '<div class="bar noprint"><button class="btn green" data-act="task-loans" style="font-size:1.1rem;padding:9px 24px">✔ ثبت قسط‌های تیک‌خورده</button></div>';
