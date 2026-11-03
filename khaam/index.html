@@ -2597,7 +2597,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "45.0"; window.APP_BUILD = "1405/08/12 07:49";
+window.APP_VERSION = "45.1"; window.APP_BUILD = "1405/08/12 10:04";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -12434,6 +12434,31 @@ if (typeof ta === 'function') App.tasksAuto = function () {
 };
 /* leaving the app: write the copy right away */
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && ready && App.db) { try { App.durSave(JSON.stringify(App.db), App.db.meta.savedAt); } catch (e) { } } });
+})();
+/* ---------------------------------------------------------------- v45.1 — the phone app: «choose the program file again» on the password screen
+   the owner (1405/08/12): after the app was added to the home screen again, an older program file had been chosen; it was locked with his OLD
+   password, so every password was «wrong».  In the phone app the password screen now has a button that forgets the chosen file and asks
+   for it again (nothing else is touched). */
+(function () {
+'use strict';
+const inPwa = () => !!document.getElementById('pwa-tail');
+function forget() {
+  try {
+    const r = indexedDB.open('hesabk_pwa', 1);
+    r.onsuccess = () => { try { const t = r.result.transaction('kv', 'readwrite'); t.objectStore('kv').delete('cfg'); t.oncomplete = () => location.reload(); t.onerror = () => location.reload(); } catch (e) { location.reload(); } };
+    r.onerror = () => location.reload();
+  } catch (e) { location.reload(); }
+}
+function add() {
+  const lk = document.querySelector('#lockScr .lk'); if (!lk || lk.querySelector('.lkRepick') || !inPwa()) return;
+  const d = document.createElement('div'); d.className = 'lkRepick';
+  d.innerHTML = '<button type="button" style="margin-top:14px;width:100%;border:2px solid #CBD5E1;background:#F8FAFC;color:#0F2A4A;border-radius:14px;padding:12px;font:inherit;font-size:1.05rem;font-weight:800">📂 رمز درست است ولی باز نمی‌شود؟ فایل برنامه را دوباره انتخاب کن</button>' +
+    '<div style="margin-top:6px;font-size:.92rem;color:#475569;line-height:1.8">آخرین فایلی را که Claude فرستاده انتخاب کنید؛ فایل قدیمی رمز قبلی را می‌خواهد.</div>';
+  d.querySelector('button').onclick = () => { if (confirm('فایل برنامه را دوباره انتخاب کنید؟ (اطلاعات این گوشی پاک نمی‌شود)')) forget(); };
+  lk.appendChild(d);
+}
+new MutationObserver(add).observe(document.documentElement, { childList: true, subtree: true });
+setTimeout(add, 500);
 })();
 
 

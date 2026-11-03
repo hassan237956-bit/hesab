@@ -114,7 +114,8 @@
       download().then(function (app) {
         return decrypt(app.buf, key).then(function (T) {
           if (T.indexOf('@@PWA_INI@@') < 0) throw new Error('bad');
-          var cfg = { key: key, ini: ini, xl: xl, snap: (snap && snap.trim()) ? snap : null, at: Date.now() };
+          var mt = /<script id="initial-data"[^>]*>/.exec(t);   /* v45.1: the lock of THIS file (its password), not the one the program was built with */
+          var cfg = { key: key, ini: ini, xl: xl, snap: (snap && snap.trim()) ? snap : null, iniTag: mt ? mt[0] : null, at: Date.now() };
           return put('cfg', cfg).then(function () { return put('app', app); }).then(function () { return del('next'); }).then(function () { launch(cfg); });
         }, function () { showImport({ err: 1, t: '⚠ این فایل با این برنامه جور نیست.' }); });
       }).catch(function (e) { showImport({ err: 1, t: '⚠ برنامه از اینترنت نیامد. اینترنت را نگاه کنید و دوباره انتخاب کنید.' }); });
@@ -169,7 +170,8 @@
   }.toString() + ')();<' + '/script>';
 
   function assemble(T, cfg) {
-    var t = T.replace('@@PWA_INI@@', function () { return cfg.ini; }).replace('@@PWA_XL@@', function () { return cfg.xl; }).replace('@@PWA_KEY@@', function () { return cfg.key; });
+    var t0 = cfg.iniTag ? T.replace(/<script id="initial-data"[^>]*>/, function () { return cfg.iniTag; }) : T;
+    var t = t0.replace('@@PWA_INI@@', function () { return cfg.ini; }).replace('@@PWA_XL@@', function () { return cfg.xl; }).replace('@@PWA_KEY@@', function () { return cfg.key; });
     if (cfg.snap) {
       var i = t.indexOf('<script id="initial-data"'), j = i < 0 ? -1 : t.indexOf('</' + 'script>', i);
       if (j > 0) { j += 9; t = t.slice(0, j) + '\n<script id="snapshot-data" type="application/json">' + cfg.snap + '</' + 'script>' + t.slice(j); }
