@@ -2590,6 +2590,17 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 #stxPrint td.dep{color:#047857;background:#ECFDF5}#stxPrint td.wd{color:#B91C1C;background:#FEF2F2}#stxPrint td.bal{color:#1E3A8A;background:#EFF6FF}
 #stxPrint td.bal.neg{color:#B91C1C}
 #stxPrint td.dep,#stxPrint td.wd,#stxPrint td.bal,#stxPrint th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+/* v45.4 — the receipt line of a record: when it was registered and its tracking code */
+.rcpt{display:flex;flex-wrap:wrap;gap:5px 8px;margin-top:5px;font-size:.8rem;font-weight:800;color:#475569;line-height:1.7}
+.rcpt{min-width:0;max-width:100%}
+.rcpt span{display:inline-flex;flex-wrap:wrap;align-items:center;gap:2px 4px;background:#F1F5F9;border:1px solid #D7DEE8;border-radius:12px;padding:1px 9px;max-width:100%;box-sizing:border-box}
+.rcpt b{white-space:nowrap}
+.ax-rd{min-width:0}
+.rcpt .rc{background:#FFF7E6;border-color:#F3D9A4;color:#7C4A03}
+.rcpt b{font-weight:900}.rcpt .rk{direction:ltr;unicode-bidi:isolate;letter-spacing:.04em;color:#0F2A4A}
+.rcpt.top{margin:0 0 10px;font-size:.92rem}
+#stxPrint .rcpt{margin-top:2px;font-size:10px}#stxPrint .rcpt span{padding:0 6px}
+.ax-rd .rcpt{margin-top:3px}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -2597,7 +2608,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "45.3"; window.APP_BUILD = "1405/08/12 20:45";
+window.APP_VERSION = "45.4"; window.APP_BUILD = "1405/08/13 18:17";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -3497,10 +3508,11 @@ function logDiff(label, beforeStr, db) {
   /* identity + time of the last change (v38) */
   db.entries.forEach(e => {
     const o = bm.get(e.id);
-    if (o && !e.u && o.u) e.u = o.u;                                        // an edit rebuilds the object: keep who it is
+    if (o && !e.u && o.u) e.u = o.u;
+    if (o && !e.c && o.c) e.c = o.c;                                        // v45.4: when it was registered stays                                        // an edit rebuilds the object: keep who it is
     if (!e.u) { let u = e.auto ? detUid('e', e) : newUid(); while (used.has(u)) u += '~'; e.u = u; }
     used.add(e.u);
-    if (!o) e.m = now; else if (full(o) !== full(e)) e.m = now; else if (!e.m && o.m) e.m = o.m;
+    if (!o) { e.m = now; if (!e.c) e.c = now; } else if (full(o) !== full(e)) e.m = now; else if (!e.m && o.m) e.m = o.m;
     if (!o) delete db.tomb[e.u];
   });
   const bmv = new Map((before.moves || []).map(x => [x.id, x])); const amv = new Map((db.moves || []).map(x => [x.id, x]));
@@ -4923,7 +4935,7 @@ P.journal = function (arg, q) {
       let shown = 150, term = '';
       const draw = () => {
         const nt = App.norm(term); let l = list;
-        if (nt) l = l.filter(i => { const e = db.entries[i]; return App.norm((e.desc || '') + ' ' + (e.date || '') + ' ' + (e.dr || '') + ' ' + (e.cr || '')).indexOf(nt) >= 0; });
+        if (nt) l = l.filter(i => { const e = db.entries[i]; const s = App.norm((e.desc || '') + ' ' + (e.date || '') + ' ' + (e.dr || '') + ' ' + (e.cr || '') + ' ' + (App.trackCode ? App.trackCode(e) : '')); return s.indexOf(nt) >= 0 || (/^[\d\s-]{6,}$/.test(nt) && s.indexOf(nt.replace(/[\s-]/g, '')) >= 0); });
         document.getElementById('jtable').innerHTML = journalTable(l.slice(0, shown), false) + (l.length > shown ? '<div style="text-align:center;margin-top:10px"><button class="btn" id="jmore">نمایش ۳۰۰ ردیف بیشتر (' + fmt(l.length - shown) + ' مانده)</button></div>' : '');
         const mb = document.getElementById('jmore'); if (mb) mb.onclick = () => { shown += 300; draw(); };
       };
@@ -12146,7 +12158,7 @@ function draw(d) {
   const amt = r => r.inc ? '<td class="n amt up">▲ ' + fmt(r.inc) + '</td>' : r.out ? '<td class="n amt dn">▼ ' + fmt(r.out) + '</td>' : '<td class="n amt">0</td>';
   h += '<div class="stx-tbl"><table><thead><tr><th class="rn">ردیف</th><th class="dt">تاریخ</th><th class="dep">' + esc(lab[0]) + '</th><th class="wd">' + esc(lab[1]) + '</th><th class="amt">مبلغ <small>(▲ ' + esc(lab[0]) + ' · ▼ ' + esc(lab[1]) + ')</small></th><th class="bal">' + esc(lab[2]) + '</th><th class="desc">شرح</th></tr></thead><tbody>' +
     (st.open !== null && (from || to) && rows.length === st.rows.length ? '<tr class="op"><td class="rn"></td><td class="dt"></td><td class="n dep"></td><td class="n wd"></td><td class="n amt"></td><td class="n bal">' + fmt(st.open) + '</td><td class="desc">مانده قبل از این بازه</td></tr>' : '') +
-    rows.map(r => '<tr><td class="rn num">' + r.i + '</td><td class="dt num">' + esc(r.date || '') + '</td><td class="n dep">' + (r.inc ? fmt(r.inc) : '') + '</td><td class="n wd">' + (r.out ? fmt(r.out) : '') + '</td>' + amt(r) + '<td class="n bal">' + fmt(r.bal) + '</td><td class="desc">' + esc(r.desc || '') + '</td></tr>').join('') +
+    rows.map(r => '<tr><td class="rn num">' + r.i + '</td><td class="dt num">' + esc(r.date || '') + '</td><td class="n dep">' + (r.inc ? fmt(r.inc) : '') + '</td><td class="n wd">' + (r.out ? fmt(r.out) : '') + '</td>' + amt(r) + '<td class="n bal">' + fmt(r.bal) + '</td><td class="desc">' + esc(r.desc || '') + (r.e && App.regHtml ? App.regHtml(r.e) : '') + '</td></tr>').join('') +
     '</tbody><tfoot><tr><td class="rn"></td><td class="dt">جمع</td><td class="n dep">' + fmt(st.inc) + '</td><td class="n wd">' + fmt(st.out) + '</td><td class="n amt"><span class="up">▲ ' + fmt(st.inc) + '</span><span class="dn">▼ ' + fmt(st.out) + '</span></td><td class="n bal">' + fmt(st.bal) + '</td><td class="desc">مانده نهایی</td></tr></tfoot></table></div>';
   v.innerHTML = h;
   const tb = $('.stx-tbl', v); if (tb) requestAnimationFrame(() => { tb.scrollTop = tb.scrollHeight; });
@@ -12158,7 +12170,7 @@ function printIt(d) {
   p.innerHTML = '<h1>صورت‌حساب «' + esc(name) + '»</h1><div class="pnote">' + esc(from || to ? 'از ' + (from || 'ابتدا') + ' تا ' + (to || txt(App.today)) : 'همه از ابتدا تا ' + txt(App.today)) + ' · مبالغ به ' + u + ' · ' + FA(st.rows.length) + ' ردیف</div>' +
     '<table><thead><tr><th>ردیف</th><th>تاریخ</th><th class="dep">' + esc(lab[0]) + '</th><th class="wd">' + esc(lab[1]) + '</th><th class="bal">' + esc(lab[2]) + '</th><th>شرح</th></tr></thead><tbody>' +
     (st.open !== null && (from || to) ? '<tr><td></td><td></td><td class="n dep"></td><td class="n wd"></td><td class="n bal' + (st.open < -0.5 ? ' neg' : '') + '">' + fmt(st.open) + '</td><td>مانده قبل از این بازه</td></tr>' : '') +
-    st.rows.map(r => '<tr><td>' + r.i + '</td><td>' + esc(r.date || '') + '</td><td class="n dep">' + (r.inc ? '▲ ' + fmt(r.inc) : '') + '</td><td class="n wd">' + (r.out ? '▼ ' + fmt(r.out) : '') + '</td><td class="n bal' + (r.bal < -0.5 ? ' neg' : '') + '">' + fmt(r.bal) + '</td><td>' + esc(r.desc || '') + '</td></tr>').join('') +
+    st.rows.map(r => '<tr><td>' + r.i + '</td><td>' + esc(r.date || '') + '</td><td class="n dep">' + (r.inc ? '▲ ' + fmt(r.inc) : '') + '</td><td class="n wd">' + (r.out ? '▼ ' + fmt(r.out) : '') + '</td><td class="n bal' + (r.bal < -0.5 ? ' neg' : '') + '">' + fmt(r.bal) + '</td><td>' + esc(r.desc || '') + (r.e && App.regHtml ? App.regHtml(r.e) : '') + '</td></tr>').join('') +
     '</tbody><tfoot><tr><td></td><td>جمع</td><td class="n dep">' + fmt(st.inc) + '</td><td class="n wd">' + fmt(st.out) + '</td><td class="n bal">' + fmt(st.bal) + '</td><td>مانده نهایی</td></tr></tfoot></table>';
   document.body.classList.add('stx-print');
   const done = () => { document.body.classList.remove('stx-print'); window.removeEventListener('afterprint', done); };
@@ -12320,7 +12332,7 @@ function deco(root) {
   });
   /* «🕒 تغییرات برنامه در ۲۴ ساعت» */
   root.querySelectorAll('.tli').forEach(li => {
-    const e = entry(idIn(li)); if (!e) return; const b = li.querySelector('.tlx b.num'); if (!b) return;
+    const e = entry(idIn(li)); if (!e) return; const b = Array.prototype.find.call(li.querySelectorAll('.tlx b.num'), x => !x.closest('.rcpt')); if (!b) return;   // v45.4: never the tracking code
     const s = sig(e); if (li.dataset.cz === s) return; li.dataset.cz = s;
     setC(b, 'czA', App.entryDir(e).amt);
   });
@@ -12522,6 +12534,115 @@ App.gdKeyFix = async function (manual) {
   } finally { busy = false; }
 };
 setInterval(() => { if (badKey() && Date.now() - tried > 10 * 60 * 1000) App.gdKeyFix(false); }, 15000);
+})();
+/* ---------------------------------------------------------------- v45.4 — like a bank receipt: the time of registration and a tracking code
+   the owner (1405/08/13): «مثل صورت‌حساب بانک: تاریخ، ساعت و یک کد پیگیری، در ثبت‌های روزانه، صورت‌حساب‌ها و همه‌جا (نه در گزارش طلا)».
+   · the tracking code is made from the record's permanent identity, so it is the same on every device, in every backup and in every copy;
+     10 digits, like a bank's «کد پیگیری»; it can be searched in «دفتر روزنامه».
+   · the time is when the record was REGISTERED (not its document date): kept from now on in the record itself (e.c), and for older records
+     taken from the program's activity log (from about 1405/07/20 on); records brought from the old Excel have only the code. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc;
+/* ---- the code ---- */
+function h32(s, seed) { let h = seed >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
+const CODES = new Map();
+App.trackCode = function (e) {
+  if (!e) return '';
+  const id = e.u || ('x|' + [e.id, e.date, e.desc, e.dr, e.cr, e.amt].join('|'));
+  let c = CODES.get(id); if (c) return c;
+  const a = h32(id, 2166136261), b = h32(id + '#', 3735928559);
+  const n = (a % 100000) * 100000 + (b % 100000);                          // 10 digits, the first one never 0
+  c = String(1000000000 + (n % 9000000000)); CODES.set(id, c); return c;
+};
+App.trackFmt = c => c ? c.slice(0, 4) + '-' + c.slice(4, 7) + '-' + c.slice(7) : '';
+/* ---- the time of registration ---- */
+let LOGT = null, LOGDB = null, LOGN = -1;
+function logTimes() {
+  const db = App.db; if (!db) return new Map();
+  const lg = db.log || []; if (LOGT && LOGDB === db && LOGN === lg.length) return LOGT;
+  const m = new Map(), ed = new Set();
+  lg.forEach(x => { if (!x || x.id == null) return; if (x.k === 'add' && !m.has(x.id)) m.set(x.id, x); else if (x.k === 'edit' || x.k === 'undo') ed.add(x.id); });
+  m.edited = ed; LOGT = m; LOGDB = db; LOGN = lg.length; return m;
+}
+/* the last-change time stands for the registration only when nothing says the record was changed later: not edited here, and its document date
+   near that time (an old record of the Excel corrected yesterday must not say «registered yesterday») */
+function nearDoc(e, t) { try { const a = E.jser(e.date), b = E.todaySerial(new Date(t)); return a != null && !isNaN(a) && Math.abs(b - a) <= 31; } catch (x) { return false; } }
+App.regTime = function (e) {
+  if (!e) return null; if (e.c) return e.c;
+  const L = logTimes(), a = L.get(e.id);
+  /* the activity log keeps the number of a record; numbers can be given again after a merge, so the line must be about this record */
+  if (a && (a.date === e.date || (e.desc && String(a.text || '').indexOf(String(e.desc).slice(0, 14)) >= 0))) return a.t;
+  return e.m && !L.edited.has(e.id) && nearDoc(e, e.m) ? e.m : null;
+};
+const p2 = n => (n < 10 ? '0' : '') + n;
+App.regText = function (e) {
+  const t = App.regTime(e); if (!t) return ''; const d = new Date(t); if (isNaN(d)) return '';
+  return E.serToText(E.todaySerial(d)) + ' ساعت ' + p2(d.getHours()) + ':' + p2(d.getMinutes());
+};
+App.regHtml = function (e, opts) {
+  if (!e) return ''; const o = opts || {}, tx = App.regText(e), c = App.trackCode(e);
+  const tp = tx.split(' ساعت ');                                          // date and hour can go on two lines in a narrow cell
+  return '<div class="rcpt">' + (tx && !o.noTime ? '<span class="rt">🕒 ثبت: <b class="num">' + esc(tp[0]) + '</b>' + (tp[1] ? '<b class="num">⏰ ' + esc(tp[1]) + '</b>' : '') + '</span>' : '') +
+    '<span class="rc">🧾 کد پیگیری <b class="num rk">' + esc(App.trackFmt(c)) + '</b></span></div>';
+};
+
+/* ---- shown in the lists of records ---- */
+let EMAP = null, EDB = null, ELEN = -1;
+const entry = id => {
+  const db = App.db; if (!db || id == null) return null;
+  if (!EMAP || EDB !== db || ELEN !== db.entries.length) { EMAP = new Map(db.entries.map(x => [String(x.id), x])); EDB = db; ELEN = db.entries.length; }
+  return EMAP.get(String(id)) || null;
+};
+const idIn = el => { const b = el.querySelector('[data-act="edit-entry"][data-id],[data-act="del-entry"][data-id]'); return b ? b.dataset.id : null; };
+const sigOf = e => (e.u || '') + '|' + (App.regTime(e) || '');
+function put(host, e, opts) {
+  if (!host) return; const s = sigOf(e);
+  let r = host.querySelector(':scope > .rcpt');
+  if (r && r.dataset.s === s) return;
+  if (r) r.remove();
+  host.insertAdjacentHTML('beforeend', App.regHtml(e, opts)); r = host.querySelector(':scope > .rcpt'); if (r) r.dataset.s = s;
+}
+const NOFX = /^#\/(fx|fxled|fxloc|trust|rep\/fx|asset\/)/;                     // «گزارش طلا و ارز … نمی‌خواهم»
+function deco(root) {
+  if (!App.db) return;
+  /* tables of records: the «شرح» cell of every row that is a record gets the receipt line — never on the pages of currencies / gold */
+  if (NOFX.test(location.hash || '')) return;
+  root.querySelectorAll('table').forEach(t => {
+    const hs = Array.prototype.slice.call(t.querySelectorAll('thead th')).map(th => (th.textContent || '').trim());
+    const iD = hs.indexOf('شرح');
+    if (iD < 0 || t.closest('.stx') || t.classList.contains('rcn')) return;
+    t.querySelectorAll('tbody > tr').forEach(tr => {
+      const td = tr.children[iD]; if (!td || td.classList.contains('n')) return;
+      const e = entry(idIn(tr)); if (!e) return;
+      put(td, e);
+      if (tr.dataset.s != null && tr.dataset.s.indexOf(App.trackCode(e)) < 0) tr.dataset.s += ' ' + App.trackCode(e);   // searchable by the code
+    });
+  });
+  /* «🕘 آخرین ثبت‌ها» (its own column already says when): only the code */
+  root.querySelectorAll('table.rcn tbody > tr').forEach(tr => { const e = entry(idIn(tr)); if (e) put(tr.querySelector('td.ds') || tr.children[3], e, { noTime: true }); });
+  /* «🕒 تغییرات برنامه»: the code */
+  root.querySelectorAll('.tli').forEach(li => { const e = entry(idIn(li)); if (e) put(li.querySelector('.tlx'), e, { noTime: true }); });
+  /* «🆕 ثبت‌های امروز» of every account */
+  root.querySelectorAll('.ax-r').forEach(r => { const e = entry(idIn(r)); if (e) put(r.querySelector('.ax-rd'), e); });
+}
+let raf = 0;
+const run = () => { raf = 0; const p = document.getElementById('page'); if (p) try { deco(p); } catch (e) { console.error(e); } };
+const mo = new MutationObserver(() => { if (!raf) raf = requestAnimationFrame(run); });
+function start() { const p = document.getElementById('page'); if (!p) { setTimeout(start, 200); return; } mo.observe(p, { childList: true, subtree: true }); run(); }
+start();
+App.receiptDeco = deco;
+/* the window that edits a record shows its code and time at the top (however it was opened: a list, the 🔍 quick find …) */
+const oe = App.openEntry;
+if (typeof oe === 'function') App.openEntry = function (o) {
+  const r = oe.apply(this, arguments);
+  try {
+    const e = o && o.edit != null ? entry(o.edit) : null;
+    if (e) setTimeout(() => { const m = document.querySelector('#modalBg.show .modal'); if (!m || m.querySelector('.rcpt.top')) return; const body = m.querySelector('.mb, .modal-body') || m.children[1] || m; body.insertAdjacentHTML('afterbegin', App.regHtml(e).replace('class="rcpt"', 'class="rcpt top"')); }, 60);
+  } catch (err) { }
+  return r;
+};
 })();
 
 
@@ -12739,10 +12860,10 @@ App.statement = function (name, from, to, div) {
   const fT = from ? E.jser(from) : 0, tT = to ? E.jser(to) : 0; const d = v => (v || 0) / div;
   let all = [];
   if (kind === 'member') {
-    E.memberLedger(C, name).forEach((r, i) => all.push({ i: i + 1, date: r.date, T: r.T, inc: r.eff > 0 ? d(r.eff) : 0, out: r.eff < 0 ? d(-r.eff) : 0, bal: d(r.bal), desc: r.desc || '', rate: r.rate, days: r.days, prof: d(r.prof), cp: App.othersText(r.a.filter((x, k) => x !== '' && x !== name && x !== sp().CLEAR && r.m[k] !== 0 && k < 3)) }));
+    E.memberLedger(C, name).forEach((r, i) => all.push({ e: r.e, i: i + 1, date: r.date, T: r.T, inc: r.eff > 0 ? d(r.eff) : 0, out: r.eff < 0 ? d(-r.eff) : 0, bal: d(r.bal), desc: r.desc || '', rate: r.rate, days: r.days, prof: d(r.prof), cp: App.othersText(r.a.filter((x, k) => x !== '' && x !== name && x !== sp().CLEAR && r.m[k] !== 0 && k < 3)) }));
   } else {
     const dn = a.nature !== 'بستانکار';
-    E.ledger(C, name).forEach((x, i) => all.push({ i: i + 1, date: x.date, T: x.row.T, inc: d(dn ? x.dr : x.cr), out: d(dn ? x.cr : x.dr), bal: d(x.bal), desc: x.desc || '', cp: App.othersText(x.others) }));
+    E.ledger(C, name).forEach((x, i) => all.push({ e: x.row && x.row.e, i: i + 1, date: x.date, T: x.row.T, inc: d(dn ? x.dr : x.cr), out: d(dn ? x.cr : x.dr), bal: d(x.bal), desc: x.desc || '', cp: App.othersText(x.others) }));
   }
   let rows = all, open = null;
   if (fT || tT) {
@@ -12759,21 +12880,23 @@ App.statement = function (name, from, to, div) {
 function stmtSheet(st, extras) {
   const lab = st.lab; const rng = (st.from || st.to) ? ' — از ' + (st.from || 'ابتدا') + ' تا ' + (st.to || E.serToText(App.today)) : ' — تا تاریخ ' + E.serToText(App.today); const uT = st.div === 10 ? 'تومان' : 'ریال';
   const heads = [{ v: 'ردیف', s: 'hdr' }, { v: 'تاریخ', s: 'hdr' }, { v: lab[0], s: 'hdrDep' }, { v: lab[1], s: 'hdrWd' }, { v: lab[2], s: 'hdrBal' }, { v: 'شرح', s: 'hdr' }];
-  const ncol = extras ? 10 : 6;
+  const ncol = extras ? 12 : 8;
   if (extras) heads.push({ v: 'نرخ سود ٪', s: 'hdr' }, { v: 'روز', s: 'hdr' }, { v: 'سود', s: 'hdrPrf' }, { v: 'طرف مقابل', s: 'hdr' });
+  heads.push({ v: 'زمان ثبت', s: 'hdr' }, { v: 'کد پیگیری', s: 'hdr' });
   const rows = [[{ v: 'صورت‌حساب «' + st.name + '»', s: 'title' }], [{ v: 'مبالغ به ' + uT + rng, s: 'note' }], [], heads];
   if (st.open !== null) rows.push([{ v: '', s: 'rowno' }, { v: '', s: 'date' }, { v: '', s: 'dep' }, { v: '', s: 'wd' }, { v: st.open, s: 'bal' }, { v: 'مانده قبل از این بازه', s: 'txt' }].concat(extras ? [{ v: '', s: 'pct' }, { v: '', s: 'pct' }, { v: '', s: 'prf' }, { v: '', s: 'txt' }] : []));
   st.rows.forEach(r => {
     const row = [{ v: r.i, s: 'rowno' }, { v: r.date || '', s: 'date' }, { v: r.inc || '', s: 'dep' }, { v: r.out || '', s: 'wd' }, { v: r.bal, s: 'bal' }, { v: r.desc, s: 'txt' }];
     if (extras) row.push({ v: r.rate ? Math.round(r.rate * 10) / 10 : '', s: 'pct' }, { v: r.days || '', s: 'pct' }, { v: r.prof ? r.prof : '', s: 'prf' }, { v: (r.cp || []).join('، '), s: 'txt' });
+    row.push({ v: r.e && App.regText ? App.regText(r.e) : '', s: 'date' }, { v: r.e && App.trackCode ? App.trackFmt(App.trackCode(r.e)) : '', s: 'date' });
     rows.push(row);
   });
   const tot = [{ v: '', s: 'totTxt' }, { v: 'جمع', s: 'totTxt' }, { v: st.inc, s: 'totNum' }, { v: st.out, s: 'totNum' }, { v: st.bal, s: 'totNum' }, { v: 'مانده نهایی ← ' + fmt(st.bal) + ' ' + uT, s: 'totTxt' }];
   if (extras) tot.push({ v: '', s: 'totTxt' }, { v: '', s: 'totTxt' }, { v: st.rows.reduce((s, r) => s + (r.prof || 0), 0), s: 'totNum' }, { v: '', s: 'totTxt' });
   rows.push(tot);
-  const MONEY = { dep: 1, wd: 1, bal: 1, prf: 1, totNum: 1 }, cols = extras ? [7, 13, 19, 19, 21, 62, 10, 7, 17, 28] : [7, 13, 19, 19, 21, 66];
+  const MONEY = { dep: 1, wd: 1, bal: 1, prf: 1, totNum: 1 }, cols = extras ? [7, 13, 19, 19, 21, 62, 10, 7, 17, 28, 24, 17] : [7, 13, 19, 19, 21, 66, 24, 17];
   rows.forEach(rw => (rw || []).forEach((c, ci) => { if (c && typeof c === 'object' && MONEY[c.s] && typeof c.v === 'number' && isFinite(c.v)) { if (c.v < -0.5 && c.s === 'bal') c.s = 'wd'; c.v = fmt(Math.round(c.v)); cols[ci] = Math.max(cols[ci], Math.ceil(c.v.length * 1.35) + 4); } }));
-  return { name: st.name, rows, cols, freeze: 4, merges: ['A1:' + colL(ncol - 1) + '1', 'A2:' + colL(ncol - 1) + '2'], heights: { 0: 30, 3: 28 }, titleRow: 4, landscape: !!extras };
+  return { name: st.name, rows, cols, freeze: 4, merges: ['A1:' + colL(ncol - 1) + '1', 'A2:' + colL(ncol - 1) + '2'], heights: { 0: 30, 3: 28 }, titleRow: 4, landscape: true };
 }
 function fnameDate() { return E.serToText(App.today).replace(/\//g, ''); }
 App.downloadBlob = function (name, blob) {
@@ -12845,7 +12968,7 @@ App.statementWaText = function (name, from, to, div, nRows) {
   if (from || to) L.push('بازه: ' + (from ? 'از ' + from + ' ' : '') + (to ? 'تا ' + to : ''));
   L.push('مانده: ' + fmt(st.bal) + ' ' + u, '');
   if (st.rows.length > n) L.push('(' + n + ' گردش آخر)');
-  last.forEach(r => L.push(r.date + ' · ' + (r.inc ? st.lab[0] + ' ' + fmt(r.inc) : st.lab[1] + ' ' + fmt(r.out)) + ' · مانده ' + fmt(r.bal) + (r.desc ? ' · ' + r.desc : '')));
+  last.forEach(r => L.push(r.date + ' · ' + (r.inc ? st.lab[0] + ' ' + fmt(r.inc) : st.lab[1] + ' ' + fmt(r.out)) + ' · مانده ' + fmt(r.bal) + (r.desc ? ' · ' + r.desc : '') + (r.e && App.trackCode ? ' · کد ' + App.trackFmt(App.trackCode(r.e)) : '')));
   return L.join('\n');
 };
 App.shareStatementWa = function (name, from, to, div) {
@@ -15200,6 +15323,8 @@ function qRun(term) {
     const tk = nt.split(' ').filter(Boolean);
     list = all.map((x, i) => { const lab = App.norm(x.label), hay = lab + ' ' + App.norm(x.key || ''); if (!tk.every(t => hay.indexOf(t) >= 0)) return null; return { x, s: lab.indexOf(tk[0]) === 0 ? 0 : lab.indexOf(tk[0]) > 0 ? 1 : 2, i }; })
       .filter(Boolean).sort((a, b) => (a.s - b.s) || (a.i - b.i)).slice(0, 14).map(r => r.x);
+    const dg = nt.replace(/[\s-]/g, '');
+    if (App.trackCode && /^\d{6,10}$/.test(dg)) list = App.db.entries.filter(e => App.trackCode(e).indexOf(dg) >= 0).slice(0, 8).map(e => ({ g: '🧾 ثبت با این کد پیگیری', act: 'edit-entry', id: e.id, ico: '🧾', label: (e.desc || '—') + ' · ' + (e.date || ''), bal: App.trackFmt(App.trackCode(e)) })).concat(list);
   }
   qList = list; qSel = 0;
   const box = document.getElementById('qres'); if (!box) return;
@@ -15211,7 +15336,7 @@ function qRun(term) {
 function qMark() { $$('#qres .qi').forEach((el, i) => el.classList.toggle('on', i === qSel)); const on = $('#qres .qi.on'); if (on) on.scrollIntoView({ block: 'nearest' }); }
 function qGo(i) {
   const x = qList[i]; if (!x) return; App.qClose();
-  if (x.act === 'new-entry') App.openEntry({}); else if (x.to) { $('#side').classList.remove('show'); App.go(x.to); }
+  if (x.act === 'new-entry') App.openEntry({}); else if (x.act === 'edit-entry') App.openEntry({ edit: +x.id }); else if (x.to) { $('#side').classList.remove('show'); App.go(x.to); }
 }
 App.qOpen = function () {
   if (!$('#side') || !App.db) return;
