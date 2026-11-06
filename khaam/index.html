@@ -2631,6 +2631,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 .fxtr-n{font-size:.92rem;font-weight:700;color:#7C4A03;line-height:1.8;margin-top:4px}
 .fxtr-f{margin-top:8px;font-size:1rem;font-weight:800;color:#475569}
 .lcard .lct{font-size:.88rem;font-weight:800;color:#7C4A03;background:#FFF7E6;border:1px solid #F3D9A4;border-radius:10px;padding:2px 8px;margin:2px 0 4px;line-height:1.7}
+.giftbox{font-size:1.15rem;font-weight:900;color:#15803D;background:#F0FDF4;border:2px dashed #86EFAC;border-radius:14px;padding:10px 12px;line-height:1.7}.giftbox small{font-size:.85rem;font-weight:800;color:#475569}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -2638,7 +2639,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "45.6"; window.APP_BUILD = "1405/08/15 18:30";
+window.APP_VERSION = "45.7"; window.APP_BUILD = "1405/08/15 19:21";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -4292,6 +4293,7 @@ const TPLS = [
   T('k2b', '🏦', 'انتقال از کارگزاری به بانک', 'teal', 'پول را از حساب کارگزاری به حساب بانکی (یا نقد) برداشتم', [{ k: 'x', l: 'از کدام کارگزاری؟', side: 'cr', pref: [G.BRK] }, { k: 'y', l: 'به کدام بانک / نقد؟', side: 'dr', pref: [G.CASH] }], { xf: true, auto: (a, b) => 'برداشت از ' + a + ' به ' + b }),
   T('b2b', '🔁', 'انتقال از بانک به بانک', 'blue', 'جابه‌جایی پول بین دو حساب بانکی (یا صندوق نقد)', [{ k: 'x', l: 'از کدام بانک / نقد؟', side: 'cr', pref: [G.CASH] }, { k: 'y', l: 'به کدام بانک / نقد؟', side: 'dr', pref: [G.CASH] }], { xf: true, auto: (a, b) => 'انتقال از ' + a + ' به ' + b }),
   T('buy', '💱', 'خرید ارز / طلا', 'gold', 'خرید دلار، یورو، طلا، سکه …', [{ k: 'x', l: 'چه چیزی خریدی؟', side: 'dr', pref: [G.ASSET] }, { k: 'y', l: 'از کدام حساب پرداخت شد؟', side: 'cr', pref: BANKS }], { trade: true, auto: (a) => 'خرید ' + a }),
+  T('gift', '🎁', 'هدیه گرفتم (ارز / طلا / سکه)', 'green', 'سکه، طلا یا ارزی که هدیه گرفتید — بدون پول؛ بهای خریدش صفر است و همهٔ ارزشش سود شماست', [{ k: 'x', l: 'چه چیزی هدیه گرفتی؟', side: 'dr', pref: [G.ASSET] }, { k: 'y', side: 'cr', fixed: 'CLEAR' }], { trade: true, gift: true, auto: (a) => 'هدیه ' + a }),
   T('sell', '💱', 'فروش / خرج ارز و طلا', 'orange', 'فروش یا خرج کردن دلار، یورو، طلا، سکه … (از موجودی همان محل نگهداری کم می‌شود)', [{ k: 'x', l: 'چه چیزی فروختی یا خرج کردی؟', side: 'cr', pref: [G.ASSET] }, { k: 'y', l: 'پول به کدام حساب آمد؟ (خرج: حساب بستانکار یا هزینه)', side: 'dr', pref: BANKS }], { trade: true, sell: true, auto: (a) => 'فروش ' + a }),
   T('move', '🔀', 'انتقال ارز/طلا بین محل‌ها', 'teal', 'جابه‌جایی دلار، یورو، طلا … از یک بانک/محل به محل دیگر', []),
   T('price', '🏷', 'قیمت روز', 'gold', 'فقط قیمت امروز یک ارز / طلا را به‌روز کن', [{ k: 'x', l: 'قیمت کدام را به‌روز می‌کنی؟', side: 'dr', pref: [G.ASSET] }], { price: true, auto: (a) => 'قیمت روز ' + a }),
@@ -4319,7 +4321,7 @@ const unitMul = id => (UNITS.find(u => u.id === id) || UNITS[0]).m;
 
 function inferTpl(e) {
   const C = App.C, g = n => (C.accts.get(n) || {}).group || '';
-  const X = E.kindOfEntry(C, e); if (X === 8) return 'note'; if (X === 6) return 'price'; if (X === 3) return 'loan'; if (X === 4) return 'buy'; if (X === 5) return 'sell';
+  const X = E.kindOfEntry(C, e); if (X === 8) return 'note'; if (X === 6) return 'price'; if (X === 3) return 'loan'; if (X === 4) return (e.gift || (e.cr === sp().CLEAR && !(+e.price > 0) && !(+e.amt > 0))) ? 'gift' : 'buy'; if (X === 5) return 'sell';
   const gd = g(e.dr), gc = g(e.cr), cashy = x => x === G.CASH || x === G.BRK;
   if (X === 1 && cashy(gd)) return 'dep'; if (X === 2 && cashy(gc)) return 'wd';
   if (gd === G.DEBT && cashy(gc)) return 'lend'; if (cashy(gd) && gc === G.DEBT) return 'collect';
@@ -4345,7 +4347,7 @@ App.openEntry = function (o) {
     const mul = 1;
     F.unit = 'r';
     F.amtTxt = (e.amt === null || e.amt === undefined || e.amt === '') ? '' : fmt(e.amt / mul, 4);
-    F.qty = e.qty == null ? '' : qstr(e.qty); F.price = e.price == null ? '' : String(e.price); F.fee = e.fee == null ? '' : String(e.fee);
+    F.qty = e.qty == null ? '' : App.H.qstr(e.qty);   // v45.7: App.H — this part of the program cannot see qstr itself (v45.6 broke every edit of a buy / sell) F.price = e.price == null ? '' : String(e.price); F.fee = e.fee == null ? '' : String(e.fee);
     F.loc = e.loc || ''; F.locWas = F.loc; F.dest = e.dest || ''; F.cat = e.cat || '';
   } else {
     if (t.ownerDefault) F.x = ownerName(); if (t.defCat) { F.cat = t.defCat; F.catSel = t.defCat; } if (o.x) F.x = o.x; if (o.y) F.y = o.y; if (o.dest) F.dest = o.dest; if (t.loan && F.x && !F.y) F.y = App.loanMember(F.x); if (o.amt) F.amtTxt = String(o.amt); if (o.cat) { F.cat = o.cat; F.catSel = o.cat; } if (o.loc !== undefined) { F.loc = o.loc; F.locSel = o.loc; F.locTouched = true; }
@@ -4356,7 +4358,7 @@ App.openEntry = function (o) {
   setTimeout(() => { const f = (App.efFirstEmpty && App.efFirstEmpty()) || $('#entryBody .cb-in') || $('#ef_amt'); if (f) f.focus(); }, 60);
   return m;
 };
-const TGROUPS = [['دریافت و پرداخت اعضا', ['dep', 'wd', 'm2m']], ['انتقال پول', ['b2k', 'k2b', 'b2b', 'xfer']], ['بدهکاران و بستانکاران', ['lend', 'collect', 'borrow', 'payc']], ['سرمایه‌گذاری و وام بانکی', ['inv', 'invret', 'loan']], ['بانک، هزینه و درآمد', ['expm', 'incm', 'brk', 'brkl', 'exp', 'inc']], ['ارز و طلا', ['buy', 'sell', 'move', 'price']], ['سایر', ['free', 'note']]];
+const TGROUPS = [['دریافت و پرداخت اعضا', ['dep', 'wd', 'm2m']], ['انتقال پول', ['b2k', 'k2b', 'b2b', 'xfer']], ['بدهکاران و بستانکاران', ['lend', 'collect', 'borrow', 'payc']], ['سرمایه‌گذاری و وام بانکی', ['inv', 'invret', 'loan']], ['بانک، هزینه و درآمد', ['expm', 'incm', 'brk', 'brkl', 'exp', 'inc']], ['ارز و طلا', ['buy', 'gift', 'sell', 'move', 'price']], ['سایر', ['free', 'note']]];
 function pillsHtml(F) {
   return '<div class="tgs">' + TGROUPS.map(g => '<div class="tg"><div class="tgh">' + esc(g[0]) + '</div><div class="tpl">' + g[1].map(id => tplById(id)).filter(Boolean).map(t => '<button type="button" class="tp k-' + t.c + (t.id === F.tpl ? ' on' : '') + '" data-act="ef-tpl" data-id="' + t.id + '" title="' + esc(t.d) + '">' + t.ico + ' ' + esc(t.t) + '</button>').join('') + '</div></div>').join('') + '</div>';
 }
@@ -4434,6 +4436,7 @@ function sideNote(t, sl) {
 function accPanel(t, sl, F) {
   const isDr = sl.side === 'dr';
   const head = '<div class="acc-h"><span class="side ' + (isDr ? 'dr' : 'cr') + '">' + (isDr ? 'بدهکار' : 'بستانکار') + '</span><em>' + (sl.fixed ? '(خودکار)' : sideNote(t, sl)) + '</em></div>';
+  if (sl.fixed && t.gift) return '<div class="field accf scr">' + head + '<div class="acc-q">از کجا آمد؟</div><div class="fixedacc">🎁 هدیه (بدون پول)</div></div>';
   if (sl.fixed) return '<div class="field accf ' + (isDr ? 'sdr' : 'scr') + '">' + head + '<div class="acc-q">' + (isDr ? (t.ck === 'inc' ? '' : 'هزینه ثبت می‌شود در:') : 'درآمد ثبت می‌شود در:') + '</div><div class="fixedacc">' + esc(sp()[sl.fixed]) + '</div></div>';
   return '<div class="field accf ' + (isDr ? 'sdr' : 'scr') + '">' + head + '<div class="acc-q">' + esc(sl.l) + '</div>' + combo({ id: 'ef_' + sl.k, value: F[sl.k], pref: sl.pref, all: sl.all, allowNew: sl.allowNew, showSystem: t.free, placeholder: sl.optional ? 'اختیاری' : undefined }) + '<div class="hint" id="bal_' + sl.k + '"></div></div>';
 }
@@ -4461,6 +4464,7 @@ function renderEntryBody() {
     h += '<div class="grid2 vch-amt" style="align-items:start">';
     if (t.trade || t.price) {
       if (t.trade) h += '<div class="field"><label>مقدار</label><input type="text" id="ef_qty" class="yellow num" value="' + esc(F.qty) + '" inputmode="decimal" placeholder="عدد / گرم / دلار …"><div class="words" id="w_qty"></div></div>';
+      if (t.gift) h += '<div class="field"><label>قیمت</label><div class="giftbox">🎁 هدیه — بدون پول<br><small>بهای خرید صفر؛ همهٔ ارزش روزش سود شماست</small></div></div>'; else
       h += '<div class="field"><label>' + (t.price ? 'قیمت جدید هر واحد' : 'قیمت هر واحد') + '</label><input type="text" id="ef_price" class="yellow num" value="' + esc(F.price) + '" inputmode="decimal"><div class="words" id="w_price"></div></div>';
     } else {
       /* v44.1: the amount takes the whole width (a long number is never hidden), the unit is a small line under it, and the description comes right after */
@@ -4517,7 +4521,7 @@ function buildEntries(F) {
   const qty = (F.qty || '').trim() === '' ? null : H.parseAmount(F.qty);
   const price = (F.price || '').trim() === '' ? null : moneyVal(F.price, F);
   const fee = (F.fee || '').trim() === '' ? null : moneyVal(F.fee, F);
-  if (t.trade) { if (qty === null || isNaN(qty) || qty <= 0) miss.push('مقدار را بنویسید'); if (price === null || isNaN(price) || price <= 0) miss.push('قیمت هر واحد را بنویسید'); }
+  if (t.trade) { if (qty === null || isNaN(qty) || qty <= 0) miss.push('مقدار را بنویسید'); if (!t.gift && (price === null || isNaN(price) || price <= 0)) miss.push('قیمت هر واحد را بنویسید'); }
   if (t.price && (price === null || isNaN(price) || price < 0)) miss.push('قیمت جدید را بنویسید');
   if (t.trade && F.locSel !== '__new' && !(F.loc || '').trim() && !(F.edit && !F.locWas)) miss.push('محل نگهداری را انتخاب کنید — «محل نامشخص» وجود ندارد');
   if (t.trade && F.locSel === '__new' && !(F.loc || '').trim()) miss.push('نام محل جدید را بنویسید');
@@ -4535,7 +4539,7 @@ function buildEntries(F) {
     if (slotX) e[slotX.side] = x || '';
     if (slotY) e[slotY.side] = y || '';
     if (t.price) { e.cr = ''; e.price = price; e.dest = F.dest || s.NO_DEST; }
-    else if (t.trade) { e.qty = qty; e.price = price; e.fee = fee; e.loc = (F.loc || '').trim() || null; if (t.sell) e.dest = F.dest || null; e.amt = null; }
+    else if (t.trade) { e.qty = qty; e.price = t.gift ? 0 : price; e.fee = t.gift ? null : fee; e.loc = (F.loc || '').trim() || null; if (t.sell) e.dest = F.dest || null; e.amt = null; if (t.gift) e.gift = true; }
     else if (t.loan) { e.amt = (amt === null || isNaN(amt)) ? null : amt; e.dest = F.dest || null; }
     else if (t.note) { e.amt = null; if (!x) e.dr = ''; }
     else e.amt = amt;
@@ -4585,6 +4589,8 @@ function updatePreview() {
       } else {
         B.t.s.forEach(s => { const nm = s.fixed ? sp()[s.fixed] : F[s.k]; if (nm) body += effectLine(nm, s.side, B.amt); });
       }
+    } else if (t.gift && B.qty > 0) {
+      body += '<div class="l"><span>🎁</span><span>هدیه: <b class="num">' + fmt(B.qty, 2) + '</b> واحد «' + esc(B.x || '…') + '» به دارایی شما اضافه می‌شود — بدون پول (بهای خرید صفر)</span></div>';
     } else if (t.trade && B.qty > 0 && B.price > 0) {
       const total = B.qty * B.price + (t.sell ? -(B.fee || 0) : (B.fee || 0));
       body += '<div class="l"><span>💱</span><span>' + (t.sell ? 'فروش' : 'خرید') + ' <b class="num">' + fmt(B.qty, 4) + '</b> واحد «' + esc(B.x || '…') + '» به قیمت <span class="num">' + fmt(B.price) + '</span>' + (B.fee ? ' + کارمزد <span class="num">' + fmt(B.fee) + '</span>' : '') + '</span></div>';
@@ -5347,7 +5353,7 @@ P.asset = function (name) {
   const C = App.C; const a = C.db.assets.find(x => x.name === name); if (!a) return { title: 'پیدا نشد', html: '<div class="box">پیدا نشد</div>' };
   const x = E.fxPositions(C).find(p => p.name === name); const rows = C.rows.filter(r => r.item === name && (r.X === 4 || r.X === 5 || r.X === 6)); const notes = E.notesOf(C, name);
   let h = App.fxOverview ? App.fxOverview(name) : '<div class="cards">' + card('c-navy', 'موجودی (' + esc(a.unit) + ')', H.fmtq(x.qty), 'میانگین خرید ' + fmt(x.avg)) + card('c-gold', 'قیمت روز', fmt(x.price), x.lastDate) + card('c-teal', 'ارزش روز', fmt(x.val), 'بها: ' + fmt(x.cost)) + card(x.unreal >= 0 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی', fmt(x.unreal), 'فروش‌ها: ' + fmt(x.real)) + '</div>';
-  h += '<div class="bar noprint"><button class="btn green sm" data-act="new-entry" data-tpl="buy" data-x="' + esc(name) + '">💱 خرید</button><button class="btn gold sm" data-act="new-entry" data-tpl="sell" data-x="' + esc(name) + '">💱 فروش</button><button class="btn violet sm" data-act="new-entry" data-tpl="price" data-x="' + esc(name) + '">🏷 قیمت روز</button><button class="btn teal sm" data-act="move-new" data-asset="' + esc(name) + '">🔀 انتقال بین محل‌ها</button></div>';
+  h += '<div class="bar noprint"><button class="btn green sm" data-act="new-entry" data-tpl="buy" data-x="' + esc(name) + '">💱 خرید</button><button class="btn teal sm" data-act="new-entry" data-tpl="gift" data-x="' + esc(name) + '">🎁 هدیه گرفتم</button><button class="btn gold sm" data-act="new-entry" data-tpl="sell" data-x="' + esc(name) + '">💱 فروش</button><button class="btn violet sm" data-act="new-entry" data-tpl="price" data-x="' + esc(name) + '">🏷 قیمت روز</button><button class="btn teal sm" data-act="move-new" data-asset="' + esc(name) + '">🔀 انتقال بین محل‌ها</button></div>';
   h += '<div class="box"><div class="wrap"><table class="tbl"><thead><tr><th>ردیف</th><th>تاریخ</th><th>نوع</th><th class="dep">مقدار</th><th>قیمت واحد</th><th class="bal">مبلغ</th><th>موجودی پس از ثبت</th><th class="desc">شرح</th><th>کارمزد</th><th>بها پس از ثبت</th><th class="prf">سود/زیان</th><th>محل</th><th class="noprint"></th></tr></thead><tbody>' +
     (rows.length ? rows.map((r, i) => { const e = r.e; return '<tr><td class="c rn">' + (i + 1) + '</td><td class="c num">' + esc(r.date) + '</td><td class="c">' + esc(E.KIND_NAMES[r.X]) + '</td><td class="n dep">' + (r.X === 6 ? '' : H.fmtq(r.G)) + '</td><td class="n">' + fmt(r.H) + '</td><td class="n bal">' + fmt(r.M) + '</td><td class="n">' + (r.X === 6 ? '' : H.fmtq(r.qa)) + '</td><td class="desc">' + esc(r.desc) + '</td><td class="n">' + (r.Jf ? fmt(r.Jf) : '') + '</td><td class="n">' + (r.X === 6 ? '' : fmt(r.ca)) + '</td><td class="n prf">' + (r.X === 5 ? fmt(r.gain) : r.X === 6 ? fmt(r.M) : '') + '</td><td class="hint">' + esc(r.K || '') + '</td>' + actCell(e.virtual ? null : e) + '</tr>'; }).join('') : emptyRow(13, 'هنوز ثبتی ندارد')) +
     '</tbody></table></div></div>';
@@ -9939,7 +9945,7 @@ function ledger(name) {
     let p = +r.H || 0, amt = +r.M || 0;
     if (r.X !== 6) { if (!(p > 0) && q > 0 && amt > 0) p = amt / q; if (!(amt > 0) && q > 0 && p > 0) amt = q * p; }
     const qa = r.X === 6 ? null : (+r.qa || 0), ca = r.X === 6 ? 0 : (+r.ca || 0);
-    out.push({ n: ++i, t: r.T > 0 ? r.T : 0, date: r.date || '', kind: KIND[r.X], q, p, amt: r.X === 6 ? 0 : amt, fee: +r.Jf || 0, qa, avg: qa !== null && qa > 1e-9 ? ca / qa : 0, gain: r.X === 5 ? (+r.gain || 0) : 0, loc: r.K || '', desc: r.desc || '', id: (r.e && !r.e.virtual && r.e.id != null) ? r.e.id : null });
+    out.push({ n: ++i, t: r.T > 0 ? r.T : 0, date: r.date || '', kind: KIND[r.X], q, p, amt: r.X === 6 ? 0 : amt, fee: +r.Jf || 0, qa, avg: qa !== null && qa > 1e-9 ? ca / qa : 0, gain: r.X === 5 ? (+r.gain || 0) : 0, loc: r.K || '', desc: r.desc || '', id: (r.e && !r.e.virtual && r.e.id != null) ? r.e.id : null, gift: r.X === 4 && !(p > 0) && !!(r.e && (r.e.gift || r.e.cr === (App.db.special || {}).CLEAR)) });   // v45.7: «🎁 هدیه»
   }
   return out;
 }
@@ -9959,10 +9965,10 @@ App.fxLedBox = function (cur) {
 
 /* ---------------------------------------------------------------- the entry as a card (phone) and as a table row (computer) */
 function entryCard(r, unit) {
-  let h = '<div class="flr flr-' + r.kind + '"><div class="fl1"><span class="fld num">' + esc(r.date) + '</span><span class="flk">' + KI[r.kind] + ' ' + KN[r.kind] + '</span><span class="fln num">' + r.n + '</span></div>';
+  let h = '<div class="flr flr-' + r.kind + '"><div class="fl1"><span class="fld num">' + esc(r.date) + '</span><span class="flk">' + (r.gift ? '🎁 هدیه' : KI[r.kind] + ' ' + KN[r.kind]) + '</span><span class="fln num">' + r.n + '</span></div>';
   if (r.kind === 'price') h += '<div class="fl2">قیمت هر ' + esc(unit) + ' شد <b class="num">' + fmt(r.p) + '</b> <small>ریال</small></div>';
   else {
-    h += '<div class="fl2"><b class="num">' + H.fmtq(r.q) + '</b> <small>' + esc(unit) + '</small> <span class="flx">×</span> <b class="num">' + (r.p > 0 ? fmt(r.p) : '—') + '</b> <small>ریال</small></div>' +
+    h += '<div class="fl2"><b class="num">' + H.fmtq(r.q) + '</b> <small>' + esc(unit) + '</small> <span class="flx">×</span> <b class="num">' + (r.p > 0 ? fmt(r.p) : r.gift ? '🎁 هدیه' : '—') + '</b> <small>' + (r.gift ? 'بدون پول' : 'ریال') + '</small></div>' +
       '<div class="fl3">مبلغ: <b class="num">' + fmt(r.amt) + '</b> ریال' + (r.fee ? ' <small>· کارمزد ' + fmt(r.fee) + '</small>' : '') + '</div>' +
       '<div class="fl4">موجودی بعد از این: <b class="num">' + H.fmtq(r.qa) + '</b> ' + esc(unit) + (r.avg > 0 ? '<br>میانگین خرید بعد از این: <b class="num">' + fmt(r.avg) + '</b>' : '') + '</div>';
     if (r.kind === 'sell') h += '<div class="fl5 ' + (r.gain < 0 ? 'neg' : 'pos') + '">' + (r.gain < 0 ? '▼ زیان' : '▲ سود') + ' این فروش: <b class="num">' + fmt(r.gain) + '</b></div>';
@@ -9973,7 +9979,7 @@ function entryCard(r, unit) {
 }
 function entryRow(r) {
   const price = r.kind === 'price';
-  return '<tr class="flt-' + r.kind + '"><td class="c rn">' + r.n + '</td><td class="c num">' + esc(r.date) + '</td><td class="c">' + KI[r.kind] + ' ' + KN[r.kind] + '</td>' +
+  return '<tr class="flt-' + r.kind + '"><td class="c rn">' + r.n + '</td><td class="c num">' + esc(r.date) + '</td><td class="c">' + (r.gift ? '🎁 هدیه' : KI[r.kind] + ' ' + KN[r.kind]) + '</td>' +
     '<td class="n dep">' + (price ? '' : H.fmtq(r.q)) + '</td><td class="n">' + (r.p > 0 ? fmt(r.p) : '') + '</td><td class="n bal">' + (price ? '' : fmt(r.amt)) + '</td><td class="n">' + (r.fee ? fmt(r.fee) : '') + '</td>' +
     '<td class="n">' + (price ? '' : H.fmtq(r.qa)) + '</td><td class="n">' + (!price && r.avg > 0 ? fmt(r.avg) : '') + '</td><td class="n prf' + (r.gain < 0 ? ' neg' : '') + '">' + (r.kind === 'sell' ? fmt(r.gain) : '') + '</td>' +
     '<td class="hint">' + esc(r.loc) + '</td><td class="desc">' + esc(r.desc) + '</td><td class="act noprint">' + (r.id !== null ? '<button title="ویرایش" data-act="edit-entry" data-id="' + r.id + '">✎</button>' : '') + '</td></tr>';
@@ -11528,7 +11534,7 @@ function shape(page, name) {
   /* ② the button row */
   const bar = el('div', 'ax-bar noprint');
   const quick = mgp ? $$('.c-quick button, .c-quick .btn', mgp) : [];
-  const assetBtns = (kind === 'asset' && mgp) ? $$('.c-rate button', mgp).filter(b => /خرید|فروش|قیمت/.test(b.textContent)) : [];
+  const assetBtns = (kind === 'asset' && mgp) ? $$('.c-rate button', mgp).filter(b => /خرید|فروش|قیمت|هدیه/.test(b.textContent)) : [];
   quick.concat(assetBtns).forEach(b => {
     const a = b.dataset.act || '';
     if (a === 'loan-edit') { STASH.set.push(b); return; }
@@ -12807,34 +12813,45 @@ App.fxOverview = function (name) {
     pctCard(p, psub) + '</div>' + trustBox([x], true);
 };
 })();
-/* ---------------------------------------------------------------- v45.5 — corrections of the data that the owner confirmed
-   1405/08/15: «۱۰ گرم طلای امانی الف (۱۴۰۵/۰۷/۳۰) با قیمت ۲۶٬۵۸۰٬۰۰۰ ثبت شده؛ درستش ۲۶۵٬۸۰۰٬۰۰۰ است — درستش کن».
-   The price of that receipt is in two places: the move of the «امانی» and the entry it wrote in the books (gold ← «امانی الف»).
-   Both are corrected once, as an ordinary change (it can be undone with «بازگردانی», it goes to the other devices like any change);
-   only while the price is still the wrong one, so nothing is touched twice or after a correction by hand. */
+/* ---------------------------------------------------------------- v45.5+ — corrections of the data that the owner confirmed
+   Each one is made once, as an ordinary change (it goes to the other devices like any change, it is in «تغییرات»), and only while the data is
+   still as it was — so nothing is touched twice, and nothing he has corrected by hand.
+   · v45.5 (1405/08/15): «۱۰ گرم طلای امانی الف (۱۴۰۵/۰۷/۳۰) با قیمت ۲۶٬۵۸۰٬۰۰۰ ثبت شده؛ درستش ۲۶۵٬۸۰۰٬۰۰۰ است — درستش کن».
+     The price is in two places: the move of the «امانی» and the entry it wrote in the books (gold ← «امانی الف»).
+   · v45.7 (1405/08/15): «نیم سکه و سکه گرمی هدیه بوده؛ اولی‌شان را بزن هدیه» — their first record (one coin / one gram that came in with no
+     money) gets the mark «🎁 هدیه». */
 (function () {
 'use strict';
 const App = window.App; if (!App) return;
-const FIXES = [
-  { id: 'v455-negar-gold-10g', trust: 'Tmvgylley98g', move: 'mmvjg6qio0zn', qty: 10, from: 26580000, to: 265800000,
-    text: 'قیمت ۱۰ گرم طلای امانی الف (۱۴۰۵/۰۷/۳۰) درست شد: هر گرم ۲۶۵٬۸۰۰٬۰۰۰ ریال (به‌جای ۲۶٬۵۸۰٬۰۰۰)' }
-];
-function find(db, f) {
-  const t = (db.trusts || []).find(x => x && x.id === f.trust), m = t && (t.moves || []).find(x => x && x.id === f.move);
+const N = v => +v || 0;
+const goldFix = { trust: 'Tmvgylley98g', move: 'mmvjg6qio0zn', qty: 10, from: 26580000, to: 265800000 };
+function goldFind(db) {
+  const f = goldFix, t = (db.trusts || []).find(x => x && x.id === f.trust), m = t && (t.moves || []).find(x => x && x.id === f.move);
   const e = (db.entries || []).find(x => x && x.auto === 'trust:' + f.trust + ':' + f.move);
-  return { m: m && +m.qty === f.qty && +m.price === f.from ? m : null, e: e && +e.qty === f.qty && +e.price === f.from ? e : null };
+  return { m: m && N(m.qty) === f.qty && N(m.price) === f.from ? m : null, e: e && N(e.qty) === f.qty && N(e.price) === f.from ? e : null };
 }
+/* the first record of a coin that came in with no money */
+function giftFind(db, asset) {
+  const L = (db.entries || []).filter(e => e && e.dr === asset && N(e.qty) > 0 && !(N(e.price) > 0) && !(N(e.amt) > 0)).sort((a, b) => String(a.date).localeCompare(String(b.date)));
+  const first = L[0]; return first && !first.gift ? first : null;
+}
+const FIXES = [
+  { id: 'v455-negar-gold-10g', text: 'قیمت ۱۰ گرم طلای امانی الف (۱۴۰۵/۰۷/۳۰) درست شد: هر گرم ۲۶۵٬۸۰۰٬۰۰۰ ریال (به‌جای ۲۶٬۵۸۰٬۰۰۰)',
+    need: db => { const r = goldFind(db); return !!(r.m || r.e); },
+    apply: db => { const r = goldFind(db); if (r.m) r.m.price = goldFix.to; if (r.e) r.e.price = goldFix.to; } },
+  { id: 'v457-gift-coins', text: 'نیم سکه و سکه گرمی: اولین ثبتشان «🎁 هدیه» شد (بدون پول؛ همهٔ ارزششان سود شماست)',
+    need: db => !!(giftFind(db, 'نیم سکه') || giftFind(db, 'سکه گرمی')),
+    apply: db => { ['نیم سکه', 'سکه گرمی'].forEach(a => { const e = giftFind(db, a); if (e) { e.gift = true; e.price = 0; } }); } }
+];
 let done = false;
 function run() {
   if (done) return; const db = App.db; if (!db || !db.entries || !db.meta) return;
   if (document.querySelector('#modalBg.show .durrep')) { setTimeout(run, 1500); return; }     // first the window about the entries that came back
   done = true;
-  const todo = FIXES.filter(f => (db.meta.fixes || []).indexOf(f.id) < 0 && (find(db, f).m || find(db, f).e));
+  const todo = FIXES.filter(f => (db.meta.fixes || []).indexOf(f.id) < 0 && f.need(db));
   if (!todo.length) return;
   try {
-    App.commit('اصلاح قیمت طلای امانی الف', d => {
-      todo.forEach(f => { const r = find(d, f); if (r.m) r.m.price = f.to; if (r.e) r.e.price = f.to; (d.meta.fixes = d.meta.fixes || []).push(f.id); });
-    });
+    App.commit('اصلاح اطلاعات (تأییدشده)', d => { todo.forEach(f => { f.apply(d); (d.meta.fixes = d.meta.fixes || []).push(f.id); }); });
     App.toast('✔ ' + todo.map(f => f.text).join(' · '));
   } catch (e) { console.error(e); }
 }
@@ -15206,7 +15223,7 @@ App.mvPick = function (side, v) {
 App.moveAll = function () {
   const F = readMove(); if (F.from === null) { App.toast('اول مبدأ را انتخاب کنید', true); return; }
   const have = hold(F)[F.from] || 0; if (have <= 0) { App.toast('در این محل موجودی نیست', true); return; }
-  F.qty = qstr(have); renderMove();
+  F.qty = App.H.qstr(have); renderMove();
 };
 App.saveMove = function () {
   const F = readMove(); const date = H.normDate(F.date); const q = H.parseAmount(F.qty); const h = hold(F);
