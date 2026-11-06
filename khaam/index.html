@@ -2695,6 +2695,135 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 @media (max-width:900px){ #side.tm{width:min(94vw,430px)!important} }
 @media print{ .tm-fly,.tm-back{display:none!important} }
 .pcs.inf{font-size:1.15em;letter-spacing:.02em}
+
+/* ---------------------------------------------------------------- v46.1 — the password screen (see the lock module): light, colourful, big and bold
+   :is(#lockScr,#lockOut) — the screen keeps its look while it fades away (lockOut) over the program */
+:is(#lockScr,#lockOut){position:fixed;inset:0;z-index:100003;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;
+  padding:20px 16px calc(18px + env(safe-area-inset-bottom,0px));box-sizing:border-box;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;
+  background:linear-gradient(160deg,#FFF6E0 0%,#EEF4FF 46%,#F3EDFF 100%);color:#0F2A4A;-webkit-tap-highlight-color:transparent;text-align:center}
+#lockOut{pointer-events:none;transition:opacity .6s ease,transform .6s ease,filter .6s ease}
+#lockOut.lk-out{opacity:0;transform:scale(1.05);filter:blur(5px)}
+
+/* soft colour lights behind, moving slowly */
+:is(#lockScr,#lockOut) .lk-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+:is(#lockScr,#lockOut) .lk-bg i{position:absolute;border-radius:50%;opacity:.75;animation:lkFloat 18s ease-in-out infinite alternate}
+:is(#lockScr,#lockOut) .lk-bg i:nth-child(1){width:70vmax;height:70vmax;top:-30vmax;right:-26vmax;background:radial-gradient(circle,#FCD34D 0,#FCD34D00 66%)}
+:is(#lockScr,#lockOut) .lk-bg i:nth-child(2){width:64vmax;height:64vmax;bottom:-30vmax;left:-26vmax;background:radial-gradient(circle,#93C5FD 0,#93C5FD00 66%);animation-duration:23s}
+:is(#lockScr,#lockOut) .lk-bg i:nth-child(3){width:46vmax;height:46vmax;top:28%;left:-22vmax;background:radial-gradient(circle,#C4B5FD 0,#C4B5FD00 66%);animation-duration:27s}
+:is(#lockScr,#lockOut) .lk-bg i:nth-child(4){width:42vmax;height:42vmax;bottom:2%;right:-20vmax;background:radial-gradient(circle,#6EE7B7 0,#6EE7B700 66%);opacity:.6;animation-duration:21s}
+:is(#lockScr,#lockOut) .lk-bg::after{content:"";position:absolute;inset:0;background-image:radial-gradient(#0F2A4A16 1.2px,transparent 1.6px);background-size:22px 22px;
+  -webkit-mask-image:linear-gradient(180deg,#000,transparent 75%);mask-image:linear-gradient(180deg,#000,transparent 75%)}
+@keyframes lkFloat{0%{transform:translate(0,0) scale(1)}100%{transform:translate(5vmax,4vmax) scale(1.12)}}
+
+/* greeting, clock, day */
+:is(#lockScr,#lockOut) .lk-head{position:relative;z-index:1;margin-top:auto}
+:is(#lockScr,#lockOut) .lk-hi{display:inline-flex;align-items:center;gap:6px;padding:6px 18px;border-radius:999px;background:#FFFFFFC4;border:1px solid #fff;
+  box-shadow:0 8px 20px -10px #0F2A4A66;font-size:1.2rem;font-weight:900;color:#9A3412}
+:is(#lockScr,#lockOut) .lk-clock{font-size:clamp(3.6rem,17vw,5.8rem);font-weight:900;line-height:1.05;margin-top:6px;color:#0F2A4A;
+  text-shadow:0 2px 0 #fff,0 12px 30px #1D4ED838;font-variant-numeric:tabular-nums lining-nums}
+:is(#lockScr,#lockOut) .lk-clock i{font-style:normal;display:inline-block;margin:0 .03em;position:relative;top:-.06em;color:#D97706;animation:lkBlink 2s steps(1) infinite}
+@keyframes lkBlink{50%{opacity:.2}}
+:is(#lockScr,#lockOut) .lk-dt{margin:2px 0 0;font-size:1.35rem;font-weight:900;color:#1E3A8A;opacity:1;line-height:1.7}
+
+/* the card */
+:is(#lockScr,#lockOut) .lk{position:relative;z-index:1;width:min(100%,460px);box-sizing:border-box;margin:44px 0 0;padding:62px 22px 20px;text-align:center;
+  border-radius:32px;border:1px solid #FFFFFFE6;background:linear-gradient(180deg,#FFFFFFE8,#FFFFFFCC);
+  -webkit-backdrop-filter:blur(16px) saturate(1.5);backdrop-filter:blur(16px) saturate(1.5);
+  box-shadow:0 36px 70px -30px #0F2A4A70,0 14px 26px -18px #0F2A4A4D,inset 0 1px 0 #fff;animation:lkIn .6s cubic-bezier(.2,.9,.3,1.15) both}
+:is(#lockScr,#lockOut) .lk::before{content:"";position:absolute;top:0;left:30px;right:30px;height:6px;border-radius:0 0 8px 8px;
+  background:linear-gradient(90deg,#10B981,#8B5CF6,#3B82F6,#F59E0B)}
+@keyframes lkIn{0%{opacity:0;transform:translateY(26px) scale(.97)}100%{opacity:1;transform:none}}
+:is(#lockScr,#lockOut) .lk.lk-shake{animation:lkShake2 .45s}
+@keyframes lkShake2{15%,55%{transform:translateX(-10px)}35%,75%{transform:translateX(10px)}90%{transform:translateX(-4px)}}
+
+/* the gold lock (it opens when the password is right) */
+:is(#lockScr,#lockOut) .lk-emb{position:absolute;top:-48px;left:50%;margin-left:-48px;width:96px;height:96px;box-sizing:border-box;border-radius:50%;display:grid;place-items:center;
+  color:#B45309;border:5px solid #fff;background:linear-gradient(145deg,#FDE68A,#F59E0B 55%,#D97706);
+  box-shadow:0 16px 30px -12px #B45309AA,inset 0 3px 0 #FFF7D6,inset 0 -6px 12px #B4530966;transition:background .3s,box-shadow .3s,color .3s}
+:is(#lockScr,#lockOut) .lk-emb::after{content:"";position:absolute;inset:-13px;border-radius:50%;border:3px solid #F59E0B66;animation:lkHalo 2.8s ease-out infinite}
+@keyframes lkHalo{0%{transform:scale(.82);opacity:1}100%{transform:scale(1.22);opacity:0}}
+:is(#lockScr,#lockOut) .lk-emb svg{width:54px;height:54px;overflow:visible;filter:drop-shadow(0 2px 2px #92400E66)}
+:is(#lockScr,#lockOut) .lk-shk{transform-box:view-box;transform-origin:43px 29px;transition:transform .45s cubic-bezier(.3,1.6,.5,1)}
+:is(#lockScr,#lockOut).lk-ok .lk-shk{transform:translateY(-7px) rotate(-28deg)}
+:is(#lockScr,#lockOut).lk-ok .lk-emb{color:#047857;background:linear-gradient(145deg,#A7F3D0,#10B981 55%,#047857);box-shadow:0 16px 30px -12px #047857AA,inset 0 3px 0 #ECFDF5}
+:is(#lockScr,#lockOut).lk-ok .lk-emb::after{border-color:#10B98166}
+
+:is(#lockScr,#lockOut) .lk h1{margin:0;font-size:2.05rem;font-weight:900;line-height:1.35;color:#0F2A4A}
+:is(#lockScr,#lockOut) .lk-sub{margin:4px 0 18px;font-size:1.12rem;font-weight:800;color:#475569;line-height:1.7}
+
+/* the password box */
+:is(#lockScr,#lockOut) .lk-lab{display:block;margin:0 6px 8px;text-align:right;font-size:1.12rem;font-weight:900;color:#1E3A8A}
+:is(#lockScr,#lockOut) .lk-f{position:relative}
+:is(#lockScr,#lockOut) #lkPw{display:block;width:100%;height:70px;box-sizing:border-box;margin:0;padding:0 66px;font:inherit;font-size:1.95rem;font-weight:900;letter-spacing:.26em;
+  text-align:center;direction:ltr;color:#0F2A4A;background:#F3F6FB;border:3px solid transparent;border-radius:20px;outline:none;
+  box-shadow:inset 5px 5px 12px #D3DBE7,inset -5px -5px 12px #fff;transition:border-color .2s,box-shadow .2s,background .2s}
+:is(#lockScr,#lockOut) #lkPw:focus{background:#fff;border-color:#F59E0B;box-shadow:0 0 0 5px #F59E0B33,inset 2px 2px 6px #E2E8F0}
+:is(#lockScr,#lockOut) #lkPw::placeholder{letter-spacing:0;font-size:1.2rem;font-weight:800;color:#94A3B8}
+:is(#lockScr,#lockOut).lk-shown #lkPw{letter-spacing:.03em;font-size:1.45rem}
+:is(#lockScr,#lockOut) .lk-bad #lkPw{border-color:#EF4444;background:#FEF2F2;box-shadow:0 0 0 5px #EF444426}
+:is(#lockScr,#lockOut) .lk-eye{position:absolute;top:50%;left:10px;transform:translateY(-50%);width:50px;height:50px;margin:0;padding:0;border:0;border-radius:15px;
+  background:#fff;color:#0F2A4A;font-size:1.5rem;line-height:1;cursor:pointer;box-shadow:3px 3px 8px #CBD5E1,-3px -3px 8px #fff}
+:is(#lockScr,#lockOut) .lk-eye:active{box-shadow:inset 3px 3px 6px #CBD5E1,inset -3px -3px 6px #fff}
+:is(#lockScr,#lockOut) .lk-w{margin:10px 0 0;padding:8px 12px;border-radius:14px;background:#FFFBEB;border:2px solid #FCD34D;color:#92400E;
+  font-size:1.02rem;font-weight:800;line-height:1.7;text-align:right}
+:is(#lockScr,#lockOut) .lk-w[hidden]{display:none}
+
+/* «ورود» */
+:is(#lockScr,#lockOut) #lkGo{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:68px;box-sizing:border-box;margin:16px 0 0;padding:0 16px;
+  border:0;border-radius:20px;cursor:pointer;font:inherit;font-size:1.65rem;font-weight:900;color:#0F2A4A;
+  background:linear-gradient(180deg,#FDE68A 0%,#FBBF24 45%,#F59E0B 100%);
+  box-shadow:0 16px 28px -14px #D97706DD,inset 0 2px 0 #FFFBEB,inset 0 -4px 0 #D9770666;transition:transform .15s,box-shadow .15s,filter .15s,background .3s}
+:is(#lockScr,#lockOut) #lkGo:hover{filter:brightness(1.04);transform:translateY(-1px)}
+:is(#lockScr,#lockOut) #lkGo:active{transform:translateY(2px);box-shadow:0 6px 14px -8px #D97706CC,inset 0 3px 8px #B4530966}
+:is(#lockScr,#lockOut) #lkGo:disabled{opacity:1;cursor:progress}
+:is(#lockScr,#lockOut) .lk-ar{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;background:#0F2A4A;color:#FDE68A;font-size:1.35rem;line-height:1}
+:is(#lockScr,#lockOut) .lk-spin{display:none;width:28px;height:28px;box-sizing:border-box;border-radius:50%;border:4px solid #0F2A4A33;border-top-color:#0F2A4A;animation:lkSpin .8s linear infinite}
+@keyframes lkSpin{to{transform:rotate(360deg)}}
+:is(#lockScr,#lockOut).lk-busy .lk-spin{display:block}
+:is(#lockScr,#lockOut).lk-busy .lk-ar{display:none}
+:is(#lockScr,#lockOut).lk-ok #lkGo{color:#fff;background:linear-gradient(180deg,#6EE7B7 0%,#10B981 55%,#059669 100%);box-shadow:0 16px 28px -14px #047857DD,inset 0 2px 0 #D1FAE5}
+:is(#lockScr,#lockOut).lk-ok .lk-ar{background:#fff;color:#059669}
+
+/* messages, last opening, help */
+:is(#lockScr,#lockOut) #lkMsg{min-height:0;margin:12px 0 0;font-size:1.15rem;font-weight:900;color:#B91C1C;line-height:1.7}
+:is(#lockScr,#lockOut) #lkMsg:empty{margin:0}
+:is(#lockScr,#lockOut) #lkMsg.err{padding:10px 14px;border-radius:16px;background:#FEE2E2;border:2px solid #FCA5A5}
+:is(#lockScr,#lockOut) .lk-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}
+:is(#lockScr,#lockOut) .lk-m{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:999px;background:#FFFFFFC4;border:1px solid #fff;
+  box-shadow:0 6px 16px -10px #0F2A4A66;font-size:1.02rem;font-weight:800;color:#334155;line-height:1.7}
+:is(#lockScr,#lockOut) .lk-m b{color:#0F2A4A}
+:is(#lockScr,#lockOut) .lk-m.warn{background:#FEF3C7;border:2px solid #FCD34D;color:#92400E}
+:is(#lockScr,#lockOut) .lk-m.warn b{color:#B91C1C}
+:is(#lockScr,#lockOut) .lk-help{margin-top:12px;text-align:right}
+:is(#lockScr,#lockOut) .lk-help summary{display:inline-flex;gap:6px;padding:4px 2px;list-style:none;cursor:pointer;font-size:1.04rem;font-weight:900;color:#1D4ED8}
+:is(#lockScr,#lockOut) .lk-help summary::-webkit-details-marker{display:none}
+:is(#lockScr,#lockOut) .lk-help > div{margin-top:6px;padding:10px 14px;border-radius:16px;background:#EFF6FF;border:2px solid #BFDBFE;color:#1E3A8A;font-size:1rem;font-weight:800;line-height:1.95}
+:is(#lockScr,#lockOut) .lkRepick button{background:#F8FAFC!important;border:2px dashed #94A3B8!important;border-radius:18px!important}
+
+/* under the card */
+:is(#lockScr,#lockOut) .lk-foot{position:relative;z-index:1;margin-bottom:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:520px}
+:is(#lockScr,#lockOut) .lk-foot span{padding:6px 13px;border-radius:999px;background:#FFFFFFB0;border:1px solid #fff;box-shadow:0 4px 12px -8px #0F2A4A66;
+  font-size:.95rem;font-weight:800;color:#334155;line-height:1.6}
+
+/* a wide screen: the clock beside the card */
+@media (min-width:900px) and (min-height:560px){
+  :is(#lockScr,#lockOut){display:grid;grid-template-columns:minmax(0,440px) 480px;grid-template-rows:1fr auto auto 1fr;
+    grid-template-areas:". ." "head card" "foot foot" ". .";justify-content:center;align-items:center;column-gap:80px;row-gap:22px;padding:24px 32px}
+  :is(#lockScr,#lockOut) .lk-head{grid-area:head;margin:0}
+  :is(#lockScr,#lockOut) .lk{grid-area:card;width:480px;margin:48px 0 0;padding:66px 30px 24px}
+  :is(#lockScr,#lockOut) .lk-foot{grid-area:foot;margin:0 auto;justify-self:center;max-width:none}
+  :is(#lockScr,#lockOut) .lk-clock{font-size:7.2rem}
+  :is(#lockScr,#lockOut) .lk-dt{font-size:1.6rem}
+  :is(#lockScr,#lockOut) .lk-hi{font-size:1.35rem}
+}
+@media (max-height:640px){
+  :is(#lockScr,#lockOut) .lk-clock{font-size:3rem}
+  :is(#lockScr,#lockOut) .lk-dt{font-size:1.15rem}
+}
+@media (prefers-reduced-motion:reduce){
+  :is(#lockScr,#lockOut),:is(#lockScr,#lockOut) *,:is(#lockScr,#lockOut) *::after{animation:none!important;transition:none!important}
+  :is(#lockScr,#lockOut).lk-busy .lk-spin{border-top-color:#0F2A4A;border-right-color:#0F2A4A}
+}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -2702,7 +2831,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "46.0"; window.APP_BUILD = "1405/08/16 00:27";
+window.APP_VERSION = "46.1"; window.APP_BUILD = "1405/08/16 01:26";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -4157,7 +4286,7 @@ function tryKey(key, g) {
   return true;
 }
 /* lock again WITHOUT reloading the page (some phone viewers refuse reloads) */
-App.lockNow = function () { try { sessionStorage.removeItem(SK); } catch (e) { } if (!info0) return; try { if (App.closeModal) App.closeModal(); } catch (e) { } const old = document.getElementById('lockScr'); if (old) old.remove(); screen(() => { const x = document.getElementById('exitScr'); if (x) x.remove(); }); };
+App.lockNow = function () { try { sessionStorage.removeItem(SK); } catch (e) { } if (!info0) return; try { if (App.closeModal) App.closeModal(); } catch (e) { } ['lockScr', 'lockOut'].forEach(i => { const o = document.getElementById(i); if (o) o.remove(); }); screen(() => { const x = document.getElementById('exitScr'); if (x) x.remove(); }); };
 
 function tryPw(pw) {
   const dg = devGen(), gens = dg ? [dg, info0] : [info0];
@@ -4168,33 +4297,123 @@ function tryPw(pw) {
   }
   return false;
 }
-function dtHtml() {
-  try {
-    const d = new Date(), E = window.Engine, p2 = n => ('0' + n).slice(-2);
-    return ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'][d.getDay()] + ' <bdi dir="ltr">' + E.serToText(E.todaySerial(d)) + '</bdi> · ساعت <bdi dir="ltr">' + p2(d.getHours()) + ':' + p2(d.getMinutes()) + '</bdi>';
-  } catch (e) { return ''; }
+/* v46.1 — the password screen, made again (the owner 1405/08/16: «صفحهٔ ورود را هم اساسی، شکیل و مدرن، با تمام جزئیات لازم طراحی کن»).
+   Light and colourful like the menu, big bold letters: a greeting and a big clock with the day in words; the box of the password with 👁
+   (show / hide) and a warning when Caps Lock is on or the keyboard is Persian; «ورود» shows that it is working, a wrong password shakes the card;
+   the last time the program was opened on this device and the wrong passwords typed since then; what to do when the password is forgotten.
+   The ids (lockScr, lkPw, lkGo, lkMsg, lkDt) and the logic are the same as before; when the password is right the screen is renamed
+   (lockOut) at once and only fades away over the program. */
+const LK_WD = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'];
+const LK_MN = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+const LK_LAST = 'hesabk_lk_last', LK_FAIL = 'hesabk_lk_fail';
+const lkP2 = n => ('0' + n).slice(-2);
+const lkGet = k => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+const lkSet = (k, v) => { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, String(v)); } catch (e) { } };
+function lkDay(d) {                                                  // «شنبه 17 آبان 1405»
+  try { const t = window.Engine.serToText(window.Engine.todaySerial(d)).split('/'); return LK_WD[d.getDay()] + ' <bdi>' + (+t[2]) + '</bdi> ' + LK_MN[+t[1] - 1] + ' <bdi>' + t[0] + '</bdi>'; }
+  catch (e) { return LK_WD[d.getDay()]; }
 }
+const lkHi = h => h >= 5 && h < 11 ? '🌅 صبح بخیر' : h >= 11 && h < 15 ? '☀️ ظهر بخیر' : h >= 15 && h < 19 ? '🌇 عصر بخیر' : '🌙 شب بخیر';
+function lkAgo(ts) {                                                 // «امروز 09:12» / «دیروز 23:50» / «3 روز پیش، 23:50» / «10 آبان، 23:50»
+  const d = new Date(ts); if (!ts || isNaN(d)) return '';
+  const day = x => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime(), n = Math.round((day(new Date()) - day(d)) / 864e5);
+  const hm = '<bdi dir="ltr">' + lkP2(d.getHours()) + ':' + lkP2(d.getMinutes()) + '</bdi>';
+  if (n === 0) return 'امروز ' + hm;
+  if (n === 1) return 'دیروز ' + hm;
+  if (n > 1 && n < 7) return '<bdi>' + n + '</bdi> روز پیش، ' + hm;
+  let t = ''; try { const a = window.Engine.serToText(window.Engine.todaySerial(d)).split('/'), b = window.Engine.serToText(window.Engine.todaySerial(new Date())).split('/');
+    t = '<bdi>' + (+a[2]) + '</bdi> ' + LK_MN[+a[1] - 1] + (a[0] !== b[0] ? ' <bdi>' + a[0] + '</bdi>' : ''); } catch (e) { t = LK_WD[d.getDay()]; }
+  return t + '، ' + hm;
+}
+const LK_FA = /[ء-غف-يپچژکگیﭐ-﷿ﹰ-﻿]/;   // Persian/Arabic letters (not digits)
+const LK_SVG = '<svg viewBox="0 0 64 64" aria-hidden="true"><path class="lk-shk" d="M21 29v-8.5a11 11 0 0 1 22 0V29" fill="none" stroke="#fff" stroke-width="6.5" stroke-linecap="round"/>' +
+  '<rect x="11" y="27" width="42" height="30" rx="9" fill="#fff"/><circle cx="32" cy="39.5" r="5" fill="currentColor"/><rect x="29.5" y="41" width="5" height="9.5" rx="2.5" fill="currentColor"/></svg>';
 function screen(cb) {
-  const d = document.createElement('div'); d.id = 'lockScr';
-  d.innerHTML = '<div class="lk"><div class="lk-ic">🔒</div><h1>صورت‌های مالی</h1><div class="lk-dt" id="lkDt">' + dtHtml() + '</div><p>برای باز کردن برنامه، رمز را وارد کنید</p>' +
-    '<input id="lkPw" type="password" autocomplete="off" placeholder="رمز" autofocus>' +
-    '<button id="lkGo" type="button">ورود</button><div id="lkMsg" role="alert"></div></div>';
+  const d = document.createElement('div'); d.id = 'lockScr'; d.className = 'lkS'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-label', 'ورود به برنامه');
+  const RM = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const last = +lkGet(LK_LAST) || 0, fails = +lkGet(LK_FAIL) || 0, ver = window.APP_VERSION ? String(window.APP_VERSION) : '';
+  let meta = '';
+  if (last) meta += '<div class="lk-m"><span>🕓</span><span title="آخرین باری که برنامه روی همین دستگاه باز شد">آخرین ورود: <b>' + lkAgo(last) + '</b></span></div>';
+  if (fails > 0) meta += '<div class="lk-m warn"><span>⚠️</span><span><b><bdi>' + fails + '</bdi> بار رمز اشتباه</b> از آخرین ورود</span></div>';
+  d.innerHTML =
+    '<div class="lk-bg" aria-hidden="true"><i></i><i></i><i></i><i></i></div>' +
+    '<div class="lk-head"><div class="lk-hi" id="lkHi"></div><div class="lk-clock" id="lkClk"></div><div class="lk-dt" id="lkDt"></div>' + (meta ? '<div class="lk-meta">' + meta + '</div>' : '') + '</div>' +
+    '<div class="lk lk2">' +
+      '<div class="lk-emb">' + LK_SVG + '</div>' +
+      '<h1>صورت‌های مالی</h1><div class="lk-sub">برای ورود، رمز را وارد کنید</div>' +
+      '<label class="lk-lab" for="lkPw">🔑 رمز ورود</label>' +
+      '<div class="lk-f"><input id="lkPw" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="go" placeholder="اینجا بنویسید" autofocus>' +
+        '<button type="button" class="lk-eye" id="lkEye" aria-label="نمایش رمز" aria-pressed="false" title="نمایش / پنهان کردن رمز">👁</button></div>' +
+      '<div class="lk-w" id="lkCaps" hidden>⇪ دکمهٔ <b dir="ltr">Caps Lock</b> روشن است؛ حروف بزرگ نوشته می‌شود</div>' +
+      '<div class="lk-w" id="lkFa" hidden>⌨️ صفحه‌کلید <b>فارسی</b> است؛ اگر رمزتان انگلیسی است، زبان صفحه‌کلید را عوض کنید</div>' +
+      '<button id="lkGo" type="button"><span class="lk-gt">ورود</span><span class="lk-ar" aria-hidden="true">←</span><i class="lk-spin" aria-hidden="true"></i></button>' +
+      '<div id="lkMsg" role="alert"></div>' +
+      '<details class="lk-help"><summary>❔ رمز را فراموش کرده‌اید؟</summary><div>' +
+        'رمز در هیچ جای دیگری نگه داشته نمی‌شود و <b>قابل بازیابی نیست</b>؛ اطلاعات با همین رمز قفل شده‌اند.<br>' +
+        '• اگر رمز را تازگی عوض کرده‌اید، اول <b>رمز جدید</b> و بعد <b>رمز قبلی</b> را امتحان کنید.<br>' +
+        '• به <b>حروف بزرگ و کوچک</b> و <b>زبان صفحه‌کلید</b> دقت کنید؛ با 👁 رمزی را که نوشته‌اید ببینید.<br>' +
+        '• یک نسخهٔ پشتیبان یا فایل قدیمی‌تر، با رمزِ همان زمان باز می‌شود.</div></details>' +
+    '</div>' +
+    '<div class="lk-foot"><span>🔐 اطلاعات رمزگذاری‌شده</span><span>📴 بدون اینترنت</span>' +
+      (ver ? '<span>نسخهٔ <bdi dir="ltr">' + ver + '</bdi></span>' : '') + '</div>';
   document.body.appendChild(d);
-  const inp = d.querySelector('#lkPw'), msg = d.querySelector('#lkMsg'), btn = d.querySelector('#lkGo');
-  const dtv = setInterval(() => { const x = d.querySelector('#lkDt'); if (!x || !d.isConnected) { clearInterval(dtv); return; } x.innerHTML = dtHtml(); }, 15000);
-  let busy = false;
+  const q = s => d.querySelector(s);
+  const inp = q('#lkPw'), msg = q('#lkMsg'), btn = q('#lkGo'), eye = q('#lkEye'), card = q('.lk2'), caps = q('#lkCaps'), fa = q('#lkFa'), help = q('.lk-help'), gt = q('.lk-gt'), ar = q('.lk-ar');
+  /* the greeting, the clock and the day */
+  const tick = () => {
+    const n = new Date(), put = (s, h) => { const x = q(s); if (x && x.innerHTML !== h) x.innerHTML = h; };
+    put('#lkHi', lkHi(n.getHours())); put('#lkClk', '<bdi dir="ltr">' + lkP2(n.getHours()) + '<i>:</i>' + lkP2(n.getMinutes()) + '</bdi>'); put('#lkDt', lkDay(n));
+  };
+  tick(); const tv = setInterval(() => { if (!d.isConnected || d.id !== 'lockScr') { clearInterval(tv); return; } tick(); }, 1000);
+  const say = (t, cls) => { msg.textContent = t || ''; msg.className = t ? (cls || '') : ''; };
+  const bad = () => {
+    card.classList.remove('lk-shake'); void card.offsetWidth; card.classList.add('lk-shake', 'lk-bad');
+    try { if (navigator.vibrate) navigator.vibrate(120); } catch (e) { }
+  };
+  /* 👁: show / hide what was typed */
+  eye.addEventListener('mousedown', e => e.preventDefault());
+  eye.onclick = () => {
+    const show = inp.type === 'password'; inp.type = show ? 'text' : 'password';
+    eye.textContent = show ? '🙈' : '👁'; eye.setAttribute('aria-pressed', String(show)); eye.setAttribute('aria-label', show ? 'پنهان کردن رمز' : 'نمایش رمز');
+    d.classList.toggle('lk-shown', show); inp.focus(); try { const n = inp.value.length; inp.setSelectionRange(n, n); } catch (e) { }
+  };
+  /* Caps Lock and a Persian keyboard */
+  const capsOf = e => { try { if (e && e.getModifierState) caps.hidden = !e.getModifierState('CapsLock'); } catch (er) { } };
+  inp.addEventListener('keyup', capsOf); inp.addEventListener('blur', () => { caps.hidden = true; });
+  inp.addEventListener('input', () => { fa.hidden = !LK_FA.test(inp.value); card.classList.remove('lk-bad'); if (msg.className === 'err') say(''); });
+  let busy = false, tries = 0;
   function go() {
-    if (busy) return; const pw = normPw(inp.value); if (!pw) { msg.textContent = 'رمز را بنویسید'; inp.focus(); return; }
-    busy = true; msg.textContent = 'در حال بررسی…'; btn.disabled = true;
+    if (busy) return; const pw = normPw(inp.value);
+    if (!pw) { say('✍️ اول رمز را بنویسید', 'err'); bad(); inp.focus(); return; }
+    busy = true; say(''); d.classList.add('lk-busy'); btn.disabled = true; inp.readOnly = true; gt.textContent = 'در حال بررسی…';
     setTimeout(() => {
       let ok = false; try { ok = tryPw(pw); } catch (e) { ok = false; }
-      busy = false; btn.disabled = false;
-      if (!ok) { msg.textContent = devGen() ? '✖ رمز اشتباه است. اگر رمز را تازگی عوض کرده‌اید، رمز جدید را بنویسید' : '✖ رمز اشتباه است'; inp.value = ''; inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); inp.focus(); return; }
+      if (!ok) {
+        busy = false; tries++; d.classList.remove('lk-busy'); btn.disabled = false; inp.readOnly = false; gt.textContent = 'ورود';
+        lkSet(LK_FAIL, (+lkGet(LK_FAIL) || 0) + 1);
+        say((devGen() ? '✖ رمز اشتباه است. اگر رمز را تازگی عوض کرده‌اید، رمز جدید را بنویسید' : '✖ رمز اشتباه است') + (tries > 1 ? ' (بار ' + tries + ')' : ''), 'err');
+        if (tries >= 3 && help) help.open = true;
+        inp.value = ''; fa.hidden = true; bad(); inp.focus(); return;
+      }
+      lkSet(LK_LAST, Date.now()); lkSet(LK_FAIL, null);
       remember();
-      d.remove(); cb();
-    }, 40);
+      inp.type = 'password'; d.classList.remove('lk-busy', 'lk-shown'); d.classList.add('lk-ok'); gt.textContent = 'خوش آمدید'; ar.textContent = '✔'; say('');
+      setTimeout(() => {
+        d.id = 'lockOut'; clearInterval(tv); try { inp.blur(); } catch (e) { }
+        try { cb(); } finally {
+          if (RM) d.remove();
+          else { requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('lk-out'))); setTimeout(() => d.remove(), 700); }
+        }
+      }, RM ? 0 : 380);
+    }, 60);
   }
-  btn.onclick = go; inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+  btn.onclick = go;
+  inp.addEventListener('keydown', e => {
+    capsOf(e);
+    if (e.key === 'Enter') { e.preventDefault(); go(); }
+    else if (e.key === 'Escape') { inp.value = ''; fa.hidden = true; say(''); card.classList.remove('lk-bad'); }
+  });
+  d.addEventListener('click', e => { if (!busy && (e.target === d || (e.target.closest && e.target.closest('.lk-head, .lk-bg')))) inp.focus(); });
   setTimeout(() => inp.focus(), 50);
 }
 /* run cb() once the file is unlocked (immediately when it is not protected) */
@@ -12920,9 +13139,12 @@ const FIXES = [
    of every list and total.  One investor was closed when his account was settled; later money came in again (1405/07/30) and the mark stayed, so an
    account of 122,160,000 was hidden.  Now a closed investor whose account is not zero is opened again by itself — at every opening and after
    every change — as an ordinary change, so the other devices get it too. */
+/* v46.1: an account the owner closes BY HAND stays closed, even with money in it: the balance it had when it was closed is kept
+   (meta.closedBal), and it is opened again only when its balance is no longer that one (money came in or went out after the closing). */
 function reopenActive() {
   const db = App.db, C = App.C; if (!db || !C || !(db.closedMembers || []).length || !App.commit) return;
-  const hit = db.closedMembers.filter(n => { try { return Math.abs(C.balance(n)) >= 1; } catch (e) { return false; } });
+  const kept = (db.meta && db.meta.closedBal) || {};
+  const hit = db.closedMembers.filter(n => { try { const b = C.balance(n); return Math.abs(b) >= 1 && Math.abs(b - (+kept[n] || 0)) >= 1; } catch (e) { return false; } });
   if (!hit.length) return;
   /* the profit of the time the account was closed is not owed: it is counted from the day money came in again (after the last zero) */
   const restart = {};
@@ -12940,7 +13162,23 @@ function reopenActive() {
 let busy = false;
 const H = App.H;
 const oc = App.commit;
-if (typeof oc === 'function') App.commit = function () { const r = oc.apply(this, arguments); if (!busy && done) setTimeout(() => { try { reopenActive(); } catch (e) { } }, 50); return r; };
+/* every change: an account closed now keeps the balance it had (see above); one opened again forgets it */
+function keepClosing(fn) {
+  return function (d) {
+    const before = (d.closedMembers || []).slice(), C0 = App.C;
+    const r = fn.apply(this, arguments);
+    try {
+      const now = d.closedMembers || [], m = d.meta || (d.meta = {});
+      now.filter(n => before.indexOf(n) < 0).forEach(n => { let b = 0; try { b = Math.round(C0.balance(n)); } catch (e) { } if (Math.abs(b) >= 1) (m.closedBal = m.closedBal || {})[n] = b; });
+      if (m.closedBal) { before.filter(n => now.indexOf(n) < 0).forEach(n => { delete m.closedBal[n]; }); if (!Object.keys(m.closedBal).length) delete m.closedBal; }
+    } catch (e) { console.error(e); }
+    return r;
+  };
+}
+if (typeof oc === 'function') App.commit = function () {
+  const a = Array.prototype.slice.call(arguments); if (typeof a[1] === 'function') a[1] = keepClosing(a[1]);
+  const r = oc.apply(this, a); if (!busy && done) setTimeout(() => { try { reopenActive(); } catch (e) { } }, 50); return r;
+};
 App.reopenActive = reopenActive;
 let done = false;
 function run() {
