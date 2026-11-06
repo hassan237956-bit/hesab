@@ -2608,7 +2608,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "45.4"; window.APP_BUILD = "1405/08/13 18:17";
+window.APP_VERSION = "45.5"; window.APP_BUILD = "1405/08/15 15:21";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -5193,7 +5193,7 @@ App.saveUnitForm = function (iTxt) {
 
 /* ---------------------------------------------------------------- LOANS */
 P.loans = function () {
-  const C = App.C; const ls = E.loanStatus(C);
+  const C = App.C; const ls = E.loanStatus(C).filter(l => !(App.isArchived && App.isArchived(l.title)));
   const tot = k => ls.reduce((s, l) => s + l[k], 0);
   let h = '<div class="cards">' + card('c-rose', 'مانده کل وام‌ها', fmt(tot('rem')), ls.length + ' وام') + card('c-navy', 'اصل کل وام‌ها', fmt(tot('principal')), '') + card('c-green', 'پرداخت‌شده تا امروز', fmt(tot('paid')), '') + card('c-gold', 'قسط‌های این ماه', fmt(ls.filter(l => l.thisMonth).reduce((s, l) => s + l.nextAmt, 0)), ls.filter(l => l.thisMonth).length + ' قسط') + '</div>';
   h += '<div class="bar noprint"><button class="btn green" data-act="loan-new">＋ تعریف وام جدید</button>' + btnEntry('loan', '🏦 پرداخت قسط', 'violet') + '</div>';
@@ -5206,6 +5206,7 @@ P.loans = function () {
   h += '<div class="box"><div class="wrap"><table class="tbl"><thead><tr><th>وام</th><th>اصل وام</th><th>قسط</th><th class="dep">پرداخت‌شده</th><th class="wd">مانده</th><th>پیشرفت</th><th>قسط بعدی</th><th class="noprint"></th></tr></thead><tbody>' +
     (ls.length ? ls.map(l => '<tr' + (l.warn ? ' style="background:#FEF3C7"' : '') + '><td>' + link(l.title, '/acc/' + H.slug(l.title)) + '<div class="hint">' + esc(l.borrower || '') + ' · ' + esc(l.status) + '</div></td><td class="n">' + fmt(l.principal) + '</td><td class="n">' + fmt(l.amt) + '<div class="hint">× ' + l.n + ' ماه</div></td><td class="n dep">' + fmt(l.paid) + '</td><td class="n wd">' + fmt(l.rem) + '</td><td style="min-width:100px">' + bar(l.pct, 'var(--green)') + '<div class="hint" style="text-align:center">' + (l.pct * 100).toFixed(0) + '٪ · ' + l.cnt + ' از ' + l.n + '</div></td><td class="c"><span class="num">' + esc(l.nextDue) + '</span><div class="num">' + fmt(l.nextAmt) + '</div>' + (l.warn ? '<div class="' + (l.dueSer < App.today ? 'bad' : 'warn') + '">' + esc(l.warn) + '</div>' : '') + '</td><td class="act noprint"><button class="btn sm violet" data-act="new-entry" data-tpl="loan" data-x="' + esc(l.title) + '">پرداخت قسط</button> <button class="btn sm grey" data-act="loan-sched" data-title="' + esc(l.title) + '">جدول</button> <button class="btn sm gold" title="ویرایش سررسید و مشخصات وام" data-act="loan-edit" data-slot="' + l.slot + '">✎ ویرایش سررسید</button></td></tr>').join('') : emptyRow(8, 'هنوز وامی تعریف نشده')) +
     '</tbody><tfoot><tr><td>جمع</td><td class="n">' + fmt(tot('principal')) + '</td><td></td><td class="n">' + fmt(tot('paid')) + '</td><td class="n">' + fmt(tot('rem')) + '</td><td colspan="3"></td></tr></tfoot></table></div></div>';
+  if (App.archiveBox) h += App.archiveBox([G.LOAN]);
   return { title: 'وام‌ها', html: h };
 };
 App.openLoanSchedule = function (title) {
@@ -7431,7 +7432,15 @@ App.loanBox = function (opts) {
   if (S.cOd) h += stat('od', '⚠', 'معوق از ماه‌های قبل', S.cOd, S.od);
   h += stat('fut', '📅', 'اقساط ماه‌های بعد', S.cFut, S.fut, 'تا آخرین قسط همهٔ وام‌ها') + stat('all', '🏛', 'کل مانده بدهی وام‌ها', S.cAll, S.all);
   if (opts.home) h += '</div></div>' + upcoming(S) + '</div>';                    // home: the totals only + the instalments of the next 3 days (details are on the loans page)
-  else h += '</div></div><div class="lnlist">' + S.rows.slice().sort((a, b) => (b.has - a.has) || (a.full - b.full) || (a.dueSer - b.dueSer)).map(rowHtml).join('') + '</div></div>';
+  else {
+    /* v45.5: a finished loan is in the archive: gone from the list; if its last instalment was paid this month it waits in a small fold
+       (the month's numbers above still count that payment) */
+    const arch = r => !!(App.isArchived && App.isArchived(r.l.title));
+    const srt = a => a.slice().sort((a, b) => (b.has - a.has) || (a.full - b.full) || (a.dueSer - b.dueSer));
+    const live = S.rows.filter(r => !arch(r)), gone = S.rows.filter(r => arch(r) && r.has);
+    h += '</div></div><div class="lnlist">' + srt(live).map(rowHtml).join('') + '</div>' +
+      (gone.length ? '<details class="fold lnarch"><summary>🗄 تمام شد و به بایگانی رفت <b class="num">' + gone.length + '</b> <small>— قسط آخرش همین ماه پرداخت شد</small></summary><div class="lnlist">' + srt(gone).map(rowHtml).join('') + '</div></details>' : '') + '</div>';
+  }
   return h;
 };
 
@@ -8539,7 +8548,7 @@ document.addEventListener('change', e => { if (e.target && e.target.id === 'ef_t
 (function () {
 'use strict';
 const App = window.App, E = window.Engine, H = App.H, G = App.G, esc = H.esc, P = App.pages;
-const KEYS = [['mem', G.MEM, '👥 سرمایه‌گذاران', 'dep'], ['debt', G.DEBT, '🤝 بدهکاران', 'lend'], ['cred', G.CRED, '📋 بستانکاران', 'borrow'], ['asset', G.ASSET, '💱 ارز و طلا', 'buy'], ['inv', G.INV, '📈 سایر سرمایه‌گذاری‌ها', 'inv']];
+const KEYS = [['mem', G.MEM, '👥 سرمایه‌گذاران', 'dep'], ['debt', G.DEBT, '🤝 بدهکاران', 'lend'], ['cred', G.CRED, '📋 بستانکاران', 'borrow'], ['asset', G.ASSET, '💱 ارز و طلا', 'buy'], ['inv', G.INV, '📈 سایر سرمایه‌گذاری‌ها', 'inv'], ['loan', G.LOAN, '🏛 وام‌های تمام‌شده', 'loan']];   // v45.5: a loan whose last instalment is paid
 const keyOf = g => { if (g === G.SHORT) g = G.CRED; const k = KEYS.find(x => x[1] === g); return k ? k[0] : ''; };
 let cacheC = null, cache = null;
 function info() {
@@ -8551,12 +8560,16 @@ function info() {
   }
   const qty = new Map(); try { E.fxPositions(C).forEach(x => qty.set(x.name, x.qty)); } catch (e) { }
   const closed = new Set(db.closedMembers || []), owner = (db.meta || {}).owner;
+  /* v45.5 (the owner 1405/08/15: «وام برنج عموجان دوهزار صاف شد، چرا نرفته تو بایگانی؟»): a loan goes to the archive when all its instalments are
+     paid and nothing is owed on it any more; a loan that still has instalments never does, whatever its balance */
+  const loanEnd = new Map(); try { E.loanStatus(C).forEach(l => loanEnd.set(l.title, l.n > 0 && l.done && l.rem <= 0.5)); } catch (e) { }
   const cands = new Map(); db.accounts.forEach(a => cands.set(a.name, a.group)); (db.assets || []).forEach(a => cands.set(a.name, G.ASSET));
   const set = new Set(), list = [];
   cands.forEach((group, name) => {
     if (name === owner || !keyOf(group)) return;
     const u = used.get(name), isAsset = group === G.ASSET;
-    const zero = isAsset ? Math.abs(qty.get(name) || 0) < 1e-7 : Math.abs(C.balance(name)) < 0.5;
+    let zero = isAsset ? Math.abs(qty.get(name) || 0) < 1e-7 : Math.abs(C.balance(name)) < 0.5;
+    if (group === G.LOAN && loanEnd.has(name) && !loanEnd.get(name)) zero = false;
     const isClosed = group === G.MEM && closed.has(name);
     if ((zero && u && u.n > 0) || isClosed) { set.add(name); list.push({ name, group, key: keyOf(group), u: u || { n: 0, first: '', last: '', l: -1 }, closed: isClosed }); }
   });
