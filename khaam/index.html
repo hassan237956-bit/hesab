@@ -2638,7 +2638,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "45.5"; window.APP_BUILD = "1405/08/15 18:11";
+window.APP_VERSION = "45.6"; window.APP_BUILD = "1405/08/15 18:30";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -3253,7 +3253,9 @@ function fmt(n, dec) {
   const neg = n < 0 && Number(v) !== 0;
   return neg ? '-' + s : s;
 }
-function fmtq(n) { return fmt(n, 4); }     // quantities (up to 4 decimals)
+function fmtq(n) { return fmt(n, 2); }     // quantities: at most two decimals, rounded (v45.6)
+/* a quantity written into a box of a form: the noise of the computer's sums taken away (137.99999978 → 138); two decimals when that is what it is */
+function qstr(n) { n = Number(n); if (n === null || !isFinite(n)) return ''; const x = +n.toFixed(6), r = Math.round(x * 100) / 100; return String(Math.abs(x - r) < 1e-6 ? r : +x.toFixed(4)); }
 function numCell(n, cls) { return '<td class="n ' + (cls || '') + (Number(n) < -0.5 ? ' neg' : '') + '">' + (n === '' || n === null || n === undefined ? '' : fmt(n)) + '</td>'; }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function parseAmount(s) {
@@ -3819,7 +3821,7 @@ App.confirm = function (msg, okLabel, fn) {
   m.querySelector('#cfOk').onclick = () => { App.closeModal(); fn(); };
 };
 
-App.H = { fmt, fmtq, numCell, esc, latin, parseAmount, normDate, amountWords, kindOfGroup, chip, shortGroup, accountsOf, slug };
+App.H = { fmt, fmtq, qstr, numCell, esc, latin, parseAmount, normDate, amountWords, kindOfGroup, chip, shortGroup, accountsOf, slug };
 })();
 
 /* lock: password for the HTML file.  The program asks for the password when the file is opened, and the data that travels inside the
@@ -4343,7 +4345,7 @@ App.openEntry = function (o) {
     const mul = 1;
     F.unit = 'r';
     F.amtTxt = (e.amt === null || e.amt === undefined || e.amt === '') ? '' : fmt(e.amt / mul, 4);
-    F.qty = e.qty == null ? '' : String(e.qty); F.price = e.price == null ? '' : String(e.price); F.fee = e.fee == null ? '' : String(e.fee);
+    F.qty = e.qty == null ? '' : qstr(e.qty); F.price = e.price == null ? '' : String(e.price); F.fee = e.fee == null ? '' : String(e.fee);
     F.loc = e.loc || ''; F.locWas = F.loc; F.dest = e.dest || ''; F.cat = e.cat || '';
   } else {
     if (t.ownerDefault) F.x = ownerName(); if (t.defCat) { F.cat = t.defCat; F.catSel = t.defCat; } if (o.x) F.x = o.x; if (o.y) F.y = o.y; if (o.dest) F.dest = o.dest; if (t.loan && F.x && !F.y) F.y = App.loanMember(F.x); if (o.amt) F.amtTxt = String(o.amt); if (o.cat) { F.cat = o.cat; F.catSel = o.cat; } if (o.loc !== undefined) { F.loc = o.loc; F.locSel = o.loc; F.locTouched = true; }
@@ -10233,7 +10235,7 @@ function sugBox() {
 
 /* ------------------------------------------------------------ the «new trust» form */
 let W = null;
-const strv = o => { ['qty', 'price', 'value'].forEach(k => { if (o[k] !== '' && o[k] != null) o[k] = String(o[k]); }); return o; };
+const strv = o => { ['qty', 'price', 'value'].forEach(k => { if (o[k] !== '' && o[k] != null) o[k] = (k === 'qty' && typeof o[k] === 'number' && H.qstr) ? H.qstr(o[k]) : String(o[k]); }); return o; };   // v45.6: no 38.190000000000005
 const newW = pre => strv(Object.assign({ tid: '', person: '', kind: 'fx', asset: '', title: '', unit: 'عدد', qty: '', price: '', date: E.serToText(App.today), loc: '', mode: '', src: '', accSel: '', value: '', note: '', ent: null }, pre || {}));
 function defaultLoc() { const l = (App.db.locations || []).map(x => x.name); return l.find(n => /امانات/.test(n)) || l[0] || ''; }
 function priceHint() { if (W.kind !== 'fx' || !W.asset) return ''; const ser = +E.jser(H.normDate(W.date) || '') || App.today; const p = priceAt(W.asset, ser); return p > 0 ? p : 0; }
@@ -10406,7 +10408,7 @@ function retPlan() {
   return R;
 }
 App.trustReturn = function (id) {
-  const t = trustOf(id); if (!t) return; RT = { id, qty: String(qtyOf(t)), date: E.serToText(App.today), loc: (t.moves.slice(-1)[0] || {}).loc || '' };
+  const t = trustOf(id); if (!t) return; RT = { id, qty: H.qstr ? H.qstr(qtyOf(t)) : String(qtyOf(t)), date: E.serToText(App.today), loc: (t.moves.slice(-1)[0] || {}).loc || '' };
   const locs = (App.db.locations || []).map(l => '<option value="' + esc(l.name) + '"' + (RT.loc === l.name ? ' selected' : '') + '>' + esc(l.name) + '</option>').join('');
   App.modal('↩ تحویل امانی — ' + esc(t.person), '<div class="trw"><div class="status info" style="line-height:1.9;font-size:1.1rem"><b>' + esc(t.kind === 'fx' ? dispOf(t.asset) : t.title) + '</b>: الان ' + q4(qtyOf(t)) + ' ' + esc(t.kind === 'fx' ? unitOf(t.asset) : t.unit) + ' پیش شماست.</div>' +
     '<div class="field"><label>⚖ چقدر تحویل داده شد؟</label><input type="text" id="rt_qty" class="yellow" value="' + esc(RT.qty) + '" inputmode="decimal"></div>' +
@@ -10455,7 +10457,7 @@ function tbRefresh() { const el = document.getElementById('tbPlan'); if (!el || 
 App.trustBuy = function (id) {
   const t = trustOf(id); if (!t || t.kind !== 'fx') return;
   const p = posOf(t.asset), own = App.db.meta.owner;
-  TB = { id, qty: String(qtyOf(t)), price: String(Math.round(p.price || 0) || ''), date: E.serToText(App.today), loc: (t.moves.slice(-1)[0] || {}).loc || '', pay: '' };
+  TB = { id, qty: H.qstr ? H.qstr(qtyOf(t)) : String(qtyOf(t)), price: String(Math.round(p.price || 0) || ''), date: E.serToText(App.today), loc: (t.moves.slice(-1)[0] || {}).loc || '', pay: '' };
   const locs = (App.db.locations || []).map(l => '<option value="' + esc(l.name) + '"' + (TB.loc === l.name ? ' selected' : '') + '>' + esc(l.name) + '</option>').join('');
   const banks = App.db.accounts.filter(a => a.group === G.CASH && !(App.isArchived && App.isArchived(a.name)));
   const pays = '<option value="">— انتخاب کنید —</option>' + (t.acc ? '<option value="' + esc(t.acc) + '">📋 بدهکار او می‌شوم (حساب «' + esc(t.acc) + '»)</option>' : '') +
@@ -12771,7 +12773,7 @@ function everyBox(list) {
   const kv = (k, v) => '<span>' + k + '</span><b class="num">' + v + '</b>';
   return '<div class="box fxpbox"><h2>📈 هر دارایی: مقدار، ارزش و درصد سود <small>' + (own().any ? 'خالص خودم — امانی‌ها جدا شد · ' : '') + 'روی هر کدام بزنید تا صفحه‌اش باز شود</small></h2><div class="fxpl">' + L.map(x => {
     const p = pctOf(x), cl = p === null ? 'nop' : p < -0.05 ? 'dn' : 'up';
-    const note = !(x.qty > 1e-7) ? 'همهٔ آن امانی است' : !(x.price > 0) ? 'هنوز «قیمت روز» ثبت نشده' : !(x.cost > 0.5) ? 'بهای خریدش ثبت نشده، پس درصد ندارد' : '';
+    const note = !(x.qty > 1e-7) ? 'همهٔ آن امانی است' : !(x.price > 0) ? 'هنوز «قیمت روز» ثبت نشده' : !(x.cost > 0.5) ? '🎁 هدیه / بدون بهای خرید: همهٔ ارزش روزش سود است؛ درصد ندارد' : '';
     let g = kv(x.tq > 1e-9 ? 'موجودی خودم' : 'موجودی', esc(qtyTxt(x.qty, x)));
     if (x.price > 0) g += kv('ارزش روز', fmt(x.val));
     if (x.cost > 0.5) g += kv('بهای تمام‌شده', fmt(x.cost)) + kv(gl(x.unreal) + ' ارزیابی', fmt(Math.abs(x.unreal)));
@@ -12792,18 +12794,53 @@ App.fxOverview = function (name) {
     const nc = L.filter(x => x.qty > 1e-7 && x.price > 0 && !(x.cost > 0.5) && !(App.isArchived && App.isArchived(x.name)));
     return '<div class="cards fxov">' + card('c-gold', 'ارزش روز', fmt(S('val')), sub) + card('c-navy', 'بهای تمام‌شده', fmt(S('cost')), sub) +
       card(S('unreal') >= -0.5 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(S('unreal')), sub) + card(S('real') >= -0.5 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(S('real')), '') +
-      pctCard(pt, 'همهٔ ارز و طلای خودم: ارزش روز در برابر بهای تمام‌شده' + (nc.length ? ' (بدون ' + nc.map(x => esc(x.display || x.name)).join('، ') + ' که بهای خریدشان ثبت نشده)' : ''), 'درصد سود کل') + '</div>' +
+      pctCard(pt, 'همهٔ ارز و طلای خودم: ارزش روز در برابر بهای تمام‌شده' + (nc.length ? ' (بدون ' + nc.map(x => esc(x.display || x.name)).join('، ') + ' که هدیه بوده‌اند و بهای خرید ندارند)' : ''), 'درصد سود کل') + '</div>' +
       trustBox(L, false) + everyBox(L);
   }
   const x = O.by.get(name); if (!x) return '';
   const p = pctOf(x), u = esc(unitTxt(x));
-  const psub = !(x.qty > 1e-7) ? (x.tq > 1e-9 ? 'همهٔ آن امانی است' : 'موجودی ندارید') : !(x.cost > 0.5) ? 'بهای خریدش ثبت نشده، پس درصد ندارد' : x.price > 0 ? 'میانگین خرید ' + fmt(x.avg) + ' ← قیمت روز ' + fmt(x.price) : 'هنوز «قیمت روز» ثبت نشده';
+  const psub = !(x.qty > 1e-7) ? (x.tq > 1e-9 ? 'همهٔ آن امانی است' : 'موجودی ندارید') : !(x.cost > 0.5) ? '🎁 هدیه / بدون بهای خرید: همهٔ ارزش روزش سود است؛ درصد ندارد' : x.price > 0 ? 'میانگین خرید ' + fmt(x.avg) + ' ← قیمت روز ' + fmt(x.price) : 'هنوز «قیمت روز» ثبت نشده';
   return '<div class="cards fxov">' +
     card('c-violet fxq', x.tq > 1e-9 ? 'موجودی خودم' : 'موجودی', esc(q4(x.qty)) + ' <small class="fxu">' + u + '</small>', 'قیمت روز هر ' + esc(x.unit || '') + ': ' + fmt(x.price) + (x.lastDate ? ' (' + esc(x.lastDate) + ')' : '')) +
     card('c-gold', 'ارزش روز', fmt(x.val), x.tq > 1e-9 ? sub : '') + card('c-navy', 'بهای تمام‌شده', fmt(x.cost), x.cost > 0.5 && x.qty > 1e-7 ? 'میانگین خرید هر ' + esc(x.unit || '') + ': ' + fmt(x.avg) : '') +
     card(x.unreal >= -0.5 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(x.unreal), '') + card(x.real >= -0.5 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(x.real), '') +
     pctCard(p, psub) + '</div>' + trustBox([x], true);
 };
+})();
+/* ---------------------------------------------------------------- v45.5 — corrections of the data that the owner confirmed
+   1405/08/15: «۱۰ گرم طلای امانی الف (۱۴۰۵/۰۷/۳۰) با قیمت ۲۶٬۵۸۰٬۰۰۰ ثبت شده؛ درستش ۲۶۵٬۸۰۰٬۰۰۰ است — درستش کن».
+   The price of that receipt is in two places: the move of the «امانی» and the entry it wrote in the books (gold ← «امانی الف»).
+   Both are corrected once, as an ordinary change (it can be undone with «بازگردانی», it goes to the other devices like any change);
+   only while the price is still the wrong one, so nothing is touched twice or after a correction by hand. */
+(function () {
+'use strict';
+const App = window.App; if (!App) return;
+const FIXES = [
+  { id: 'v455-negar-gold-10g', trust: 'Tmvgylley98g', move: 'mmvjg6qio0zn', qty: 10, from: 26580000, to: 265800000,
+    text: 'قیمت ۱۰ گرم طلای امانی الف (۱۴۰۵/۰۷/۳۰) درست شد: هر گرم ۲۶۵٬۸۰۰٬۰۰۰ ریال (به‌جای ۲۶٬۵۸۰٬۰۰۰)' }
+];
+function find(db, f) {
+  const t = (db.trusts || []).find(x => x && x.id === f.trust), m = t && (t.moves || []).find(x => x && x.id === f.move);
+  const e = (db.entries || []).find(x => x && x.auto === 'trust:' + f.trust + ':' + f.move);
+  return { m: m && +m.qty === f.qty && +m.price === f.from ? m : null, e: e && +e.qty === f.qty && +e.price === f.from ? e : null };
+}
+let done = false;
+function run() {
+  if (done) return; const db = App.db; if (!db || !db.entries || !db.meta) return;
+  if (document.querySelector('#modalBg.show .durrep')) { setTimeout(run, 1500); return; }     // first the window about the entries that came back
+  done = true;
+  const todo = FIXES.filter(f => (db.meta.fixes || []).indexOf(f.id) < 0 && (find(db, f).m || find(db, f).e));
+  if (!todo.length) return;
+  try {
+    App.commit('اصلاح قیمت طلای امانی الف', d => {
+      todo.forEach(f => { const r = find(d, f); if (r.m) r.m.price = f.to; if (r.e) r.e.price = f.to; (d.meta.fixes = d.meta.fixes || []).push(f.id); });
+    });
+    App.toast('✔ ' + todo.map(f => f.text).join(' · '));
+  } catch (e) { console.error(e); }
+}
+const oi = App.init;
+if (typeof oi === 'function') App.init = function () { const r = oi.apply(this, arguments); setTimeout(run, 6000); return r; };
+App.dataFixes = FIXES;
 })();
 
 
@@ -15169,7 +15206,7 @@ App.mvPick = function (side, v) {
 App.moveAll = function () {
   const F = readMove(); if (F.from === null) { App.toast('اول مبدأ را انتخاب کنید', true); return; }
   const have = hold(F)[F.from] || 0; if (have <= 0) { App.toast('در این محل موجودی نیست', true); return; }
-  F.qty = String(+have.toFixed(8)); renderMove();
+  F.qty = qstr(have); renderMove();
 };
 App.saveMove = function () {
   const F = readMove(); const date = H.normDate(F.date); const q = H.parseAmount(F.qty); const h = hold(F);
