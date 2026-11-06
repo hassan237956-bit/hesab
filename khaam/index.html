@@ -2601,6 +2601,20 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 .rcpt.top{margin:0 0 10px;font-size:.92rem}
 #stxPrint .rcpt{margin-top:2px;font-size:10px}#stxPrint .rcpt span{padding:0 6px}
 .ax-rd .rcpt{margin-top:3px}
+
+/* v45.5: profit in percent (ارز و طلا) */
+.cards .card.fxpc{grid-column:1/-1}
+.cards .card.fxpc .v{font-size:1.75rem!important}
+.card.fxpc .pcs{unicode-bidi:isolate;font-weight:900}
+.card.fxpc.c-green .v{color:#15803D}.card.fxpc.c-red .v{color:#C81E1E}
+.fxpl{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.fxpr{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 10px;padding:11px 14px;border-radius:16px;border:2px solid #D7DEE8;background:#fff;text-decoration:none;color:inherit;cursor:pointer}
+.fxpr.up{border-color:#86EFAC;background:#F0FDF4}.fxpr.dn{border-color:#FCA5A5;background:#FEF2F2}.fxpr.nop{background:#F8FAFC}
+.fxpr .fxpn{font-size:1.15rem;font-weight:900;color:#0F2A4A}
+.fxpr .fxpv{font-size:1.45rem;font-weight:900;white-space:nowrap}
+.fxpr.up .fxpv{color:#15803D}.fxpr.dn .fxpv{color:#C81E1E}.fxpr.nop .fxpv{color:#64748B}
+.fxpr small{grid-column:1/-1;font-size:.88rem;font-weight:700;color:#475569;line-height:1.8}
+.fxpr small b{font-weight:900;color:#0F2A4A}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -2608,7 +2622,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "45.5"; window.APP_BUILD = "1405/08/15 15:21";
+window.APP_VERSION = "45.5"; window.APP_BUILD = "1405/08/15 17:12";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -4738,7 +4752,7 @@ function othersText(list) {
   return seen.map(n => n === s.CLEAR ? 'مانده اول دوره' : n === s.LINK ? 'حساب واسط' : n === s.PL_OTH ? 'هزینه/درآمد' : n);
 }
 App.othersText = othersText;
-const CARD_ICO = { 'c-navy': '🏛', 'c-red': '📉', 'c-green': '💎', 'c-violet': '👥', 'c-teal': '💵', 'c-rose': '⚠', 'c-grey': '✅', 'c-gold': '💱', 'c-orange': '📌' };
+const CARD_ICO = { 'c-navy': '🏛', 'c-red': '📉', 'c-green': '💎', 'c-violet': '👥', 'c-teal': '💵', 'c-rose': '⚠', 'c-grey': '✅', 'c-gold': '💱', 'c-orange': '📌', 'c-green fxpc': '📈', 'c-red fxpc': '📉' };
 App.card = (...a) => card(...a);
 function card(cls, t, v, s, to) { return '<div class="card ' + cls + '"' + (to ? ' data-act="go" data-to="' + esc(to) + '" style="cursor:pointer"' : '') + '><div class="t"><span class="ci">' + (CARD_ICO[cls] || '•') + '</span>' + t + '</div><div class="v num">' + v + '</div><div class="s">' + (s || '&nbsp;') + '</div></div>'; }
 function btnEntry(tpl, label, cls, extra) {
@@ -5250,6 +5264,20 @@ App.saveLoanForm = function (slotTxt) {
 /* ---------------------------------------------------------------- FX / GOLD */
 const sgn = v => (v > 0.5 ? '+' : '') + fmt(v);
 const pct = (a, b) => (b > 0 ? ' (٪' + Math.round(a / b * 100) + ')' : '');
+const pctN = (u, c) => (c > 0.5 ? u / c * 100 : null);
+const pctS = p => { if (p === null || !isFinite(p)) return '—'; const a = Math.abs(p), n = a >= 10 ? Math.round(a) : Math.round(a * 10) / 10; return '<span class="pcs" dir="ltr">' + (n === 0 ? '' : p > 0 ? '▲ +' : '▼ −') + n + '٪</span>'; };
+/* only what has a price today: an asset without «قیمت روز» would look like a loss of 100٪ */
+const pctOf = list => { const L = list.filter(x => x.qty > 1e-7 && x.price > 0 && x.cost > 0.5); const u = L.reduce((t, x) => t + x.unreal, 0), c = L.reduce((t, x) => t + x.cost, 0); return pctN(u, c); };
+const pctCard = (p, sub, t) => card((p !== null && p < -0.05 ? 'c-red' : 'c-green') + ' fxpc', t || 'درصد سود', pctS(p), sub);
+function fxPctBox(fx) {
+  const L = fx.filter(x => x.qty > 1e-7); if (!L.length) return '';
+  return '<div class="box fxpbox"><h2>📈 درصد سود هر دارایی <small>قیمت روز در برابر قیمت تمام‌شده (میانگین خرید)</small></h2><div class="fxpl">' + L.map(x => {
+    const p = x.price > 0 ? pctN(x.unreal, x.cost) : null, cl = p === null ? 'nop' : p < -0.05 ? 'dn' : 'up';
+    if (!(x.cost > 0.5)) return '<a class="fxpr nop" data-act="go" data-to="/asset/' + esc(H.slug(x.name)) + '"><span class="fxpn">' + esc(x.display || x.name) + '</span><b class="fxpv num">—</b><small>بهای خریدش ثبت نشده، پس درصد ندارد' + (x.price > 0 ? ' · ارزش روز <b class="num">' + fmt(x.val) + '</b>' : '') + '</small></a>';
+    return '<a class="fxpr ' + cl + '" data-act="go" data-to="/asset/' + esc(H.slug(x.name)) + '"><span class="fxpn">' + esc(x.display || x.name) + '</span><b class="fxpv num">' + pctS(p) + '</b>' +
+      '<small>' + (x.price > 0 ? 'میانگین خرید <b class="num">' + fmt(x.avg) + '</b> ← قیمت روز <b class="num">' + fmt(x.price) + '</b> · ' + (x.unreal < -0.5 ? 'زیان' : 'سود') + ' <b class="num">' + fmt(Math.abs(x.unreal)) + '</b>' : 'هنوز «قیمت روز» ثبت نشده') + '</small></a>';
+  }).join('') + '</div><div class="hint" style="margin-top:6px">درصد سود = سود ارزیابی ÷ بهای تمام‌شده × ۱۰۰ — یعنی قیمت روز چند درصد بالاتر (یا پایین‌تر) از میانگین قیمتی است که خریده‌اید. روی هر کدام بزنید تا صفحه‌اش باز شود.</div></div>';
+}
 function fxCards(fx) {
   const live = fx.filter(x => Math.abs(x.qty) > 1e-7 || Math.abs(x.real) > 0.5);
   if (!live.length) return '';
@@ -5274,7 +5302,8 @@ function fxCards(fx) {
 P.fx = function () {
   const C = App.C; const fxAll = E.fxPositions(C); const fx = fxAll.filter(x => !App.isArchived(x.name)); const lm = E.locationMatrix(C); const assets = C.db.assets.filter(a => !App.isArchived(a.name));
   const sum = k => fxAll.reduce((s, x) => s + x[k], 0);
-  let h = '<div class="cards">' + card('c-gold', 'ارزش روز', fmt(sum('val')), '') + card('c-navy', 'بهای تمام‌شده', fmt(sum('cost')), '') + card(sum('unreal') >= 0 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(sum('unreal')), '') + card(sum('real') >= 0 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(sum('real')), '') + '</div>';
+  let h = '<div class="cards">' + card('c-gold', 'ارزش روز', fmt(sum('val')), '') + card('c-navy', 'بهای تمام‌شده', fmt(sum('cost')), '') + card(sum('unreal') >= 0 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(sum('unreal')), '') + card(sum('real') >= 0 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(sum('real')), '') +
+    pctCard(pctOf(fxAll), 'همهٔ ارز و طلا: ارزش روز در برابر بهای تمام‌شده' + (nc => nc.length ? ' (بدون ' + nc.map(x => esc(x.display || x.name)).join('، ') + ' که بهای خریدشان ثبت نشده)' : '')(fx.filter(x => x.qty > 1e-7 && !(x.cost > 0.5))), 'درصد سود کل') + '</div>' + fxPctBox(fx);
   h += '<div class="bar noprint">' + btnEntry('buy', '💱 خرید', 'green') + btnEntry('sell', '💱 فروش', 'orange') + btnEntry('price', '🏷 قیمت روز', 'gold') + '<button class="btn violet sm" data-act="new-acc" data-group="' + esc(G.ASSET) + '">＋ ارز/طلای جدید</button><button class="btn teal sm" data-act="move-new">🔀 انتقال بین محل‌ها</button><a class="btn teal sm" data-act="go" data-to="/fxloc" style="text-decoration:none">📍 محل نگهداری (گزارش)</a></div>';
   h += fxCards(fx);
   h += '<div class="box"><h2>جدول کامل موجودی و ارزش</h2><div class="wrap"><table class="tbl"><thead><tr><th>دارایی</th><th>مقدار</th><th>میانگین خرید</th><th>قیمت روز</th><th>بهای تمام‌شده</th><th class="bal">ارزش روز</th><th class="prf">سود/زیان ارزیابی</th><th class="prf">سود/زیان فروش</th><th>آخرین قیمت</th><th class="noprint"></th></tr></thead><tbody>' +
@@ -5314,7 +5343,11 @@ P.fxloc = function () {
 P.asset = function (name) {
   const C = App.C; const a = C.db.assets.find(x => x.name === name); if (!a) return { title: 'پیدا نشد', html: '<div class="box">پیدا نشد</div>' };
   const x = E.fxPositions(C).find(p => p.name === name); const rows = C.rows.filter(r => r.item === name && (r.X === 4 || r.X === 5 || r.X === 6)); const notes = E.notesOf(C, name);
-  let h = '<div class="cards">' + card('c-navy', 'موجودی (' + esc(a.unit) + ')', H.fmtq(x.qty), 'میانگین خرید ' + fmt(x.avg)) + card('c-gold', 'قیمت روز', fmt(x.price), x.lastDate) + card('c-teal', 'ارزش روز', fmt(x.val), 'بها: ' + fmt(x.cost)) + card(x.unreal >= 0 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی', fmt(x.unreal), 'فروش‌ها: ' + fmt(x.real)) + '</div>';
+  /* v45.5: first the same report as the page «ارز و طلا», for this asset alone, and its profit in percent */
+  const xp = x.qty > 1e-7 && x.price > 0 ? pctN(x.unreal, x.cost) : null;
+  let h = '<div class="cards">' + card('c-gold', 'ارزش روز', fmt(x.val), '') + card('c-navy', 'بهای تمام‌شده', fmt(x.cost), '') + card(x.unreal >= -0.5 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(x.unreal), '') + card(x.real >= -0.5 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(x.real), '') +
+    pctCard(xp, x.qty > 1e-7 ? (!(x.cost > 0.5) ? 'بهای خریدش ثبت نشده، پس درصد ندارد' : x.price > 0 ? 'میانگین خرید ' + fmt(x.avg) + ' ← قیمت روز ' + fmt(x.price) : 'هنوز «قیمت روز» ثبت نشده') : 'موجودی ندارید') +
+    card('c-violet', 'موجودی (' + esc(a.unit) + ')', H.fmtq(x.qty), 'میانگین خرید ' + fmt(x.avg)) + card('c-orange', 'قیمت روز', fmt(x.price), x.lastDate) + '</div>';
   h += '<div class="bar noprint"><button class="btn green sm" data-act="new-entry" data-tpl="buy" data-x="' + esc(name) + '">💱 خرید</button><button class="btn gold sm" data-act="new-entry" data-tpl="sell" data-x="' + esc(name) + '">💱 فروش</button><button class="btn violet sm" data-act="new-entry" data-tpl="price" data-x="' + esc(name) + '">🏷 قیمت روز</button><button class="btn teal sm" data-act="move-new" data-asset="' + esc(name) + '">🔀 انتقال بین محل‌ها</button></div>';
   h += '<div class="box"><div class="wrap"><table class="tbl"><thead><tr><th>ردیف</th><th>تاریخ</th><th>نوع</th><th class="dep">مقدار</th><th>قیمت واحد</th><th class="bal">مبلغ</th><th>موجودی پس از ثبت</th><th class="desc">شرح</th><th>کارمزد</th><th>بها پس از ثبت</th><th class="prf">سود/زیان</th><th>محل</th><th class="noprint"></th></tr></thead><tbody>' +
     (rows.length ? rows.map((r, i) => { const e = r.e; return '<tr><td class="c rn">' + (i + 1) + '</td><td class="c num">' + esc(r.date) + '</td><td class="c">' + esc(E.KIND_NAMES[r.X]) + '</td><td class="n dep">' + (r.X === 6 ? '' : H.fmtq(r.G)) + '</td><td class="n">' + fmt(r.H) + '</td><td class="n bal">' + fmt(r.M) + '</td><td class="n">' + (r.X === 6 ? '' : H.fmtq(r.qa)) + '</td><td class="desc">' + esc(r.desc) + '</td><td class="n">' + (r.Jf ? fmt(r.Jf) : '') + '</td><td class="n">' + (r.X === 6 ? '' : fmt(r.ca)) + '</td><td class="n prf">' + (r.X === 5 ? fmt(r.gain) : r.X === 6 ? fmt(r.M) : '') + '</td><td class="hint">' + esc(r.K || '') + '</td>' + actCell(e.virtual ? null : e) + '</tr>'; }).join('') : emptyRow(13, 'هنوز ثبتی ندارد')) +
