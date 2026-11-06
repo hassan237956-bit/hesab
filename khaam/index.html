@@ -2602,19 +2602,35 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 #stxPrint .rcpt{margin-top:2px;font-size:10px}#stxPrint .rcpt span{padding:0 6px}
 .ax-rd .rcpt{margin-top:3px}
 
-/* v45.5: profit in percent (ارز و طلا) */
+/* v45.5: ارز و طلا — the overview, the profit in percent, the units of others apart */
 .cards .card.fxpc{grid-column:1/-1}
 .cards .card.fxpc .v{font-size:1.75rem!important}
 .card.fxpc .pcs{unicode-bidi:isolate;font-weight:900}
 .card.fxpc.c-green .v{color:#15803D}.card.fxpc.c-red .v{color:#C81E1E}
-.fxpl{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
-.fxpr{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 10px;padding:11px 14px;border-radius:16px;border:2px solid #D7DEE8;background:#fff;text-decoration:none;color:inherit;cursor:pointer}
+.card .fxu{font-size:.75em;font-weight:800;color:#475569}
+.fxpl{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.fxpr{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px 10px;padding:12px 14px;border-radius:16px;border:2px solid #D7DEE8;background:#fff;text-decoration:none;color:inherit;cursor:pointer}
 .fxpr.up{border-color:#86EFAC;background:#F0FDF4}.fxpr.dn{border-color:#FCA5A5;background:#FEF2F2}.fxpr.nop{background:#F8FAFC}
-.fxpr .fxpn{font-size:1.15rem;font-weight:900;color:#0F2A4A}
-.fxpr .fxpv{font-size:1.45rem;font-weight:900;white-space:nowrap}
+.fxpr .fxpn{font-size:1.2rem;font-weight:900;color:#0F2A4A}
+.fxpr .fxpv{font-size:1.5rem;font-weight:900;white-space:nowrap}
 .fxpr.up .fxpv{color:#15803D}.fxpr.dn .fxpv{color:#C81E1E}.fxpr.nop .fxpv{color:#64748B}
-.fxpr small{grid-column:1/-1;font-size:.88rem;font-weight:700;color:#475569;line-height:1.8}
-.fxpr small b{font-weight:900;color:#0F2A4A}
+.fxpg{grid-column:1/-1;display:grid;grid-template-columns:auto 1fr;gap:3px 12px;align-items:baseline;border-top:1px dashed #CBD5E1;padding-top:6px}
+.fxpg span{font-size:.95rem;font-weight:800;color:#475569;white-space:nowrap}
+.fxpg b{font-size:1.08rem;font-weight:900;color:#0F2A4A;text-align:left;direction:ltr;unicode-bidi:isolate;overflow-wrap:anywhere}
+.fxpr small{grid-column:1/-1;font-size:.9rem;font-weight:800;line-height:1.7}
+.fxpr .fxpno{color:#64748B}.fxpr .fxpt{color:#7C4A03;background:#FFF7E6;border:1px solid #F3D9A4;border-radius:10px;padding:2px 9px}
+.fxtr{border:2px solid #F3D9A4;background:#FFFBF0}
+.fxtr-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.fxtr-a{background:#fff;border:1px solid #F3D9A4;border-radius:14px;padding:10px 13px}
+.fxtr-h{font-size:1.15rem;font-weight:900;color:#0F2A4A;margin-bottom:4px}
+.fxtr-r{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:2px 10px;padding:4px 0;font-size:1.02rem;font-weight:800;color:#334155}
+.fxtr-r b{font-size:1.12rem;font-weight:900;color:#0F2A4A}
+.fxtr-r small{flex-basis:100%;font-size:.85rem;font-weight:700;color:#64748B}
+.fxtr-r.neg span,.fxtr-r.neg b{color:#B45309}
+.fxtr-r.tot{border-top:2px solid #0F2A4A;margin-top:3px;padding-top:6px}.fxtr-r.tot span,.fxtr-r.tot b{color:#15803D;font-size:1.15rem}
+.fxtr-n{font-size:.92rem;font-weight:700;color:#7C4A03;line-height:1.8;margin-top:4px}
+.fxtr-f{margin-top:8px;font-size:1rem;font-weight:800;color:#475569}
+.lcard .lct{font-size:.88rem;font-weight:800;color:#7C4A03;background:#FFF7E6;border:1px solid #F3D9A4;border-radius:10px;padding:2px 8px;margin:2px 0 4px;line-height:1.7}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -2622,7 +2638,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "45.5"; window.APP_BUILD = "1405/08/15 17:12";
+window.APP_VERSION = "45.5"; window.APP_BUILD = "1405/08/15 18:11";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -4752,7 +4768,7 @@ function othersText(list) {
   return seen.map(n => n === s.CLEAR ? 'مانده اول دوره' : n === s.LINK ? 'حساب واسط' : n === s.PL_OTH ? 'هزینه/درآمد' : n);
 }
 App.othersText = othersText;
-const CARD_ICO = { 'c-navy': '🏛', 'c-red': '📉', 'c-green': '💎', 'c-violet': '👥', 'c-teal': '💵', 'c-rose': '⚠', 'c-grey': '✅', 'c-gold': '💱', 'c-orange': '📌', 'c-green fxpc': '📈', 'c-red fxpc': '📉' };
+const CARD_ICO = { 'c-navy': '🏛', 'c-red': '📉', 'c-green': '💎', 'c-violet': '👥', 'c-teal': '💵', 'c-rose': '⚠', 'c-grey': '✅', 'c-gold': '💱', 'c-orange': '📌', 'c-green fxpc': '📈', 'c-red fxpc': '📉', 'c-violet fxq': '📦', 'c-orange fxq': '🏷' };
 App.card = (...a) => card(...a);
 function card(cls, t, v, s, to) { return '<div class="card ' + cls + '"' + (to ? ' data-act="go" data-to="' + esc(to) + '" style="cursor:pointer"' : '') + '><div class="t"><span class="ci">' + (CARD_ICO[cls] || '•') + '</span>' + t + '</div><div class="v num">' + v + '</div><div class="s">' + (s || '&nbsp;') + '</div></div>'; }
 function btnEntry(tpl, label, cls, extra) {
@@ -5264,20 +5280,6 @@ App.saveLoanForm = function (slotTxt) {
 /* ---------------------------------------------------------------- FX / GOLD */
 const sgn = v => (v > 0.5 ? '+' : '') + fmt(v);
 const pct = (a, b) => (b > 0 ? ' (٪' + Math.round(a / b * 100) + ')' : '');
-const pctN = (u, c) => (c > 0.5 ? u / c * 100 : null);
-const pctS = p => { if (p === null || !isFinite(p)) return '—'; const a = Math.abs(p), n = a >= 10 ? Math.round(a) : Math.round(a * 10) / 10; return '<span class="pcs" dir="ltr">' + (n === 0 ? '' : p > 0 ? '▲ +' : '▼ −') + n + '٪</span>'; };
-/* only what has a price today: an asset without «قیمت روز» would look like a loss of 100٪ */
-const pctOf = list => { const L = list.filter(x => x.qty > 1e-7 && x.price > 0 && x.cost > 0.5); const u = L.reduce((t, x) => t + x.unreal, 0), c = L.reduce((t, x) => t + x.cost, 0); return pctN(u, c); };
-const pctCard = (p, sub, t) => card((p !== null && p < -0.05 ? 'c-red' : 'c-green') + ' fxpc', t || 'درصد سود', pctS(p), sub);
-function fxPctBox(fx) {
-  const L = fx.filter(x => x.qty > 1e-7); if (!L.length) return '';
-  return '<div class="box fxpbox"><h2>📈 درصد سود هر دارایی <small>قیمت روز در برابر قیمت تمام‌شده (میانگین خرید)</small></h2><div class="fxpl">' + L.map(x => {
-    const p = x.price > 0 ? pctN(x.unreal, x.cost) : null, cl = p === null ? 'nop' : p < -0.05 ? 'dn' : 'up';
-    if (!(x.cost > 0.5)) return '<a class="fxpr nop" data-act="go" data-to="/asset/' + esc(H.slug(x.name)) + '"><span class="fxpn">' + esc(x.display || x.name) + '</span><b class="fxpv num">—</b><small>بهای خریدش ثبت نشده، پس درصد ندارد' + (x.price > 0 ? ' · ارزش روز <b class="num">' + fmt(x.val) + '</b>' : '') + '</small></a>';
-    return '<a class="fxpr ' + cl + '" data-act="go" data-to="/asset/' + esc(H.slug(x.name)) + '"><span class="fxpn">' + esc(x.display || x.name) + '</span><b class="fxpv num">' + pctS(p) + '</b>' +
-      '<small>' + (x.price > 0 ? 'میانگین خرید <b class="num">' + fmt(x.avg) + '</b> ← قیمت روز <b class="num">' + fmt(x.price) + '</b> · ' + (x.unreal < -0.5 ? 'زیان' : 'سود') + ' <b class="num">' + fmt(Math.abs(x.unreal)) + '</b>' : 'هنوز «قیمت روز» ثبت نشده') + '</small></a>';
-  }).join('') + '</div><div class="hint" style="margin-top:6px">درصد سود = سود ارزیابی ÷ بهای تمام‌شده × ۱۰۰ — یعنی قیمت روز چند درصد بالاتر (یا پایین‌تر) از میانگین قیمتی است که خریده‌اید. روی هر کدام بزنید تا صفحه‌اش باز شود.</div></div>';
-}
 function fxCards(fx) {
   const live = fx.filter(x => Math.abs(x.qty) > 1e-7 || Math.abs(x.real) > 0.5);
   if (!live.length) return '';
@@ -5300,10 +5302,9 @@ function fxCards(fx) {
   return h;
 }
 P.fx = function () {
-  const C = App.C; const fxAll = E.fxPositions(C); const fx = fxAll.filter(x => !App.isArchived(x.name)); const lm = E.locationMatrix(C); const assets = C.db.assets.filter(a => !App.isArchived(a.name));
+  const C = App.C; const fxAll = App.fxOwnList ? App.fxOwnList() : E.fxPositions(C); const fx = fxAll.filter(x => !App.isArchived(x.name)); const lm = E.locationMatrix(C); const assets = C.db.assets.filter(a => !App.isArchived(a.name));
   const sum = k => fxAll.reduce((s, x) => s + x[k], 0);
-  let h = '<div class="cards">' + card('c-gold', 'ارزش روز', fmt(sum('val')), '') + card('c-navy', 'بهای تمام‌شده', fmt(sum('cost')), '') + card(sum('unreal') >= 0 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(sum('unreal')), '') + card(sum('real') >= 0 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(sum('real')), '') +
-    pctCard(pctOf(fxAll), 'همهٔ ارز و طلا: ارزش روز در برابر بهای تمام‌شده' + (nc => nc.length ? ' (بدون ' + nc.map(x => esc(x.display || x.name)).join('، ') + ' که بهای خریدشان ثبت نشده)' : '')(fx.filter(x => x.qty > 1e-7 && !(x.cost > 0.5))), 'درصد سود کل') + '</div>' + fxPctBox(fx);
+  let h = App.fxOverview ? App.fxOverview(null) : '<div class="cards">' + card('c-gold', 'ارزش روز', fmt(sum('val')), '') + card('c-navy', 'بهای تمام‌شده', fmt(sum('cost')), '') + card(sum('unreal') >= 0 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(sum('unreal')), '') + card(sum('real') >= 0 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(sum('real')), '') + '</div>';
   h += '<div class="bar noprint">' + btnEntry('buy', '💱 خرید', 'green') + btnEntry('sell', '💱 فروش', 'orange') + btnEntry('price', '🏷 قیمت روز', 'gold') + '<button class="btn violet sm" data-act="new-acc" data-group="' + esc(G.ASSET) + '">＋ ارز/طلای جدید</button><button class="btn teal sm" data-act="move-new">🔀 انتقال بین محل‌ها</button><a class="btn teal sm" data-act="go" data-to="/fxloc" style="text-decoration:none">📍 محل نگهداری (گزارش)</a></div>';
   h += fxCards(fx);
   h += '<div class="box"><h2>جدول کامل موجودی و ارزش</h2><div class="wrap"><table class="tbl"><thead><tr><th>دارایی</th><th>مقدار</th><th>میانگین خرید</th><th>قیمت روز</th><th>بهای تمام‌شده</th><th class="bal">ارزش روز</th><th class="prf">سود/زیان ارزیابی</th><th class="prf">سود/زیان فروش</th><th>آخرین قیمت</th><th class="noprint"></th></tr></thead><tbody>' +
@@ -5343,11 +5344,7 @@ P.fxloc = function () {
 P.asset = function (name) {
   const C = App.C; const a = C.db.assets.find(x => x.name === name); if (!a) return { title: 'پیدا نشد', html: '<div class="box">پیدا نشد</div>' };
   const x = E.fxPositions(C).find(p => p.name === name); const rows = C.rows.filter(r => r.item === name && (r.X === 4 || r.X === 5 || r.X === 6)); const notes = E.notesOf(C, name);
-  /* v45.5: first the same report as the page «ارز و طلا», for this asset alone, and its profit in percent */
-  const xp = x.qty > 1e-7 && x.price > 0 ? pctN(x.unreal, x.cost) : null;
-  let h = '<div class="cards">' + card('c-gold', 'ارزش روز', fmt(x.val), '') + card('c-navy', 'بهای تمام‌شده', fmt(x.cost), '') + card(x.unreal >= -0.5 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(x.unreal), '') + card(x.real >= -0.5 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(x.real), '') +
-    pctCard(xp, x.qty > 1e-7 ? (!(x.cost > 0.5) ? 'بهای خریدش ثبت نشده، پس درصد ندارد' : x.price > 0 ? 'میانگین خرید ' + fmt(x.avg) + ' ← قیمت روز ' + fmt(x.price) : 'هنوز «قیمت روز» ثبت نشده') : 'موجودی ندارید') +
-    card('c-violet', 'موجودی (' + esc(a.unit) + ')', H.fmtq(x.qty), 'میانگین خرید ' + fmt(x.avg)) + card('c-orange', 'قیمت روز', fmt(x.price), x.lastDate) + '</div>';
+  let h = App.fxOverview ? App.fxOverview(name) : '<div class="cards">' + card('c-navy', 'موجودی (' + esc(a.unit) + ')', H.fmtq(x.qty), 'میانگین خرید ' + fmt(x.avg)) + card('c-gold', 'قیمت روز', fmt(x.price), x.lastDate) + card('c-teal', 'ارزش روز', fmt(x.val), 'بها: ' + fmt(x.cost)) + card(x.unreal >= 0 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی', fmt(x.unreal), 'فروش‌ها: ' + fmt(x.real)) + '</div>';
   h += '<div class="bar noprint"><button class="btn green sm" data-act="new-entry" data-tpl="buy" data-x="' + esc(name) + '">💱 خرید</button><button class="btn gold sm" data-act="new-entry" data-tpl="sell" data-x="' + esc(name) + '">💱 فروش</button><button class="btn violet sm" data-act="new-entry" data-tpl="price" data-x="' + esc(name) + '">🏷 قیمت روز</button><button class="btn teal sm" data-act="move-new" data-asset="' + esc(name) + '">🔀 انتقال بین محل‌ها</button></div>';
   h += '<div class="box"><div class="wrap"><table class="tbl"><thead><tr><th>ردیف</th><th>تاریخ</th><th>نوع</th><th class="dep">مقدار</th><th>قیمت واحد</th><th class="bal">مبلغ</th><th>موجودی پس از ثبت</th><th class="desc">شرح</th><th>کارمزد</th><th>بها پس از ثبت</th><th class="prf">سود/زیان</th><th>محل</th><th class="noprint"></th></tr></thead><tbody>' +
     (rows.length ? rows.map((r, i) => { const e = r.e; return '<tr><td class="c rn">' + (i + 1) + '</td><td class="c num">' + esc(r.date) + '</td><td class="c">' + esc(E.KIND_NAMES[r.X]) + '</td><td class="n dep">' + (r.X === 6 ? '' : H.fmtq(r.G)) + '</td><td class="n">' + fmt(r.H) + '</td><td class="n bal">' + fmt(r.M) + '</td><td class="n">' + (r.X === 6 ? '' : H.fmtq(r.qa)) + '</td><td class="desc">' + esc(r.desc) + '</td><td class="n">' + (r.Jf ? fmt(r.Jf) : '') + '</td><td class="n">' + (r.X === 6 ? '' : fmt(r.ca)) + '</td><td class="n prf">' + (r.X === 5 ? fmt(r.gain) : r.X === 6 ? fmt(r.M) : '') + '</td><td class="hint">' + esc(r.K || '') + '</td>' + actCell(e.virtual ? null : e) + '</tr>'; }).join('') : emptyRow(13, 'هنوز ثبتی ندارد')) +
@@ -6402,7 +6399,8 @@ function holdBox(cur) {
 function locAllBox() {
   const R = E.fxByLocation(App.C); if (!R.locs.length) return '';
   const cards = R.locs.map(l => '<div class="lcard' + (l.unknown ? ' unk' : '') + '"><div class="lch"><b>' + (l.unknown ? '❓ محل نامشخص' : '📍 ' + esc(l.name)) + '</b><span class="num">' + fmt(l.val) + '</span></div>' +
-    l.items.map(i => '<div class="lci"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep">' + H.fmtq(i.qty) + ' <small>' + esc(i.unit) + '</small></span><span class="num bal">' + fmt(i.val) + '</span></div>').join('') +
+    l.items.map(i => '<div class="lci"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep">' + H.fmtq(i.qty) + ' <small>' + esc(i.unit) + '</small></span><span class="num bal">' + fmt(i.val) + '</span></div>' +
+      (App.fxTrustAt && !l.unknown ? App.fxTrustAt(l.name, i.name).map(t => '<div class="lct">🤝 از این، <b class="num">' + H.fmtq(t.q) + '</b> ' + esc(i.unit) + ' امانیِ ' + esc(t.person) + ' است</div>').join('') : '')).join('') +   /* v45.5: the units of others, named where they are */
     (l.unknown ? '<div class="hint">محل در ثبت‌ها گفته نشده؛ از صفحهٔ هر ارز «مشخص کن کجاست» را بزنید.</div>' : '') + '</div>').join('');
   const empty = (App.db.locations || []).map(l => l.name).filter(n => !R.locs.some(l => l.name === n));
   return '<div class="box lsb"><h2>📍 دارایی من در هر محل <small>همهٔ ارزها و طلا · ریال</small></h2><div class="lgrid">' + cards + '</div>' + (empty.length ? '<div class="hint" style="margin-top:6px">محل‌های بدون موجودی: ' + empty.map(esc).join('، ') + '</div>' : '') +
@@ -9990,10 +9988,10 @@ P.fxled = function (arg, q) {
   const L = ledger(name), pos = E.fxPositions(C).find(p => p.name === name) || { qty: 0, avg: 0, price: 0, val: 0, cost: 0, unreal: 0, real: 0, lastDate: '' };
   const bq = sumOf(L, 'buy', 'q'), ba = sumOf(L, 'buy', 'amt'), nb = L.filter(x => x.kind === 'buy').length, sq = sumOf(L, 'sell', 'q'), sa = sumOf(L, 'sell', 'amt'), ns = L.filter(x => x.kind === 'sell').length, sg = sumOf(L, 'sell', 'gain');
   let h = App.fxLedBox(name);
-  h += '<div class="cards">' + App.card('c-navy', 'موجودی ' + esc(disp), H.fmtq(pos.qty) + ' ' + esc(unit), 'میانگین خرید هر ' + esc(unit) + ': ' + fmt(pos.avg)) + '</div>';
+  h += App.fxOverview ? App.fxOverview(name) : '<div class="cards">' + App.card('c-navy', 'موجودی ' + esc(disp), H.fmtq(pos.qty) + ' ' + esc(unit), 'میانگین خرید هر ' + esc(unit) + ': ' + fmt(pos.avg)) + '</div>';   // v45.5: the same overview as «ارز و طلا»
   const moreCards = '<div class="cards">' + App.card('c-green', 'جمع خریدها', H.fmtq(bq) + ' ' + esc(unit), fmt(ba) + ' ریال · ' + nb + ' بار' + (bq > 0 ? ' · میانگین ' + fmt(ba / bq) : '')) +
     App.card('c-red', 'جمع فروش‌ها', H.fmtq(sq) + ' ' + esc(unit), fmt(sa) + ' ریال · ' + ns + ' بار · سود/زیان ' + sgn(sg)) +
-    App.card(pos.unreal >= 0 ? 'c-teal' : 'c-red', 'ارزش روز', fmt(pos.val), 'قیمت روز ' + fmt(pos.price) + (pos.lastDate ? ' (' + esc(pos.lastDate) + ')' : '') + ' · سود/زیان ' + sgn(pos.unreal)) + '</div>';
+    (App.fxOverview ? '' : App.card(pos.unreal >= 0 ? 'c-teal' : 'c-red', 'ارزش روز', fmt(pos.val), 'قیمت روز ' + fmt(pos.price) + (pos.lastDate ? ' (' + esc(pos.lastDate) + ')' : '') + ' · سود/زیان ' + sgn(pos.unreal))) + '</div>';
   const tab = (k, txt) => link(url(name, k, o), 'flpill' + (t === k ? ' on' : ''), txt);
   h += '<div class="flfilt noprint">' + tab('all', 'همهٔ خرید و فروش‌ها') + tab('buy', '🔵 فقط خرید') + tab('sell', '🔴 فقط فروش') + tab('price', '🏷 قیمت‌ها') +
     link(url(name, t, o === 'new' ? 'old' : 'new'), 'flpill alt', o === 'new' ? '⇅ قدیمی‌ترین بالا' : '⇅ جدیدترین بالا') + '</div>';
@@ -11515,7 +11513,7 @@ function shape(page, name) {
   /* ① tiles */
   let cards = $(':scope > .cards', root);
   if (kind === 'loan') { const lt = loanTiles(name); if (lt) { const w = el('div', 'ax-kw', lt); if (cards) cards.replaceWith(w); else root.insertBefore(w, root.firstChild); cards = w; } }
-  else if (cards) {
+  else if (cards && !cards.classList.contains('fxov')) {   // v45.5: the overview of a currency / gold keeps the big cards of «ارز و طلا»
     cards.classList.add('ax-kpi');
     if (kind === 'member') {
       const r = (E.memberTable(App.C) || []).find(x => x.name === name);
@@ -12690,6 +12688,123 @@ if (typeof oe === 'function') App.openEntry = function (o) {
   return r;
 };
 })();
+/* ---------------------------------------------------------------- v45.5 — ارز و طلا: «خالص خودم», the same overview everywhere, the profit in percent
+   the owner (1405/08/15): «همین گزارش صفحهٔ اول (ارزش روز، بهای تمام‌شده، سود و زیان، سود و زیان فروش‌رفته) در صفحهٔ هر دارایی هم بیاید، با مقدارش
+   (۱۲٬۰۰۰ یورو، … گرم طلا) و درصد سودم: قیمت تمام‌شده در برابر قیمت روز. امانی‌ها مال آن شخص است؛ در گزارش من نیاید، جدا و تفکیک‌شده نشان بده:
+   مثلاً طلا ۵۶ و خرده‌ای، ۱۷ و خرده‌ای‌اش مال خواهرم الف است.»
+   · «خالص خودم» of one asset = what the books hold − the units of the open «امانی‌ها» that are inside the books (moves with led);
+     their cost is what they were booked at (quantity × price of those moves) — never more than the books hold (then by share).
+   · the balance sheet is not touched: it already carries the trust units as one liability line «امانی‌ها».
+   · used by: «ارز و طلا» (cards + 🤝 box + 📈 every asset), the page of every asset, its «📒 دفتر ریز», «گزارش ارز و طلا». */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc, fmt = H.fmt, N = v => +v || 0, card = (...a) => App.card(...a);
+const q4 = v => H.fmtq(v);
+
+/* ---- the numbers ---- */
+let K = null, KC = null, KT = null;
+function own() {
+  const C = App.C; if (K && KC === C && KT === C.db.trusts) return K;
+  const pos = E.fxPositions(C), tr = {};
+  (C.db.trusts || []).forEach(t => {
+    if (!t || t.closed || t.kind !== 'fx' || !t.asset) return;
+    const mv = t.moves || [];
+    const q = mv.reduce((s, m) => s + N(m.qty), 0), ql = mv.reduce((s, m) => s + (m.led ? N(m.qty) : 0), 0), c = mv.reduce((s, m) => s + (m.led ? N(m.qty) * N(m.price) : 0), 0);
+    if (Math.abs(q) < 1e-9 && Math.abs(ql) < 1e-9) return;
+    const o = tr[t.asset] || (tr[t.asset] = { ql: 0, cost: 0, people: [] });
+    o.ql += ql; o.cost += c; o.people.push({ person: t.person || '', q, ql, id: t.id });
+  });
+  const list = pos.map(x => {
+    const t = tr[x.name], b = Object.assign({}, x, { all: x, tq: 0, tv: 0, tc: 0, tp: t ? t.people : [] });
+    if (!t || !(t.ql > 1e-9) || !(x.qty > 1e-9)) return b;
+    const tq = Math.min(t.ql, x.qty), q = x.qty - tq;
+    let tc = t.cost * (tq / t.ql);
+    if (!(tc >= 0) || tc > x.cost + 0.5) tc = x.cost * tq / x.qty;
+    const cost = q > 1e-9 ? Math.max(0, x.cost - tc) : 0, val = q * x.price;
+    return Object.assign(b, { qty: q > 1e-9 ? q : 0, val, cost, unreal: val - cost, avg: q > 1e-9 ? cost / q : 0, tq, tv: tq * x.price, tc });
+  });
+  K = { list, any: list.some(x => x.tp.length), by: new Map(list.map(x => [x.name, x])) }; KC = C; KT = C.db.trusts; return K;
+}
+App.fxOwn = own;
+/* the units of others kept in one place (from the «امانی» moves that are in the books): [{person, q}] */
+App.fxTrustAt = function (loc, asset) {
+  const by = new Map();
+  ((App.db && App.db.trusts) || []).forEach(t => { if (!t || t.closed || t.kind !== 'fx' || t.asset !== asset) return; (t.moves || []).forEach(m => { if (m.led && (m.loc || '') === (loc || '')) by.set(t.person || '', (by.get(t.person || '') || 0) + N(m.qty)); }); });
+  return [...by.entries()].filter(e => e[1] > 1e-9).map(e => ({ person: e[0], q: e[1] }));
+};
+App.fxOwnList = () => own().list;
+
+/* ---- words ---- */
+const unitTxt = x => { const u = x.unit || ''; return /^[A-Za-z$€]+$/.test(u) || !u ? (x.display || x.name) : u; };
+const qtyTxt = (q, x) => q4(q) + ' ' + unitTxt(x);
+const pctN = (u, c) => (c > 0.5 ? u / c * 100 : null);
+const pctOf = x => (x.qty > 1e-7 && x.price > 0 && x.cost > 0.5 ? pctN(x.unreal, x.cost) : null);
+const pctS = p => { if (p === null || !isFinite(p)) return '—'; const a = Math.abs(p), n = a >= 10 ? Math.round(a) : Math.round(a * 10) / 10; return '<span class="pcs" dir="ltr">' + (n === 0 ? '' : p > 0 ? '▲ +' : '▼ −') + n + '٪</span>'; };
+App.fxPctOf = pctOf;
+const pctCard = (p, sub, t) => card((p !== null && p < -0.05 ? 'c-red' : 'c-green') + ' fxpc', t || 'درصد سود', pctS(p), sub);
+const gl = v => (v < -0.5 ? 'زیان' : 'سود');
+const people = x => x.tp.filter(t => t.ql > 1e-9);
+
+/* ---- 🤝 the units of other people: taken out, shown apart ---- */
+function trustBox(list, one) {
+  const L = list.filter(x => x.tp.length); if (!L.length) return '';
+  let tot = 0;
+  const parts = L.map(x => {
+    const p = x.all.price || 0;
+    let h = '<div class="fxtr-a">' + (one ? '' : '<div class="fxtr-h">' + esc(x.display || x.name) + '</div>');
+    if (x.tq > 1e-9) {
+      h += '<div class="fxtr-r"><span>کل در دست من</span><b class="num">' + esc(qtyTxt(x.all.qty, x)) + '</b></div>';
+      people(x).forEach(t => { const q = Math.min(t.ql, x.all.qty), v = q * p; tot += v; h += '<div class="fxtr-r neg"><span>− امانیِ ' + esc(t.person) + '</span><b class="num">' + esc(qtyTxt(q, x)) + '</b>' + (p > 0 ? '<small>ارزش روز <b class="num">' + fmt(v) + '</b></small>' : '') + '</div>'; });
+      h += '<div class="fxtr-r tot"><span>= خالص خودم</span><b class="num">' + esc(qtyTxt(x.qty, x)) + '</b></div>';
+    }
+    x.tp.forEach(t => { const off = t.q - t.ql; if (off > 1e-9) { tot += off * p; h += '<div class="fxtr-n">🔸 ' + esc(qtyTxt(off, x)) + ' دیگرِ ' + esc(t.person) + ' جدا نگه داشته می‌شود و از اول در موجودی برنامه نیست' + (p > 0 ? ' (ارزش روز ' + fmt(off * p) + ')' : '') + '.</div>'; } });
+    return h + '</div>';
+  }).join('');
+  return '<div class="box fxtr"><h2>🤝 امانی‌ها — مال دیگران <small>از گزارش شما جدا شد؛ همهٔ عددهای بالا فقط مال خودتان است</small></h2><div class="fxtr-g">' + parts + '</div>' +
+    '<div class="fxtr-f">' + (tot > 0.5 ? 'ارزش روز این امانی‌ها: <b class="num">' + fmt(tot) + '</b> ریال · ' : '') + '<a data-act="go" data-to="/trust">🤝 حساب‌های امانی ←</a></div></div>';
+}
+
+/* ---- 📈 every asset: quantity, value, cost, profit, percent ---- */
+function everyBox(list) {
+  const L = list.filter(x => x.all.qty > 1e-7 && !(App.isArchived && App.isArchived(x.name))); if (!L.length) return '';
+  const kv = (k, v) => '<span>' + k + '</span><b class="num">' + v + '</b>';
+  return '<div class="box fxpbox"><h2>📈 هر دارایی: مقدار، ارزش و درصد سود <small>' + (own().any ? 'خالص خودم — امانی‌ها جدا شد · ' : '') + 'روی هر کدام بزنید تا صفحه‌اش باز شود</small></h2><div class="fxpl">' + L.map(x => {
+    const p = pctOf(x), cl = p === null ? 'nop' : p < -0.05 ? 'dn' : 'up';
+    const note = !(x.qty > 1e-7) ? 'همهٔ آن امانی است' : !(x.price > 0) ? 'هنوز «قیمت روز» ثبت نشده' : !(x.cost > 0.5) ? 'بهای خریدش ثبت نشده، پس درصد ندارد' : '';
+    let g = kv(x.tq > 1e-9 ? 'موجودی خودم' : 'موجودی', esc(qtyTxt(x.qty, x)));
+    if (x.price > 0) g += kv('ارزش روز', fmt(x.val));
+    if (x.cost > 0.5) g += kv('بهای تمام‌شده', fmt(x.cost)) + kv(gl(x.unreal) + ' ارزیابی', fmt(Math.abs(x.unreal)));
+    if (Math.abs(x.real) > 0.5) g += kv(gl(x.real) + ' فروش‌ها', fmt(Math.abs(x.real)));
+    if (x.price > 0 && x.cost > 0.5) g += kv('خرید ← امروز', fmt(x.avg) + ' → ' + fmt(x.price));
+    const tr = people(x).map(t => qtyTxt(Math.min(t.ql, x.all.qty), x) + ' امانیِ ' + t.person).join('، ');
+    return '<a class="fxpr ' + cl + '" data-act="go" data-to="/asset/' + esc(H.slug(x.name)) + '"><span class="fxpn">' + esc(x.display || x.name) + '</span><b class="fxpv num">' + pctS(p) + '</b>' +
+      '<div class="fxpg">' + g + '</div>' + (note ? '<small class="fxpno">' + note + '</small>' : '') + (tr ? '<small class="fxpt">🤝 ' + esc(tr) + ' جدا شد</small>' : '') + '</a>';
+  }).join('') + '</div><div class="hint" style="margin-top:6px">درصد سود = سود ارزیابی ÷ بهای تمام‌شده × ۱۰۰ — یعنی قیمت روز چند درصد بالاتر (یا پایین‌تر) از میانگین قیمتی است که خریده‌اید.</div></div>';
+}
+
+/* ---- the overview: of everything (name = null) or of one asset ---- */
+App.fxOverview = function (name) {
+  const O = own(), sub = O.any ? 'خالص خودم — بدون امانی‌ها' : '';
+  if (!name) {
+    const L = O.list, S = k => L.reduce((t, x) => t + N(x[k]), 0);
+    const P = L.filter(x => pctOf(x) !== null), pt = pctN(P.reduce((t, x) => t + x.unreal, 0), P.reduce((t, x) => t + x.cost, 0));
+    const nc = L.filter(x => x.qty > 1e-7 && x.price > 0 && !(x.cost > 0.5) && !(App.isArchived && App.isArchived(x.name)));
+    return '<div class="cards fxov">' + card('c-gold', 'ارزش روز', fmt(S('val')), sub) + card('c-navy', 'بهای تمام‌شده', fmt(S('cost')), sub) +
+      card(S('unreal') >= -0.5 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(S('unreal')), sub) + card(S('real') >= -0.5 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(S('real')), '') +
+      pctCard(pt, 'همهٔ ارز و طلای خودم: ارزش روز در برابر بهای تمام‌شده' + (nc.length ? ' (بدون ' + nc.map(x => esc(x.display || x.name)).join('، ') + ' که بهای خریدشان ثبت نشده)' : ''), 'درصد سود کل') + '</div>' +
+      trustBox(L, false) + everyBox(L);
+  }
+  const x = O.by.get(name); if (!x) return '';
+  const p = pctOf(x), u = esc(unitTxt(x));
+  const psub = !(x.qty > 1e-7) ? (x.tq > 1e-9 ? 'همهٔ آن امانی است' : 'موجودی ندارید') : !(x.cost > 0.5) ? 'بهای خریدش ثبت نشده، پس درصد ندارد' : x.price > 0 ? 'میانگین خرید ' + fmt(x.avg) + ' ← قیمت روز ' + fmt(x.price) : 'هنوز «قیمت روز» ثبت نشده';
+  return '<div class="cards fxov">' +
+    card('c-violet fxq', x.tq > 1e-9 ? 'موجودی خودم' : 'موجودی', esc(q4(x.qty)) + ' <small class="fxu">' + u + '</small>', 'قیمت روز هر ' + esc(x.unit || '') + ': ' + fmt(x.price) + (x.lastDate ? ' (' + esc(x.lastDate) + ')' : '')) +
+    card('c-gold', 'ارزش روز', fmt(x.val), x.tq > 1e-9 ? sub : '') + card('c-navy', 'بهای تمام‌شده', fmt(x.cost), x.cost > 0.5 && x.qty > 1e-7 ? 'میانگین خرید هر ' + esc(x.unit || '') + ': ' + fmt(x.avg) : '') +
+    card(x.unreal >= -0.5 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی نشده', fmt(x.unreal), '') + card(x.real >= -0.5 ? 'c-teal' : 'c-red', 'سود/زیان فروش‌های انجام‌شده', fmt(x.real), '') +
+    pctCard(p, psub) + '</div>' + trustBox([x], true);
+};
+})();
 
 
 /* daily and monthly event reports: records that were entered + what changed in the program */
@@ -13193,7 +13308,7 @@ function repAcc(kind, sel, tabs) {
 }
 
 function repFx(kind, sel, tabs) {
-  const C = App.C, K = KINDS[kind]; const pos = E.fxPositions(C); const all = [];
+  const C = App.C, K = KINDS[kind]; const pos = App.fxOwnList ? App.fxOwnList() : E.fxPositions(C); const all = [];
   const stat = {}; pos.forEach(p => { stat[p.name] = { bq: 0, ba: 0, sq: 0, sa: 0, nb: 0, ns: 0 }; });
   for (const r of C.rows) { if (!stat[r.item]) continue; const s = stat[r.item]; if (r.X === 4) { s.nb++; s.bq += +r.G || 0; s.ba += +r.M || 0; } else if (r.X === 5) { s.ns++; s.sq += +r.G || 0; s.sa += +r.M || 0; } }
   const T = k => pos.reduce((s, x) => s + x[k], 0), TS = k => pos.reduce((s, x) => s + stat[x.name][k], 0);
