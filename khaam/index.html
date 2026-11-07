@@ -2875,6 +2875,67 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
   #recPrint ol{font-size:15pt;font-weight:700;line-height:2}
   #recPrint .rp-w{margin-top:8mm;padding:4mm;border:2pt dashed #000;font-size:14pt;font-weight:800;line-height:1.9}
 }
+
+/* ---------------------------------------------------------------- v46.4 — phone: everything on ONE screen (the owner: «توی گوشی پایینش نمی‌افتد؛ فشرده‌ترش کن
+   که همه‌چیز توی یک صفحه بیفتد»).  The computer keeps its look. */
+@media (max-width:600px){
+  :is(#lockScr,#lockOut){gap:8px;padding:calc(10px + env(safe-area-inset-top,0px)) 14px calc(10px + env(safe-area-inset-bottom,0px))}
+  :is(#lockScr,#lockOut) .lk-hi{padding:3px 14px;font-size:1.02rem}
+  :is(#lockScr,#lockOut) .lk-clock{font-size:3.3rem;line-height:1;margin-top:4px}
+  :is(#lockScr,#lockOut) .lk-dt{font-size:1.12rem;line-height:1.6;margin-top:0}
+  :is(#lockScr,#lockOut) .lk-meta{gap:6px;margin-top:4px}
+  :is(#lockScr,#lockOut) .lk-m{padding:2px 12px;font-size:.92rem;line-height:1.6}
+  :is(#lockScr,#lockOut) .lk{margin-top:36px;padding:44px 18px 12px;border-radius:26px}
+  :is(#lockScr,#lockOut) .lk-emb{top:-38px;margin-left:-38px;width:76px;height:76px;border-width:4px}
+  :is(#lockScr,#lockOut) .lk-emb::after{inset:-9px}
+  :is(#lockScr,#lockOut) .lk-emb svg{width:42px;height:42px}
+  :is(#lockScr,#lockOut) .lk h1{font-size:1.7rem;line-height:1.3}
+  :is(#lockScr,#lockOut) .lk-sub{margin:0 0 8px;font-size:1rem;line-height:1.6}
+  :is(#lockScr,#lockOut) .lk-lab{margin:0 4px 5px;font-size:1.02rem}
+  :is(#lockScr,#lockOut) #lkPw{height:60px;font-size:1.75rem;border-radius:18px}
+  :is(#lockScr,#lockOut) .lk-eye{width:44px;height:44px;font-size:1.3rem}
+  :is(#lockScr,#lockOut) #lkGo{height:58px;margin-top:10px;font-size:1.5rem;border-radius:18px}
+  :is(#lockScr,#lockOut) .lk-ar{width:36px;height:36px;font-size:1.15rem}
+  :is(#lockScr,#lockOut) #lkMsg{margin-top:8px;font-size:1.05rem}
+  :is(#lockScr,#lockOut) #lkMsg.err{padding:6px 12px}
+  :is(#lockScr,#lockOut) .lk-help{margin-top:6px}
+  :is(#lockScr,#lockOut) .lk-help summary{font-size:1rem;padding:2px}
+  :is(#lockScr,#lockOut) .lk-w{margin-top:6px;padding:5px 10px;font-size:.95rem}
+  :is(#lockScr,#lockOut) .lk-foot{gap:0;flex-wrap:nowrap;max-width:100%;padding:4px 8px;border-radius:999px;background:#FFFFFFB0;border:1px solid #fff;box-shadow:0 4px 12px -8px #0F2A4A66}
+  :is(#lockScr,#lockOut) .lk-foot span{padding:0 8px;font-size:.84rem;white-space:nowrap;background:none;border:0;border-radius:0;box-shadow:none}
+  :is(#lockScr,#lockOut) .lk-foot span + span{border-inline-start:1.5px solid #CBD5E1}
+  :is(#lockScr,#lockOut) .lk-rech{margin-bottom:6px;padding:5px 10px;font-size:1.12rem}
+  :is(#lockScr,#lockOut) .lk-rec .lk-lab{margin-top:8px}
+  :is(#lockScr,#lockOut) .lk-in{height:52px;font-size:1.3rem}
+  :is(#lockScr,#lockOut) .lk-recok{min-height:56px;margin-top:10px;font-size:1.25rem}
+  :is(#lockScr,#lockOut) .lk-back{margin-top:6px}
+}
+@media (max-width:600px) and (max-height:700px){
+  :is(#lockScr,#lockOut) .lk-hi{display:none}
+  :is(#lockScr,#lockOut) .lk-clock{font-size:2.9rem;margin-top:0}
+  :is(#lockScr,#lockOut) .lk{margin-top:32px}
+}
+@media (max-width:380px){
+  :is(#lockScr,#lockOut) .lk-foot{padding:4px 4px}
+  :is(#lockScr,#lockOut) .lk-foot span{padding:0 5px;font-size:.76rem}
+}
+@media (max-width:340px){
+  :is(#lockScr,#lockOut) .lk-foot{flex-wrap:wrap;border-radius:16px}
+}
+/* when it still does not fit (a small phone, big letters of the phone): smaller in two steps (see «fit» in the lock module) */
+:is(#lockScr,#lockOut).lk-t1 .lk-hi{display:none}
+:is(#lockScr,#lockOut).lk-t1 .lk-clock{font-size:2.7rem;margin-top:0}
+:is(#lockScr,#lockOut).lk-t1 .lk-dt{font-size:1.02rem}
+:is(#lockScr,#lockOut).lk-t1 .lk{margin-top:30px;padding-top:38px}
+:is(#lockScr,#lockOut).lk-t1 .lk-emb{top:-32px;margin-left:-32px;width:64px;height:64px}
+:is(#lockScr,#lockOut).lk-t1 .lk-emb svg{width:36px;height:36px}
+:is(#lockScr,#lockOut).lk-t2 .lk-sub{display:none}
+:is(#lockScr,#lockOut).lk-t2 .lk h1{font-size:1.45rem;margin-bottom:6px}
+:is(#lockScr,#lockOut).lk-t2 .lk-clock{font-size:2.3rem}
+:is(#lockScr,#lockOut).lk-t2 #lkPw{height:52px;font-size:1.5rem}
+:is(#lockScr,#lockOut).lk-t2 #lkGo{height:50px;font-size:1.35rem}
+:is(#lockScr,#lockOut).lk-t2 .lk-m{font-size:.85rem}
+:is(#lockScr,#lockOut).lk-t2 #lkPw{padding:0 54px}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -2882,7 +2943,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "46.3"; window.APP_BUILD = "1405/08/16 07:34";
+window.APP_VERSION = "46.4"; window.APP_BUILD = "1405/08/16 09:11";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -4537,7 +4598,7 @@ function screen(cb) {
         (recAv ? '' : '<br>• <b>پیشنهاد:</b> بعد از ورود، در «🔑 رمز برنامه» یک <b>کد بازیابی</b> بسازید و چاپ کنید؛ آن وقت اگر رمز یادتان برود، با آن کد وارد می‌شوید.') +
       '</div></details>' +
     '</div>' +
-    '<div class="lk-foot"><span>🔐 اطلاعات رمزگذاری‌شده</span><span>📴 بدون اینترنت</span>' +
+    '<div class="lk-foot"><span>🔐 رمزگذاری‌شده</span><span>📴 بدون اینترنت</span>' +
       (ver ? '<span>نسخهٔ <bdi dir="ltr">' + ver + '</bdi></span>' : '') + '</div>';
   document.body.appendChild(d);
   const q = s => d.querySelector(s);
@@ -4599,7 +4660,7 @@ function screen(cb) {
   const rec = q('#lkRec'), rc = q('#lkRc'), n1 = q('#lkN1'), n2 = q('#lkN2'), rok = q('#lkRecOk'), rt = q('.lk-rt'), rcFa = q('#lkRcFa');
   const recMode = on => {
     d.classList.toggle('lk-recmode', on); rec.hidden = !on; say(''); card.classList.remove('lk-bad');
-    setTimeout(() => { try { (on ? rc : inp).focus(); } catch (e) { } }, 30);
+    try { (on ? rc : inp).focus(); } catch (e) { }                    // at once: a later focus could take letters typed into another box
   };
   if (q('#lkRecGo')) q('#lkRecGo').onclick = () => recMode(true);
   q('#lkRecBack').onclick = () => { if (!busy) recMode(false); };
@@ -4638,6 +4699,18 @@ function screen(cb) {
     else if (e.key === 'Escape') { inp.value = ''; fa.hidden = true; say(''); card.classList.remove('lk-bad'); }
   });
   d.addEventListener('click', e => { if (!busy && (e.target === d || (e.target.closest && e.target.closest('.lk-head, .lk-bg')))) (d.classList.contains('lk-recmode') ? rc : inp).focus(); });
+  /* v46.4: a phone shows all of it on one screen — when it does not fit, it is made smaller in two steps (not while typing: the keyboard
+     makes the screen shorter for a moment) */
+  const fit = () => {
+    if (!d.isConnected || d.id !== 'lockScr') return;
+    const a = document.activeElement; if (a && d.contains(a) && a.tagName === 'INPUT' && window.innerWidth <= 600 && fit.done) return;
+    d.classList.remove('lk-t1', 'lk-t2');
+    if (d.scrollHeight > d.clientHeight + 1) d.classList.add('lk-t1');
+    if (d.scrollHeight > d.clientHeight + 1) d.classList.add('lk-t2');
+    fit.done = true;
+  };
+  fit(); setTimeout(fit, 0); setTimeout(fit, 400);
+  window.addEventListener('orientationchange', () => setTimeout(() => { fit.done = false; fit(); }, 400));
   setTimeout(() => inp.focus(), 50);
 }
 /* run cb() once the file is unlocked (immediately when it is not protected) */
