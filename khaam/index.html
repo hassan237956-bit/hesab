@@ -2798,6 +2798,8 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 :is(#lockScr,#lockOut) .lk-help summary{display:inline-flex;gap:6px;padding:4px 2px;list-style:none;cursor:pointer;font-size:1.04rem;font-weight:900;color:#1D4ED8}
 :is(#lockScr,#lockOut) .lk-help summary::-webkit-details-marker{display:none}
 :is(#lockScr,#lockOut) .lk-help > div{margin-top:6px;padding:10px 14px;border-radius:16px;background:#EFF6FF;border:2px solid #BFDBFE;color:#1E3A8A;font-size:1rem;font-weight:800;line-height:1.95}
+/* v46.2 (the owner: «تا رمز اشتباه نشده، این قسمت اضافه است»): «رمز درست است ولی باز نمی‌شود؟» shows only after a wrong password */
+#lockScr:not(.lk-tried) .lkRepick{display:none}
 :is(#lockScr,#lockOut) .lkRepick button{background:#F8FAFC!important;border:2px dashed #94A3B8!important;border-radius:18px!important}
 
 /* under the card */
@@ -2831,7 +2833,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "46.1"; window.APP_BUILD = "1405/08/16 01:26";
+window.APP_VERSION = "46.2"; window.APP_BUILD = "1405/08/16 07:12";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -4389,7 +4391,7 @@ function screen(cb) {
     setTimeout(() => {
       let ok = false; try { ok = tryPw(pw); } catch (e) { ok = false; }
       if (!ok) {
-        busy = false; tries++; d.classList.remove('lk-busy'); btn.disabled = false; inp.readOnly = false; gt.textContent = 'ورود';
+        busy = false; tries++; d.classList.remove('lk-busy'); d.classList.add('lk-tried'); btn.disabled = false; inp.readOnly = false; gt.textContent = 'ورود';
         lkSet(LK_FAIL, (+lkGet(LK_FAIL) || 0) + 1);
         say((devGen() ? '✖ رمز اشتباه است. اگر رمز را تازگی عوض کرده‌اید، رمز جدید را بنویسید' : '✖ رمز اشتباه است') + (tries > 1 ? ' (بار ' + tries + ')' : ''), 'err');
         if (tries >= 3 && help) help.open = true;
@@ -12805,7 +12807,7 @@ function add() {
   d.innerHTML = '<button type="button" style="margin-top:14px;width:100%;border:2px solid #CBD5E1;background:#F8FAFC;color:#0F2A4A;border-radius:14px;padding:12px;font:inherit;font-size:1.05rem;font-weight:800">📂 رمز درست است ولی باز نمی‌شود؟ فایل برنامه را دوباره انتخاب کن</button>' +
     '<div style="margin-top:6px;font-size:.92rem;color:#475569;line-height:1.8">آخرین فایلی را که Claude فرستاده انتخاب کنید؛ فایل قدیمی رمز قبلی را می‌خواهد.</div>';
   d.querySelector('button').onclick = () => { if (confirm('فایل برنامه را دوباره انتخاب کنید؟ (اطلاعات این گوشی پاک نمی‌شود)')) forget(); };
-  lk.appendChild(d);
+  const m = lk.querySelector('#lkMsg'); if (m) m.insertAdjacentElement('afterend', d); else lk.appendChild(d);   // v46.2: right under «رمز اشتباه است»
 }
 new MutationObserver(add).observe(document.documentElement, { childList: true, subtree: true });
 setTimeout(add, 500);
