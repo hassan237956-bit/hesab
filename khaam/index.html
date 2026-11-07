@@ -2826,6 +2826,55 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
   :is(#lockScr,#lockOut),:is(#lockScr,#lockOut) *,:is(#lockScr,#lockOut) *::after{animation:none!important;transition:none!important}
   :is(#lockScr,#lockOut).lk-busy .lk-spin{border-top-color:#0F2A4A;border-right-color:#0F2A4A}
 }
+
+/* ---------------------------------------------------------------- v46.3 — the recovery code: on the password screen, on the page «رمز برنامه», printed */
+:is(#lockScr,#lockOut).lk-recmode .lk-sub,:is(#lockScr,#lockOut).lk-recmode .lk-lab[for=lkPw],:is(#lockScr,#lockOut).lk-recmode .lk-f,
+:is(#lockScr,#lockOut).lk-recmode #lkCaps,:is(#lockScr,#lockOut).lk-recmode #lkFa,:is(#lockScr,#lockOut).lk-recmode #lkGo,
+:is(#lockScr,#lockOut).lk-recmode .lk-help,:is(#lockScr,#lockOut).lk-recmode .lkRepick{display:none!important}
+:is(#lockScr,#lockOut) .lk-rec[hidden]{display:none}
+:is(#lockScr,#lockOut) .lk-rech{margin:0 0 12px;padding:8px 12px;border-radius:14px;background:linear-gradient(90deg,#ECFDF5,#EFF6FF);border:2px solid #A7F3D0;
+  font-size:1.3rem;font-weight:900;color:#065F46}
+:is(#lockScr,#lockOut) .lk-rec .lk-lab{margin-top:12px}
+:is(#lockScr,#lockOut) .lk-lab small{font-size:.85rem;font-weight:800;color:#64748B}
+:is(#lockScr,#lockOut) .lk-in{display:block;width:100%;height:58px;box-sizing:border-box;margin:0;padding:0 14px;font:inherit;font-size:1.45rem;font-weight:900;letter-spacing:.12em;
+  text-align:center;direction:ltr;color:#0F2A4A;background:#F3F6FB;border:3px solid transparent;border-radius:18px;outline:none;
+  box-shadow:inset 4px 4px 10px #D3DBE7,inset -4px -4px 10px #fff}
+:is(#lockScr,#lockOut) .lk-in:focus{background:#fff;border-color:#10B981;box-shadow:0 0 0 5px #10B98133}
+:is(#lockScr,#lockOut) .lk-in.lk-code{font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;font-size:1.35rem}
+:is(#lockScr,#lockOut) .lk-in.lk-code::placeholder{color:#CBD5E1;letter-spacing:.04em}
+:is(#lockScr,#lockOut) .lk-bad .lk-in{border-color:#EF4444;background:#FEF2F2}
+:is(#lockScr,#lockOut) .lk-sh{display:flex;align-items:center;gap:8px;margin:10px 4px 0;font-size:1.02rem;font-weight:800;color:#334155;cursor:pointer}
+:is(#lockScr,#lockOut) .lk-sh input{width:22px;height:22px;margin:0;padding:0;border:0;box-shadow:none;letter-spacing:0;accent-color:#10B981}
+:is(#lockScr,#lockOut) .lk-recok{position:relative;display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:64px;box-sizing:border-box;margin:16px 0 0;padding:8px 16px;
+  border:0;border-radius:20px;cursor:pointer;font:inherit;font-size:1.4rem;font-weight:900;color:#fff;line-height:1.5;
+  background:linear-gradient(180deg,#34D399 0%,#10B981 55%,#059669 100%);box-shadow:0 16px 28px -14px #047857DD,inset 0 2px 0 #D1FAE5}
+:is(#lockScr,#lockOut) .lk-recok .lk-spin{border-color:#ffffff55;border-top-color:#fff}
+:is(#lockScr,#lockOut) .lk-recok:disabled{opacity:1;cursor:progress}
+:is(#lockScr,#lockOut) .lk-back{display:block;width:auto;margin:12px auto 0;padding:6px 12px;border:0;border-radius:12px;background:transparent;color:#1D4ED8;
+  font:inherit;font-size:1.08rem;font-weight:900;cursor:pointer;box-shadow:none}
+:is(#lockScr,#lockOut) .lk-recgo{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;box-sizing:border-box;margin:2px 0 10px;padding:6px 14px;
+  border:0;border-radius:16px;cursor:pointer;font:inherit;font-size:1.25rem;font-weight:900;color:#fff;background:linear-gradient(180deg,#34D399,#059669);
+  box-shadow:0 10px 20px -12px #047857DD,inset 0 2px 0 #D1FAE5}
+
+.recbox .rec-st{font-size:1.15rem;font-weight:900;line-height:2}
+.recbox .rec-how,#modalBg .rec-how{margin:10px 0;line-height:2.05;font-size:1.06rem;font-weight:700;color:#1E3A8A}
+.recbox .rec-note{margin-top:8px;font-size:1rem;font-weight:700;line-height:1.9}
+#modalBg .rec-code{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px;margin:6px 0 14px;font-family:ui-monospace,Menlo,Consolas,monospace}
+#modalBg .rec-code span{padding:10px 12px;border-radius:14px;background:#0F2A4A;color:#FDE68A;font-size:1.75rem;font-weight:900;letter-spacing:.08em;box-shadow:0 8px 16px -10px #0F2A4AAA}
+#modalBg .rec-code i{font-style:normal;font-size:1.4rem;font-weight:900;color:#94A3B8}
+#modalBg .rec-warn{padding:10px 14px;border-radius:14px;background:#FEF3C7;border:2px solid #FCD34D;color:#92400E;font-size:1.12rem;font-weight:800;line-height:1.9}
+#recPrint{display:none}
+@media print{
+  body.rec-print > *:not(#recPrint){display:none !important}
+  body.rec-print #recPrint{display:block !important;direction:rtl;font-family:'B Nazanin',Vazirmatn,Tahoma,sans-serif;color:#000;padding:10mm}
+  #recPrint h1{font-size:24pt;margin:0 0 4mm}
+  #recPrint .rp-d{font-size:13pt;font-weight:700;margin-bottom:8mm}
+  #recPrint .rp-code{display:flex;justify-content:center;gap:3mm;margin:6mm 0 10mm;font-family:Consolas,'Courier New',monospace}
+  #recPrint .rp-code span{border:2.5pt solid #000;border-radius:3mm;padding:3mm 4mm;font-size:26pt;font-weight:900;letter-spacing:1.5pt}
+  #recPrint .rp-code i{font-style:normal;font-size:22pt;align-self:center}
+  #recPrint ol{font-size:15pt;font-weight:700;line-height:2}
+  #recPrint .rp-w{margin-top:8mm;padding:4mm;border:2pt dashed #000;font-size:14pt;font-weight:800;line-height:1.9}
+}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -2833,7 +2882,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "46.2"; window.APP_BUILD = "1405/08/16 07:12";
+window.APP_VERSION = "46.3"; window.APP_BUILD = "1405/08/16 07:34";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -4267,8 +4316,8 @@ App.regen = function (html) {
   }
   return out;
 };
-function tryKey(key, g) {
-  const ring = loadRing(g, key); let fk = null;
+function tryKey(key, g, more) {
+  const ring = loadRing(g, key); if (more && more.length) ringMerge(ring, more, g.saltB64); let fk = null;
   if (g.saltB64 === info0.saltB64) fk = key; else { const e = ring.find(x => x.s === info0.saltB64); if (e) { try { fk = b64d(e.k); } catch (er) { } } }
   if (!fk || !same(verOf(fk), b64d(info0.ver))) return false;
   const tmp = {};
@@ -4305,6 +4354,119 @@ function tryPw(pw) {
    the last time the program was opened on this device and the wrong passwords typed since then; what to do when the password is forgotten.
    The ids (lockScr, lkPw, lkGo, lkMsg, lkDt) and the logic are the same as before; when the password is right the screen is renamed
    (lockOut) at once and only fades away over the program. */
+/* v46.3 — THE RECOVERY CODE (the owner 1405/08/16: «برای فراموشی رمز هم راهی بگذار … فقط کپی و چاپ باشد، به ایمیل نرود»).
+   A code of 20 letters and digits, made on the device (it never goes anywhere), shown once to be copied or printed.  The code opens a small
+   box that holds the KEY of the password in force and the keys of the older passwords — never a password.  With it the password screen opens
+   the program and a new password is set at once.
+   · the box is kept on this device (hesab_rec1) and goes with every full copy of the program (data-rec) and every locked backup (header «rec»);
+     another device that reads one of them takes the code too (the newest code wins);
+   · it is written again whenever the password or the keys change, so the same code keeps working;
+   · a record: «salt|iterations|verifier|salt of the key that wrote w|box (sealed by the code key)|w (the code key, sealed by the password key)|time» */
+const REC_LS = 'hesabk_rec1', REC_AB = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+let RECK = null, RECOVERED = false;
+const normRec = s => String(s || '').replace(/[۰-۹]/g, c => '۰۱۲۳۴۵۶۷۸۹'.indexOf(c)).replace(/[٠-٩]/g, c => '٠١٢٣٤٥٦٧٨٩'.indexOf(c)).toUpperCase().replace(/[^A-Z0-9]/g, '');
+const fmtRec = c => (normRec(c).slice(0, 20).match(/.{1,5}/g) || []).join('-');
+function recParse(str) { const a = String(str || '').split('|'); return a.length === 7 && a[4].indexOf('ENC1:') === 0 && a[5].indexOf('ENC1:') === 0 ? { s: a[0], i: +a[1] || 60000, v: a[2], ws: a[3], b: a[4], w: a[5], at: +a[6] || 0 } : null; }
+const recDevStr = () => { try { return localStorage.getItem(REC_LS) || ''; } catch (e) { return ''; } };
+const recOff = () => { const m = /^OFF\|(\d+)/.exec(recDevStr()); return m ? +m[1] : 0; };
+const recFileStr = () => { const el = document.getElementById('initial-data'); return (el && el.getAttribute('data-rec')) || ''; };
+function recCands() {                                                // newest first; nothing older than a «removed» mark of this device
+  const off = recOff();
+  return [recParse(recDevStr()), recParse(recFileStr())].filter(r => r && r.at > off).sort((a, b) => b.at - a.at);
+}
+function recBuild() {
+  if (!RECK || !KEY || !info) return '';
+  const r = RING.map(e => ({ s: e.s, i: e.i, k: e.k }));
+  if (FKEY && info0) ringMerge(r, [{ s: info0.saltB64, i: info0.it, k: b64e(FKEY) }], info.saltB64);
+  return [RECK.s, RECK.i, RECK.v, info.saltB64, seal(JSON.stringify({ s: info.saltB64, i: info.it, k: b64e(KEY), r }), RECK.key), seal(b64e(RECK.key), KEY), RECK.at].join('|');
+}
+function recSave() { if (RECK && KEY && !STALE) { try { localStorage.setItem(REC_LS, recBuild()); } catch (e) { } } }
+function recKeyOf(r) {                                               // the code key, opened with a key this device has
+  const k = r && App.keyFor(r.ws); if (!k) return null;
+  const p = open(r.w, k); if (p == null) return null;
+  let rk = null; try { rk = b64d(p); } catch (e) { return null; }
+  return same(verOf(rk), b64d(r.v)) ? rk : null;
+}
+function recEnsure() {
+  if (RECK || !KEY) return RECK;
+  for (const r of recCands()) { const rk = recKeyOf(r); if (rk) { RECK = { s: r.s, i: r.i, v: r.v, key: rk, at: r.at }; recSave(); break; } }
+  return RECK;
+}
+/* the password screen: open with the code (then a new password is set) */
+function tryRec(code) {
+  const c = normRec(code); if (c.length !== 20 || !info0) return false;
+  const dk = {};
+  for (const r of recCands()) {
+    const kk = r.s + '|' + r.i; let rk = dk[kk];
+    if (!rk) { try { rk = derive(c, b64d(r.s), r.i); } catch (e) { continue; } dk[kk] = rk; }
+    if (!same(verOf(rk), b64d(r.v))) continue;
+    const p = open(r.b, rk); if (p == null) continue;
+    let o = null, k = null; try { o = JSON.parse(p); k = b64d(o.k); } catch (e) { continue; }
+    const dg = devGen();
+    const g = o.s === info0.saltB64 ? info0 : (dg && o.s === dg.saltB64) ? dg : { salt: b64d(o.s), saltB64: o.s, it: +o.i || 60000, ver: b64e(verOf(k)), ring: '', at: 0 };
+    if (!same(verOf(k), b64d(g.ver))) continue;
+    if (tryKey(k, g, Array.isArray(o.r) ? o.r.filter(e => e && e.s && e.k) : [])) { RECK = { s: r.s, i: r.i, v: r.v, key: rk, at: r.at }; RECOVERED = true; return true; }
+  }
+  return false;
+}
+const recRnd = n => { const u = new Uint8Array(n); if (window.crypto && crypto.getRandomValues) crypto.getRandomValues(u); else for (let i = 0; i < n; i++) u[i] = Math.floor(Math.random() * 256); return u; };
+const pwOk = pw => { pw = normPw(pw); return !!(pw && KEY && info && same(derive(pw, info.salt, info.it), KEY)); };
+App.recInfo = () => { const r = info0 && KEY ? recEnsure() : null; return { on: !!info0, has: !!r, at: r ? r.at : 0 }; };
+App.recCreate = function (pw) {
+  if (!info0 || !KEY) throw new Error('این نسخه رمز ندارد');
+  if (STALE) throw new Error('برنامه با رمز قدیمی باز شده؛ اول قفل را ببند و با رمز جدید وارد شو');
+  if (!pwOk(pw)) throw new Error('رمز فعلی درست نیست');
+  let code = ''; while (code.length < 20) { const u = recRnd(32); for (let i = 0; i < u.length && code.length < 20; i++) if (u[i] < 248) code += REC_AB[u[i] % 31]; }
+  const salt = recRnd(16), it = 60000, rk = derive(code, salt, it);
+  RECK = { s: b64e(salt), i: it, v: b64e(verOf(rk)), key: rk, at: Date.now() }; recSave();
+  return fmtRec(code);
+};
+App.recRemove = function (pw) {
+  if (!pwOk(pw)) throw new Error('رمز فعلی درست نیست');
+  RECK = null; try { localStorage.setItem(REC_LS, 'OFF|' + Date.now()); } catch (e) { }
+  return true;
+};
+/* a backup / full copy made on another device brings its code: the newest one is kept */
+App.recAdopt = function (str) {
+  try {
+    const r = recParse(str); if (!r || !KEY || STALE || r.at <= recOff()) return false;
+    const cur = recEnsure(); if (cur && cur.at >= r.at) return false;
+    const rk = recKeyOf(r); if (!rk) return false;
+    RECK = { s: r.s, i: r.i, v: r.v, key: rk, at: r.at }; recSave(); return true;
+  } catch (e) { return false; }
+};
+/* after the code opened the program: the new password (the same steps as App.pwChange, without the old password) */
+App.pwReset = function (newPw) {
+  if (!RECOVERED || !info0 || !KEY) throw new Error('اول با کد بازیابی وارد شوید');
+  if (STALE) throw new Error('این کد بازیابی مال رمزی قدیمی‌تر از رمز این دستگاه است');
+  newPw = normPw(newPw); if (newPw.length < 6) throw new Error('رمز جدید باید دست‌کم ۶ نویسه باشد');
+  const salt = recRnd(16), it = 60000, nk = derive(newPw, salt, it), ring = RING.map(e => ({ s: e.s, i: e.i, k: e.k }));
+  ringMerge(ring, [{ s: info.saltB64, i: info.it, k: b64e(KEY) }], '');
+  if (FKEY) ringMerge(ring, [{ s: info0.saltB64, i: info0.it, k: b64e(FKEY) }], '');
+  const g = { salt, saltB64: b64e(salt), it, ver: b64e(verOf(nk)), ring: '', at: Date.now() };
+  RING = ring.filter(e => e.s !== g.saltB64); KEY = nk; info = g; RSEAL = null; App.lockMeta = info;
+  saveDev(); remember(); recSave(); RECOVERED = false;
+  return { older: RING.length };
+};
+/* the code goes with every copy and backup, and is written again when the password or the keys change */
+{ const f0 = App.regen; App.regen = function () {
+  let out = f0.apply(this, arguments);
+  try {
+    if (typeof out === 'string' && info0 && KEY) {
+      const m = tagRe('initial-data').exec(out);
+      if (m) { const rs = recEnsure() ? recBuild() : ''; const at = rs ? setAttr(m[1], 'data-rec', rs) : m[1].replace(/\sdata-rec="[^"]*"/, ''); out = out.slice(0, m.index) + SC + ' id="initial-data"' + at + '>' + out.slice(m.index + m[0].length); }
+    }
+  } catch (e) { console.error(e); }
+  return out;
+}; }
+{ const f0 = App.sealJson; App.sealJson = function () {
+  const out = f0.apply(this, arguments);
+  try { if (typeof out === 'string' && out.indexOf('HESAB-ENC') === 0 && recEnsure()) { const nl = out.indexOf('\n'), hd = JSON.parse(out.slice(9, nl)); hd.rec = recBuild(); return 'HESAB-ENC ' + JSON.stringify(hd) + out.slice(nl); } } catch (e) { console.error(e); }
+  return out;
+}; }
+{ const f0 = App.learnKey; App.learnKey = function (hd) { recEnsure(); const r = f0.apply(this, arguments); try { recSave(); if (hd && hd.rec) App.recAdopt(hd.rec); } catch (e) { } return r; }; }
+{ const f0 = App.pwChange; App.pwChange = function () { recEnsure(); const r = f0.apply(this, arguments); recSave(); return r; }; }
+
 const LK_WD = ['یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه', 'شنبه'];
 const LK_MN = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
 const LK_LAST = 'hesabk_lk_last', LK_FAIL = 'hesabk_lk_fail';
@@ -4334,6 +4496,7 @@ function screen(cb) {
   const d = document.createElement('div'); d.id = 'lockScr'; d.className = 'lkS'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-label', 'ورود به برنامه');
   const RM = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
   const last = +lkGet(LK_LAST) || 0, fails = +lkGet(LK_FAIL) || 0, ver = window.APP_VERSION ? String(window.APP_VERSION) : '';
+  const recAv = recCands().length > 0;                                // a recovery code was made for this program / device
   let meta = '';
   if (last) meta += '<div class="lk-m"><span>🕓</span><span title="آخرین باری که برنامه روی همین دستگاه باز شد">آخرین ورود: <b>' + lkAgo(last) + '</b></span></div>';
   if (fails > 0) meta += '<div class="lk-m warn"><span>⚠️</span><span><b><bdi>' + fails + '</bdi> بار رمز اشتباه</b> از آخرین ورود</span></div>';
@@ -4349,12 +4512,30 @@ function screen(cb) {
       '<div class="lk-w" id="lkCaps" hidden>⇪ دکمهٔ <b dir="ltr">Caps Lock</b> روشن است؛ حروف بزرگ نوشته می‌شود</div>' +
       '<div class="lk-w" id="lkFa" hidden>⌨️ صفحه‌کلید <b>فارسی</b> است؛ اگر رمزتان انگلیسی است، زبان صفحه‌کلید را عوض کنید</div>' +
       '<button id="lkGo" type="button"><span class="lk-gt">ورود</span><span class="lk-ar" aria-hidden="true">←</span><i class="lk-spin" aria-hidden="true"></i></button>' +
+      '<div class="lk-rec" id="lkRec" hidden>' +
+        '<div class="lk-rech">🛟 ورود با کد بازیابی</div>' +
+        '<label class="lk-lab" for="lkRc">کد بازیابی <small>(۲۰ حرف و عدد؛ از برگهٔ چاپی یا جایی که کپی کرده‌اید)</small></label>' +
+        '<input id="lkRc" class="lk-in lk-code" dir="ltr" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" placeholder="XXXXX-XXXXX-XXXXX-XXXXX">' +
+        '<div class="lk-w" id="lkRcFa" hidden>⌨️ صفحه‌کلید <b>فارسی</b> است؛ کد با <b>حروف انگلیسی</b> است</div>' +
+        '<label class="lk-lab" for="lkN1">🔑 رمز تازه <small>(دست‌کم ۶ نویسه)</small></label>' +
+        '<input id="lkN1" class="lk-in" type="password" dir="ltr" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false">' +
+        '<label class="lk-lab" for="lkN2">🔑 رمز تازه را دوباره بنویسید</label>' +
+        '<input id="lkN2" class="lk-in" type="password" dir="ltr" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false">' +
+        '<label class="lk-sh"><input type="checkbox" id="lkRecSh"> 👁 رمزها را نشان بده</label>' +
+        '<button id="lkRecOk" type="button" class="lk-recok"><span class="lk-rt">باز کن و رمز تازه بگذار</span><i class="lk-spin" aria-hidden="true"></i></button>' +
+        '<button id="lkRecBack" type="button" class="lk-back">→ برگشت به ورود با رمز</button>' +
+      '</div>' +
       '<div id="lkMsg" role="alert"></div>' +
       '<details class="lk-help"><summary>❔ رمز را فراموش کرده‌اید؟</summary><div>' +
-        'رمز در هیچ جای دیگری نگه داشته نمی‌شود و <b>قابل بازیابی نیست</b>؛ اطلاعات با همین رمز قفل شده‌اند.<br>' +
+        (recAv
+          ? '<button type="button" class="lk-recgo" id="lkRecGo">🛟 ورود با کد بازیابی</button>' +
+            'اگر <b>کد بازیابی</b> را چاپ یا کپی کرده‌اید، با آن وارد شوید و همان‌جا <b>رمز تازه</b> بگذارید.<br>'
+          : 'رمز در هیچ جای دیگری نگه داشته نمی‌شود و <b>قابل بازیابی نیست</b>؛ اطلاعات با همین رمز قفل شده‌اند.<br>') +
         '• اگر رمز را تازگی عوض کرده‌اید، اول <b>رمز جدید</b> و بعد <b>رمز قبلی</b> را امتحان کنید.<br>' +
         '• به <b>حروف بزرگ و کوچک</b> و <b>زبان صفحه‌کلید</b> دقت کنید؛ با 👁 رمزی را که نوشته‌اید ببینید.<br>' +
-        '• یک نسخهٔ پشتیبان یا فایل قدیمی‌تر، با رمزِ همان زمان باز می‌شود.</div></details>' +
+        '• یک نسخهٔ پشتیبان یا فایل قدیمی‌تر، با رمزِ همان زمان باز می‌شود.' +
+        (recAv ? '' : '<br>• <b>پیشنهاد:</b> بعد از ورود، در «🔑 رمز برنامه» یک <b>کد بازیابی</b> بسازید و چاپ کنید؛ آن وقت اگر رمز یادتان برود، با آن کد وارد می‌شوید.') +
+      '</div></details>' +
     '</div>' +
     '<div class="lk-foot"><span>🔐 اطلاعات رمزگذاری‌شده</span><span>📴 بدون اینترنت</span>' +
       (ver ? '<span>نسخهٔ <bdi dir="ltr">' + ver + '</bdi></span>' : '') + '</div>';
@@ -4397,25 +4578,66 @@ function screen(cb) {
         if (tries >= 3 && help) help.open = true;
         inp.value = ''; fa.hidden = true; bad(); inp.focus(); return;
       }
-      lkSet(LK_LAST, Date.now()); lkSet(LK_FAIL, null);
-      remember();
-      inp.type = 'password'; d.classList.remove('lk-busy', 'lk-shown'); d.classList.add('lk-ok'); gt.textContent = 'خوش آمدید'; ar.textContent = '✔'; say('');
-      setTimeout(() => {
-        d.id = 'lockOut'; clearInterval(tv); try { inp.blur(); } catch (e) { }
-        try { cb(); } finally {
-          if (RM) d.remove();
-          else { requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('lk-out'))); setTimeout(() => d.remove(), 700); }
-        }
-      }, RM ? 0 : 380);
+      win('');
     }, 60);
   }
+  /* the password (or the recovery code) was right: the lock opens, the program comes, the screen fades away */
+  function win(after) {
+    lkSet(LK_LAST, Date.now()); lkSet(LK_FAIL, null);
+    remember();
+    inp.type = 'password'; d.classList.remove('lk-busy', 'lk-shown'); d.classList.add('lk-ok'); gt.textContent = 'خوش آمدید'; ar.textContent = '✔'; rt.textContent = '✔ خوش آمدید'; say('');
+    setTimeout(() => {
+      d.id = 'lockOut'; clearInterval(tv); try { if (document.activeElement && d.contains(document.activeElement)) document.activeElement.blur(); } catch (e) { }
+      try { cb(); } finally {
+        if (RM) d.remove();
+        else { requestAnimationFrame(() => requestAnimationFrame(() => d.classList.add('lk-out'))); setTimeout(() => d.remove(), 700); }
+        if (after) setTimeout(() => { try { App.toast(after, /^⚠/.test(after)); } catch (e) { } }, 900);
+      }
+    }, RM ? 0 : 380);
+  }
+  /* 🛟 the recovery code */
+  const rec = q('#lkRec'), rc = q('#lkRc'), n1 = q('#lkN1'), n2 = q('#lkN2'), rok = q('#lkRecOk'), rt = q('.lk-rt'), rcFa = q('#lkRcFa');
+  const recMode = on => {
+    d.classList.toggle('lk-recmode', on); rec.hidden = !on; say(''); card.classList.remove('lk-bad');
+    setTimeout(() => { try { (on ? rc : inp).focus(); } catch (e) { } }, 30);
+  };
+  if (q('#lkRecGo')) q('#lkRecGo').onclick = () => recMode(true);
+  q('#lkRecBack').onclick = () => { if (!busy) recMode(false); };
+  q('#lkRecSh').onchange = e => { const t = e.target.checked ? 'text' : 'password'; n1.type = t; n2.type = t; };
+  rc.addEventListener('input', () => {
+    rcFa.hidden = !LK_FA.test(rc.value); const f = fmtRec(rc.value); if (f !== rc.value) rc.value = f;
+    card.classList.remove('lk-bad'); if (msg.className === 'err') say('');
+  });
+  [n1, n2].forEach(x => x.addEventListener('input', () => { card.classList.remove('lk-bad'); if (msg.className === 'err') say(''); }));
+  function recGo() {
+    if (busy) return;
+    const c = normRec(rc.value), p1 = normPw(n1.value), p2 = normPw(n2.value);
+    if (c.length !== 20) { say('✖ کد بازیابی ۲۰ حرف و عدد است؛ کامل بنویسید', 'err'); bad(); rc.focus(); return; }
+    if (p1.length < 6) { say('✖ رمز تازه دست‌کم ۶ نویسه باشد', 'err'); bad(); n1.focus(); return; }
+    if (p1 !== p2) { say('✖ دو رمز تازه با هم یکی نیستند؛ دوباره بنویسید', 'err'); bad(); n2.focus(); return; }
+    busy = true; say(''); d.classList.add('lk-busy'); rok.disabled = true; rt.textContent = 'در حال بررسی کد…';
+    setTimeout(() => {
+      let ok = false; try { ok = tryRec(c); } catch (e) { ok = false; }
+      if (!ok) {
+        busy = false; d.classList.remove('lk-busy'); rok.disabled = false; rt.textContent = 'باز کن و رمز تازه بگذار';
+        lkSet(LK_FAIL, (+lkGet(LK_FAIL) || 0) + 1);
+        say('✖ این کد بازیابی درست نیست (یا برای این برنامه ساخته نشده)', 'err'); bad(); rc.focus(); return;
+      }
+      let warn = ''; try { App.pwReset(p1); } catch (e) { warn = (e && e.message) || 'خطا'; }
+      rc.value = ''; n1.value = ''; n2.value = '';
+      win(warn ? '⚠ با کد بازیابی وارد شدید، ولی رمز تازه گذاشته نشد: ' + warn
+               : '✔ با کد بازیابی وارد شدید و رمز تازه گذاشته شد. رمز تازه را یادداشت کنید؛ همین کد بازیابی باز هم کار می‌کند.');
+    }, 60);
+  }
+  rok.onclick = recGo;
+  [rc, n1, n2].forEach(x => x.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); recGo(); } }));
   btn.onclick = go;
   inp.addEventListener('keydown', e => {
     capsOf(e);
     if (e.key === 'Enter') { e.preventDefault(); go(); }
     else if (e.key === 'Escape') { inp.value = ''; fa.hidden = true; say(''); card.classList.remove('lk-bad'); }
   });
-  d.addEventListener('click', e => { if (!busy && (e.target === d || (e.target.closest && e.target.closest('.lk-head, .lk-bg')))) inp.focus(); });
+  d.addEventListener('click', e => { if (!busy && (e.target === d || (e.target.closest && e.target.closest('.lk-head, .lk-bg')))) (d.classList.contains('lk-recmode') ? rc : inp).focus(); });
   setTimeout(() => inp.focus(), 50);
 }
 /* run cb() once the file is unlocked (immediately when it is not protected) */
@@ -11126,6 +11348,7 @@ function statusLine(s) {
 P.password = function () {
   const s = App.pwStatus();
   let h = '<div class="box pwbox"><h2>🔑 رمز برنامه</h2>' + statusLine(s) + '</div>';
+  if (s.on && !s.stale && App.recBoxHtml) h += App.recBoxHtml();                     // v46.3: the recovery code
   if (s.on && !s.stale) {
     h += '<div class="box pwbox"><h2>🔁 رمز جدید بگذار <small>سه کادر، یک دکمه</small></h2>' +
       '<div class="field"><label>۱) رمز فعلی</label><input type="password" id="pw_old" class="yellow" autocomplete="current-password" autocapitalize="off" spellcheck="false"></div>' +
@@ -11136,7 +11359,7 @@ P.password = function () {
       '<div class="bar noprint"><button type="button" class="btn green big" id="pw_go" data-act="pw-go">🔑 رمز را عوض کن</button></div>' +
       '<div class="status info" style="line-height:2;font-size:1.05rem;font-weight:700;margin-top:10px">' +
         '• بعد از عوض‌کردن، <b>رمز جدید</b> همهٔ پشتیبان‌ها و فایل‌های قبلی (درایو، تلگرام، فایل کامل) را باز می‌کند؛ لازم نیست رمز قدیمی یادت بماند.<br>' +
-        '• رمز جدید را همین حالا <b>روی کاغذ یا جای امن</b> یادداشت کن. اگر فراموش شود، هیچ‌کس نمی‌تواند اطلاعات را باز کند.<br>' +
+        '• رمز جدید را همین حالا <b>روی کاغذ یا جای امن</b> یادداشت کن. اگر فراموش شود، فقط با <b>کد بازیابی</b> (بالای همین صفحه) باز می‌شود.<br>' +
         '• بعدش یک بار «پشتیبان بفرست» بزن تا درایو و تلگرام هم با رمز جدید ساخته شوند.</div></div>';
     h += '<div class="box pwbox"><h2>🗂 یک فایل قدیمی داری که باز نمی‌شود؟</h2><div class="hint" style="line-height:2;font-size:1.05rem;font-weight:700">فایل را انتخاب کن. اگر با یکی از رمزهای قبلیِ همین دستگاه ساخته شده باشد خودکار باز می‌شود؛ وگرنه یک بار رمز آن فایل را می‌پرسد و از آن به بعد خودش یادش می‌ماند.</div>' +
       '<div class="bar noprint">' + (App.checkPickHtml ? App.checkPickHtml() : '') + '</div></div>';
@@ -13388,6 +13611,111 @@ function seek() {
 }
 window.addEventListener('hashchange', seek); seek();
 })();
+/* ---------------------------------------------------------------- v46.3 — the recovery code on the page «🔑 رمز برنامه»
+   the owner (1405/08/16): «برای فراموشی رمز هم راهی بگذار … فقط کپی و چاپ باشد (به ایمیل نرود)».
+   The code is made by the lock module (App.recCreate) on this device and shown ONCE here, to be printed or copied; the current password is asked
+   before a code is made or removed.  The password screen has «🛟 ورود با کد بازیابی» (see the lock module). */
+(function () {
+'use strict';
+const App = window.App, H = App && App.H; if (!App || !H) return;
+const $ = s => document.querySelector(s);
+const P2 = n => ('0' + n).slice(-2);
+function stamp(at) {
+  const d = new Date(at); if (!at || isNaN(d)) return '';
+  let t = ''; try { t = window.Engine.serToText(window.Engine.todaySerial(d)); } catch (e) { t = ''; }
+  return t + ' ساعت ' + P2(d.getHours()) + ':' + P2(d.getMinutes());
+}
+const msg = (t, bad) => { const m = $('#rec_msg'); if (!m) return; m.style.display = t ? '' : 'none'; m.className = 'status ' + (bad ? 'bad' : 'info'); m.textContent = t || ''; };
+
+App.recBoxHtml = function () {
+  const r = App.recInfo ? App.recInfo() : null; if (!r || !r.on) return '';
+  return '<div class="box pwbox recbox" id="recBox"><h2>🛟 کد بازیابی <small>برای روزی که رمز یادتان برود</small></h2>' +
+    (r.has ? '<div class="status ok rec-st">✔ کد بازیابی دارید · ساخته‌شده <b class="num">' + H.esc(stamp(r.at)) + '</b></div>'
+           : '<div class="status warn rec-st">⚠ هنوز کد بازیابی ندارید؛ اگر رمز فراموش شود، اطلاعات باز نمی‌شود.</div>') +
+    '<div class="rec-how">' +
+      '• کد بازیابی <b>۲۰ حرف و عدد</b> است و فقط <b>همین‌جا روی دستگاه</b> ساخته می‌شود؛ به هیچ جا فرستاده نمی‌شود.<br>' +
+      '• آن را <b>چاپ</b> یا <b>کپی</b> کنید و جای امن نگه دارید.<br>' +
+      '• اگر رمز یادتان رفت: صفحهٔ ورود ← «❔ رمز را فراموش کرده‌اید؟» ← «🛟 ورود با کد بازیابی»؛ کد را بنویسید و رمز تازه بگذارید.<br>' +
+      '• کد با هر فایل کامل برنامه و هر پشتیبان قفل‌دار همراه است؛ دستگاه دیگری که آن را باز کند، همین کد را می‌شناسد.<br>' +
+      '• ⚠ هر کس این کد <b>و</b> فایل برنامه را داشته باشد، می‌تواند اطلاعات را باز کند؛ مثل رمز از آن مراقبت کنید.</div>' +
+    '<div class="field"><label>رمز فعلی <small>(برای ساختن یا حذف کد)</small></label><input type="password" id="rec_pw" class="yellow" autocomplete="current-password" autocapitalize="off" spellcheck="false"></div>' +
+    '<div id="rec_msg" class="status" role="alert" style="display:none"></div>' +
+    '<div class="bar noprint"><button type="button" class="btn green big" id="rec_make" data-rec-act="make">' + (r.has ? '🔁 ساختن کد تازه' : '🛟 ساختن کد بازیابی') + '</button>' +
+      (r.has ? '<button type="button" class="btn ghost" id="rec_del" data-rec-act="del">🗑 حذف کد بازیابی</button>' : '') + '</div>' +
+    (r.has ? '<div class="hint rec-note">کد را دوباره نمی‌شود دید. اگر گمش کرده‌اید، «ساختن کد تازه» را بزنید؛ از آن به بعد فایل‌ها و پشتیبان‌های تازه فقط با کد تازه باز می‌شوند.</div>' : '') +
+  '</div>';
+};
+
+let LAST = null;                                             // the code just made: only while its window is open
+const refresh = () => { try { if (location.hash.indexOf('#/password') === 0 && App.emit) App.emit(); } catch (e) { } };
+function busyRun(label, fn) {
+  const b = $('#rec_make'), d = $('#rec_del'); [b, d].forEach(x => { if (x) x.disabled = true; }); msg(label);
+  setTimeout(() => { try { fn(); } finally { [b, d].forEach(x => { if (x) x.disabled = false; }); } }, 60);
+}
+function make() {
+  const pi = $('#rec_pw'), pw = pi ? pi.value : '';
+  if (!pw) { msg('رمز فعلی را بنویسید', true); if (pi) pi.focus(); return; }
+  const run = () => busyRun('در حال ساختن کد… چند ثانیه صبر کنید', () => {
+    let code = '', err = ''; try { code = App.recCreate(pw); } catch (e) { err = (e && e.message) || 'خطا'; }
+    if (!code) { msg('✖ ' + err, true); return; }
+    if (pi) pi.value = ''; msg(''); show(code);
+  });
+  if (App.recInfo().has) App.confirm('کد تازه ساخته شود؟ از این به بعد فایل‌ها و پشتیبان‌های تازه فقط با <b>کد تازه</b> باز می‌شوند (کد قبلی را دور بیندازید).', 'بله، کد تازه بساز', run);
+  else run();
+}
+function del() {
+  const pi = $('#rec_pw'), pw = pi ? pi.value : '';
+  if (!pw) { msg('رمز فعلی را بنویسید', true); if (pi) pi.focus(); return; }
+  App.confirm('کد بازیابی حذف شود؟ از این به بعد اگر رمز فراموش شود، فایل‌ها و پشتیبان‌های تازه باز نمی‌شوند.', 'بله، حذف کن', () => busyRun('…', () => {
+    let ok = false, err = ''; try { ok = App.recRemove(pw); } catch (e) { err = (e && e.message) || 'خطا'; }
+    if (!ok) { msg('✖ ' + err, true); return; }
+    if (pi) pi.value = ''; msg(''); App.toast('کد بازیابی حذف شد'); refresh();
+  }));
+}
+function show(code) {
+  LAST = { code, at: Date.now() };
+  App.modal('🛟 کد بازیابی شما',
+    '<div class="rec-code" dir="ltr">' + code.split('-').map(g => '<span>' + H.esc(g) + '</span>').join('<i>-</i>') + '</div>' +
+    '<div class="rec-warn">این کد <b>فقط همین یک بار</b> نشان داده می‌شود. همین حالا <b>🖨 چاپ</b> یا <b>📋 کپی</b> کنید و جای امن نگه دارید.</div>' +
+    '<div class="rec-how">اگر رمز یادتان رفت: صفحهٔ ورود ← «❔ رمز را فراموش کرده‌اید؟» ← «🛟 ورود با کد بازیابی»؛ این کد را بنویسید (خط تیره لازم نیست) و رمز تازه بگذارید.</div>',
+    '<button type="button" class="btn gold big" data-rec-act="print">🖨 چاپ</button><button type="button" class="btn teal big" data-rec-act="copy">📋 کپی</button>' +
+    '<button type="button" class="btn ghost" data-rec-act="done">✔ نگه داشتم، ببند</button>', { width: '600px' });
+}
+function copy() {
+  if (!LAST) return;
+  const txt = 'کد بازیابی برنامهٔ صورت‌های مالی: ' + LAST.code + ' (ساخته‌شده ' + stamp(LAST.at) + ')';
+  const ok = () => App.toast('✔ کد کپی شد؛ آن را در جای امنی بچسبانید و نگه دارید');
+  const fb = () => {
+    const ta = document.createElement('textarea'); ta.value = txt; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta); ta.select(); let r = false; try { r = document.execCommand('copy'); } catch (e) { r = false; } ta.remove();
+    if (r) ok(); else App.toast('کپی نشد؛ کد را از روی صفحه بنویسید یا چاپ کنید', true);
+  };
+  try { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(txt).then(ok, fb); return; } } catch (e) { }
+  fb();
+}
+function print() {
+  if (!LAST) return;
+  let p = document.getElementById('recPrint'); if (!p) { p = document.createElement('div'); p.id = 'recPrint'; document.body.appendChild(p); }
+  p.innerHTML = '<h1>🛟 کد بازیابی رمز — صورت‌های مالی</h1><div class="rp-d">ساخته‌شده: ' + H.esc(stamp(LAST.at)) + '</div>' +
+    '<div class="rp-code" dir="ltr">' + LAST.code.split('-').map(g => '<span>' + H.esc(g) + '</span>').join('<i>-</i>') + '</div>' +
+    '<ol><li>اگر رمز برنامه را فراموش کردید، در صفحهٔ ورود «❔ رمز را فراموش کرده‌اید؟» را بزنید.</li>' +
+    '<li>«🛟 ورود با کد بازیابی» را بزنید و همین کد را بنویسید (خط تیره لازم نیست).</li>' +
+    '<li>رمز تازه را دو بار بنویسید؛ برنامه باز می‌شود و از آن به بعد رمز تازه کار می‌کند.</li></ol>' +
+    '<div class="rp-w">⚠ این برگه را جای امن نگه دارید. هر کس این کد و فایل برنامه را داشته باشد، می‌تواند اطلاعات را باز کند.</div>';
+  document.body.classList.add('rec-print');
+  const done = () => { document.body.classList.remove('rec-print'); window.removeEventListener('afterprint', done); };
+  window.addEventListener('afterprint', done);
+  try { window.print(); } catch (e) { } setTimeout(done, 1500);
+}
+document.addEventListener('click', ev => {
+  const t = ev.target && ev.target.closest ? ev.target.closest('[data-rec-act]') : null;
+  if (!t) { if (LAST && ev.target && ev.target.closest && ev.target.closest('[data-act="modal-close"]')) { LAST = null; setTimeout(refresh, 0); } return; }
+  const a = t.dataset.recAct;
+  if (a === 'make') make(); else if (a === 'del') del(); else if (a === 'copy') copy(); else if (a === 'print') print();
+  else if (a === 'done') { LAST = null; App.closeModal(); refresh(); }
+});
+document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target && ev.target.id === 'rec_pw') { ev.preventDefault(); make(); } });
+})();
 
 
 /* daily and monthly event reports: records that were entered + what changed in the program */
@@ -15040,6 +15368,7 @@ App.readBackupFile = async function (file) {
       if (App.pwLearned) App.pwLearned(App.learnKey(hd, k2));
     }
     json = p;
+    try { if (hd.rec && App.recAdopt) App.recAdopt(hd.rec); } catch (e) { }     // v46.3: the recovery code of that device
   }
   else {
     const doc = new DOMParser().parseFromString(txt, 'text/html'); const sn = doc.getElementById('snapshot-data');
@@ -15058,6 +15387,7 @@ App.readBackupFile = async function (file) {
       st = p;
     }
     json = st;
+    try { const ir = doc.getElementById('initial-data'), rs = ir && ir.getAttribute('data-rec'); if (rs && App.recAdopt) App.recAdopt(rs); } catch (e) { }     // v46.3
   }
   const db = JSON.parse(json);
   if (!db || !Array.isArray(db.entries) || !Array.isArray(db.accounts)) throw new Error('این فایل، فایل داده‌ی این برنامه نیست');
