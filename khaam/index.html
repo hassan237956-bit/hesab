@@ -3134,6 +3134,8 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 .cf-av b{font-weight:900}
 .te-inb{margin-top:10px;border:2px solid #F59E0B;background:#FFFBEB}
 .fxtr-r.in{color:#9A3412}.fxtr-r.mine{font-weight:900;border-top:1.5px dashed #CBD5E1}
+/* v47.6 */
+.fxst-bar{margin:0 0 12px}.fxst-bar .btn{min-height:56px;font-size:1.15rem;font-weight:900;width:100%;max-width:520px}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3141,7 +3143,7 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.5"; window.APP_BUILD = "1405/08/17 23:53";
+window.APP_VERSION = "47.6"; window.APP_BUILD = "1405/08/18 00:45";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -10977,7 +10979,7 @@ const DFF = '"N_vazir","B Nazanin","Nazanin","IRANSans","Vazirmatn",Tahoma,"Sego
 const fnt = (w, px) => w + ' ' + px + 'px ' + DFF;
 const DFL = '"Segoe UI",Tahoma,"B Nazanin",Arial,sans-serif', fntL = (w, px) => w + ' ' + px + 'px ' + DFL;   // the code (Latin letters + digits): not the «FD» digits
 const DC = { navy: '#0F2A4A', navy2: '#1E3A8A', gold: '#A8781A', gold2: '#E2BE5A', paper: '#FFFDF7', ink: '#0F172A', mut: '#475569', edge: '#D6DCE8', card: '#F4F6FB', green: '#15803D', red: '#B91C1C' };
-const DW = 1240, DH0 = 1754, DX0 = 96, DX1 = DW - 96, DIW = DX1 - DX0, BODY0 = 554, SIGH = 240, FOOTH = 74;
+const DW = 1240, DH0 = 1754, DX0 = 96, DX1 = DW - 96, DIW = DX1 - DX0, BODY0 = 554, SIGH = 240, FOOTH = 74, SIG0 = SIGH, BODYF = BODY0;
 function rrect(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
 function txt(x, s, px, py, f, col, al, dir) { x.font = f; x.fillStyle = col; x.textAlign = al || 'right'; x.direction = dir || 'rtl'; x.fillText(s, px, py); }
 function wrap(x, s, f, w) {
@@ -11162,11 +11164,14 @@ const K = {
   }
 };
 D.K = K;
+D.G = { rrect, txt, wrap, fitFont, fnt, fntL, DC, DX0, DX1, DIW, DW };   // v47.6: the drawing helpers, for sheets made in other parts
 
 /* one sheet → a canvas */
 D.draw = function (spec, scale) {
   const cv = document.createElement('canvas'); let x = cv.getContext('2d');
   const blocks = (spec.body(x, K) || []).filter(Boolean);
+  /* v47.6: a statement has no signature box and one row of cards → more room for the body */
+  const SIGH = spec.noSig ? 16 : SIG0, BODY0 = (spec.cards || []).length <= 2 ? 444 : BODYF;
   const sum = () => blocks.reduce((s, b) => s + b.h + (b.gap == null ? 24 : b.gap), 0);
   const fl = blocks.find(b => b.flex);
   if (fl) { const free = DH0 - (BODY0 + sum() + SIGH + FOOTH); fl.setN(Math.max(fl.flex.min, Math.min(fl.flex.max, fl.n + Math.floor(free / fl.flex.rowH)))); }
@@ -11211,6 +11216,7 @@ D.draw = function (spec, scale) {
   /* the body */
   let y = BODY0;
   blocks.forEach(b => { b.draw(x, y); y += b.h + (b.gap == null ? 24 : b.gap); });
+  if (!spec.noSig) {
   /* the signature and the seal, at the foot of the sheet */
   const sy = Math.max(y, DH - FOOTH - SIGH), who = spec.sigName || '';
   /* v47.3 (the owner: «امضا بزرگ‌تر، پررنگ‌تر، با کادر»): a framed box — his name on a navy band, the signature large and dark */
@@ -11245,6 +11251,7 @@ D.draw = function (spec, scale) {
   txt(x, 'تأیید شد', 0, -34, fnt(800, 20), DC.navy2, 'center');
   txt(x, fa(E.serToText(spec.today || App.today)), 0, 52, fnt(800, 20), DC.navy2, 'center');
   x.restore();
+  }
   /* the foot */
   x.fillStyle = DC.gold2; x.fillRect(DX0, DH - FOOTH, DIW, 2);
   const ft = 'شمارهٔ سند ' + spec.code + '   |   ' + D.dateWords(spec.today || App.today) + '   |   این برگه به‌صورت تصویر صادر شده و متن آن قابل ویرایش نیست';
@@ -11266,7 +11273,7 @@ D.spec = (kind, arg) => (kind === 'arch' ? archSpec(arg) : KIND[kind] ? KIND[kin
    · every «ارسال عکس / ارسال PDF / ذخیره / چاپ» writes one line (db.docs.log — it goes with sync and the backups): the day and the hour, which
      sheet, for whom, its code, how it went out — and what was on it (its «state»), so the very same sheet can be seen and sent again later;
    · the same sheet given again the same day is one line (how it went out is added). */
-const KT = { trust: 'گواهی امانت', inv: 'گواهی سرمایه‌گذاری', debt: 'گواهی بدهی', cred: 'گواهی طلب' };
+const KT = { trust: 'گواهی امانت', inv: 'گواهی سرمایه‌گذاری', debt: 'گواهی بدهی', cred: 'گواهی طلب', fxst: 'صورت وضعیت ارز و طلا' };
 D.kindTitle = k => KT[k] || 'گواهی';
 const LOG = () => (docs().log || []);
 const pad2 = n => (n < 10 ? '0' : '') + n;
@@ -14278,8 +14285,29 @@ const FIXES = [
      his books at Mana are 9,850 (9,550 + 300 from بانک دی); 9,850 + 2,800 (Daei Hossein) + 2,000 = 14,650 — so only member A's 400
      (1404/11/27) is inside his books; her 2,000 bought on 1405/07/30 lies beside them and is added on top */
   { id: 'v475-negar-usd-2000-beside', text: '۲٬۰۰۰ دلار امانیِ الف (خرید ۱۴۰۵/۰۷/۳۰) جدا از موجودی دفتر شماست و روی جمع صندوق ارزی می‌آید؛ فقط ۴۰۰ دلار او جزو موجودی دفتر است',
-    need: db => !!neg2000(db), apply: db => { const m = neg2000(db); if (m) delete m.inb; } }
+    need: db => !!neg2000(db), apply: db => { const m = neg2000(db); if (m) delete m.inb; } },
+  /* v47.6 (the owner 1405/08/18: «مانده دلارهای من کلاً ۹٬۵۵۲ باید باشد، بعلاوه ۲٬۸۰۰ دایی بعلاوه ۲٬۴۰۰ الف = ۱۴٬۷۵۲؛ ولی مانده حسن را
+     ۹٬۹۵۲ زدید که غلط است — اصلاحش کن»): one visible record takes member A's 400 out of HIS dollars (at his average cost of the dollar, so no
+     profit or loss is made), in «صندوق ارزی»; her 400 is then only her trust (beside the books), like her 2,000 */
+  { id: 'v476-usd-own-9552', text: 'موجودی دلار خودتان اصلاح شد: ۴۰۰ دلار امانیِ الف از دلارهای ثبت‌شده به اسم شما (صندوق ارزی) کم شد',
+    need: db => !!neg400(db) && !(db.entries || []).some(e => e && e.u === FIX476U), apply: db => fix476(db) }
 ];
+const FIX476U = 'fix-v476-usd-negar400';   // one fixed id: two devices doing it the same day merge into ONE record
+function neg400(db) {
+  let r = null;
+  (db.trusts || []).forEach(t => { if (t && t.kind === 'fx' && /الف|فاطمه/.test(String(t.person || ''))) (t.moves || []).forEach(m => { if (m && m.inb && m.id === 'mmvgym3lgrqu' && Math.abs(N(m.qty) - 400) < 1e-9) r = m; }); });
+  return r;
+}
+function fix476(db) {
+  const m = neg400(db); if (!m) return;
+  const CL = (db.special || {}).CLEAR || 'تسویه سوابق', loc = m.loc || 'صندوق ارزی', asset = 'دلار';
+  let avg = 0; try { const C2 = E.compute(db, App.today), p = (E.fxPositions(C2) || []).find(x => x.name === asset); if (p && p.qty > 1e-9) avg = Math.round(N(p.cost) / N(p.qty)); } catch (e) { avg = 0; }   // on the data as the corrections before it left it
+  const now = new Date().toISOString();
+  const e = { date: E.serToText(App.today), desc: 'اصلاح موجودی دلار: ۴۰۰ دلار امانیِ الف که به اسم من هم ثبت شده بود (به گفتهٔ خودم: مانده دلار من ۹٬۵۵۲ است)',
+    dr: CL, cr: asset, amt: null, qty: 400, price: avg || null, fee: null, loc, dest: CL, src: 'fx', fix: 'v476', u: FIX476U, m: now, c: now };
+  e.id = db.meta.nextId++; App.insertEntry(db, e);
+  delete m.inb;   // her 400 is now only her trust — beside his books, like her 2,000
+}
 /* member A's 2,000 dollars of 1405/07/30, still marked «already in my books» */
 function neg2000(db) {
   let r = null;
@@ -14437,10 +14465,12 @@ function run() {
   if (document.querySelector('#modalBg.show .durrep')) { setTimeout(run, 1500); return; }     // first the window about the entries that came back
   done = true;
   try { reopenActive(); } catch (e) { console.error(e); }
-  const todo = FIXES.filter(f => (db.meta.fixes || []).indexOf(f.id) < 0 && f.need(db));
-  if (!todo.length) return;
+  const left = FIXES.filter(f => (db.meta.fixes || []).indexOf(f.id) < 0);
+  if (!left.some(f => f.need(db))) return;
+  /* v47.6: in order, each one looking at the data the ones before it left (one correction can make the next one needed) */
+  const todo = [];
   try {
-    App.commit('اصلاح اطلاعات (تأییدشده)', d => { todo.forEach(f => { f.apply(d); (d.meta.fixes = d.meta.fixes || []).push(f.id); }); });
+    App.commit('اصلاح اطلاعات (تأییدشده)', d => { left.forEach(f => { let n = false; try { n = f.need(d); } catch (e) { n = false; } if (!n) return; f.apply(d); (d.meta.fixes = d.meta.fixes || []).push(f.id); todo.push(f); }); });
     const small = todo.filter(f => !f.big).map(f => typeof f.text === 'function' ? '' : f.text).filter(Boolean);
     if (small.length) App.toast('✔ ' + small.join(' · '));
     /* v46.8: a window already open (the day's alert …) is not covered — this one waits until it is closed */
@@ -15123,6 +15153,198 @@ document.addEventListener('click', ev => {
   if (a === 'ad-edit') return App.personEdit(k, n, !!b.closest('#modalBg'));
   if (a === 'cf-reset') return cfReset();
   if (a === 'ad-name' || a === 'iv-name') { const inModal = !!b.closest('#modalBg'); return D.nameEdit(n, { after: inModal ? () => KIND[k].open(n) : null }); }
+});
+})();
+/* ---------------------------------------------------------------- v47.6 — «📄 صورت وضعیت ارز و طلا»
+   the owner (1405/08/18): «یه صورت وضعیت شکیل از تعداد و محل بهم بده در طلا و ارز … تفکیک واضح و شکیل و قابل فهم، با آخرین متد و دیزاین روز دنیا»
+   One A4 sheet (picture / PDF, like the certificates), quantities only:
+   · one card per asset: the total that is with me (big), a coloured bar of whose it is (mine / each trust), and one line per place:
+     «مال خودم» · «امانیِ …» · «جمع در این محل»;
+   · assets with one place and no trusts (the coins) go together in one small card;
+   · the same colour is the same person everywhere on the sheet. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H || !App.doc || !App.doc.G) return;
+const D = App.doc, G = D.G, esc = H.esc, fa = D.fa, N = v => +v || 0;
+const { rrect, txt, fitFont, fnt, fntL, DC, DX0, DX1, DIW } = G;
+const q = v => fa(H.fmtq(Math.round(N(v) * 10000) / 10000));
+const UW = { USD: 'دلار', EUR: 'یورو', USDT: 'تتر', GBP: 'پوند', AED: 'درهم', TRY: 'لیر' };
+const unitOf = a => UW[String(a.unit || '').toUpperCase()] || a.unit || '';
+const kindOf = a => { const u = String(a.unit || '').toUpperCase(), n = String(a.name || ''); return u === 'USD' ? 'usd' : u === 'EUR' ? 'eur' : u === 'USDT' ? 'usdt' : /طلا/.test(n) ? 'gold' : /سکه/.test(n) ? 'coin' : 'fx'; };
+const COL = { usd: '#15803D', eur: '#1D4ED8', usdt: '#0F766E', gold: '#B45309', coin: '#A16207', fx: '#475569' };
+const PCOL = ['#DB2777', '#7C3AED', '#0891B2', '#EA580C', '#4D7C0F', '#BE123C'];
+const key = l => (App.trustLocKey ? App.trustLocKey(l) : String(l || ''));
+const owner = () => D.owner();
+
+/* ---- what is on the sheet: a plain «state» (kept in the archive) ---- */
+function stState() {
+  const C = App.C, pos = E.fxPositions(C) || [], locOrder = (App.db.locations || []).map(l => l.name);
+  const TL = App.trustLocs ? App.trustLocs() : [];
+  const A = [];
+  (App.db.assets || []).forEach(a => {
+    const name = a.name, p = pos.find(x => x.name === name) || { qty: 0 };
+    const tAll = App.trustMemo ? App.trustMemo(name) : [];
+    if (Math.abs(N(p.qty)) < 1e-9 && !tAll.length) return;
+    let h = {}; try { h = E.holdingsByAsset(C, name) || {}; } catch (e) { h = {}; }
+    const locs = Object.keys(h).filter(l => Math.abs(N(h[l])) > 1e-9);
+    TL.forEach(P => { if (P.fx.has(name) && !locs.some(l => l !== '' && key(l) === P.key)) locs.push(P.loc); });
+    locs.sort((x, y) => { const i = locOrder.indexOf(x), j = locOrder.indexOf(y); return (x === '' ? 1e6 : i < 0 ? 1e5 : i) - (y === '' ? 1e6 : j < 0 ? 1e5 : j); });
+    const rows = locs.map(l => {
+      const book = N(h[l]), tm = l === '' || !App.trustMemoAt ? [] : App.trustMemoAt(l, name);
+      const inq = App.trustInQ ? App.trustInQ(tm) : 0, add = App.trustAddQ ? App.trustAddQ(tm) : tm.reduce((s, t) => s + t.q, 0);
+      return { loc: l === '' ? 'محل نامشخص' : l, own: book - inq, tm: tm.map(t => ({ p: t.person, q: t.q })), tot: book + add };
+    }).filter(r => Math.abs(r.tot) > 1e-9 || Math.abs(r.own) > 1e-9).sort((x, y) => y.tot - x.tot);   // the biggest place first
+    const inq = App.trustInQ ? App.trustInQ(tAll) : 0, add = App.trustAddQ ? App.trustAddQ(tAll) : tAll.reduce((s, t) => s + t.q, 0);
+    A.push({ name, disp: a.display || name, k: kindOf(a), u: unitOf(a), own: N(p.qty) - inq, ppl: tAll.map(t => ({ p: t.person, q: t.q })), tot: N(p.qty) + add, rows });
+  });
+  const who = owner();
+  return { v: 1, A, who, today: App.today, date: D.dateWords(), code: D.code('FX', [A.map(a => [a.name, a.own, a.tot, a.rows.map(r => [r.loc, r.own, r.tot])]), who]) };
+}
+
+/* ---- the little pictures ---- */
+function icon(x, cx, cy, r, k, col) {
+  x.save();
+  x.beginPath(); x.arc(cx, cy, r, 0, Math.PI * 2); x.fillStyle = col + '1F'; x.fill(); x.lineWidth = 2.5; x.strokeStyle = col; x.stroke();
+  if (k === 'usd' || k === 'eur' || k === 'usdt') txt(x, k === 'usd' ? '$' : k === 'eur' ? '€' : '₮', cx, cy + r * 0.42, fntL(900, Math.round(r * 1.2)), col, 'center', 'ltr');
+  else if (k === 'gold') {   // a bar of gold
+    const w = r * 1.2, hh = r * 0.62; x.beginPath(); x.moveTo(cx - w / 2, cy + hh / 2); x.lineTo(cx + w / 2, cy + hh / 2); x.lineTo(cx + w / 2 - hh * 0.45, cy - hh / 2); x.lineTo(cx - w / 2 + hh * 0.45, cy - hh / 2); x.closePath();
+    x.fillStyle = col; x.fill(); x.fillStyle = 'rgba(255,255,255,.45)'; x.fillRect(cx - w / 2 + hh * 0.5, cy - hh / 2 + 4, w * 0.35, 3);
+  } else {   // a coin
+    x.beginPath(); x.arc(cx, cy, r * 0.55, 0, Math.PI * 2); x.fillStyle = col; x.fill(); x.beginPath(); x.arc(cx, cy, r * 0.38, 0, Math.PI * 2); x.strokeStyle = 'rgba(255,255,255,.7)'; x.lineWidth = 2; x.stroke();
+  }
+  x.restore();
+}
+/* pieces of text drawn from the right, each in its colour: [[text, font, colour, gapAfter]] → the x where it ended */
+function run(x, parts, xr, yb) {
+  let at = xr;
+  parts.forEach(([t, f, c, g]) => { x.font = f; const w = x.measureText(t).width; txt(x, t, at, yb, f, c); at -= w + (g == null ? 8 : g); });
+  return at;
+}
+const width = (x, parts) => parts.reduce((s, [t, f, c, g]) => { x.font = f; return s + x.measureText(t).width + (g == null ? 8 : g); }, 0);
+
+/* ---- one asset: its card ---- */
+const aH = (a, RH) => 16 + 74 + 56 + 30 + a.rows.length * RH + 14, mH = (L, RH) => 16 + 44 + L.length * (RH + 4) + 12;
+function assetBlock(m, a, PC, RH) {
+  const HD = 74, BAR = 56, TH = 30, PAD = 16, h = aH(a, RH), F = RH >= 38 ? 0 : RH >= 34 ? 2 : 4;   // smaller rows → a little smaller letters
+  return { h, gap: 16, draw(x, y) {
+    const col = COL[a.k] || COL.fx, X0 = DX0, X1 = DX1, W = DIW;
+    x.save(); x.shadowColor = 'rgba(15,42,74,.12)'; x.shadowBlur = 14; x.shadowOffsetY = 4; rrect(x, X0, y, W, h, 22); x.fillStyle = '#FFFFFF'; x.fill(); x.restore();
+    x.save(); rrect(x, X0, y, W, h, 22); x.clip(); x.fillStyle = col; x.fillRect(X1 - 9, y, 9, h); const g = x.createLinearGradient(0, y, 0, y + HD + PAD); g.addColorStop(0, col + '14'); g.addColorStop(1, col + '00'); x.fillStyle = g; x.fillRect(X0, y, W - 9, HD + PAD); x.restore();
+    rrect(x, X0, y, W, h, 22); x.strokeStyle = col + '55'; x.lineWidth = 1.6; x.stroke();
+    /* the head: its picture and name — and, on the left, how much is with me in all */
+    const hy = y + PAD;
+    icon(x, X1 - 56, hy + 32, 27, a.k, col);
+    txt(x, a.disp, X1 - 98, hy + 34, fitFont(x, a.disp, 420, 900, 36, 24), DC.ink);
+    const n = a.rows.length, sub = fa(n) + ' محل' + (a.ppl.length ? ' · امانیِ ' + a.ppl.map(p => p.p).join(' و ') : ' · همه مال خودم');
+    txt(x, sub, X1 - 98, hy + 62, fitFont(x, sub, 440, 700, 21, 15), DC.mut);
+    const big = q(a.tot), fb = fnt(900, 48); x.font = fb; const wb = x.measureText(big).width; x.font = fnt(800, 25); const wu = x.measureText(a.u).width;
+    txt(x, a.ppl.length ? 'جمع نزد من (با امانی‌ها)' : 'جمع نزد من', X0 + 30 + wu + 12 + wb, hy + 16, fnt(800, 19), DC.mut);
+    txt(x, big, X0 + 30 + wu + 12 + wb, hy + 62, fb, col);
+    txt(x, a.u, X0 + 30 + wu, hy + 60, fnt(800, 25), DC.mut);
+    /* the bar of whose it is (right → left: mine, then each trust), and its legend */
+    const by = hy + HD + 2, bx0 = X0 + 30, bx1 = X1 - 34, bw = bx1 - bx0, segs = [{ t: 'مال خودم', v: Math.max(0, a.own), c: col }].concat(a.ppl.map(p => ({ t: 'امانیِ ' + p.p, v: p.q, c: PC(p.p) })));
+    const sum = segs.reduce((s, z) => s + z.v, 0) || 1;
+    x.save(); rrect(x, bx0, by, bw, 16, 8); x.clip(); x.fillStyle = '#E2E8F0'; x.fillRect(bx0, by, bw, 16);
+    let at = bx1; segs.forEach((z, i) => { const w = bw * z.v / sum; x.fillStyle = z.c; x.fillRect(at - w, by, w, 16); if (i) { x.fillStyle = '#FFFFFF'; x.fillRect(at - 2, by, 2, 16); } at -= w; });
+    x.restore();
+    let lx = bx1; const ly = by + 46;
+    segs.forEach(z => {
+      const pc = Math.round(z.v / sum * 100), parts = [[z.t, fnt(800, 22), DC.ink, 8], [q(z.v), fnt(900, 23), z.c, 6], ['(' + fa(pc) + '٪)', fnt(700, 18), DC.mut, 0]];
+      const w = width(x, parts) + 22;
+      x.beginPath(); x.arc(lx - 7, ly - 8, 7, 0, Math.PI * 2); x.fillStyle = z.c; x.fill();
+      run(x, parts, lx - 20, ly); lx -= w + 26;
+    });
+    /* one line per place */
+    const ty = by + BAR, cP = 330, cO = 170, cT = 190, cTr = W - 40 - cP - cO - cT;   // place | mine | others' | total (right → left)
+    const xP = X1 - 30, xO = xP - cP, xTr = xO - cO, xT = X0 + 30;
+    txt(x, 'محل', xP, ty + 21, fnt(800, 19), DC.mut); txt(x, 'مال خودم', xO - cO / 2, ty + 21, fnt(800, 19), DC.mut, 'center');
+    txt(x, 'امانی دیگران', xTr - 6, ty + 21, fnt(800, 19), DC.mut); txt(x, 'جمع در این محل', xT, ty + 21, fnt(800, 19), DC.mut, 'left');
+    x.fillStyle = '#E2E8F0'; x.fillRect(X0 + 24, ty + TH - 2, W - 54, 1.5);
+    a.rows.forEach((r, i) => {
+      const b = ty + TH + i * RH, yb = b + Math.round(RH * 0.7);
+      if (i % 2) { x.fillStyle = '#F8FAFC'; x.fillRect(X0 + 24, b, W - 54, RH); }
+      x.beginPath(); x.arc(xP - 6, b + RH / 2, 5, 0, Math.PI * 2); x.fillStyle = col; x.fill();
+      txt(x, r.loc, xP - 20, yb, fitFont(x, r.loc, cP - 34, 800, 25 - F, 16), DC.ink);
+      txt(x, Math.abs(r.own) > 1e-9 ? q(r.own) : '—', xO - cO / 2, yb, fnt(800, 25 - F), Math.abs(r.own) > 1e-9 ? DC.ink : '#94A3B8', 'center');
+      if (r.tm.length) {
+        const parts = []; r.tm.forEach((t, j) => { parts.push([t.p, fnt(700, 21), PC(t.p), 6]); parts.push([q(t.q), fnt(900, 23), PC(t.p), j < r.tm.length - 1 ? 18 : 0]); });
+        const w = width(x, parts), k = Math.min(1, (cTr - 12) / (w || 1));
+        if (k < 1) { x.save(); x.translate(xTr - 6, yb); x.scale(k, 1); run(x, parts, 0, 0); x.restore(); } else run(x, parts, xTr - 6, yb);
+      } else txt(x, '—', xTr - cTr / 2, yb, fnt(700, 22), '#94A3B8', 'center');
+      txt(x, q(r.tot), xT, yb, fnt(900, 27 - F), col, 'left');
+    });
+  } };
+}
+/* ---- the assets that are in one place and all mine (the coins): one small card ---- */
+function miniBlock(m, L, RH0) {
+  const RH = RH0 + 4, h = mH(L, RH0);
+  return { h, gap: 16, draw(x, y) {
+    const col = COL.coin;
+    x.save(); x.shadowColor = 'rgba(15,42,74,.12)'; x.shadowBlur = 14; x.shadowOffsetY = 4; rrect(x, DX0, y, DIW, h, 22); x.fillStyle = '#FFFFFF'; x.fill(); x.restore();
+    x.save(); rrect(x, DX0, y, DIW, h, 22); x.clip(); x.fillStyle = col; x.fillRect(DX1 - 9, y, 9, h); x.restore();
+    rrect(x, DX0, y, DIW, h, 22); x.strokeStyle = col + '55'; x.lineWidth = 1.6; x.stroke();
+    txt(x, 'سکه‌ها و دارایی‌های یک‌جا', DX1 - 34, y + 46, fnt(900, 30), DC.ink);
+    txt(x, 'همه مال خودم', DX0 + 30, y + 44, fnt(700, 20), DC.mut, 'left');
+    L.forEach((a, i) => {
+      const b = y + 60 + i * RH, yb = b + Math.round(RH * 0.68);
+      if (i % 2 === 0) { x.fillStyle = '#FFFBEB'; x.fillRect(DX0 + 24, b, DIW - 54, RH); }
+      icon(x, DX1 - 52, b + RH / 2, 15, a.k, COL[a.k] || col);
+      txt(x, a.disp, DX1 - 80, yb, fitFont(x, a.disp, 360, 800, 26, 17), DC.ink);
+      const loc = a.rows[0] ? a.rows[0].loc : '';
+      txt(x, '📍 ' + loc, DX1 - 470, yb, fitFont(x, '📍 ' + loc, 330, 700, 22, 15), DC.mut);
+      const v = q(a.tot); x.font = fnt(900, 28); const wv = x.measureText(v).width;
+      txt(x, a.u, DX0 + 30 + 0, yb, fnt(800, 21), DC.mut, 'left'); x.font = fnt(800, 21); const wu = x.measureText(a.u).width;
+      txt(x, v, DX0 + 30 + wu + 10, yb, fnt(900, 28), COL[a.k] || col, 'left');
+    });
+  } };
+}
+
+/* ---- the sheet ---- */
+function stSheet(st) {
+  if (!st) return null;
+  const A = st.A || [], big = A.filter(a => a.ppl.length || a.rows.length > 1 || a.k === 'usd' || a.k === 'eur'), small = A.filter(a => big.indexOf(a) < 0);
+  const order = []; A.forEach(a => a.ppl.forEach(p => { if (order.indexOf(p.p) < 0) order.push(p.p); }));
+  const PC = p => PCOL[Math.max(0, order.indexOf(p)) % PCOL.length];
+  const title = 'صورت وضعیت ارز و طلا';
+  return {
+    kind: 'fxst', title, sub: 'موجودی به تفکیک محل و صاحب — فقط تعداد', tag: '«مال خودم» دارایی شماست؛ «امانی» مال دیگران است که نزد شما نگهداری می‌شود',
+    icon: 'coins', mark: 'موجودی', noSig: true,
+    cards: [[st.who ? 'صاحب حساب' : 'تاریخ', st.who || st.date], ['تاریخ', st.date]],
+    code: st.code, today: st.today, file: 'صورت وضعیت ارز و طلا ', pdfTitle: title, state: st, data: { A },
+    body: (m, K) => {
+      const note = K.note(m, [order.length ? 'فقط تعداد؛ امانی‌ها مال صاحبانشان است و جزو دارایی شما نیست.' : 'فقط تعداد؛ مبلغ ریالی ندارد.']);
+      /* one A4 page: the rows a little lower when there are many places (40 → 30) */
+      const room = 1754 - 444 - 16 - 74 - 4, need = (RH, withNote) => big.reduce((t, a) => t + aH(a, RH) + 16, 0) + (small.length ? mH(small, RH) + 16 : 0) + (withNote ? note.h + 28 : 0);
+      let RH = 40, withNote = true;
+      while (RH > 36 && need(RH, true) > room) RH -= 1;            // first the rows a little lower, keeping the note
+      if (need(RH, true) > room) { withNote = false; RH = 40; while (RH > 30 && need(RH, false) > room) RH -= 1; }   // else the rows stay big, without the note
+      return [].concat(big.map(a => assetBlock(m, a, PC, RH)), small.length ? [miniBlock(m, small, RH)] : [], withNote ? [note] : []);
+    }
+  };
+}
+D.register('fxst', () => stSheet(stState()), stSheet);
+App.fxStatementInfo = () => { const s = stSheet(stState()); return s ? { code: s.code, A: s.data.A } : null; };
+
+/* ---- where it opens ---- */
+App.fxStatement = function () {
+  App.modal('📄 صورت وضعیت ارز و طلا', D.card('fxst', 'all', { ico: '📄', head: 'صورت وضعیت ارز و طلا', sub: 'به تفکیک محل و صاحب — فقط تعداد' }),
+    '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '760px' });
+};
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act="fx-st"]') : null; if (!b) return;
+  ev.preventDefault(); App.fxStatement();
+});
+/* a button at the head of «📍 دارایی در هر محل» and of the page of every currency / gold */
+const P = App.pages;
+const BTN = '<div class="bar noprint fxst-bar"><button type="button" class="btn gold big" data-act="fx-st">📄 صورت وضعیت ارز و طلا (به تفکیک محل)</button></div>';
+['fxloc', 'fx'].forEach(k => {
+  const o = P && P[k]; if (typeof o !== 'function') return;
+  P[k] = function () {
+    const r = o.apply(this, arguments);
+    if (typeof r === 'string') return BTN + r;
+    if (r && typeof r.html === 'string') return Object.assign({}, r, { html: BTN + r.html });
+    return r;
+  };
 });
 })();
 
