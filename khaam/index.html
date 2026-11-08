@@ -3143,7 +3143,7 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.6"; window.APP_BUILD = "1405/08/18 00:45";
+window.APP_VERSION = "47.6"; window.APP_BUILD = "1405/08/18 00:57";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -14286,7 +14286,7 @@ const FIXES = [
      (1404/11/27) is inside his books; her 2,000 bought on 1405/07/30 lies beside them and is added on top */
   { id: 'v475-negar-usd-2000-beside', text: '۲٬۰۰۰ دلار امانیِ الف (خرید ۱۴۰۵/۰۷/۳۰) جدا از موجودی دفتر شماست و روی جمع صندوق ارزی می‌آید؛ فقط ۴۰۰ دلار او جزو موجودی دفتر است',
     need: db => !!neg2000(db), apply: db => { const m = neg2000(db); if (m) delete m.inb; } },
-  /* v47.6 (the owner 1405/08/18: «مانده دلارهای من کلاً ۹٬۵۵۲ باید باشد، بعلاوه ۲٬۸۰۰ دایی بعلاوه ۲٬۴۰۰ الف = ۱۴٬۷۵۲؛ ولی مانده حسن را
+  /* v47.6 (the owner 1405/08/18: «مانده دلارهای من کلاً ۹٬۵۵۲ باید باشد، بعلاوه ۲٬۸۰۰ دایی بعلاوه ۲٬۴۰۰ الف = ۱۴٬۷۵۲؛ ولی مانده من را
      ۹٬۹۵۲ زدید که غلط است — اصلاحش کن»): one visible record takes member A's 400 out of HIS dollars (at his average cost of the dollar, so no
      profit or loss is made), in «صندوق ارزی»; her 400 is then only her trust (beside the books), like her 2,000 */
   { id: 'v476-usd-own-9552', text: 'موجودی دلار خودتان اصلاح شد: ۴۰۰ دلار امانیِ الف از دلارهای ثبت‌شده به اسم شما (صندوق ارزی) کم شد',
