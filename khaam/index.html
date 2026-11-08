@@ -3141,7 +3141,7 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.4"; window.APP_BUILD = "1405/08/17 23:05";
+window.APP_VERSION = "47.5"; window.APP_BUILD = "1405/08/17 23:53";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -7173,7 +7173,7 @@ function locBox(name) {
     const tm = r.only ? (App.fxTrustAt ? App.fxTrustAt(r.loc, name) : []) : TM(r); if (!tm.length) return [];
     const mine = r.q - App.trustInQ(tm);   // v47.4: a trust already inside my books is taken out of «mine», not added again
     return [[c('nm trs', '👤 مال خودم'), c('n dep trs', H.fmtq(mine) + ' <small>' + unit + '</small>'), c('n hid', ''), c('n bal trs', mine && r.q ? fmt(Math.round(r.v * mine / r.q)) : '—'), ['n hid', ''], ['act noprint', '']]]
-      .concat(tm.map(t => [c('nm trs tr', '🤝 امانیِ ' + esc(t.person)), c('n dep trs tr', H.fmtq(t.q) + ' <small>' + unit + '</small>'), c('n hid', ''), c('n bal trs tr', '<small>' + (t.qb > 1e-9 ? 'جزو موجودی دفتر' : 'انتظامی') + '</small>'), ['n hid', ''], ['act noprint', '']]));
+      .concat(tm.map(t => [c('nm trs tr', '🤝 امانیِ ' + esc(t.person)), c('n dep trs tr', H.fmtq(t.q) + ' <small>' + unit + '</small>'), c('n hid', ''), c('n bal trs tr', '<small>' + App.trustTag(t) + '</small>'), ['n hid', ''], ['act noprint', '']]));
   };
   const tmOf = r => (r.only ? (App.fxTrustAt ? App.fxTrustAt(r.loc, name) : []) : TM(r));
   const tqOf = r => App.trustAddQ(tmOf(r)), hasT = r => tmOf(r).length > 0;
@@ -7221,7 +7221,7 @@ function locAllBox() {
     const tq = App.trustAddQ(tm), mine = i.qty - App.trustInQ(tm), u = ' <small>' + esc(i.unit) + '</small>';
     return '<div class="lci lcx"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep"><b>' + H.fmtq(i.qty + tq) + '</b>' + u + '</span><span class="lcj">جمع موجود</span></div>' +
       '<div class="lcb"><span>👤 مال خودم' + (owner !== 'خودم' ? ' (' + esc(owner) + ')' : '') + '</span><b class="num">' + H.fmtq(mine) + u + '</b><span class="num bal">' + (mine && i.qty ? fmt(Math.round(i.val * mine / i.qty)) : '—') + '</span></div>' +
-      tm.map(t => '<div class="lcb tr"><span>🤝 امانیِ ' + esc(t.person) + '</span><b class="num">' + H.fmtq(t.q) + u + '</b><span class="lcj">' + (t.qb > 1e-9 ? 'جزو موجودی دفتر' : 'انتظامی') + '</span></div>').join('');
+      tm.map(t => '<div class="lcb tr"><span>🤝 امانیِ ' + esc(t.person) + '</span><b class="num">' + H.fmtq(t.q) + u + '</b><span class="lcj">' + App.trustTag(t) + '</span></div>').join('');
   };
   const cards = locs.map(l => '<div class="lcard' + (l.unknown ? ' unk' : '') + '"><div class="lch"><b>' + (l.unknown ? '❓ محل نامشخص' : '📍 ' + esc(l.name)) + '</b><span class="num">' + (l.only ? '—' : fmt(l.val)) + '</span></div>' +
     l.items.map(i => item(l, i)).join('') +
@@ -11635,6 +11635,8 @@ function inbOf(M) { return (M || []).reduce((s2, m) => s2 + (m && m.inb ? N(m.qt
 App.trustAddQ = tm => (tm || []).reduce((s2, x) => s2 + x.q - (x.qb || 0), 0);   // what lies there beside my books
 App.trustInQ = tm => (tm || []).reduce((s2, x) => s2 + (x.qb || 0), 0);           // what of «my books» is really theirs
 App.trustInb = t => !!t && (t.moves || []).some(m => m && m.inb);
+/* the small word beside a trust line: all of it inside my books / part of it / none (memorandum) */
+App.trustTag = (t, whole) => (t.qb > 1e-9 && t.qb >= t.q - 1e-9 ? (whole || 'جزو موجودی دفتر') : t.qb > 1e-9 ? H.fmtq(t.qb) + ' آن جزو موجودی دفتر؛ ' + H.fmtq(t.q - t.qb) + ' جدا' : 'انتظامی');
 /* every place that holds something of others: [{loc, key, fx: Map(asset → [{person, q}]), other: [{person, text}]}] */
 App.trustLocs = function () {
   const P0 = new Map();
@@ -12164,14 +12166,14 @@ document.addEventListener('change', ev => {
     const u = ' <span class="hint">' + esc(i.unit) + '</span>';
     const inq = App.trustInQ(tm), mine = i.qty - inq;
     return tr5('　👤 مال خودم' + (App.C.owner ? ' (' + esc(App.C.owner) + ')' : ''), H.fmtq(mine) + u, '', mine && i.qty ? fmt(Math.round(i.val * mine / i.qty)) : '—', '', 'trs') +
-      tm.map(t => tr5('　🤝 امانیِ ' + esc(t.person), H.fmtq(t.q) + u, '', t.qb > 1e-9 ? '<small>جزو موجودی دفتر</small>' : '<small>انتظامی</small>', '', 'trs tr')).join('');
+      tm.map(t => tr5('　🤝 امانیِ ' + esc(t.person), H.fmtq(t.q) + u, '', '<small>' + App.trustTag(t) + '</small>', '', 'trs tr')).join('');
   };
   App.fxLocMore = l => (l.tOther && l.tOther.length ? l.tOther.map(o => tr5('🤝 امانیِ ' + esc(o.person), esc(o.text), '', '<small>انتظامی</small>', '', 'trs tr')).join('') : '');
   App.fxTotItem = function (p) {
     const tm = App.trustMemo(p.name); if (!tm.length) return '';
     const add = App.trustAddQ(tm), inq = App.trustInQ(tm), u = ' <span class="hint">' + esc(p.unit) + '</span>';
     return (inq > 1e-9 ? '<tr class="trs"><td>　👤 مال خودم (بدون امانیِ داخل دفتر)</td><td class="n dep">' + H.fmtq(p.qty - inq) + u + '</td><td></td><td></td></tr>' : '') +
-      tm.map(t => '<tr class="trs tr"><td>　🤝 ' + (t.qb > 1e-9 ? '' : '＋ ') + 'امانیِ ' + esc(t.person) + '</td><td class="n dep">' + H.fmtq(t.q) + u + '</td><td></td><td class="n bal"><small>' + (t.qb > 1e-9 ? 'جزو همین موجودی دفتر' : 'انتظامی') + '</small></td></tr>').join('') +
+      tm.map(t => '<tr class="trs tr"><td>　🤝 ' + (t.q - t.qb > 1e-9 ? '＋ ' : '') + 'امانیِ ' + esc(t.person) + '</td><td class="n dep">' + H.fmtq(t.q) + u + '</td><td></td><td class="n bal"><small>' + App.trustTag(t, 'جزو همین موجودی دفتر') + '</small></td></tr>').join('') +
       '<tr class="trs tot"><td>　＝ جمع نزد من (با امانی‌ها)</td><td class="n dep"><b>' + H.fmtq(p.qty + add) + '</b>' + u + '</td><td></td><td></td></tr>';
   };
 }
@@ -14182,7 +14184,7 @@ function trustBox(list, one) {
       x.tm.filter(t => t.qb > 1e-9).forEach(t => { h += '<div class="fxtr-r in"><span>از همین، امانیِ ' + esc(t.person) + ' است</span><b class="num">' + esc(qtyTxt(t.qb, x)) + '</b></div>'; });
       h += '<div class="fxtr-r mine"><span>👤 مال خودم</span><b class="num">' + esc(qtyTxt(x.qty - x.tmi, x)) + '</b></div>';
     }
-    x.tm.filter(t => t.q - (t.qb || 0) > 1e-9).forEach(t => { h += '<div class="fxtr-r plus"><span>＋ امانیِ ' + esc(t.person) + '</span><b class="num">' + esc(qtyTxt(t.q - (t.qb || 0), x)) + '</b></div>'; });
+    x.tm.filter(t => t.q - (t.qb || 0) > 1e-9).forEach(t => { h += '<div class="fxtr-r plus"><span>＋ امانیِ ' + esc(t.person) + (t.qb > 1e-9 ? ' <small>(از کل ' + esc(q4(t.q)) + ')</small>' : '') + '</span><b class="num">' + esc(qtyTxt(t.q - (t.qb || 0), x)) + '</b></div>'; });
     h += '<div class="fxtr-r tot"><span>= جمع نزد من</span><b class="num">' + esc(qtyTxt(x.qty + x.tmq, x)) + '</b></div>';
     return h + '</div>';
   }).join('');
@@ -14271,13 +14273,25 @@ const FIXES = [
   /* v47.4 (the owner 1405/08/17: «۲۴۰۰ تای الف قبلاً آمده بود؛ چرا دوباره اضافه کردی؟ باید بشود ۱۲٬۷۵۲»): member A's dollars are inside
      the dollars his books show as his — mark them «already in my books» so they are not added on top again */
   { id: 'v474-negar-usd-inbook', text: 'دلارهای امانیِ الف جزو همان موجودیِ دلارِ ثبت‌شده در دفتر شما علامت خورد؛ دیگر دوباره روی جمع اضافه نمی‌شود',
-    need: db => negUsd(db).length > 0, apply: db => negUsd(db).forEach(m => { m.inb = true; }) }
+    need: db => negUsd(db).length > 0, apply: db => negUsd(db).forEach(m => { m.inb = true; }) },
+  /* v47.5 (the owner 1405/08/17, his count: «در صندوق ارزی ۱۱٬۵۵۰ داشتم، امروز ۳٬۱۰۰ اضافه کردم؛ باید بشود ۱۴٬۶۵۰»):
+     his books at Mana are 9,850 (9,550 + 300 from بانک دی); 9,850 + 2,800 (Daei Hossein) + 2,000 = 14,650 — so only member A's 400
+     (1404/11/27) is inside his books; her 2,000 bought on 1405/07/30 lies beside them and is added on top */
+  { id: 'v475-negar-usd-2000-beside', text: '۲٬۰۰۰ دلار امانیِ الف (خرید ۱۴۰۵/۰۷/۳۰) جدا از موجودی دفتر شماست و روی جمع صندوق ارزی می‌آید؛ فقط ۴۰۰ دلار او جزو موجودی دفتر است',
+    need: db => !!neg2000(db), apply: db => { const m = neg2000(db); if (m) delete m.inb; } }
 ];
+/* member A's 2,000 dollars of 1405/07/30, still marked «already in my books» */
+function neg2000(db) {
+  let r = null;
+  (db.trusts || []).forEach(t => { if (t && t.kind === 'fx' && /الف|فاطمه/.test(String(t.person || ''))) (t.moves || []).forEach(m => { if (m && m.inb && m.id === NEG2000) r = m; }); });
+  return r;
+}
+const NEG2000 = 'mmvj9ea6ldi9';   // v47.5: her 2,000 of 1405/07/30 — beside the books (his count)
 /* the receipts / hand-backs of member A's (Fatemeh's) dollars that are not yet marked */
 function negUsd(db) {
   const usd = new Set((db.assets || []).filter(a => a && (String(a.unit || '').toUpperCase() === 'USD' || a.name === 'دلار')).map(a => a.name));
   const L = [];
-  (db.trusts || []).forEach(t => { if (t && t.kind === 'fx' && usd.has(t.asset) && /الف|فاطمه/.test(String(t.person || ''))) (t.moves || []).forEach(m => { if (m && !m.xfer && !m.inb) L.push(m); }); });
+  (db.trusts || []).forEach(t => { if (t && t.kind === 'fx' && usd.has(t.asset) && /الف|فاطمه/.test(String(t.person || ''))) (t.moves || []).forEach(m => { if (m && !m.xfer && !m.inb && m.id !== NEG2000) L.push(m); }); });
   return L;
 }
 
