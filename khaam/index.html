@@ -3101,6 +3101,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 .dar-t small{font-size:.95rem;font-weight:700;color:#475569;line-height:1.8}
 .dar-b{display:flex;gap:6px}
 .dar-no{font-size:1.05rem;font-weight:800;color:#64748B;line-height:1.9}
+.mr-av.crd{background:linear-gradient(145deg,#F472B6,#9D174D)}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3108,7 +3109,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.0"; window.APP_BUILD = "1405/08/17 20:36";
+window.APP_VERSION = "47.1"; window.APP_BUILD = "1405/08/17 21:23";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -11141,7 +11142,7 @@ D.spec = (kind, arg) => (kind === 'arch' ? archSpec(arg) : KIND[kind] ? KIND[kin
    · every «ارسال عکس / ارسال PDF / ذخیره / چاپ» writes one line (db.docs.log — it goes with sync and the backups): the day and the hour, which
      sheet, for whom, its code, how it went out — and what was on it (its «state»), so the very same sheet can be seen and sent again later;
    · the same sheet given again the same day is one line (how it went out is added). */
-const KT = { trust: 'گواهی امانت', inv: 'گواهی سرمایه‌گذاری', debt: 'گواهی بدهی' };
+const KT = { trust: 'گواهی امانت', inv: 'گواهی سرمایه‌گذاری', debt: 'گواهی بدهی', cred: 'گواهی طلب' };
 D.kindTitle = k => KT[k] || 'گواهی';
 const LOG = () => (docs().log || []);
 const pad2 = n => (n < 10 ? '0' : '') + n;
@@ -11205,7 +11206,7 @@ if (App.pages) App.pages.docs = function (arg) {
   const k = KT[arg] ? arg : '', L = D.archOf(k, '');
   const chip = (v, t) => '<a class="btn ' + (k === v ? 'blue' : 'ghost') + ' sm" data-act="go" data-to="/docs' + (v ? '/' + v : '') + '">' + t + '</a>';
   return { title: '🗂 بایگانی گواهی‌ها', sub: 'هر گواهی‌ای که فرستاده، ذخیره یا چاپ شده — با روز و ساعت؛ همان برگه دوباره دیده و فرستاده می‌شود',
-    html: '<div class="bar noprint ams-bar">' + chip('', 'همه (' + D.archOf('', '').length + ')') + chip('inv', '📜 سرمایه‌گذاری') + chip('debt', '📜 بدهی') + chip('trust', '🤝 امانت') + '</div>' +
+    html: '<div class="bar noprint ams-bar">' + chip('', 'همه (' + D.archOf('', '').length + ')') + chip('inv', '📜 سرمایه‌گذاری') + chip('debt', '📜 بدهی') + chip('cred', '📜 طلب') + chip('trust', '🤝 امانت') + '</div>' +
       '<div class="box dar">' + archRows(L, true) + '</div>' };
 };
 App.docLog = () => LOG();
@@ -11213,7 +11214,7 @@ App.docLog = () => LOG();
 App.renameMore = function (db, oldName, nn) {
   if (!db.docs) return;
   db.docs = Object.assign({}, db.docs);
-  ['names', 'notes', 'inv', 'debt'].forEach(k => { const o = db.docs[k]; if (o && o[oldName] != null) { db.docs[k] = Object.assign({}, o); db.docs[k][nn] = o[oldName]; delete db.docs[k][oldName]; } });
+  ['names', 'notes', 'inv', 'debt', 'cred'].forEach(k => { const o = db.docs[k]; if (o && o[oldName] != null) { db.docs[k] = Object.assign({}, o); db.docs[k][nn] = o[oldName]; delete db.docs[k][oldName]; } });
   if (db.docs.log) db.docs.log = db.docs.log.map(r => (r && r.name === oldName ? Object.assign({}, r, { name: nn }) : r));
 };
 
@@ -11416,6 +11417,20 @@ document.addEventListener('click', ev => {
 });
 document.addEventListener('input', ev => { if (ev.target && /^dn_/.test(ev.target.id || '')) dnPrev(); });
 document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && DN && ev.target && /^dn_/.test(ev.target.id || '')) { ev.preventDefault(); dnSave(); } });
+})();
+
+/* ---------------------------------------------------------------- v47.1 — a date written without «/» (the owner: «تاریخ را می‌خواهم بنویسم، اسلش نمی‌گذارد»):
+   the phone's number pad has no «/»; 14050801 (or 050801) is read as 1405/08/01 everywhere — and when the box is left, it is shown so */
+(function () {
+  const App = window.App, H = App && App.H; if (!H || !H.normDate) return;
+  const IDS = new Set(['ef_date', 'lf_date', 'ap_date', 'mg_rdate', 'mg_pfrom', 'pe_rdate', 'pe_pfrom', 'cf_from', 'rt_date', 'tx_date', 'tw_date', 'tm_date', 'mv_date', 'rcDate', 'rfFrom', 'rf_to', 'sd_from', 'sd_to', 'sy_from']);
+  const isDate = el => el && el.tagName === 'INPUT' && (IDS.has(el.id) || el.classList.contains('dt') || /1[34]\d\d\/\d{1,2}\/\d{1,2}/.test(el.placeholder || ''));
+  document.addEventListener('change', ev => {
+    const el = ev.target; if (!isDate(el)) return;
+    const v = String(el.value || '').trim(), lat = H.latin ? H.latin(v) : v;
+    if (!v || /\//.test(lat) || !/^[\d\s.\-]+$/.test(lat)) return;
+    const d = H.normDate(v); if (d && d !== v) { el.value = d; try { el.dispatchEvent(new Event('input', { bubbles: true })); } catch (e) { } }
+  }, true);
 })();
 /* ---------------------------------------------------------------- v46.5 — «🤝 امانی نزد من»: a MEMORANDUM account (حساب انتظامی)
    the owner (1405/08/17): «حساب امانی فقط حالت انتظامی داشته باشد: نه مانده نشان بده نه مبلغ؛ فقط مقدارش. پولش مال من نیست؛ از حساب من کم نکند.
@@ -14532,6 +14547,8 @@ const owner = () => D.owner();
 const G_DEBT = (App.G && App.G.DEBT) || 'بدهکاران';
 const isInv = name => { try { return App.C.memSet.has(name); } catch (e) { return false; } };
 const isDebt = name => (App.db.accounts || []).some(a => a.name === name && a.group === G_DEBT);
+const G_CRED = [(App.G && App.G.CRED) || 'بستانکاران', App.G && App.G.SHORT].filter(Boolean);
+const isCred = name => (App.db.accounts || []).some(a => a.name === name && G_CRED.indexOf(a.group) >= 0);
 function invRow(name) { try { return (E.memberTable(App.C) || []).find(r => r.name === name) || null; } catch (e) { return null; } }
 const extraTiles = c => (c.extra || []).filter(e => e && (String(e[0] || '').trim() || String(e[1] || '').trim()))
   .map(e => [String(e[0] || '').trim(), fa(String(e[1] || '').trim()), '', '', D.amountWords(e[1]) ? 'به حروف: ' + D.amountWords(e[1]) : '']);
@@ -14547,6 +14564,11 @@ const KIND = {
     DEF: { title: '', bal: true, words: true, led: true, desc: true, rows: 0, from: '', note: true, extra: [] },
     PARTS: [['bal', 'مبلغ بدهی', 'عدد بزرگ وسط برگه'], ['words', 'مبلغ به حروف', ''], ['led', 'گردش حساب', 'بدهکار، بستانکار، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «پرداخت / دریافت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']],
     title: 'گواهی بدهی', who: 'بدهکاران', ok: isDebt, open: n => App.debtDoc(n)
+  },
+  cred: {
+    DEF: { title: '', bal: true, words: true, led: true, desc: true, rows: 0, from: '', note: true, extra: [] },
+    PARTS: [['bal', 'مبلغ طلب ایشان', 'عدد بزرگ وسط برگه'], ['words', 'مبلغ به حروف', ''], ['led', 'گردش حساب', 'بدهکار، بستانکار، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «پرداخت / دریافت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']],
+    title: 'گواهی طلب', who: 'بستانکاران', ok: isCred, open: n => App.credDoc(n)
   }
 };
 const store = kind => ((App.db.docs && App.db.docs[kind]) || {});
@@ -14597,11 +14619,20 @@ const invSpec = (name, over) => invSheet(invState(name, over));
 D.register('inv', name => invSpec(name), invSheet);
 App.invDocInfo = name => { const s = invSpec(name); return s ? { code: s.code, bal: s.data.bal, rate: s.data.rate, led: s.data.led.length, name: s.cards[0][1], words: D.words(Math.abs(s.data.bal)), title: s.title, tiles: s.data.k.map(x => x[0]), cfg: s.data.c } : null; };
 
-/* ---- 📜 debtor: the same sheet, the other way round («… به من بدهکار است») ---- */
+/* ---- 📜 debtor («debt»: «فلانی به من بدهکار است») and creditor («cred», v47.1: «من به فلانی بدهکارم» — the owner: «بستانکاران را هم بگذار»):
+   the same sheet of an account and its turnover, the wording the other way round ---- */
 const serOf = t => { const d = H.normDate(String(t || '')); if (!d) return 0; try { return +E.jser(d) || 0; } catch (e) { return 0; } };
-function debtState(name, over) {
-  if (!isDebt(name)) return null;
-  const c = over || cfgOf('debt', name);
+const ACC = {
+  debt: { pre: 'DB', mark: 'بدهی', seal: 'بدهی', hero: 'مبلغ بدهی', heroNeg: 'مانده (طلب ایشان)', file: 'گواهی بدهی ', me: 'بستانکار', him: 'بدهکار',
+    sub: (nm, who) => 'بدهی ' + nm + ' به ' + (who || 'اینجانب'), tag: 'مبلغ بدهی',
+    intro: (nm, who) => 'بدین‌وسیله گواهی می‌شود که ' + nm + ' تا تاریخ صدور این برگه مبلغ زیر را به ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' بدهکار است:' },
+  cred: { pre: 'CR', mark: 'طلب', seal: 'طلب', hero: 'مبلغ طلب ایشان', heroNeg: 'مانده (طلب من)', file: 'گواهی طلب ', me: 'بدهکار', him: 'طلبکار',
+    sub: (nm, who) => 'طلب ' + nm + ' از ' + (who || 'اینجانب'), tag: 'مبلغ طلب',
+    intro: (nm, who) => 'بدین‌وسیله گواهی می‌شود که اینجانب' + (who ? '، ' + who + '،' : '') + ' تا تاریخ صدور این برگه مبلغ زیر را به ' + nm + ' بدهکارم:' }
+};
+function accState(kind, name, over) {
+  if (!KIND[kind] || !KIND[kind].ok(name)) return null;
+  const c = over || cfgOf(kind, name);
   const who = owner(), nm = D.formal(name), extra = D.noteOf(name);
   let bal = 0; try { bal = Math.round(N(App.C.balance(name))); } catch (e) { bal = 0; }
   let all = []; try { all = (E.ledger(App.C, name) || []).filter(x => Math.abs(N(x.dr) - N(x.cr)) > 0.5).map(x => ({ d: String(x.date || ''), T: (x.row && x.row.T) || 0, desc: String(x.desc || ''), amt: Math.round(N(x.dr) - N(x.cr)), bal: Math.round(N(x.bal)) })); } catch (e) { all = []; }
@@ -14613,32 +14644,35 @@ function debtState(name, over) {
     led = (before.length ? [{ d: from, desc: 'مانده از قبل', amt: 0, bal: before[before.length - 1].bal, open: true }] : []).concat(after);
     lim = +c.rows > 0 ? Math.min(+c.rows, led.length) : led.length;   // from a date: every line from it (a long period makes a longer page)
   } else { if (+c.rows > 0) lim = Math.min(+c.rows, led.length); led = led.slice(-20); }
-  const code = D.code('DB', [name, nm, bal, all.length, from, who, c]);
-  return { v: 1, name, nm, who, extra, c, bal, from, lim, k: extraTiles(c), led: led.slice(-80).map(x => { const o = Object.assign({}, x); delete o.T; return o; }), today: App.today, date: D.dateWords(), code };
+  const code = D.code(ACC[kind].pre, [name, nm, bal, all.length, from, who, c]);
+  return { v: 1, kind, name, nm, who, extra, c, bal, from, lim, k: extraTiles(c), led: led.slice(-80).map(x => { const o = Object.assign({}, x); delete o.T; return o; }), today: App.today, date: D.dateWords(), code };
 }
-function debtSheet(st) {
+function accSheet(kind, st) {
   if (!st) return null;
-  const c = st.c, nm = st.nm, who = st.who, bal = st.bal, from = st.from, led = st.led || [], k = st.k || [], lim = st.lim || 0;
-  const title = String(c.title || '').trim() || KIND.debt.title;
+  const W = ACC[kind], c = st.c, nm = st.nm, who = st.who, bal = st.bal, from = st.from, led = st.led || [], k = st.k || [], lim = st.lim || 0;
+  const title = String(c.title || '').trim() || KIND[kind].title;
   return {
-    kind: 'debt', title, sub: 'بدهی ' + nm + ' به ' + (who || 'اینجانب'), tag: (c.bal ? 'مبلغ بدهی' : 'حساب') + (c.led ? ' و گردش حساب' + (from ? ' از ' + fa(from) : '') : '') + ' تا تاریخ صدور — به ریال', icon: 'coins', mark: 'بدهی', seal: 'بدهی',
-    cards: [['بدهکار', nm], [who ? 'بستانکار' : 'تاریخ صدور', who || st.date], ['تاریخ', st.date], ['شمارهٔ سند', st.code, true]],
-    code: st.code, today: st.today, sigLabel: 'بستانکار', sigName: who, file: 'گواهی بدهی ' + st.name, pdfTitle: title + ' — ' + nm,
+    kind, title, sub: W.sub(nm, who), tag: (c.bal ? W.tag : 'حساب') + (c.led ? ' و گردش حساب' + (from ? ' از ' + fa(from) : '') : '') + ' تا تاریخ صدور — به ریال', icon: 'coins', mark: W.mark, seal: W.seal,
+    cards: [[W.him, nm], [who ? W.me : 'تاریخ صدور', who || st.date], ['تاریخ', st.date], ['شمارهٔ سند', st.code, true]],
+    code: st.code, today: st.today, sigLabel: W.me, sigName: who, file: W.file + st.name, pdfTitle: title + ' — ' + nm,
     state: st, data: { bal, k, led, extra: st.extra, c, from },
     body: (m, K) => [
-      K.para(m, c.bal ? 'بدین‌وسیله گواهی می‌شود که ' + nm + ' تا تاریخ صدور این برگه مبلغ زیر را به ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' بدهکار است:'
-        : 'بدین‌وسیله گواهی می‌شود که حساب ' + nm + ' نزد ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' به شرح زیر است:', { gap: 16 }),
-      c.bal ? K.hero(m, { l: bal < -0.5 ? 'مانده (طلب ایشان)' : 'مبلغ بدهی', v: fa(fmt(Math.abs(bal))), u: 'ریال', w: c.words ? 'به حروف: ' + D.words(Math.abs(bal)) + ' ریال' : '' }) : null,
+      K.para(m, c.bal ? W.intro(nm, who) : 'بدین‌وسیله گواهی می‌شود که حساب ' + nm + ' نزد ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' به شرح زیر است:', { gap: 16 }),
+      c.bal ? K.hero(m, { l: bal < -0.5 ? W.heroNeg : W.hero, v: fa(fmt(Math.abs(bal))), u: 'ریال', w: c.words ? 'به حروف: ' + D.words(Math.abs(bal)) + ' ریال' : '' }) : null,
       k.length ? K.kpis(m, k) : null,
       c.led && led.length ? K.ledger(m, { title: 'گردش حساب' + (from ? ' از ' + fa(from) : ''), head: ['تاریخ', 'شرح', 'بدهکار', 'بستانکار', 'مانده'], rows: led, min: lim || 3, max: lim || 12 }) : null,
       (c.note || st.extra) ? K.note(m, [c.note ? 'مبالغ به ریال و تا تاریخ صدور این برگه است. ستون «بدهکار» پرداخت به ایشان و ستون «بستانکار» دریافت از ایشان است.' : '', st.extra]) : null
     ]
   };
 }
-const debtSpec = (name, over) => debtSheet(debtState(name, over));
+const debtSheet = st => accSheet('debt', st), credSheet = st => accSheet('cred', st);
+const debtSpec = (name, over) => debtSheet(accState('debt', name, over)), credSpec = (name, over) => credSheet(accState('cred', name, over));
 D.register('debt', name => debtSpec(name), debtSheet);
-App.debtDocInfo = name => { const s = debtSpec(name); return s ? { code: s.code, bal: s.data.bal, led: s.data.led.length, first: s.data.led[0] || null, name: s.cards[0][1], title: s.title, from: s.data.from, words: D.words(Math.abs(s.data.bal)) } : null; };
-const SPEC = { inv: invSpec, debt: debtSpec };
+D.register('cred', name => credSpec(name), credSheet);
+const accInfo = s => (s ? { code: s.code, bal: s.data.bal, led: s.data.led.length, first: s.data.led[0] || null, name: s.cards[0][1], title: s.title, from: s.data.from, words: D.words(Math.abs(s.data.bal)) } : null);
+App.debtDocInfo = name => accInfo(debtSpec(name));
+App.credDocInfo = name => accInfo(credSpec(name));
+const SPEC = { inv: invSpec, debt: debtSpec, cred: credSpec };
 
 /* ---- the cards and the windows ---- */
 function cfgSum(kind, name) {
@@ -14649,12 +14683,13 @@ function docCard(kind, name) {
   const d = ' data-k="' + kind + '" data-n="' + esc(name) + '"';
   let bal = 0; try { bal = kind === 'inv' ? (invRow(name) || {}).bal || 0 : App.C.balance(name); } catch (e) { bal = 0; }
   return D.card(kind, name, {
-    ico: '📜', head: KIND[kind].title + ' — ' + name, sub: (kind === 'inv' ? 'مانده ' : 'بدهی ') + '<bdi class="num">' + esc(fmt(bal)) + '</bdi> ریال · تا تاریخ <bdi class="num">' + esc(E.serToText(App.today)) + '</bdi>',
+    ico: '📜', head: KIND[kind].title + ' — ' + name, sub: (kind === 'inv' ? 'مانده ' : kind === 'debt' ? 'بدهی ' : 'طلب ') + '<bdi class="num">' + esc(fmt(bal)) + '</bdi> ریال · تا تاریخ <bdi class="num">' + esc(E.serToText(App.today)) + '</bdi>',
     top: D.nameLine(name, 'ad-edit', d) + '<div class="dnl noprint"><span>⚙️ روی برگه: <b>' + esc(cfgSum(kind, name)) + '</b></span>' + D.btn('ad-cfg', 'sm violet', '⚙️ تنظیم برگه (کم و زیاد)', d) + '</div>',
     foot: 'برگه «عکس» است (PDF هم همان عکس است)؛ متنی در آن نیست که گیرنده بتواند عوضش کند. عددها همان عددهای دفتر شما در امروز است.'
   });
 }
 App.memberDoc = function (name) { if (!isInv(name)) return; App.modal('📜 ' + KIND.inv.title + ' — ' + esc(name), docCard('inv', name), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '760px' }); };
+App.credDoc = function (name) { if (!isCred(name)) return; App.modal('📜 ' + KIND.cred.title + ' — ' + esc(name), docCard('cred', name), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '760px' }); };
 App.debtDoc = function (name) { if (!isDebt(name)) return; App.modal('📜 ' + KIND.debt.title + ' — ' + esc(name), docCard('debt', name), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '760px' }); };
 
 /* the pages: one line each — the sheet opens in a window */
@@ -14664,7 +14699,7 @@ function listPage(kind, L, back, intro) {
   if (!L.length) return h + '<div class="box">کسی با مانده نیست.</div>';
   return h + '<div class="box"><h2>👥 ' + KIND[kind].who + ' <small>' + L.length + ' نفر</small></h2><div class="mrl">' + L.map(r => {
     const d = ' data-k="' + kind + '" data-n="' + esc(r.name) + '"', full = D.fullOf(r.name);
-    return '<div class="mrr"><span class="mr-av' + (kind === 'debt' ? ' dbt' : '') + '">' + esc((r.name || '؟').charAt(0)) + '</span><div class="mr-n"><b>' + esc(r.name) + '</b><small>' + (full ? 'در گواهی: ' + esc(full) + ' · ' : '') + (kind === 'inv' ? 'مانده' : 'بدهی') + ' <bdi class="num">' + esc(fmt(r.bal)) + '</bdi></small></div>' +
+    return '<div class="mrr"><span class="mr-av' + (kind === 'debt' ? ' dbt' : kind === 'cred' ? ' crd' : '') + '">' + esc((r.name || '؟').charAt(0)) + '</span><div class="mr-n"><b>' + esc(r.name) + '</b><small>' + (full ? 'در گواهی: ' + esc(full) + ' · ' : '') + (kind === 'inv' ? 'مانده' : kind === 'debt' ? 'بدهی' : 'طلب') + ' <bdi class="num">' + esc(fmt(r.bal)) + '</bdi></small></div>' +
       '<div class="mr-b">' + D.btn('ad-doc', 'blue', '📜 گواهی', d) + D.btn('ad-edit', 'violet sm', '✏️ ویرایش', d) + D.btn('ad-cfg', 'ghost sm', '⚙️ برگه', d) + '</div>' + D.lastLine(kind, r.name) + '</div>';
   }).join('') + '</div></div>';
 }
@@ -14679,7 +14714,12 @@ P.drep = function () {
     html: listPage('debt', L, ['/debtors', 'بدهکاران'], 'برای هر بدهکار یک «گواهی بدهی» رسمی: «فلانی به شما این مبلغ بدهکار است» با عدد و به حروف، و گردش حسابش — با امضا و مُهر شما. در «⚙️ برگه» تاریخ شروع گردش (مثلاً 1405/01/01) و چیزهای دیگر را تعیین کنید.') };
 };
 
-/* buttons on the lists and on the page of every investor / debtor */
+P.crep = function () {
+  const L = (App.db.accounts || []).filter(a => G_CRED.indexOf(a.group) >= 0 && !(App.isArchived && App.isArchived(a.name))).map(a => ({ name: a.name, bal: Math.round(N(App.C.balance(a.name))) })).filter(r => Math.abs(r.bal) > 0.5);
+  return { title: '📜 گواهی طلب بستانکاران', sub: 'برگهٔ رسمی «این مبلغ را به شما بدهکارم» با گردش حساب — عکس یا PDF، با امضای شما',
+    html: listPage('cred', L, ['/creditors', 'بستانکاران'], 'برای هر بستانکار یک «گواهی طلب» رسمی: «اینجانب این مبلغ را به شما بدهکارم» با عدد و به حروف، و گردش حسابش — با امضا و مُهر شما. در «⚙️ برگه» تاریخ شروع گردش و چیزهای دیگر را تعیین کنید.') };
+};
+/* buttons on the lists and on the page of every investor / debtor / creditor */
 const wrapList = (page, to, label) => { const o = P[page]; if (typeof o !== 'function') return; P[page] = function () {
   const r = o.apply(this, arguments);
   if (r && typeof r.html === 'string' && r.html.indexOf('<div class="bar noprint">') >= 0) r.html = r.html.replace('<div class="bar noprint">', '<div class="bar noprint"><a class="btn gold" data-act="go" data-to="' + to + '">' + label + '</a>');
@@ -14687,6 +14727,7 @@ const wrapList = (page, to, label) => { const o = P[page]; if (typeof o !== 'fun
 }; };
 wrapList('members', '/mrep', '📜 گواهی برای سرمایه‌گذاران');
 wrapList('debtors', '/drep', '📜 گواهی بدهی برای بدهکاران');
+wrapList('creditors', '/crep', '📜 گواهی طلب برای بستانکاران');
 /* the page is reshaped after it is drawn (35_accshell): the button goes into its row of buttons, before «📤 گزارش و ارسال» */
 const wrapPage = (page, kind, label) => { const o = P[page]; if (typeof o !== 'function') return; P[page] = function (name) {
   const r = o.apply(this, arguments);
@@ -14707,6 +14748,7 @@ const wrapPage = (page, kind, label) => { const o = P[page]; if (typeof o !== 'f
 }; };
 wrapPage('member', 'inv', '📜 گواهی برای ارسال');
 wrapPage('acc', 'debt', '📜 گواهی بدهی');
+wrapPage('acc', 'cred', '📜 گواهی طلب');
 
 /* ---- ✏️ everything of one person in one window (the owner, 1405/08/17: «ادیت نام سرمایه‌گذاران، بدهکاران، تغییر نرخ سود هر سرمایه‌گذار —
    همان‌جا، برای هر فرد جدا … ادیت همه چیزِ سرمایه‌گذار را بگذار»): the name of the account (everywhere: App.renameIn), the full name and the note
@@ -14727,7 +14769,7 @@ App.personEdit = function (kind, name, back) {
     h += '<div class="pe-sec"><b>📈 نرخ سود سالانه</b><div class="pe-cur">نرخ امروز: <b class="num">' + esc(cur) + '٪</b></div><div class="grid2">' +
       f('pe_rate', 'نرخ تازه (٪) <small>(خالی = همان قبلی)</small>', '', 'inputmode="decimal"', 'مثلاً 30') + f('pe_rdate', 'از تاریخ', E.serToText(App.today), 'inputmode="numeric"') + '</div></div>' +
       '<div class="pe-sec"><b>📅 سود</b><div class="grid2">' + f('pe_pday', 'روز سررسید سود هر ماه (۱ تا ۳۱)', App.profitDay(name), 'inputmode="numeric"') +
-      f('pe_pfrom', 'سود از این تاریخ حساب شود <small>(خالی = از اول)</small>', pf, 'inputmode="numeric"', 'مثلاً 1405/08/01') + '</div></div>';
+      f('pe_pfrom', 'سود از این تاریخ حساب شود <small>(خالی = از اول)</small>', pf, 'inputmode="numeric"', 'مثلاً 14050801') + '</div></div>';
   }
   h += '<div class="ams-sure">🔒 فقط نام، نرخ و تنظیم‌ها عوض می‌شود؛ هیچ مبلغی در دفتر جابه‌جا نمی‌شود. همه‌چیز در «تغییرات» می‌ماند و برمی‌گردد.</div></div>';
   App.modal('✏️ ویرایش — ' + esc(name), h, D.btn('pe-save', 'green big', '✔ ذخیره') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '640px' });
@@ -14774,8 +14816,8 @@ App.docCfg = function (kind, name) {
     '<div class="cf-hint">هر چه نمی‌خواهید بردارید، هر چه می‌خواهید اضافه کنید؛ پیش‌نمایش پایین همان لحظه عوض می‌شود.</div>' +
     '<div class="field"><label for="cf_title">📜 عنوان برگه</label><input type="text" id="cf_title" class="yellow" value="' + esc(c.title || '') + '" placeholder="' + esc(KIND[kind].title) + '" autocomplete="off"></div>' +
     '<div class="cf-g">' + KIND[kind].PARTS.map(ck).join('') + '</div>' +
-    (kind === 'debt' ? '<div class="field"><label for="cf_from">📅 گردش حساب از تاریخ <small>(خالی = آخرین ردیف‌ها، تا جا هست)</small></label><input type="text" id="cf_from" class="yellow" value="' + esc(c.from || '') + '" placeholder="مثلاً 1405/01/01" inputmode="numeric" autocomplete="off"></div>' : '') +
-    '<div class="field"><label for="cf_rows">🧾 چند ردیف از گردش حساب؟</label><select id="cf_rows" class="yellow">' + [[0, kind === 'debt' ? 'خودکار (از آن تاریخ همه، وگرنه تا جا هست)' : 'خودکار (تا جا هست — حدود ۴ تا ۱۲)'], [3, '۳ ردیف'], [5, '۵ ردیف'], [8, '۸ ردیف'], [12, '۱۲ ردیف'], [20, '۲۰ ردیف']].map(o => '<option value="' + o[0] + '"' + (+c.rows === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
+    (kind !== 'inv' ? '<div class="field"><label for="cf_from">📅 گردش حساب از تاریخ <small>(خالی = آخرین ردیف‌ها، تا جا هست)</small></label><input type="text" id="cf_from" class="yellow" value="' + esc(c.from || '') + '" placeholder="مثلاً 1405/01/01" inputmode="numeric" autocomplete="off"></div>' : '') +
+    '<div class="field"><label for="cf_rows">🧾 چند ردیف از گردش حساب؟</label><select id="cf_rows" class="yellow">' + [[0, kind !== 'inv' ? 'خودکار (از آن تاریخ همه، وگرنه تا جا هست)' : 'خودکار (تا جا هست — حدود ۴ تا ۱۲)'], [3, '۳ ردیف'], [5, '۵ ردیف'], [8, '۸ ردیف'], [12, '۱۲ ردیف'], [20, '۲۰ ردیف']].map(o => '<option value="' + o[0] + '"' + (+c.rows === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
     '<div class="cf-x"><b>➕ سطرهای دلخواه</b><small>عنوان و مقدار — مثلاً «قسط بعدی» و «50,000,000 ریال»؛ به حروفِ مبلغ را خود برنامه می‌نویسد. خالی بماند، روی برگه نمی‌آید.</small>' +
     ex.map((e, i) => '<div class="grid2"><input type="text" class="yellow" data-cx="' + i + '" data-p="0" value="' + esc(e[0] || '') + '" placeholder="عنوان" autocomplete="off"><input type="text" class="yellow" data-cx="' + i + '" data-p="1" value="' + esc(e[1] || '') + '" placeholder="مقدار" autocomplete="off"></div>').join('') + '</div>' +
     '<div class="cf-sc"><label><input type="radio" name="cf_sc" value="one"' + (CF.own || !all['*'] ? ' checked' : '') + '> فقط برای <b>' + esc(name) + '</b></label><label><input type="radio" name="cf_sc" value="all"' + (!CF.own && all['*'] ? ' checked' : '') + '> برای <b>همهٔ ' + KIND[kind].who + '</b> (پیش‌فرض)</label></div>' +
@@ -14790,7 +14832,7 @@ function readCF() {
   document.querySelectorAll('#modalBg [data-cf]').forEach(i => { c[i.dataset.cf] = !!i.checked; });
   c.title = String((document.getElementById('cf_title') || {}).value || '').trim();
   c.rows = +((document.getElementById('cf_rows') || {}).value) || 0;
-  if (CF.kind === 'debt') c.from = H.normDate(String((document.getElementById('cf_from') || {}).value || '').trim()) || '';
+  if (CF.kind !== 'inv') c.from = H.normDate(String((document.getElementById('cf_from') || {}).value || '').trim()) || '';
   const ex = []; document.querySelectorAll('#modalBg [data-cx]').forEach(i => { const n = +i.dataset.cx; ex[n] = ex[n] || ['', '']; ex[n][+i.dataset.p] = String(i.value || '').trim(); });
   c.extra = ex.filter(e => e && (e[0] || e[1]));
   return c;
@@ -14803,7 +14845,7 @@ function cfSave() {
   const c = readCF(); if (!c) return;
   const { kind, name } = CF, all = !!(document.querySelector('#modalBg input[name="cf_sc"][value="all"]') || {}).checked;
   const raw = String((document.getElementById('cf_from') || {}).value || '').trim();
-  if (kind === 'debt' && raw && !c.from) { App.toast('تاریخ را مثل 1405/01/01 بنویسید', true); return; }
+  if (kind !== 'inv' && raw && !c.from) { App.toast('تاریخ را مثل 1405/01/01 بنویسید', true); return; }
   App.commit('برگهٔ گواهی: ' + (all ? 'همه' : name), db => {
     db.docs = Object.assign({}, db.docs || {}); db.docs[kind] = Object.assign({}, db.docs[kind] || {});
     if (all) { db.docs[kind]['*'] = c; delete db.docs[kind][name]; } else db.docs[kind][name] = c;
@@ -15275,7 +15317,7 @@ P.reports = function () {
   const sec = (t, a) => '<h3 class="rsec">' + t + '</h3><div class="rgrid">' + a.join('') + '</div>';
   let h = sec('⏱ بر اساس زمان', [tile('/daily', '📅', 'وقایع روزانه', 'هر روز: ثبت‌ها و تغییرات ۲۴ ساعت', 't1'), tile('/mreport', '🗓', 'وقایع ماهانه', 'همهٔ رکوردهای ماه با جستجو', 't1'), tile('/journal', '📒', 'دفتر روزنامه', 'همهٔ ثبت‌ها به ترتیب تاریخ', 't1'), tile('/monthly', '💹', 'سود ماهانهٔ اعضا', 'جدول سود هر ماه', 't1')]) +
     sec('👥 گزارش حساب‌ها', Object.keys(KINDS).map(k => tile('/rep/' + k, KINDS[k].ico, 'گزارش ' + KINDS[k].t, KINDS[k].desc, 't2'))) +
-    sec('⚖ تراز، تطبیق و ارسال', [tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/mrep', '📜', 'گواهی سرمایه‌گذاران', 'برگهٔ رسمی مانده و سود هر نفر — با امضا', 't3'), tile('/drep', '📜', 'گواهی بدهی بدهکاران', 'فلانی این مبلغ بدهکار است — با گردش و امضا', 't3'), tile('/docs', '🗂', 'بایگانی گواهی‌ها', 'هر گواهی که دادم: کی، به چه کسی، چطور', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
+    sec('⚖ تراز، تطبیق و ارسال', [tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/mrep', '📜', 'گواهی سرمایه‌گذاران', 'برگهٔ رسمی مانده و سود هر نفر — با امضا', 't3'), tile('/drep', '📜', 'گواهی بدهی بدهکاران', 'فلانی این مبلغ بدهکار است — با گردش و امضا', 't3'), tile('/crep', '📜', 'گواهی طلب بستانکاران', 'این مبلغ را به فلانی بدهکارم — با گردش و امضا', 't3'), tile('/docs', '🗂', 'بایگانی گواهی‌ها', 'هر گواهی که دادم: کی، به چه کسی، چطور', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
   return { title: 'گزارش‌ها', sub: 'هر گزارش اول خلاصه است؛ روی هر مورد بزنید تا ریز گردشش با فیلتر باز شود', html: h };
 };
 
