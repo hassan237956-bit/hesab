@@ -3028,6 +3028,58 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 .ams-rb3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
 .ams-rb3 .btn{min-height:50px;font-size:1.05rem;font-weight:800;justify-content:center}
 @media (max-width:600px){ .ams-rb2{grid-template-columns:1fr} .ams-rb3 .btn{font-size:.98rem;padding-inline:6px} }
+
+/* ---------------------------------------------------------------- v46.8 — «📜 گواهی»: the signature, the full name, the investors' sheets */
+.dsg{border:2px solid #DDD6FE;background:linear-gradient(180deg,#FFFFFF,#F7F5FF)}
+.dsg-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:8px}
+.dsg-h b{font-size:1.3rem;font-weight:900;color:#3B0764}
+.dsg-h small{font-size:1rem;font-weight:700;color:#6B7280}
+.dsg-pv{display:inline-block;padding:8px 18px;border-radius:14px;background:#fff;border:1.5px dashed #C4B5FD}
+.dsg-pv img{display:block;max-width:min(320px,70vw);max-height:110px}
+.dsg-no{font-size:1.08rem;font-weight:800;color:#6B21A8;line-height:1.9}
+.dsg-b{margin-top:10px;gap:8px;flex-wrap:wrap}
+.dsg-b .btn{min-height:50px;font-size:1.1rem;font-weight:900}
+.dsg-ask{margin-top:8px;padding:8px 12px;border-radius:12px;background:#F5F3FF;border:1.5px solid #DDD6FE;font-size:1.02rem;font-weight:800;color:#5B21B6;line-height:2}
+.dnl{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px;margin:2px 0 6px;padding:8px 12px;border-radius:14px;background:#F1F5F9;border:1.5px solid #E2E8F0}
+.dnl span{font-size:1.08rem;font-weight:800;color:#334155}
+.dnl b{font-size:1.15rem;color:#0F2A4A}
+.dnl-pv{margin-top:6px;padding:10px 14px;border-radius:14px;background:#EEF2FF;border:1.5px solid #C7D2FE;font-size:1.12rem;font-weight:800;color:#312E81}
+/* the signature pad */
+.sgw .sg-hint{font-size:1.12rem;font-weight:800;color:#334155;margin-bottom:8px;line-height:1.8}
+.sg-box{position:relative;border-radius:16px;background:#fff;border:2.5px solid #A5B4FC;box-shadow:inset 0 2px 10px -6px #312E81;overflow:hidden}
+.sg-box canvas{display:block;width:100%;height:auto;aspect-ratio:5/2;touch-action:none;cursor:crosshair;position:relative;z-index:1}
+.sg-line{position:absolute;left:6%;right:6%;bottom:24%;border-bottom:2px dashed #CBD5E1;z-index:0}
+.sg-x{position:absolute;right:5%;bottom:25%;font-size:1.4rem;font-weight:900;color:#94A3B8;z-index:0}
+.sg-sure{margin-top:10px;padding:8px 12px;border-radius:12px;background:#ECFDF5;border:1.5px solid #A7F3D0;color:#065F46;font-size:1rem;font-weight:800;line-height:1.8}
+/* the investors' list */
+.mrl{display:grid;gap:8px}
+.mrr{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px;border-radius:16px;background:#fff;border:1.5px solid #E0E7FF;box-shadow:0 6px 14px -12px #312E81}
+.mr-av{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:linear-gradient(145deg,#FCD34D,#B45309);color:#fff;font-size:1.35rem;font-weight:900;flex:none}
+.mr-n{display:flex;flex-direction:column;flex:1;min-width:150px}
+.mr-n b{font-size:1.3rem;font-weight:900;color:#1E1B4B}
+.mr-n small{font-size:1rem;font-weight:700;color:#475569}
+.mr-b{display:flex;gap:6px;flex-wrap:wrap}
+.mr-b .btn.blue{min-height:50px;font-size:1.15rem;font-weight:900}
+@media (max-width:600px){ .mr-b{width:100%} .mr-b .btn.blue{flex:1} }
+/* ⚙️ what goes on an investor's sheet */
+.cfw .cf-hint{font-size:1.08rem;font-weight:800;color:#334155;line-height:1.8;margin-bottom:8px}
+.cf-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin:8px 0 12px}
+.cf-ck{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:#fff;border:2px solid #E0E7FF;cursor:pointer}
+.cf-ck:has(input:checked){border-color:#818CF8;background:#EEF2FF}
+.cf-ck input{width:26px;height:26px;flex:none;accent-color:#4338CA}
+.cf-ck span{display:flex;flex-direction:column}
+.cf-ck b{font-size:1.1rem;font-weight:900;color:#1E1B4B}
+.cf-ck small{font-size:.9rem;font-weight:700;color:#64748B}
+.cf-x{display:grid;gap:8px;margin:10px 0;padding:12px;border-radius:16px;background:#FFFBEB;border:2px solid #FDE68A}
+.cf-x>b{font-size:1.15rem;font-weight:900;color:#92400E}
+.cf-x>small{font-size:.98rem;font-weight:700;color:#78350F;line-height:1.7}
+.cf-x input{font-size:1.08rem}
+.cf-sc{display:flex;flex-wrap:wrap;gap:8px 18px;margin:10px 0;padding:10px 12px;border-radius:14px;background:#F1F5F9;border:1.5px solid #E2E8F0}
+.cf-sc label{display:flex;align-items:center;gap:8px;font-size:1.08rem;font-weight:800;color:#0F172A;cursor:pointer}
+.cf-sc input{width:22px;height:22px;accent-color:#15803D}
+.cf-pv{margin-top:8px}
+.cf-pv>b{display:block;font-size:1.1rem;font-weight:900;color:#0F2A4A;margin-bottom:6px}
+.cf-pv img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid #CBD5E1;box-shadow:0 14px 28px -20px #0F2A4A}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3035,7 +3087,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "46.7"; window.APP_BUILD = "1405/08/17 16:07";
+window.APP_VERSION = "46.8"; window.APP_BUILD = "1405/08/17 17:24";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -3716,7 +3768,7 @@ function loadInitial() {
 /* ---------------------------------------------------------------- v38: identity of every record (so two devices can be merged)
    entries / FX moves get a permanent «u» (unique id) and «m» (time of the last change); deleted ones leave a mark in db.tomb;
    the lists that have no ids of their own (rates, loans …) carry a «last changed» time in meta.cm.  Nothing here touches the calculation engine. */
-const CFG_KEYS = ['rates', 'loans', 'units', 'closedMembers', 'actuals', 'special', 'profitDay', 'profitFrom', 'profitDone', 'trusts', 'members'];   // the newer side wins as a whole
+const CFG_KEYS = ['rates', 'loans', 'units', 'closedMembers', 'actuals', 'special', 'profitDay', 'profitFrom', 'profitDone', 'trusts', 'docs', 'members'];   // the newer side wins as a whole
 const UNION_KEYS = ['accounts', 'assets', 'locations'];                                                            // names are only ever added
 function hash2(s) { let a = 0x811c9dc5, b = 0x9747b28c ^ s.length; for (let i = 0; i < s.length; i++) { const c = s.charCodeAt(i); a = Math.imul(a ^ c, 16777619) >>> 0; b = (Math.imul(b ^ c, 2246822519) + i + 1) >>> 0; } return a.toString(36) + b.toString(36); }
 function detUid(kind, e) {
@@ -10732,6 +10784,495 @@ function wrap(name, fn) {
 wrap('fx', res => { res.html = App.fxLedBox('') + res.html; });
 wrap('asset', (res, nm) => { res.html = '<div class="bar noprint" style="margin-bottom:8px">' + link(url(nm), 'btn green', '📒 دفتر ریز «' + esc(res.title || nm) + '» — تاریخ، مقدار، قیمت') + '</div>' + res.html; });
 })();
+/* ---------------------------------------------------------------- v46.8 — «📜 گواهی»: the official sheets (a picture / a PDF) and «✍️ امضای من»
+   the owner (1405/08/17): «… همین را به حالت صدور سند برای سرمایه‌گذارها هم بگذار؛ یکی‌یکی برایشان بفرستم. یک امضا هم از من بگیر که پایش بزنیم.»
+   · one engine draws every sheet (A4, on a canvas): «گواهی امانت» (27_trust) and «گواهی سرمایه‌گذاری» (56_mrep);
+   · «✍️ امضای من»: drawn once with a finger or the mouse, kept with the data (db.docs.sig — it goes with sync and the backups), put on every sheet;
+   · «نام کامل در گواهی» and «توضیح روی گواهی» per person (db.docs.names / db.docs.notes): the short name of the program does not change;
+   · the files are made synchronously inside the click so the phone's share sheet opens; the PDF is the picture only — there is no text in it to change. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc, N = v => +v || 0;
+const D = App.doc = {};
+const FDG = '۰۱۲۳۴۵۶۷۸۹';
+const fa = D.fa = s => String(s == null ? '' : s).replace(/\d/g, d => FDG[d]).replace(/,/g, '٬').replace(/\./g, '٫');
+const MONW = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
+const DAYW = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
+D.dateWords = function (ser, noDay) {
+  if (ser == null) ser = App.today;
+  const t = E.serToText(ser), m = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.exec(t || '');
+  if (!m) return fa(t);
+  return (noDay ? '' : DAYW[((ser - 513349) % 7 + 7) % 7] + ' ') + fa(+m[3]) + ' ' + MONW[+m[2] - 1] + ' ' + fa(m[1]);   // 513349 = a Saturday
+};
+/* a number in Persian words (for the amounts of the investors' sheet) */
+const ONES = ['', 'یک', 'دو', 'سه', 'چهار', 'پنج', 'شش', 'هفت', 'هشت', 'نه', 'ده', 'یازده', 'دوازده', 'سیزده', 'چهارده', 'پانزده', 'شانزده', 'هفده', 'هجده', 'نوزده'];
+const TENS = ['', '', 'بیست', 'سی', 'چهل', 'پنجاه', 'شصت', 'هفتاد', 'هشتاد', 'نود'];
+const HUNS = ['', 'یکصد', 'دویست', 'سیصد', 'چهارصد', 'پانصد', 'ششصد', 'هفتصد', 'هشتصد', 'نهصد'];
+const SCALE = ['', 'هزار', 'میلیون', 'میلیارد', 'هزار میلیارد'];
+const w3 = n => { const h = Math.floor(n / 100), r = n % 100, p = []; if (h) p.push(HUNS[h]); if (r) p.push(r < 20 ? ONES[r] : TENS[Math.floor(r / 10)] + (r % 10 ? ' و ' + ONES[r % 10] : '')); return p.join(' و '); };
+D.words = function (v) {
+  let n = Math.round(Math.abs(N(v))); if (!n) return 'صفر';
+  const g = []; let i = 0;
+  while (n > 0 && i < SCALE.length) { const k = n % 1000; if (k) g.unshift(w3(k) + (SCALE[i] ? ' ' + SCALE[i] : '')); n = Math.floor(n / 1000); i++; }
+  return (v < 0 ? 'منفی ' : '') + g.join(' و ');
+};
+D.owner = () => (App.db && App.db.meta && App.db.meta.owner) || '';
+const docs = () => (App.db && App.db.docs) || {};
+D.formal = name => String(((docs().names || {})[name]) || '').trim() || name;
+D.fullOf = name => String(((docs().names || {})[name]) || '').trim();
+D.noteOf = name => String(((docs().notes || {})[name]) || '').trim();
+/* inside App.commit: the full name / the note of one person (empty → removed) */
+D.setNames = function (db, name, full, note) {
+  db.docs = Object.assign({}, db.docs || {}); db.docs.names = Object.assign({}, db.docs.names || {}); db.docs.notes = Object.assign({}, db.docs.notes || {});
+  if (full != null) { if (String(full).trim() && String(full).trim() !== name) db.docs.names[name] = String(full).trim(); else delete db.docs.names[name]; }
+  if (note != null) { if (String(note).trim()) db.docs.notes[name] = String(note).trim(); else delete db.docs.notes[name]; }
+};
+D.code = function (pre, data) {
+  const s = JSON.stringify(data) + '|' + App.today;
+  let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  const AB = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let c = ''; for (let i = 0; i < 6; i++) { c += AB[h % 31]; h = Math.floor(h / 31); }
+  return pre + '-' + String(E.serToText(App.today) || '').replace(/\D/g, '') + '-' + c;
+};
+
+/* ---- the signature: a picture kept with the data ---- */
+let SIGU = '', SIGI = null;
+function sigImg() {
+  const u = docs().sig || '';
+  if (u !== SIGU) { SIGU = u; SIGI = null; if (u) { const im = new Image(); im.onload = () => { if (SIGU === u) { SIGI = im; D.refresh(); } }; im.src = u; } }
+  return SIGI && SIGI.complete && SIGI.naturalWidth ? SIGI : null;
+}
+D.hasSig = () => !!docs().sig;
+setInterval(() => { try { if (App.db) sigImg(); } catch (e) { } }, 1500);   // the picture is ready before any click (it loads asynchronously)
+
+/* ---- drawing ---- */
+const DFF = '"N_vazir","B Nazanin","Nazanin","IRANSans","Vazirmatn",Tahoma,"Segoe UI",sans-serif';
+const fnt = (w, px) => w + ' ' + px + 'px ' + DFF;
+const DFL = '"Segoe UI",Tahoma,"B Nazanin",Arial,sans-serif', fntL = (w, px) => w + ' ' + px + 'px ' + DFL;   // the code (Latin letters + digits): not the «FD» digits
+const DC = { navy: '#0F2A4A', navy2: '#1E3A8A', gold: '#A8781A', gold2: '#E2BE5A', paper: '#FFFDF7', ink: '#0F172A', mut: '#475569', edge: '#D6DCE8', card: '#F4F6FB', green: '#15803D', red: '#B91C1C' };
+const DW = 1240, DH0 = 1754, DX0 = 96, DX1 = DW - 96, DIW = DX1 - DX0, BODY0 = 530, SIGH = 210, FOOTH = 84;
+function rrect(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
+function txt(x, s, px, py, f, col, al, dir) { x.font = f; x.fillStyle = col; x.textAlign = al || 'right'; x.direction = dir || 'rtl'; x.fillText(s, px, py); }
+function wrap(x, s, f, w) {
+  x.font = f; x.direction = 'rtl'; const out = []; let cur = '';
+  String(s).split(/\s+/).filter(Boolean).forEach(wd => { const n = cur ? cur + ' ' + wd : wd; if (cur && x.measureText(n).width > w) { out.push(cur); cur = wd; } else cur = n; });
+  if (cur) out.push(cur); return out;
+}
+function fitFont(x, s, w, wt, px, min) { let z = px; x.font = fnt(wt, z); while (z > min && x.measureText(s).width > w) { z -= 2; x.font = fnt(wt, z); } return fnt(wt, z); }
+const clip = (x, s, f, w) => { x.font = f; if (x.measureText(s).width <= w) return s; let t = s; while (t.length > 4 && x.measureText(t + '…').width > w) t = t.slice(0, -1); return t + '…'; };
+function lockIcon(x, cx, cy, s, col) {
+  x.save(); x.strokeStyle = col; x.fillStyle = col; x.lineWidth = s * 0.11; x.lineCap = 'round';
+  x.beginPath(); x.arc(cx, cy - s * 0.12, s * 0.28, Math.PI, 0); x.lineTo(cx + s * 0.28, cy + s * 0.05); x.moveTo(cx - s * 0.28, cy - s * 0.12); x.lineTo(cx - s * 0.28, cy + s * 0.05); x.stroke();
+  rrect(x, cx - s * 0.45, cy + s * 0.02, s * 0.9, s * 0.62, s * 0.1); x.fill();
+  x.fillStyle = DC.navy; x.beginPath(); x.arc(cx, cy + s * 0.27, s * 0.08, 0, Math.PI * 2); x.fill(); x.fillRect(cx - s * 0.035, cy + s * 0.3, s * 0.07, s * 0.16);
+  x.restore();
+}
+function growIcon(x, cx, cy, s, col) {
+  x.save(); x.fillStyle = col; x.strokeStyle = col; x.lineCap = 'round'; x.lineJoin = 'round';
+  [[-0.36, 0.22], [-0.08, 0.38], [0.2, 0.56]].forEach(([dx, h]) => { rrect(x, cx + dx * s - s * 0.1, cy + s * 0.42 - h * s, s * 0.2, h * s, s * 0.03); x.fill(); });
+  x.lineWidth = s * 0.07; x.beginPath(); x.moveTo(cx - s * 0.44, cy - s * 0.02); x.lineTo(cx - s * 0.1, cy - s * 0.2); x.lineTo(cx + s * 0.08, cy - s * 0.1); x.lineTo(cx + s * 0.38, cy - s * 0.38); x.stroke();
+  x.beginPath(); x.moveTo(cx + s * 0.4, cy - s * 0.4); x.lineTo(cx + s * 0.2, cy - s * 0.38); x.lineTo(cx + s * 0.38, cy - s * 0.2); x.closePath(); x.fill();
+  x.fillRect(cx - s * 0.5, cy + s * 0.44, s, s * 0.05);
+  x.restore();
+}
+
+/* the blocks of a sheet's body: each one says its height and draws itself at y */
+const K = {
+  para(m, text, o) {
+    o = o || {}; const f = o.f || fnt(700, 31), lh = o.lh || 48, L = wrap(m, text, f, DIW);
+    return { h: L.length * lh, gap: o.gap == null ? 22 : o.gap, draw(x, y) { L.forEach((l, i) => txt(x, l, DX1, y + 34 + i * lh, f, o.col || DC.ink)); } };
+  },
+  /* row | item | quantity */
+  table(m, o) {
+    const c1 = 120, c3 = o.c3 || 400, c2 = DIW - c1 - c3, TH = 64, RH = o.RH || 86, rows = o.rows, tH = TH + rows.length * RH;
+    return { h: tH, gap: 28, draw(x, y) {
+      rrect(x, DX0, y, DIW, tH, 16); x.fillStyle = '#FFFFFF'; x.fill();
+      x.save(); rrect(x, DX0, y, DIW, tH, 16); x.clip();
+      x.fillStyle = DC.navy; x.fillRect(DX0, y, DIW, TH);
+      txt(x, o.head[0], DX1 - c1 / 2, y + 43, fnt(800, 26), '#FFFFFF', 'center');
+      txt(x, o.head[1], DX1 - c1 - 22, y + 43, fnt(800, 26), '#FFFFFF');
+      txt(x, o.head[2], DX0 + c3 / 2, y + 43, fnt(800, 26), '#FFFFFF', 'center');
+      rows.forEach((r, i) => {
+        const b = y + TH + i * RH, md = b + RH / 2;
+        x.fillStyle = i % 2 ? '#F8F5EC' : '#FFFFFF'; x.fillRect(DX0, b, DIW, RH);
+        if (i) { x.fillStyle = '#E5E7EB'; x.fillRect(DX0, b, DIW, 1.5); }
+        x.beginPath(); x.arc(DX1 - c1 / 2, md, 24, 0, Math.PI * 2); x.fillStyle = '#FBF3DC'; x.fill(); x.strokeStyle = DC.gold; x.lineWidth = 2; x.stroke();
+        txt(x, fa(i + 1), DX1 - c1 / 2, md + 10, fnt(900, 27), DC.gold, 'center');
+        txt(x, r.name, DX1 - c1 - 22, md + 12, fitFont(x, r.name, c2 - 40, 800, 35, 20), DC.ink);
+        const fq = fitFont(x, r.q, c3 - 150, 900, 44, 26); x.font = fq; const wq = x.measureText(r.q).width;
+        x.font = fnt(700, 27); const wu = r.u ? x.measureText(r.u).width : 0, tot = wq + (r.u ? 12 + wu : 0), e = DX0 + c3 / 2 + tot / 2;
+        txt(x, r.q, e, md + 15, fq, DC.navy2);
+        if (r.u) txt(x, r.u, e - wq - 12, md + 13, fnt(700, 27), DC.mut);
+      });
+      x.fillStyle = DC.edge; x.fillRect(DX1 - c1, y + TH, 1.5, tH - TH); x.fillRect(DX0 + c3, y + TH, 1.5, tH - TH);
+      x.restore();
+      rrect(x, DX0, y, DIW, tH, 16); x.strokeStyle = DC.navy; x.lineWidth = 2.5; x.stroke();
+    } };
+  },
+  /* the one big number: «مانده سرمایه» with its words */
+  hero(m, o) {
+    const fw = fnt(700, 25), L = o.w ? wrap(m, o.w, fw, DIW - 60) : [], h = 120 + L.length * 34;
+    return { h, gap: 24, draw(x, y) {
+      const g = x.createLinearGradient(0, y, 0, y + h); g.addColorStop(0, '#EEF2FF'); g.addColorStop(1, '#E0E7FF');
+      rrect(x, DX0, y, DIW, h, 18); x.fillStyle = g; x.fill(); x.strokeStyle = DC.navy2; x.lineWidth = 2.5; x.stroke();
+      x.fillStyle = DC.gold2; x.fillRect(DX1 - 8, y + 18, 8, h - 36);
+      txt(x, o.l, DX1 - 30, y + 48, fnt(800, 28), DC.mut);
+      const fv = fitFont(x, o.v, DIW - 420, 900, 64, 36); x.font = fv; const wv = x.measureText(o.v).width; x.font = fnt(800, 30); const wu = o.u ? x.measureText(o.u).width : 0;
+      const e = DX0 + 40 + wv + (o.u ? 14 + wu : 0);
+      txt(x, o.v, e, y + 86, fv, DC.navy2); if (o.u) txt(x, o.u, e - wv - 14, y + 84, fnt(800, 30), DC.mut);
+      L.forEach((l, i) => txt(x, l, DX1 - 30, y + 122 + i * 34, fw, '#3730A3'));
+    } };
+  },
+  /* small tiles, two in a row: [label, value, unit, small] */
+  kpis(m, list) {
+    const cw = (DIW - 20) / 2, ch = 90, rows = Math.ceil(list.length / 2), h = rows * ch + (rows - 1) * 14;
+    return { h, gap: 24, draw(x, y) {
+      list.forEach((k, i) => {
+        const col = i % 2, row = Math.floor(i / 2), a = col === 0 ? DX1 - cw : DX0, b = y + row * (ch + 14);
+        rrect(x, a, b, cw, ch, 14); x.fillStyle = '#FFFFFF'; x.fill(); x.strokeStyle = DC.edge; x.lineWidth = 1.5; x.stroke();
+        x.fillStyle = DC.gold2; x.fillRect(a + cw - 5, b + 14, 5, ch - 28);
+        txt(x, k[0], a + cw - 22, b + 30, fitFont(x, k[0], cw - 40, 700, 22, 16), DC.mut);
+        const fv = fitFont(x, k[1], cw - 150, 900, 34, 22); x.font = fv; const wv = x.measureText(k[1]).width;
+        txt(x, k[1], a + cw - 22, b + 70, fv, DC.navy2);
+        if (k[2]) txt(x, k[2], a + cw - 22 - wv - 10, b + 69, fnt(700, 22), DC.mut);
+        if (k[3]) txt(x, k[3], a + 18, b + 78, fitFont(x, k[3], cw * 0.5, 700, 19, 14), DC.mut, 'left');
+      });
+    } };
+  },
+  /* dated lines: [date] [tag] what — fills the page (between min and max lines) */
+  list(m, o) {
+    const RH = 46, all = o.rows, blk = { gap: 20, flex: { rowH: RH, total: all.length, min: Math.min(all.length, o.min || 5), max: Math.min(all.length, o.max || 14) } };
+    blk.setN = n => { blk.n = n; blk.more = all.length - n; blk.h = 62 + (blk.more > 0 ? 40 : 0) + n * RH; };
+    blk.setN(blk.flex.min);
+    blk.draw = (x, y) => {
+      txt(x, o.title, DX1, y + 32, fnt(900, 29), DC.navy);
+      x.font = fnt(900, 29); const tw = x.measureText(o.title).width; x.fillStyle = DC.gold2; x.fillRect(DX1 - tw, y + 45, tw, 4);
+      y += 62;
+      if (blk.more > 0) { txt(x, '… ' + fa(blk.more) + ' ردیف قدیمی‌تر در این برگه نیامده', DX1, y + 28, fnt(700, 22), DC.mut); y += 40; }
+      all.slice(-blk.n).forEach((h, i) => {
+        const b = y + i * RH;
+        if (i) { x.save(); x.strokeStyle = '#E2E8F0'; x.setLineDash([6, 6]); x.lineWidth = 1.2; x.beginPath(); x.moveTo(DX0, b); x.lineTo(DX1, b); x.stroke(); x.restore(); }
+        txt(x, fa(h.d), DX1, b + 33, fnt(700, 24), DC.mut);
+        const cx = DX1 - 190; rrect(x, cx - 96, b + 7, 96, 33, 16); x.fillStyle = h.tc === 'r' ? '#FEE2E2' : '#DCFCE7'; x.fill();
+        txt(x, h.tag, cx - 48, b + 32, fnt(800, 22), h.tc === 'r' ? DC.red : DC.green, 'center');
+        txt(x, h.what, cx - 116, b + 33, fitFont(x, h.what, cx - 116 - DX0, 800, 27, 18), DC.ink);
+      });
+    };
+    return blk;
+  },
+  /* an account's turnover: date | description | in | out | balance — fills the page */
+  ledger(m, o) {
+    const RH = 46, TH = 50, all = o.rows, blk = { gap: 22, flex: { rowH: RH, total: all.length, min: Math.min(all.length, o.min || 3), max: Math.min(all.length, o.max || 12) } };
+    blk.setN = n => { blk.n = n; blk.h = 54 + TH + n * RH; };
+    blk.setN(blk.flex.min);
+    const cD = 170, cA = 210, cB = 210, cW = 210, cS = DIW - cD - cA - cB - cW;   // date | description | in | out | balance (right to left)
+    blk.draw = (x, y) => {
+      txt(x, o.title, DX1, y + 30, fnt(900, 28), DC.navy);
+      x.font = fnt(900, 28); const tw = x.measureText(o.title).width; x.fillStyle = DC.gold2; x.fillRect(DX1 - tw, y + 41, tw, 4);
+      y += 54; const tH = TH + blk.n * RH;
+      rrect(x, DX0, y, DIW, tH, 14); x.fillStyle = '#FFFFFF'; x.fill();
+      x.save(); rrect(x, DX0, y, DIW, tH, 14); x.clip();
+      x.fillStyle = DC.navy; x.fillRect(DX0, y, DIW, TH);
+      const xs = [DX1, DX1 - cD, DX1 - cD - cS, DX1 - cD - cS - cA, DX1 - cD - cS - cA - cW];   // right edges
+      ['تاریخ', 'شرح', 'واریز', 'برداشت', 'مانده'].forEach((t, i) => txt(x, t, i === 1 ? xs[1] - 16 : xs[i] - [cD, cS, cA, cW, cB][i] / 2, y + 34, fnt(800, 23), '#FFFFFF', i === 1 ? 'right' : 'center'));
+      all.slice(-blk.n).forEach((r, i) => {
+        const b = y + TH + i * RH;
+        x.fillStyle = i % 2 ? '#F8F5EC' : '#FFFFFF'; x.fillRect(DX0, b, DIW, RH);
+        const yb = b + 31, ds = String(r.desc || '').replace(/\d/g, c => FDG[c]);
+        txt(x, fa(r.d), xs[0] - cD / 2, yb, fnt(700, 22), DC.mut, 'center');
+        txt(x, clip(x, ds, fnt(700, 22), cS - 30), xs[1] - 16, yb, fnt(700, 22), DC.ink);
+        if (r.amt > 0) txt(x, fa(H.fmt(r.amt)), xs[2] - cA / 2, yb, fitFont(x, fa(H.fmt(r.amt)), cA - 20, 800, 23, 15), DC.green, 'center');
+        if (r.amt < 0) txt(x, fa(H.fmt(-r.amt)), xs[3] - cW / 2, yb, fitFont(x, fa(H.fmt(-r.amt)), cW - 20, 800, 23, 15), DC.red, 'center');
+        txt(x, fa(H.fmt(r.bal)), xs[4] - cB / 2, yb, fitFont(x, fa(H.fmt(r.bal)), cB - 20, 800, 23, 15), DC.navy2, 'center');
+      });
+      x.fillStyle = DC.edge; xs.slice(1).forEach(v => x.fillRect(v, y + TH, 1.2, tH - TH));
+      x.restore();
+      rrect(x, DX0, y, DIW, tH, 14); x.strokeStyle = DC.navy; x.lineWidth = 2; x.stroke();
+    };
+    return blk;
+  },
+  note(m, paras) {
+    const f = fnt(700, 25), L = []; (Array.isArray(paras) ? paras : [paras]).filter(Boolean).forEach((p, i) => wrap(m, p, f, DIW - 60).forEach(l => L.push({ l, b: i > 0 })));
+    const h = L.length * 38 + 40;
+    return { h, gap: 28, draw(x, y) {
+      rrect(x, DX0, y, DIW, h, 16); x.fillStyle = '#FFF8E6'; x.fill(); x.strokeStyle = '#E9D8A6'; x.lineWidth = 1.5; x.stroke();
+      L.forEach((o, i) => txt(x, o.l, DX1 - 30, y + 45 + i * 38, o.b ? fnt(800, 25) : f, o.b ? '#1E3A8A' : '#6B4E0E'));
+    } };
+  }
+};
+D.K = K;
+
+/* one sheet → a canvas */
+D.draw = function (spec, scale) {
+  const cv = document.createElement('canvas'); let x = cv.getContext('2d');
+  const blocks = (spec.body(x, K) || []).filter(Boolean);
+  const sum = () => blocks.reduce((s, b) => s + b.h + (b.gap == null ? 24 : b.gap), 0);
+  const fl = blocks.find(b => b.flex);
+  if (fl) { const free = DH0 - (BODY0 + sum() + SIGH + FOOTH); fl.setN(Math.max(fl.flex.min, Math.min(fl.flex.max, fl.n + Math.floor(free / fl.flex.rowH)))); }
+  const DH = Math.max(DH0, Math.ceil(BODY0 + sum() + SIGH + FOOTH));
+  cv.width = Math.round(DW * scale); cv.height = Math.round(DH * scale);
+  x = cv.getContext('2d'); x.scale(scale, scale); x.textBaseline = 'alphabetic';
+  /* the paper and its frame */
+  x.fillStyle = DC.paper; x.fillRect(0, 0, DW, DH);
+  x.strokeStyle = DC.navy; x.lineWidth = 6; x.strokeRect(24, 24, DW - 48, DH - 48);
+  x.strokeStyle = DC.gold2; x.lineWidth = 2; x.strokeRect(38, 38, DW - 76, DH - 76);
+  [[38, 38], [DW - 38, 38], [38, DH - 38], [DW - 38, DH - 38]].forEach(([a, b]) => { x.save(); x.translate(a, b); x.rotate(Math.PI / 4); x.fillStyle = DC.gold; x.fillRect(-9, -9, 18, 18); x.fillStyle = DC.paper; x.fillRect(-4, -4, 8, 8); x.restore(); });
+  /* the head band */
+  const g = x.createLinearGradient(0, 58, 0, 270); g.addColorStop(0, '#0B2140'); g.addColorStop(1, '#1E3A8A');
+  rrect(x, 58, 58, DW - 116, 212, 20); x.fillStyle = g; x.fill();
+  x.save(); rrect(x, 58, 58, DW - 116, 212, 20); x.clip(); x.strokeStyle = 'rgba(226,190,90,.16)'; x.lineWidth = 1.2;
+  for (let k = 0; k < 9; k++) { x.beginPath(); for (let a = 58; a <= DW - 58; a += 6) { const yy = 106 + k * 14 + Math.sin(a / 46 + k * 0.7) * 20 + Math.sin(a / 13 + k) * 3; if (a === 58) x.moveTo(a, yy); else x.lineTo(a, yy); } x.stroke(); }
+  x.restore();
+  x.fillStyle = DC.gold2; x.fillRect(58, 262, DW - 116, 3);
+  txt(x, spec.title, DX1 - 10, 142, fitFont(x, spec.title, DIW - 300, 900, 74, 50), '#FFFFFF');
+  txt(x, spec.sub, DX1 - 10, 200, fitFont(x, spec.sub, DIW - 300, 800, 36, 22), DC.gold2);
+  if (spec.tag) txt(x, spec.tag, DX1 - 10, 242, fitFont(x, spec.tag, DIW - 300, 700, 23, 16), 'rgba(255,255,255,.78)');
+  x.save(); x.strokeStyle = DC.gold2; x.lineWidth = 5; x.beginPath(); x.arc(192, 162, 72, 0, Math.PI * 2); x.stroke(); x.lineWidth = 1.5; x.beginPath(); x.arc(192, 162, 61, 0, Math.PI * 2); x.stroke(); x.restore();
+  if (spec.icon === 'grow') growIcon(x, 192, 158, 82, DC.gold2); else lockIcon(x, 192, 150, 84, DC.gold2);
+  /* the four cards */
+  const cw = (DIW - 24) / 2;
+  (spec.cards || []).slice(0, 4).forEach((c, i) => {
+    const a = i % 2 === 0 ? DX1 - cw : DX0, b = 296 + Math.floor(i / 2) * 110;
+    rrect(x, a, b, cw, 96, 16); x.fillStyle = DC.card; x.fill(); x.strokeStyle = DC.edge; x.lineWidth = 1.5; x.stroke();
+    x.fillStyle = DC.gold2; x.fillRect(a + cw - 6, b + 14, 6, 68);
+    txt(x, c[0], a + cw - 26, b + 35, fnt(700, 23), DC.mut);
+    if (c[2]) txt(x, c[1], a + cw - 26, b + 78, fntL(800, 31), DC.navy, 'right', 'ltr');
+    else txt(x, c[1], a + cw - 26, b + 78, fitFont(x, c[1], cw - 50, 900, 35, 20), DC.navy);
+  });
+  /* the body */
+  let y = BODY0;
+  blocks.forEach(b => { b.draw(x, y); y += b.h + (b.gap == null ? 24 : b.gap); });
+  /* the signature and the seal, at the foot of the sheet */
+  const sy = Math.max(y, DH - FOOTH - SIGH), who = spec.sigName || '';
+  txt(x, spec.sigLabel || 'امضاکننده', DX1, sy + 44, fnt(700, 25), DC.mut);
+  if (who) txt(x, who, DX1, sy + 92, fitFont(x, who, 420, 900, 37, 24), DC.navy);
+  const si = sigImg();
+  if (si) {   // the hand signature: over the line, as on paper
+    const bw = 340, bh = 74, k = Math.min(bw / si.naturalWidth, bh / si.naturalHeight), w = si.naturalWidth * k, h = si.naturalHeight * k;
+    x.drawImage(si, DX1 - 190 - w / 2, sy + 174 - h, w, h);
+  }
+  x.save(); x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.setLineDash([3, 7]); x.beginPath(); x.moveTo(DX1, sy + 160); x.lineTo(DX1 - 380, sy + 160); x.stroke(); x.restore();
+  txt(x, 'امضا', DX1 - 190, sy + 194, fnt(700, 23), DC.mut, 'center');
+  x.save(); x.translate(DX0 + 165, sy + 98); x.rotate(-0.21); x.globalAlpha = 0.86;
+  x.strokeStyle = DC.navy2; x.fillStyle = DC.navy2; x.lineWidth = 6; x.beginPath(); x.arc(0, 0, 96, 0, Math.PI * 2); x.stroke();
+  x.lineWidth = 2; x.beginPath(); x.arc(0, 0, 83, 0, Math.PI * 2); x.stroke();
+  for (let k = 0; k < 36; k++) { const a = k * Math.PI / 18; x.beginPath(); x.arc(Math.cos(a) * 89.5, Math.sin(a) * 89.5, 1.7, 0, Math.PI * 2); x.fill(); }
+  const sw0 = spec.seal || 'تأیید';
+  txt(x, sw0, 0, 13, fitFont(x, sw0, 120, 900, 40, 26), DC.navy2, 'center');
+  x.font = fitFont(x, sw0, 120, 900, 40, 26); const sw = x.measureText(sw0).width / 2 + 16;
+  [-1, 1].forEach(sg => { x.save(); x.translate(sg * sw, 0); x.rotate(Math.PI / 4); x.fillRect(-4.5, -4.5, 9, 9); x.restore(); });
+  txt(x, 'تأیید شد', 0, -34, fnt(800, 20), DC.navy2, 'center');
+  txt(x, fa(E.serToText(App.today)), 0, 52, fnt(800, 20), DC.navy2, 'center');
+  x.restore();
+  /* the foot */
+  x.fillStyle = DC.gold2; x.fillRect(DX0, DH - FOOTH, DIW, 2);
+  const ft = 'شمارهٔ سند ' + spec.code + '   |   ' + D.dateWords() + '   |   این برگه به‌صورت تصویر صادر شده و متن آن قابل ویرایش نیست';
+  let fz = 21; x.font = fntL(600, fz); while (fz > 14 && x.measureText(ft).width > DIW) { fz -= 1; x.font = fntL(600, fz); }
+  txt(x, ft, DW / 2, DH - 50, fntL(600, fz), DC.mut, 'center');
+  /* the watermark, over everything, very light */
+  if (spec.mark) { x.save(); x.translate(DW / 2, DH / 2 + 60); x.rotate(-0.5); x.globalAlpha = 0.045; txt(x, spec.mark, 0, 80, fitFont(x, spec.mark, DW * 0.9, 900, 260, 120), DC.navy, 'center'); x.restore(); }
+  return cv;
+};
+
+/* ---- the kinds of sheet: registered by their sections ---- */
+const KIND = {};
+D.register = (kind, build) => { KIND[kind] = build; };
+D.spec = (kind, arg) => (KIND[kind] ? KIND[kind](arg) : null);
+
+/* ---- the files ---- */
+const bytesOf = u => { const b = atob(u.slice(u.indexOf(',') + 1)), o = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) o[i] = b.charCodeAt(i); return o; };
+function pdfOf(jpg, wpx, hpx, title) {
+  const enc = s => { const o = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) o[i] = s.charCodeAt(i) & 255; return o; };
+  const u16 = s => { let h = 'FEFF'; for (let i = 0; i < s.length; i++) h += ('000' + s.charCodeAt(i).toString(16).toUpperCase()).slice(-4); return '<' + h + '>'; };
+  const PW = 595.28, PH = Math.round(PW * hpx / wpx * 100) / 100, parts = [], off = []; let len = 0;
+  const put = o => { parts.push(o); len += o.length; };
+  const obj = (n, s, bin, tail) => { off[n] = len; put(enc(n + ' 0 obj\n' + s)); if (bin) { put(bin); put(enc(tail)); } };
+  put(enc('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n'));
+  obj(1, '<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+  obj(2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+  obj(3, '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + PW + ' ' + PH + '] /Resources << /XObject << /Im0 4 0 R >> /ProcSet [/PDF /ImageC] >> /Contents 5 0 R >>\nendobj\n');
+  obj(4, '<< /Type /XObject /Subtype /Image /Width ' + wpx + ' /Height ' + hpx + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + jpg.length + ' >>\nstream\n', jpg, '\nendstream\nendobj\n');
+  const cs = 'q ' + PW + ' 0 0 ' + PH + ' 0 0 cm /Im0 Do Q';
+  obj(5, '<< /Length ' + cs.length + ' >>\nstream\n' + cs + '\nendstream\nendobj\n');
+  obj(6, '<< /Title ' + u16(title) + ' /Creator (Hesab) /Producer (Hesab) >>\nendobj\n');
+  const xr = len; let t = 'xref\n0 7\n0000000000 65535 f \n';
+  for (let i = 1; i <= 6; i++) t += ('000000000' + off[i]).slice(-10) + ' 00000 n \n';
+  put(enc(t + 'trailer\n<< /Size 7 /Root 1 0 R /Info 6 0 R >>\nstartxref\n' + xr + '\n%%EOF\n'));
+  return new Blob(parts, { type: 'application/pdf' });
+}
+const fileBase = s => (String(s || 'گواهی') + ' ' + String(E.serToText(App.today) || '').replace(/\//g, '-')).replace(/[\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').trim();
+D.file = function (kind, arg, type) {
+  const s = D.spec(kind, arg); if (!s) return null;
+  const cv = D.draw(s, 1.5);
+  if (type === 'png') return new File([bytesOf(cv.toDataURL('image/png'))], fileBase(s.file) + '.png', { type: 'image/png' });
+  return new File([pdfOf(bytesOf(cv.toDataURL('image/jpeg', 0.92)), cv.width, cv.height, s.pdfTitle || s.title)], fileBase(s.file) + '.pdf', { type: 'application/pdf' });
+};
+function saveF(f) {
+  try {
+    const u = URL.createObjectURL(f), a = document.createElement('a'); a.href = u; a.download = f.name; a.style.display = 'none';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 60000);
+    App.toast('✔ «' + f.name + '» ذخیره شد (پوشهٔ دانلود)');
+  } catch (e) { App.toast('ذخیره نشد', true); }
+}
+function make(kind, arg, type) { let f = null; try { f = D.file(kind, arg, type); } catch (e) { console.error(e); f = null; } if (!f) App.toast('برگه ساخته نشد', true); return f; }
+D.send = function (kind, arg, type) {
+  const f = make(kind, arg, type); if (!f) return;
+  let can = false; try { can = !!(navigator.share && navigator.canShare && navigator.canShare({ files: [f] })); } catch (e) { can = false; }
+  if (!can) { saveF(f); return; }
+  try { navigator.share({ files: [f] }).catch(err => { if (!err || err.name !== 'AbortError') saveF(f); }); } catch (e) { saveF(f); }
+};
+D.save = function (kind, arg, type) { const f = make(kind, arg, type); if (f) saveF(f); };
+D.print = function (kind, arg) {
+  const s = D.spec(kind, arg); if (!s) return;
+  let u = ''; try { u = D.draw(s, 1.5).toDataURL('image/jpeg', 0.92); } catch (e) { u = ''; }
+  if (!u) { App.toast('برگه ساخته نشد', true); return; }
+  let el = document.getElementById('trPrint'); if (!el) { el = document.createElement('div'); el.id = 'trPrint'; document.body.appendChild(el); }
+  el.innerHTML = '<img alt="" src="' + u + '">';
+  let pg = document.getElementById('trPage'); if (!pg) { pg = document.createElement('style'); pg.id = 'trPage'; document.head.appendChild(pg); }
+  pg.textContent = '@page{size:A4 portrait;margin:6mm}';
+  document.body.classList.add('tr-print');
+  const done = () => { document.body.classList.remove('tr-print'); pg.textContent = ''; window.removeEventListener('afterprint', done); };
+  window.addEventListener('afterprint', done);
+  const im = el.querySelector('img'); let went = false;
+  const fire = () => { if (went) return; went = true; try { window.print(); } catch (e) { } setTimeout(done, 1500); };
+  if (im.complete && im.naturalWidth) fire(); else { im.onload = fire; setTimeout(fire, 800); }
+};
+
+/* ---- the preview (kept until something on the sheet changes) ---- */
+const PREV = new Map(); let FOK = false, FTRY = 0;
+/* the digits' font «N_vazir» is declared by 53_numfont (after this file): load it once, then redraw the previews */
+function fontsUp() {
+  if (FOK || FTRY) return;
+  try { const f = document.fonts && [...document.fonts].find(x => /N_vazir/.test(x.family)); if (!f) return; FTRY = 1; f.load().then(() => { FOK = true; D.refresh(); }, () => { FOK = true; }); } catch (e) { FOK = true; }
+}
+setTimeout(fontsUp, 0);
+const fp = s => JSON.stringify(s, (k, v) => (typeof v === 'function' ? undefined : v));
+D.preview = function (kind, arg) {
+  fontsUp(); const s = D.spec(kind, arg); if (!s) return '';
+  const si = sigImg(), k = fp(s) + '|' + (si ? SIGU.length + ':' + SIGU.slice(-24) : '-') + '|' + FOK;
+  let u = PREV.get(k); if (u) return u;
+  try { u = D.draw(s, 1).toDataURL('image/jpeg', 0.88); } catch (e) { console.error(e); u = ''; }
+  if (PREV.size > 40) PREV.clear(); PREV.set(k, u); return u;
+};
+D.refresh = () => document.querySelectorAll('img.ams-doc[data-k]').forEach(im => { const u = D.preview(im.dataset.k, im.dataset.a); if (u && im.src !== u) im.src = u; });
+
+/* ---- the card on the page: the sheet + its buttons ---- */
+const btn = (act, cls, html, data) => '<button type="button" class="btn ' + cls + '" data-act="' + act + '"' + (data || '') + '>' + html + '</button>';
+D.btn = btn;
+D.card = function (kind, arg, o) {
+  sigImg();
+  const d = ' data-k="' + esc(kind) + '" data-a="' + esc(arg) + '"';
+  return '<div class="ams-rc" data-person="' + esc(arg) + '"><div class="ams-rh"><span>' + (o.ico || '📜') + '</span><div><b>' + esc(o.head) + '</b><small>' + (o.sub || '') + '</small></div></div>' +
+    (o.top || '') +
+    '<img class="ams-doc" alt="' + esc(o.head) + '"' + d + ' src="' + D.preview(kind, arg) + '">' +
+    '<div class="bar noprint ams-rb2">' + btn('doc-img', 'green', '🖼 ارسال عکس', d) + btn('doc-pdf', 'blue', '📄 ارسال PDF', d) + '</div>' +
+    '<div class="bar noprint ams-rb3">' + btn('doc-simg', 'ghost', '⬇ ذخیرهٔ عکس', d) + btn('doc-spdf', 'ghost', '⬇ ذخیرهٔ PDF', d) + btn('doc-print', 'gold', '🖨 چاپ', d) + '</div>' +
+    (D.hasSig() ? '' : '<div class="dsg-ask noprint">✍️ هنوز امضای شما روی برگه نیست. ' + btn('sg-open', 'sm violet', '✍️ امضای من را بگیر') + '</div>') +
+    '<div class="ams-rf noprint">' + (o.foot || 'برگه «عکس» است (PDF هم همان عکس است)؛ متنی در آن نیست که گیرنده بتواند عوضش کند.') + '</div></div>';
+};
+/* «در گواهی: …  ✏️» — the line above a sheet */
+D.nameLine = (name, act, data) => '<div class="dnl noprint"><span>در گواهی: <b>' + esc(D.formal(name)) + '</b>' + (D.noteOf(name) ? ' · <small>با توضیح</small>' : '') + '</span>' + btn(act, 'sm ghost', '✏️ ویرایش نام و توضیح', data) + '</div>';
+
+/* ---- ✍️ the signature box (on the pages of the sheets) ---- */
+D.sigBox = function () {
+  sigImg(); const u = docs().sig || '';
+  return '<div class="box dsg noprint"><div class="dsg-h"><b>✍️ امضای من</b><small>پای همهٔ گواهی‌ها (امانی و سرمایه‌گذاری) می‌آید' + (u && docs().sigAt ? ' · ثبت ' + esc(docs().sigAt) : '') + '</small></div>' +
+    (u ? '<div class="dsg-pv"><img alt="امضای من" src="' + esc(u) + '"></div>' : '<div class="dsg-no">هنوز امضا نکرده‌اید؛ یک بار امضا کنید تا روی همهٔ برگه‌ها بیاید.</div>') +
+    '<div class="bar dsg-b">' + btn('sg-open', u ? 'ghost' : 'violet', u ? '✏️ امضای دوباره' : '✍️ امضا کردن') + (u ? btn('sg-del', 'ghost', '🗑 برداشتن امضا') : '') + '</div></div>';
+};
+
+/* ---- ✍️ the signature pad ---- */
+let PAD = null;
+D.sigPad = function () {
+  App.modal('✍️ امضای من', '<div class="sgw"><div class="sg-hint">با انگشت (یا ماوس) داخل کادر سفید امضا کنید — مثل امضای روی کاغذ.</div>' +
+    '<div class="sg-box"><canvas id="sgCv" width="1200" height="480"></canvas><div class="sg-line"></div><span class="sg-x">✕</span></div>' +
+    '<div class="sg-sure">🔒 امضا فقط داخل همین برنامه می‌ماند (با پشتیبان و همگام‌سازی) و فقط روی برگه‌های «گواهی» که خودتان می‌فرستید می‌آید.</div></div>',
+    btn('sg-save', 'green big', '✔ ذخیرهٔ امضا') + btn('sg-clear', 'ghost', '🧹 پاک کن') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '760px' });
+  const cv = document.getElementById('sgCv'); if (!cv) return;
+  const x = cv.getContext('2d'); x.lineCap = 'round'; x.lineJoin = 'round'; x.strokeStyle = '#0B1F4D';
+  PAD = { cv, x, ink: false, pts: null };
+  const at = ev => { const r = cv.getBoundingClientRect(); return [(ev.clientX - r.left) * cv.width / r.width, (ev.clientY - r.top) * cv.height / r.height, ev.timeStamp || Date.now()]; };
+  cv.addEventListener('pointerdown', ev => { ev.preventDefault(); try { cv.setPointerCapture(ev.pointerId); } catch (e) { } const p = at(ev); PAD.pts = [p]; PAD.w = 7; x.beginPath(); x.arc(p[0], p[1], 3.2, 0, Math.PI * 2); x.fillStyle = '#0B1F4D'; x.fill(); PAD.ink = true; });
+  cv.addEventListener('pointermove', ev => {
+    if (!PAD || !PAD.pts) return; ev.preventDefault();
+    const p = at(ev), L = PAD.pts, q = L[L.length - 1], dt = Math.max(1, p[2] - q[2]), v = Math.hypot(p[0] - q[0], p[1] - q[1]) / dt;
+    PAD.w = PAD.w * 0.7 + Math.max(3.5, Math.min(8.5, 9 - v * 2.2)) * 0.3;   // faster → thinner, like ink
+    L.push(p);
+    if (L.length >= 3) {
+      const a = L[L.length - 3], b = L[L.length - 2], c = L[L.length - 1];
+      x.lineWidth = PAD.w; x.beginPath(); x.moveTo((a[0] + b[0]) / 2, (a[1] + b[1]) / 2); x.quadraticCurveTo(b[0], b[1], (b[0] + c[0]) / 2, (b[1] + c[1]) / 2); x.stroke();
+    }
+  });
+  const end = () => { if (PAD) PAD.pts = null; };
+  cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end); cv.addEventListener('pointerleave', end);
+};
+/* the ink only, cut to its edges, at most 900 × 300 */
+function padImage() {
+  if (!PAD || !PAD.ink) return '';
+  const { cv, x } = PAD, W = cv.width, Hh = cv.height, d = x.getImageData(0, 0, W, Hh).data;
+  let l = W, r = -1, t = Hh, b = -1;
+  for (let j = 0; j < Hh; j += 2) for (let i = 0; i < W; i += 2) if (d[(j * W + i) * 4 + 3] > 20) { if (i < l) l = i; if (i > r) r = i; if (j < t) t = j; if (j > b) b = j; }
+  if (r < 0 || r - l < 30) return '';
+  const pad = 14; l = Math.max(0, l - pad); t = Math.max(0, t - pad); r = Math.min(W, r + pad); b = Math.min(Hh, b + pad);
+  const w = r - l, h = b - t, k = Math.min(1, 900 / w, 300 / h), o = document.createElement('canvas');
+  o.width = Math.round(w * k); o.height = Math.round(h * k);
+  const ox = o.getContext('2d'); ox.imageSmoothingQuality = 'high'; ox.drawImage(cv, l, t, w, h, 0, 0, o.width, o.height);
+  return o.toDataURL('image/png');
+}
+function sigSave() {
+  const u = padImage(); if (!u) { App.toast('اول داخل کادر امضا کنید', true); return; }
+  App.commit('امضای من', db => { db.docs = Object.assign({}, db.docs || {}, { sig: u, sigAt: E.serToText(App.today) }); });
+  sigImg();
+  PAD = null; App.closeModal(); App.toast('✔ امضای شما ذخیره شد؛ پای همهٔ گواهی‌ها می‌آید'); App.emit();
+}
+function sigDel() {
+  App.confirm('امضای شما از روی گواهی‌ها برداشته شود؟', 'بله، بردار', () => {
+    App.commit('برداشتن امضا', db => { db.docs = Object.assign({}, db.docs || {}); delete db.docs.sig; delete db.docs.sigAt; });
+    App.closeModal(); App.toast('امضا برداشته شد'); App.emit();
+  });
+}
+
+/* ---- ✏️ the full name and the note on the sheet (for any person; the short name of the program does not change) ---- */
+let DN = null;
+D.nameEdit = function (name, o) {
+  DN = { name, o: o || {} };
+  App.modal('✏️ نام و توضیح در گواهی — ' + esc(name), '<div class="trw amsw">' +
+    '<div class="status info" style="font-size:1.08rem;line-height:1.9">نام <b>' + esc(name) + '</b> در برنامه همین می‌ماند؛ این‌ها فقط روی برگهٔ گواهی می‌آیند.</div>' +
+    '<div class="field"><label for="dn_full">📜 نام کامل و رسمی در گواهی <small>(اختیاری)</small></label><input type="text" id="dn_full" class="yellow" value="' + esc(D.fullOf(name)) + '" autocomplete="off" placeholder="مثلاً: ' + esc(name) + ' (نام و نام خانوادگی)"></div>' +
+    '<div class="field"><label for="dn_note">🖊 توضیح روی گواهی <small>(اختیاری؛ یک یا دو جمله)</small></label><input type="text" id="dn_note" class="yellow" value="' + esc(D.noteOf(name)) + '" autocomplete="off" placeholder="مثلاً: با سپاس از اعتماد شما"></div>' +
+    '<div class="dnl-pv" id="dn_pv"></div></div>',
+    btn('dn-save', 'green big', '✔ ذخیره') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '620px' });
+  dnPrev();
+};
+function dnPrev() { const el = document.getElementById('dn_pv'); if (!el || !DN) return; const f = String((document.getElementById('dn_full') || {}).value || '').trim(); el.innerHTML = 'روی برگه: <b>' + esc(f || DN.name) + '</b>'; }
+function dnSave() {
+  if (!DN) return; const name = DN.name, after = DN.o.after;
+  const f = String((document.getElementById('dn_full') || {}).value || '').replace(/\s+/g, ' ').trim(), n = String((document.getElementById('dn_note') || {}).value || '').replace(/\s+/g, ' ').trim();
+  App.commit('نام در گواهی: ' + name, db => D.setNames(db, name, f, n));
+  DN = null; App.closeModal(); App.toast('✔ ذخیره شد؛ روی گواهی: ' + (f || name)); App.emit();
+  if (typeof after === 'function') setTimeout(after, 30);
+}
+
+/* ---- clicks ---- */
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act]') : null; if (!b) return;
+  const a = b.dataset.act; if (!/^(doc|sg|dn)-/.test(a || '')) return;
+  ev.preventDefault();
+  const k = b.dataset.k, g = b.dataset.a;
+  if (a === 'doc-img') return D.send(k, g, 'png');
+  if (a === 'doc-pdf') return D.send(k, g, 'pdf');
+  if (a === 'doc-simg') return D.save(k, g, 'png');
+  if (a === 'doc-spdf') return D.save(k, g, 'pdf');
+  if (a === 'doc-print') return D.print(k, g);
+  if (a === 'sg-open') return D.sigPad();
+  if (a === 'sg-clear') { if (PAD) { PAD.x.clearRect(0, 0, PAD.cv.width, PAD.cv.height); PAD.ink = false; } return; }
+  if (a === 'sg-save') return sigSave();
+  if (a === 'sg-del') return sigDel();
+  if (a === 'dn-save') return dnSave();
+});
+document.addEventListener('input', ev => { if (ev.target && /^dn_/.test(ev.target.id || '')) dnPrev(); });
+document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && DN && ev.target && /^dn_/.test(ev.target.id || '')) { ev.preventDefault(); dnSave(); } });
+})();
 /* ---------------------------------------------------------------- v46.5 — «🤝 امانی نزد من»: a MEMORANDUM account (حساب انتظامی)
    the owner (1405/08/17): «حساب امانی فقط حالت انتظامی داشته باشد: نه مانده نشان بده نه مبلغ؛ فقط مقدارش. پولش مال من نیست؛ از حساب من کم نکند.
    در ترازنامه و گزارش‌ها و سرفصل خودش بیاید، و یک گزارش بدهد که مثلاً فلانی این‌قدر دلار، این‌قدر یورو، این‌قدر طلا دارد — فقط تعداد —
@@ -10810,7 +11351,7 @@ const go = (to, cls, html) => '<a class="btn ' + cls + '" data-act="go" data-to=
 const MEMO_NOTE = '<div class="ams-note">🔒 <b>حساب انتظامی</b> — فقط مقدار نگه داشته می‌شود؛ <b>مبلغ و مانده ندارد</b> و در موجودی، سرمایه و ترازنامهٔ شما حساب نمی‌شود. مال صاحبش است و فقط پیش شماست.</div>';
 function personBox(p, full) {
   return '<div class="box ams-p"><div class="ams-ph"><span class="ams-av">' + esc((p.person || '؟').charAt(0)) + '</span><div class="ams-pn"><b>' + esc(p.person) + '</b><small>' + p.rows.length + ' مورد امانی نزد من</small></div>' +
-    '<div class="ams-pb noprint">' + btn('tr-rep', 'gold', '📄 گزارش برای ارسال', ' data-p="' + esc(p.person) + '"') + (full ? '' : go(p.route, 'ghost', '📋 ریز')) + '</div></div>' +
+    '<div class="ams-pb noprint">' + btn('tr-rep', 'gold', '📄 گزارش برای ارسال', ' data-p="' + esc(p.person) + '"') + btn('tr-person', 'ghost', '✏️ ویرایش نام', ' data-p="' + esc(p.person) + '"') + (full ? '' : go(p.route, 'ghost', '📋 ریز')) + '</div></div>' +
     '<div class="ams-items">' + p.rows.map(t => {
       const L = locsOf(t);
       return '<div class="ams-it"><div class="ams-q"><b class="num">' + esc(q4(qtyOf(t))) + '</b><span>' + esc(unitOf(t) || '') + '</span></div>' +
@@ -10860,251 +11401,51 @@ function histBox(person) {
     '</tbody></table></div></div>';
 }
 
-/* ------------------------------------------------------------ the report for the owner of the trust (to send): a signed sheet — a picture / a PDF
-   the owner (1405/08/18): «گزارش را متنی نفرست؛ همان را به صورت عکس بفرست — شکیل و آبرومند، حالت PDF — که طرف نتواند تغییرش بدهد.»
-   · one A4 sheet per person, drawn on a canvas: «گواهی امانت», whose it is, who keeps it, the date in words, a document code, the items
-     (quantity + unit only — never a rial value, never the place they are kept), the dated receipts / hand-overs, a signature line and a seal;
-   · sent as a picture (PNG) or as a PDF (the same picture inside: there is no text in it to change), saved, or printed;
-   · the files are made synchronously inside the click, so the phone's share sheet (WhatsApp, Telegram, …) opens. */
-const FDG = '۰۱۲۳۴۵۶۷۸۹';
-const fa = s => String(s == null ? '' : s).replace(/\d/g, d => FDG[d]).replace(/,/g, '٬').replace(/\./g, '٫');
-const MONW = ['فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'];
-const DAYW = ['شنبه', 'یکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه'];
-function dateWords(ser) {
-  const t = E.serToText(ser), m = /^(\d{4})\/(\d{1,2})\/(\d{1,2})$/.exec(t || '');
-  if (!m) return fa(t);
-  return DAYW[((ser - 513349) % 7 + 7) % 7] + ' ' + fa(+m[3]) + ' ' + MONW[+m[2] - 1] + ' ' + fa(m[1]);   // 513349 = a Saturday
-}
-function docRows(p) { return p.rows.map(t => ({ name: itemName(t) || unitOf(t), q: fa(q4(qtyOf(t))), u: unitOf(t) })); }
+/* ------------------------------------------------------------ the report for the owner of the trust (to send): «گواهی امانت» — a picture / a PDF
+   the owner (1405/08/17): «گزارش را متنی نفرست؛ همان را به صورت عکس بفرست — شکیل و آبرومند، حالت PDF — که طرف نتواند تغییرش بدهد.»
+   · drawn by the sheets' engine (26b_docs): whose it is (the full name, if one is set), who keeps it, the date in words, a document code,
+     the items (quantity + unit only — never a rial value, never the place), the dated receipts / hand-overs, the signature and a seal. */
+function docRows(p) { return p.rows.map(t => ({ name: itemName(t) || unitOf(t), q: App.doc.fa(q4(qtyOf(t))), u: unitOf(t) })); }
 function docHist(p) {
   const L = [];
   (App.db.trusts || []).filter(t => t && t.person === p.person).forEach(t => (t.moves || []).forEach(m => {
-    if (m && !m.xfer && Math.abs(N(m.qty)) > 1e-9) L.push({ d: String(m.date || ''), inn: N(m.qty) > 0, q: fa(q4(Math.abs(N(m.qty)))), u: unitOf(t), n: itemName(t) });
+    if (m && !m.xfer && Math.abs(N(m.qty)) > 1e-9) L.push({ d: String(m.date || ''), inn: N(m.qty) > 0, q: App.doc.fa(q4(Math.abs(N(m.qty)))), u: unitOf(t), n: itemName(t) });
   }));
   return L.sort((a, b) => a.d.localeCompare(b.d));
 }
-function docCode(p) {
-  const s = p.person + '|' + p.rows.map(t => (t.id || '') + ':' + qtyOf(t)).join(';') + '|' + App.today + '|' + owner();
-  let h = 2166136261 >>> 0; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
-  const AB = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'; let c = ''; for (let i = 0; i < 6; i++) { c += AB[h % 31]; h = Math.floor(h / 31); }
-  return 'TR-' + String(E.serToText(App.today) || '').replace(/\D/g, '') + '-' + c;
-}
-
-/* ---- drawing ---- */
-const DFF = '"N_vazir","B Nazanin","Nazanin","IRANSans","Vazirmatn",Tahoma,"Segoe UI",sans-serif';
-const fnt = (w, px) => w + ' ' + px + 'px ' + DFF;
-const DC = { navy: '#0F2A4A', navy2: '#1E3A8A', gold: '#A8781A', gold2: '#E2BE5A', paper: '#FFFDF7', ink: '#0F172A', mut: '#475569', edge: '#D6DCE8', card: '#F4F6FB', green: '#15803D', red: '#B91C1C' };
-const DW = 1240, DH0 = 1754, DX0 = 96, DX1 = DW - 96, DIW = DX1 - DX0;
-function rrect(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
-function txt(x, s, px, py, f, col, al, dir) { x.font = f; x.fillStyle = col; x.textAlign = al || 'right'; x.direction = dir || 'rtl'; x.fillText(s, px, py); }
-function wrap(x, s, f, w) {
-  x.font = f; x.direction = 'rtl'; const out = []; let cur = '';
-  String(s).split(/\s+/).forEach(wd => { const n = cur ? cur + ' ' + wd : wd; if (cur && x.measureText(n).width > w) { out.push(cur); cur = wd; } else cur = n; });
-  if (cur) out.push(cur); return out;
-}
-function fitFont(x, s, w, wt, px, min) { let z = px; x.font = fnt(wt, z); while (z > min && x.measureText(s).width > w) { z -= 2; x.font = fnt(wt, z); } return fnt(wt, z); }
-/* a padlock: the sign of safe keeping */
-function lockIcon(x, cx, cy, s, col) {
-  x.save(); x.strokeStyle = col; x.fillStyle = col; x.lineWidth = s * 0.11; x.lineCap = 'round';
-  x.beginPath(); x.arc(cx, cy - s * 0.12, s * 0.28, Math.PI, 0); x.lineTo(cx + s * 0.28, cy + s * 0.05); x.moveTo(cx - s * 0.28, cy - s * 0.12); x.lineTo(cx - s * 0.28, cy + s * 0.05); x.stroke();
-  rrect(x, cx - s * 0.45, cy + s * 0.02, s * 0.9, s * 0.62, s * 0.1); x.fill();
-  x.fillStyle = DC.navy; x.beginPath(); x.arc(cx, cy + s * 0.27, s * 0.08, 0, Math.PI * 2); x.fill(); x.fillRect(cx - s * 0.035, cy + s * 0.3, s * 0.07, s * 0.16);
-  x.restore();
-}
-function docDraw(p, scale) {
-  const who = owner(), rows = docRows(p), hist = docHist(p), code = docCode(p), dw = dateWords(App.today);
-  const HM = 14, hs = hist.slice(-HM), more = hist.length - hs.length;
-  const cv = document.createElement('canvas'); let x = cv.getContext('2d');
-  const F_INTRO = fnt(700, 31), F_NOTE = fnt(700, 25);
-  const intro = wrap(x, 'بدین‌وسیله گواهی می‌شود که اقلام زیر متعلق به ' + p.person + ' است و به‌صورت امانت نزد ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' نگهداری می‌شود.', F_INTRO, DIW);
-  const note = wrap(x, 'این برگه فقط «مقدار» هر قلم را نشان می‌دهد و مبلغ ریالی ندارد. اقلام بالا تماماً متعلق به ' + p.person + ' است و جزو دارایی امانت‌دار نیست.', F_NOTE, DIW - 60);
-  /* the height: grows only when the list is long */
-  let need = 530 + intro.length * 48 + 22 + 64 + rows.length * 86 + 28;
-  if (hs.length) need += 62 + hs.length * 46 + (more > 0 ? 40 : 0) + 20;
-  need += note.length * 38 + 40 + 28 + 210 + 84;                       // 3 items and 5 lines of history: one A4 page
-  const DH = Math.max(DH0, Math.ceil(need));
-  cv.width = Math.round(DW * scale); cv.height = Math.round(DH * scale);
-  x = cv.getContext('2d'); x.scale(scale, scale); x.textBaseline = 'alphabetic';
-  /* the paper and its frame */
-  x.fillStyle = DC.paper; x.fillRect(0, 0, DW, DH);
-  x.strokeStyle = DC.navy; x.lineWidth = 6; x.strokeRect(24, 24, DW - 48, DH - 48);
-  x.strokeStyle = DC.gold2; x.lineWidth = 2; x.strokeRect(38, 38, DW - 76, DH - 76);
-  [[38, 38], [DW - 38, 38], [38, DH - 38], [DW - 38, DH - 38]].forEach(([a, b]) => { x.save(); x.translate(a, b); x.rotate(Math.PI / 4); x.fillStyle = DC.gold; x.fillRect(-9, -9, 18, 18); x.fillStyle = DC.paper; x.fillRect(-4, -4, 8, 8); x.restore(); });
-  /* the head band */
-  const g = x.createLinearGradient(0, 58, 0, 270); g.addColorStop(0, '#0B2140'); g.addColorStop(1, '#1E3A8A');
-  rrect(x, 58, 58, DW - 116, 212, 20); x.fillStyle = g; x.fill();
-  x.save(); rrect(x, 58, 58, DW - 116, 212, 20); x.clip(); x.strokeStyle = 'rgba(226,190,90,.16)'; x.lineWidth = 1.2;
-  for (let k = 0; k < 9; k++) { x.beginPath(); for (let a = 58; a <= DW - 58; a += 6) { const yy = 106 + k * 14 + Math.sin(a / 46 + k * 0.7) * 20 + Math.sin(a / 13 + k) * 3; if (a === 58) x.moveTo(a, yy); else x.lineTo(a, yy); } x.stroke(); }
-  x.restore();
-  x.fillStyle = DC.gold2; x.fillRect(58, 262, DW - 116, 3);
-  txt(x, 'گواهی امانت', DX1 - 10, 142, fnt(900, 74), '#FFFFFF');
-  txt(x, 'صورت اقلام امانیِ ' + p.person, DX1 - 10, 200, fitFont(x, 'صورت اقلام امانیِ ' + p.person, DIW - 300, 800, 36, 24), DC.gold2);
-  txt(x, 'فقط مقدار — بدون مبلغ ریالی', DX1 - 10, 242, fnt(700, 23), 'rgba(255,255,255,.78)');
-  x.save(); x.strokeStyle = DC.gold2; x.lineWidth = 5; x.beginPath(); x.arc(192, 162, 72, 0, Math.PI * 2); x.stroke(); x.lineWidth = 1.5; x.beginPath(); x.arc(192, 162, 61, 0, Math.PI * 2); x.stroke(); x.restore();
-  lockIcon(x, 192, 150, 84, DC.gold2);
-  /* the cards: whose, who keeps it, the date, the code */
-  const cw = (DIW - 24) / 2;
-  const cardAt = (col, row, lab, val, ltr) => {
-    const a = col === 0 ? DX1 - cw : DX0, b = 296 + row * 110;
-    rrect(x, a, b, cw, 96, 16); x.fillStyle = DC.card; x.fill(); x.strokeStyle = DC.edge; x.lineWidth = 1.5; x.stroke();
-    x.fillStyle = DC.gold2; x.fillRect(a + cw - 6, b + 14, 6, 68);
-    txt(x, lab, a + cw - 26, b + 35, fnt(700, 23), DC.mut);
-    if (ltr) txt(x, val, a + cw - 26, b + 78, fnt(800, 31), DC.navy, 'right', 'ltr');
-    else txt(x, val, a + cw - 26, b + 78, fitFont(x, val, cw - 50, 900, 35, 22), DC.navy);
+function trustSpec(person) {
+  const p = people().find(x => x.person === person), D = App.doc; if (!p || !D) return null;
+  const who = owner(), nm = D.formal(person), rows = docRows(p), hist = docHist(p), extra = D.noteOf(person);
+  const code = D.code('TR', [person, nm, rows.map(r => [r.name, r.q]), who]);
+  return {
+    kind: 'trust', title: 'گواهی امانت', sub: 'صورت اقلام امانیِ ' + nm, tag: 'فقط مقدار — بدون مبلغ ریالی', icon: 'lock', mark: 'امانت', seal: 'امانت',
+    cards: [['صاحب امانت', nm], [who ? 'امانت‌دار' : 'تعداد اقلام', who || D.fa(rows.length) + ' قلم'], ['تاریخ', D.dateWords()], ['شمارهٔ سند', code, true]],
+    code, sigLabel: 'امانت‌دار', sigName: who, file: 'امانی ' + person, pdfTitle: 'گواهی امانت — ' + nm,
+    data: { rows, hist, extra },
+    body: (m, K) => [
+      K.para(m, 'بدین‌وسیله گواهی می‌شود که اقلام زیر متعلق به ' + nm + ' است و به‌صورت امانت نزد ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' نگهداری می‌شود.'),
+      K.table(m, { head: ['ردیف', 'شرح دارایی', 'مقدار'], rows }),
+      hist.length ? K.list(m, { title: 'ریز دریافت و تحویل', min: 5, max: 14, rows: hist.map(h => ({ d: h.d, tag: h.inn ? 'دریافت' : 'تحویل', tc: h.inn ? 'g' : 'r', what: h.q + ' ' + (h.u && h.n.indexOf(h.u) < 0 ? h.u + ' ' : '') + h.n })) }) : null,
+      K.note(m, ['این برگه فقط «مقدار» هر قلم را نشان می‌دهد و مبلغ ریالی ندارد. اقلام بالا تماماً متعلق به ' + nm + ' است و جزو دارایی امانت‌دار نیست.', extra])
+    ]
   };
-  cardAt(0, 0, 'صاحب امانت', p.person);
-  cardAt(1, 0, who ? 'امانت‌دار' : 'تعداد اقلام', who || fa(rows.length) + ' قلم');
-  cardAt(0, 1, 'تاریخ', dw);
-  cardAt(1, 1, 'شمارهٔ سند', code, true);
-  /* the words */
-  let y = 530;
-  intro.forEach((l, i) => txt(x, l, DX1, y + 34 + i * 48, F_INTRO, DC.ink));
-  y += intro.length * 48 + 22;
-  /* the table: row | item | quantity */
-  const c1 = 120, c3 = 400, c2 = DIW - c1 - c3, TH = 64, RH = 86, tH = TH + rows.length * RH;
-  rrect(x, DX0, y, DIW, tH, 16); x.fillStyle = '#FFFFFF'; x.fill();
-  x.save(); rrect(x, DX0, y, DIW, tH, 16); x.clip();
-  x.fillStyle = DC.navy; x.fillRect(DX0, y, DIW, TH);
-  txt(x, 'ردیف', DX1 - c1 / 2, y + 43, fnt(800, 26), '#FFFFFF', 'center');
-  txt(x, 'شرح دارایی', DX1 - c1 - 22, y + 43, fnt(800, 26), '#FFFFFF');
-  txt(x, 'مقدار', DX0 + c3 / 2, y + 43, fnt(800, 26), '#FFFFFF', 'center');
-  rows.forEach((r, i) => {
-    const b = y + TH + i * RH, m = b + RH / 2;
-    x.fillStyle = i % 2 ? '#F8F5EC' : '#FFFFFF'; x.fillRect(DX0, b, DIW, RH);
-    if (i) { x.fillStyle = '#E5E7EB'; x.fillRect(DX0, b, DIW, 1.5); }
-    x.beginPath(); x.arc(DX1 - c1 / 2, m, 24, 0, Math.PI * 2); x.fillStyle = '#FBF3DC'; x.fill(); x.strokeStyle = DC.gold; x.lineWidth = 2; x.stroke();
-    txt(x, fa(i + 1), DX1 - c1 / 2, m + 10, fnt(900, 27), DC.gold, 'center');
-    txt(x, r.name, DX1 - c1 - 22, m + 12, fitFont(x, r.name, c2 - 40, 800, 35, 22), DC.ink);
-    const fq = fitFont(x, r.q, c3 - 150, 900, 44, 28); x.font = fq; const wq = x.measureText(r.q).width;
-    x.font = fnt(700, 27); const wu = r.u ? x.measureText(r.u).width : 0, tot = wq + (r.u ? 12 + wu : 0), e = DX0 + c3 / 2 + tot / 2;
-    txt(x, r.q, e, m + 15, fq, DC.navy2);
-    if (r.u) txt(x, r.u, e - wq - 12, m + 13, fnt(700, 27), DC.mut);
-  });
-  x.fillStyle = DC.edge; x.fillRect(DX1 - c1, y + TH, 1.5, tH - TH); x.fillRect(DX0 + c3, y + TH, 1.5, tH - TH);
-  x.restore();
-  rrect(x, DX0, y, DIW, tH, 16); x.strokeStyle = DC.navy; x.lineWidth = 2.5; x.stroke();
-  y += tH + 28;
-  /* the dated receipts and hand-overs */
-  if (hs.length) {
-    txt(x, 'ریز دریافت و تحویل', DX1, y + 32, fnt(900, 29), DC.navy);
-    x.font = fnt(900, 29); const tw = x.measureText('ریز دریافت و تحویل').width; x.fillStyle = DC.gold2; x.fillRect(DX1 - tw, y + 45, tw, 4);
-    y += 62;
-    if (more > 0) { txt(x, '… ' + fa(more) + ' ردیف قدیمی‌تر در این برگه نیامده', DX1, y + 28, fnt(700, 22), DC.mut); y += 40; }
-    hs.forEach((h, i) => {
-      const b = y + i * 46;
-      if (i) { x.save(); x.strokeStyle = '#E2E8F0'; x.setLineDash([6, 6]); x.lineWidth = 1.2; x.beginPath(); x.moveTo(DX0, b); x.lineTo(DX1, b); x.stroke(); x.restore(); }
-      txt(x, fa(h.d), DX1, b + 33, fnt(700, 24), DC.mut);
-      const cx = DX1 - 190; rrect(x, cx - 96, b + 7, 96, 33, 16); x.fillStyle = h.inn ? '#DCFCE7' : '#FEE2E2'; x.fill();
-      txt(x, h.inn ? 'دریافت' : 'تحویل', cx - 48, b + 32, fnt(800, 22), h.inn ? DC.green : DC.red, 'center');
-      const what = h.q + ' ' + (h.u && h.n.indexOf(h.u) < 0 ? h.u + ' ' : '') + h.n;
-      txt(x, what, cx - 116, b + 33, fitFont(x, what, cx - 116 - DX0, 800, 27, 18), DC.ink);
-    });
-    y += hs.length * 46 + 20;
-  }
-  /* the note */
-  const nh = note.length * 38 + 40;
-  rrect(x, DX0, y, DIW, nh, 16); x.fillStyle = '#FFF8E6'; x.fill(); x.strokeStyle = '#E9D8A6'; x.lineWidth = 1.5; x.stroke();
-  note.forEach((l, i) => txt(x, l, DX1 - 30, y + 45 + i * 38, F_NOTE, '#6B4E0E'));
-  y += nh + 28;
-  /* the signature and the seal: at the foot of the sheet */
-  const sy = Math.max(y, DH - 84 - 210);
-  txt(x, 'امانت‌دار', DX1, sy + 44, fnt(700, 25), DC.mut);
-  if (who) txt(x, who, DX1, sy + 92, fitFont(x, who, 420, 900, 37, 24), DC.navy);
-  x.save(); x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.setLineDash([3, 7]); x.beginPath(); x.moveTo(DX1, sy + 160); x.lineTo(DX1 - 380, sy + 160); x.stroke(); x.restore();
-  txt(x, 'امضا', DX1 - 190, sy + 194, fnt(700, 23), DC.mut, 'center');
-  const sx = DX0 + 165, sc = sy + 98;
-  x.save(); x.translate(sx, sc); x.rotate(-0.21); x.globalAlpha = 0.86;
-  x.strokeStyle = DC.navy2; x.fillStyle = DC.navy2; x.lineWidth = 6; x.beginPath(); x.arc(0, 0, 96, 0, Math.PI * 2); x.stroke();
-  x.lineWidth = 2; x.beginPath(); x.arc(0, 0, 83, 0, Math.PI * 2); x.stroke();
-  for (let k = 0; k < 36; k++) { const a = k * Math.PI / 18; x.beginPath(); x.arc(Math.cos(a) * 89.5, Math.sin(a) * 89.5, 1.7, 0, Math.PI * 2); x.fill(); }
-  txt(x, 'امانت', 0, 13, fnt(900, 40), DC.navy2, 'center');
-  x.font = fnt(900, 40); const sw = x.measureText('امانت').width / 2 + 16;
-  [-1, 1].forEach(sg => { x.save(); x.translate(sg * sw, 0); x.rotate(Math.PI / 4); x.fillRect(-4.5, -4.5, 9, 9); x.restore(); });
-  txt(x, 'تأیید شد', 0, -34, fnt(800, 20), DC.navy2, 'center');
-  txt(x, fa(E.serToText(App.today)), 0, 52, fnt(800, 20), DC.navy2, 'center');
-  x.restore();
-  /* the foot */
-  x.fillStyle = DC.gold2; x.fillRect(DX0, DH - 84, DIW, 2);
-  const ft = 'شمارهٔ سند ' + code + '  ·  ' + dw + '  ·  این برگه به‌صورت تصویر صادر شده و متن آن قابل ویرایش نیست';
-  txt(x, ft, DW / 2, DH - 50, fitFont(x, ft, DIW, 600, 21, 15), DC.mut, 'center');
-  /* the watermark, over everything, very light */
-  x.save(); x.translate(DW / 2, DH / 2 + 60); x.rotate(-0.5); x.globalAlpha = 0.045; txt(x, 'امانت', 0, 80, fnt(900, 260), DC.navy, 'center'); x.restore();
-  return cv;
 }
-
-/* ---- the files ---- */
-const bytesOf = u => { const b = atob(u.slice(u.indexOf(',') + 1)), o = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) o[i] = b.charCodeAt(i); return o; };
-function pdfOf(jpg, wpx, hpx, title) {
-  const enc = s => { const o = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) o[i] = s.charCodeAt(i) & 255; return o; };
-  const u16 = s => { let h = 'FEFF'; for (let i = 0; i < s.length; i++) h += ('000' + s.charCodeAt(i).toString(16).toUpperCase()).slice(-4); return '<' + h + '>'; };
-  const PW = 595.28, PH = Math.round(PW * hpx / wpx * 100) / 100, parts = [], off = []; let len = 0;
-  const put = o => { parts.push(o); len += o.length; };
-  const obj = (n, s, bin, tail) => { off[n] = len; put(enc(n + ' 0 obj\n' + s)); if (bin) { put(bin); put(enc(tail)); } };
-  put(enc('%PDF-1.4\n%\xE2\xE3\xCF\xD3\n'));
-  obj(1, '<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
-  obj(2, '<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
-  obj(3, '<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + PW + ' ' + PH + '] /Resources << /XObject << /Im0 4 0 R >> /ProcSet [/PDF /ImageC] >> /Contents 5 0 R >>\nendobj\n');
-  obj(4, '<< /Type /XObject /Subtype /Image /Width ' + wpx + ' /Height ' + hpx + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + jpg.length + ' >>\nstream\n', jpg, '\nendstream\nendobj\n');
-  const cs = 'q ' + PW + ' 0 0 ' + PH + ' 0 0 cm /Im0 Do Q';
-  obj(5, '<< /Length ' + cs.length + ' >>\nstream\n' + cs + '\nendstream\nendobj\n');
-  obj(6, '<< /Title ' + u16(title) + ' /Creator (Hesab) /Producer (Hesab) >>\nendobj\n');
-  const xr = len; let t = 'xref\n0 7\n0000000000 65535 f \n';
-  for (let i = 1; i <= 6; i++) t += ('000000000' + off[i]).slice(-10) + ' 00000 n \n';
-  put(enc(t + 'trailer\n<< /Size 7 /Root 1 0 R /Info 6 0 R >>\nstartxref\n' + xr + '\n%%EOF\n'));
-  return new Blob(parts, { type: 'application/pdf' });
-}
-const fileBase = person => ('امانی ' + person + ' ' + String(E.serToText(App.today) || '').replace(/\//g, '-')).replace(/[\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').trim();
-function repFile(person, kind) {
-  const p = people().find(x => x.person === person); if (!p) return null;
-  const cv = docDraw(p, 1.5);
-  if (kind === 'png') return new File([bytesOf(cv.toDataURL('image/png'))], fileBase(person) + '.png', { type: 'image/png' });
-  return new File([pdfOf(bytesOf(cv.toDataURL('image/jpeg', 0.92)), cv.width, cv.height, 'گواهی امانت — ' + person)], fileBase(person) + '.pdf', { type: 'application/pdf' });
-}
-App.trustDocFile = repFile;
-App.trustDocInfo = person => { const p = people().find(x => x.person === person); return p ? { date: dateWords(App.today), code: docCode(p), rows: docRows(p), hist: docHist(p).length } : null; };
-function repSave(f) {
-  try {
-    const u = URL.createObjectURL(f), a = document.createElement('a'); a.href = u; a.download = f.name; a.style.display = 'none';
-    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 60000);
-    App.toast('✔ «' + f.name + '» ذخیره شد (پوشهٔ دانلود)');
-  } catch (e) { App.toast('ذخیره نشد', true); }
-}
-function repMake(person, kind) {
-  let f = null; try { f = repFile(person, kind); } catch (e) { f = null; }
-  if (!f) App.toast('برگه ساخته نشد', true);
-  return f;
-}
-function repSend(person, kind) {
-  const f = repMake(person, kind); if (!f) return;
-  let can = false; try { can = !!(navigator.share && navigator.canShare && navigator.canShare({ files: [f] })); } catch (e) { can = false; }
-  if (!can) { repSave(f); return; }
-  try { navigator.share({ files: [f] }).catch(err => { if (!err || err.name !== 'AbortError') repSave(f); }); } catch (e) { repSave(f); }
-}
-function repSaveAs(person, kind) { const f = repMake(person, kind); if (f) repSave(f); }
-
-/* ---- the preview (kept until the trust, the date or the holder changes) ---- */
-const PREV = new Map(); let FOK = false;
-function docPreview(p) {
-  const k = JSON.stringify([p.person, docRows(p), docHist(p), owner(), App.today, FOK]);
-  let u = PREV.get(k); if (u) return u;
-  try { u = docDraw(p, 1).toDataURL('image/jpeg', 0.88); } catch (e) { u = ''; }
-  if (PREV.size > 24) PREV.clear(); PREV.set(k, u); return u;
-}
-const refreshPrev = () => document.querySelectorAll('img.ams-doc[data-p]').forEach(im => { const p = people().find(x => x.person === im.dataset.p); if (p) im.src = docPreview(p); });
-try { if (document.fonts && document.fonts.load) document.fonts.load('900 40px "N_vazir"', '۰۱۲۳۴۵۶۷۸۹').then(() => { FOK = true; refreshPrev(); }, () => { }); } catch (e) { }
-
+if (App.doc) App.doc.register('trust', trustSpec);
+App.trustDocFile = (person, kind) => App.doc.file('trust', person, kind);
+App.trustDocInfo = person => { const s = trustSpec(person); return s ? { date: App.doc.dateWords(), code: s.code, rows: s.data.rows, hist: s.data.hist.length, name: s.cards[0][1] } : null; };
 function repCard(p) {
   const who = owner(), d = ' data-p="' + esc(p.person) + '"';
-  return '<div class="ams-rc" data-person="' + esc(p.person) + '"><div class="ams-rh"><span>🤝</span><div><b>امانی‌های ' + esc(p.person) + '</b><small>' + (who ? 'نزد ' + esc(who) + ' · ' : '') + 'تا تاریخ <bdi class="num">' + esc(today()) + '</bdi> · ' + p.rows.length + ' قلم</small></div></div>' +
-    '<img class="ams-doc" alt="برگهٔ امانی ' + esc(p.person) + '"' + d + ' src="' + docPreview(p) + '">' +
-    '<div class="bar noprint ams-rb2">' + btn('trp-img', 'green', '🖼 ارسال عکس', d) + btn('trp-pdf', 'blue', '📄 ارسال PDF', d) + '</div>' +
-    '<div class="bar noprint ams-rb3">' + btn('trp-simg', 'ghost', '⬇ ذخیرهٔ عکس', d) + btn('trp-spdf', 'ghost', '⬇ ذخیرهٔ PDF', d) + btn('trp-print', 'gold', '🖨 چاپ', d) + '</div>' +
-    '<div class="ams-rf noprint">برگه «عکس» است (PDF هم همان عکس است)؛ متنی در آن نیست که گیرنده بتواند عوضش کند. فقط مقدار دارد — نه مبلغ، نه محل نگهداری.</div></div>';
+  return App.doc.card('trust', p.person, {
+    ico: '🤝', head: 'امانی‌های ' + p.person, sub: (who ? 'نزد ' + esc(who) + ' · ' : '') + 'تا تاریخ <bdi class="num">' + esc(today()) + '</bdi> · ' + p.rows.length + ' قلم',
+    top: App.doc.nameLine(p.person, 'tr-person', d),
+    foot: 'برگه «عکس» است (PDF هم همان عکس است)؛ متنی در آن نیست که گیرنده بتواند عوضش کند. فقط مقدار دارد — نه مبلغ، نه محل نگهداری.'
+  });
 }
 function repPage() {
   const L = people();
   const h = '<div class="bar noprint ams-bar">' + go('/trust', 'ghost', '◀ امانی نزد من') + '</div>' +
     '<div class="status info noprint" style="font-size:1.08rem;line-height:1.9">برای هر نفر یک «گواهی امانت» آماده است. «🖼 ارسال عکس» یا «📄 ارسال PDF» صفحهٔ اشتراک گوشی را باز می‌کند (واتساپ، تلگرام، …)؛ در کامپیوتر اگر اشتراک نبود، فایل ذخیره می‌شود. «🖨 چاپ» برگه را روی A4 چاپ می‌کند.</div>' +
+    App.doc.sigBox() +
     (L.length ? '<div class="ams-rg">' + L.map(repCard).join('') + '</div>' : '<div class="box">امانی‌ای پیش شما نیست.</div>');
   return { title: '📄 گزارش امانی‌ها', sub: 'گواهی امانت برای فرستادن به صاحب امانت — عکس یا PDF، فقط مقدار', html: h };
 }
@@ -11112,21 +11453,6 @@ App.trustReport = function (person) {
   const p = people().find(x => x.person === person); if (!p) return;
   App.modal('📄 گواهی امانت — ' + esc(person), repCard(p), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '760px' });
 };
-function repPrint(person) {
-  const p = people().find(x => x.person === person); if (!p) return;
-  let u = ''; try { u = docDraw(p, 1.5).toDataURL('image/jpeg', 0.92); } catch (e) { u = ''; }
-  if (!u) { App.toast('برگه ساخته نشد', true); return; }
-  let el = document.getElementById('trPrint'); if (!el) { el = document.createElement('div'); el.id = 'trPrint'; document.body.appendChild(el); }
-  el.innerHTML = '<img alt="" src="' + u + '">';
-  let pg = document.getElementById('trPage'); if (!pg) { pg = document.createElement('style'); pg.id = 'trPage'; document.head.appendChild(pg); }
-  pg.textContent = '@page{size:A4 portrait;margin:6mm}';
-  document.body.classList.add('tr-print');
-  const done = () => { document.body.classList.remove('tr-print'); pg.textContent = ''; window.removeEventListener('afterprint', done); };
-  window.addEventListener('afterprint', done);
-  const im = el.querySelector('img'); let went = false;
-  const fire = () => { if (went) return; went = true; try { window.print(); } catch (e) { } setTimeout(done, 1500); };
-  if (im.complete && im.naturalWidth) fire(); else { im.onload = fire; setTimeout(fire, 800); }
-}
 
 /* ------------------------------------------------------------ the form: receiving (new or more) — no money, no account, nothing to answer about the books */
 let W = null;
@@ -11284,10 +11610,141 @@ App.trustDetail = function (id) {
     '<div class="wrap"><table class="tbl"><thead><tr><th>تاریخ</th><th class="dep">مقدار</th><th>کجا</th><th>یادداشت</th><th></th></tr></thead><tbody>' +
     rows.filter(m => m.xfer !== 'out').map(m => (m.xfer === 'in' ? '<tr class="ams-xf"><td class="c num">' + esc(m.date || '') + '</td><td class="c">🔀 ' + esc(q4(N(m.qty))) + '</td><td>' + esc(((t.moves || []).find(x => x && x.xfer === 'out' && x.ref === m.ref) || {}).loc || 'بدون محل') + ' ← ' + esc(m.loc || 'بدون محل') + '</td><td>' + esc(m.note === 'جابه‌جایی' ? 'جابه‌جایی' : m.note || '') + '</td>' :
       '<tr><td class="c num">' + esc(m.date || '') + '</td><td class="n ' + (N(m.qty) < 0 ? 'wd' : 'dep') + '">' + (N(m.qty) > 0 ? '+' : '−') + esc(q4(Math.abs(N(m.qty)))) + '</td><td>' + esc(m.loc || '') + '</td><td>' + esc(m.note || '') + '</td>') +
-      '<td class="act">' + btn('tr-delmove', 'sm red', '🗑', ' data-id="' + t.id + '" data-m="' + esc(m.id) + '" title="پاک کردن این ردیف"') + '</td></tr>').join('') + '</tbody></table></div>' +
-    '<div class="hint" style="margin-top:6px">«🗑» فقط همان ردیف امانی را پاک می‌کند (در «تغییرات» می‌ماند و با «↩ بازگردانی» برمی‌گردد).</div>';
-  App.modal('🕘 ریز امانی', h, btn('tr-deltrust', 'red', '🗑 حذف کل این امانی', ' data-id="' + t.id + '"') + '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '680px' });
+      '<td class="act">' + btn('tr-editmove', 'sm ghost', '✏️', ' data-id="' + t.id + '" data-m="' + esc(m.id) + '" title="ویرایش این ردیف"') + btn('tr-delmove', 'sm red', '🗑', ' data-id="' + t.id + '" data-m="' + esc(m.id) + '" title="پاک کردن این ردیف"') + '</td></tr>').join('') + '</tbody></table></div>' +
+    '<div class="hint" style="margin-top:6px">«✏️» تاریخ، مقدار، محل یا یادداشت همان ردیف را درست می‌کند؛ «🗑» فقط همان ردیف را پاک می‌کند (در «تغییرات» می‌ماند و با «↩ بازگردانی» برمی‌گردد).</div>';
+  App.modal('🕘 ریز امانی', h, btn('tr-edit', 'violet', '✏️ ویرایش این قلم', ' data-id="' + t.id + '"') + btn('tr-deltrust', 'red', '🗑 حذف کل این امانی', ' data-id="' + t.id + '"') + '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '680px' });
 };
+/* ------------------------------------------------------------ editing (v46.8)
+   the owner (1405/08/17): «یه جایی بذار که نامش را — یا چیزهای دیگر — بتوانم ویرایش کنم؛ برای گواهی رسمی‌ترش کنم: نام آشنا، و نام و فامیلش داخل پرانتز.»
+   · ✏️ the person: the short name of the program (renames all his items and their history) + the full name and a note for «گواهی امانت»;
+   · ✏️ an item: whose it is, what it is (an asset of the program or «چیز دیگر» with its unit);
+   · ✏️ a line of its history: date, quantity, place, note (a move between places: date, quantity, note).
+   Nothing here touches the books. */
+const itemKey = t => (t.kind === 'fx' ? 'a:' + t.asset : 'o:' + (t.title || '') + '|' + (t.unit || ''));
+/* two open items of the same thing for one person → one item (after a rename / a change of owner) */
+function mergeSame(db, person) {
+  const seen = new Map();
+  db.trusts = (db.trusts || []).filter(t => {
+    if (!t || t.person !== person || t.closed) return true;
+    const k = itemKey(t), o = seen.get(k); if (!o) { seen.set(k, t); return true; }
+    o.moves = (o.moves || []).concat(t.moves || []); return false;
+  });
+}
+const fv = id => String((document.getElementById(id) || {}).value || '').replace(/\s+/g, ' ').trim();
+
+/* ✏️ the person */
+let TP = null;
+App.trustPerson = function (person, back) {
+  if (!(App.db.trusts || []).some(t => t && t.person === person)) return;
+  TP = { person, back: !!back };
+  App.modal('✏️ ویرایش نام — ' + esc(person), '<div class="trw amsw">' +
+    '<div class="field"><label for="tp_name">👤 نام در برنامه <small>(کوتاه؛ در منو و صفحه‌ها — مثلاً عمو علی)</small></label><input type="text" id="tp_name" class="yellow" value="' + esc(person) + '" autocomplete="off"></div>' +
+    '<div class="field"><label for="tp_full">📜 نام کامل و رسمی در «گواهی امانت» <small>(اختیاری)</small></label><input type="text" id="tp_full" class="yellow" value="' + esc(App.doc.fullOf(person)) + '" autocomplete="off" placeholder="مثلاً: ' + esc(person) + ' (نام و نام خانوادگی)"></div>' +
+    '<div class="field"><label for="tp_note">🖊 توضیح روی گواهی <small>(اختیاری؛ یک یا دو جمله)</small></label><input type="text" id="tp_note" class="yellow" value="' + esc(App.doc.noteOf(person)) + '" autocomplete="off" placeholder="مثلاً: هر زمان بخواهید تحویل داده می‌شود"></div>' +
+    '<div class="dnl-pv" id="tp_pv"></div>' +
+    '<div class="ams-sure">🔒 نام همهٔ اقلام و ریزِ امانی‌های او عوض می‌شود؛ به هیچ حسابی دست نمی‌زند.</div></div>',
+    btn('tp-save', 'green big', '✔ ذخیره') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '620px' });
+  tpPrev();
+};
+function tpPrev() { const el = document.getElementById('tp_pv'); if (!el) return; el.innerHTML = 'در گواهی: «صاحب امانت: <b>' + esc(fv('tp_full') || fv('tp_name') || '—') + '</b>»'; }
+function saveTP() {
+  if (!TP) return;
+  const old = TP.person, nm = fv('tp_name'), full = fv('tp_full'), note = fv('tp_note');
+  if (!nm) { App.toast('نام را بنویسید', true); return; }
+  const merge = nm !== old && (App.db.trusts || []).some(t => t && t.person === nm);
+  const usedElse = nm !== old && ((App.db.accounts || []).some(a => a.name === old));   // the same name is also an account (an investor …): keep its full name
+  App.commit('ویرایش نام امانی ' + old, db => {
+    (db.trusts || []).forEach(t => { if (t && t.person === old) t.person = nm; });
+    if (merge) mergeSame(db, nm);
+    if (nm !== old && !usedElse) App.doc.setNames(db, old, '', '');
+    App.doc.setNames(db, nm, full, note);
+  });
+  const back = TP.back; TP = null; App.closeModal();
+  if (back) setTimeout(() => App.trustReport(nm), 30);
+  App.toast('✔ ذخیره شد' + (nm !== old ? ': «' + old + '» ← «' + nm + '»' : '') + (merge ? ' (با امانی‌های همین نام یکی شد)' : ''));
+  const h = location.hash || '';
+  if (nm !== old && h.indexOf('#/trust/') === 0 && h !== '#/trust/rep') App.go('/trust/' + H.slug(nm)); else App.emit();
+}
+
+/* ✏️ an item */
+let TE = null;
+function teHtml() {
+  const fx = TE.kind === 'fx';
+  const opts = (App.db.assets || []).map(a => '<option value="' + esc(a.name) + '"' + (fx && TE.asset === a.name ? ' selected' : '') + '>' + esc((a.display || a.name) + (a.unit ? ' (' + unitWord(a.unit) + ')' : '')) + '</option>').join('');
+  const f = (id, label, val, extra, ph) => '<div class="field"><label for="te_' + id + '">' + label + '</label><input type="text" id="te_' + id + '" class="yellow" value="' + esc(val || '') + '" ' + (extra || '') + (ph ? ' placeholder="' + esc(ph) + '"' : '') + '></div>';
+  return '<div class="trw amsw ams-te">' + f('person', '👤 مال چه کسی است؟', TE.person, 'list="te_pl" autocomplete="off"') + '<datalist id="te_pl">' + personNames().map(n => '<option value="' + esc(n) + '">').join('') + '</datalist>' +
+    '<div class="field"><label for="te_item">📦 چه چیزی؟</label><select id="te_item" class="yellow">' + opts + '<option value="__other"' + (!fx ? ' selected' : '') + '>📝 چیز دیگر (سند، شمش، …)</option></select></div>' +
+    (fx ? '' : '<div class="grid2">' + f('title', 'اسم آن چیز', TE.title, 'autocomplete="off"', 'مثلاً سند ملک') + f('unit', 'واحد', TE.unit, 'autocomplete="off"', 'عدد / گرم / برگ') + '</div>') +
+    '<div class="ams-sure">🔒 مقدارها و ریزِ دریافت و تحویل همان می‌ماند؛ فقط «مال کیست» و «چه چیزی» عوض می‌شود. به هیچ حسابی دست نمی‌زند.</div></div>';
+}
+function readTE() {
+  const g = id => { const el = document.getElementById('te_' + id); return el ? el.value : null; };
+  ['person', 'title', 'unit'].forEach(k => { const v = g(k); if (v !== null) TE[k] = v; });
+  const it = g('item'); if (it !== null) { if (it === '__other') { TE.kind = 'other'; } else { TE.kind = 'fx'; TE.asset = it; } }
+}
+App.trustEdit = function (id) {
+  const t = trustOf(id); if (!t) return;
+  TE = { id, person: t.person, kind: t.kind, asset: t.asset || '', title: t.title || '', unit: t.unit || '' };
+  App.modal('✏️ ویرایش قلم امانی', teHtml(), btn('te-save', 'green big', '✔ ذخیره') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '600px' });
+};
+document.addEventListener('change', ev => {
+  if (!TE || !ev.target || ev.target.id !== 'te_item') return;
+  const was = TE.kind; readTE();
+  if (was !== TE.kind) { const b = document.querySelector('.ams-te'); if (b) b.outerHTML = teHtml(); }
+});
+function saveTE() {
+  if (!TE) return; readTE();
+  const t0 = trustOf(TE.id); if (!t0) return;
+  const person = String(TE.person || '').replace(/\s+/g, ' ').trim(), title = String(TE.title || '').trim(), unit = String(TE.unit || '').trim();
+  const err = !person ? 'بنویسید مال چه کسی است' : TE.kind === 'fx' && !assetOf(TE.asset) ? 'بگویید چه چیزی است' : TE.kind !== 'fx' && !title ? 'اسم آن چیز را بنویسید' : '';
+  if (err) { App.toast(err, true); return; }
+  const e = Object.assign({}, TE), old = t0.person;
+  App.commit('ویرایش امانی ' + person, db => {
+    const t = (db.trusts || []).find(x => x && x.id === e.id); if (!t) return;
+    t.person = person; t.kind = e.kind;
+    if (e.kind === 'fx') { t.asset = e.asset; delete t.title; delete t.unit; } else { t.title = title; t.unit = unit; delete t.asset; }
+    mergeSame(db, person);
+  });
+  const id = TE.id; TE = null; App.closeModal(); App.toast('✔ ذخیره شد'); App.emit();
+  const still = trustOf(id); if (still && person === old) setTimeout(() => App.trustDetail(id), 30);
+}
+
+/* ✏️ a line of the history */
+let TM = null;
+App.trustMoveEdit = function (id, mid) {
+  const t = trustOf(id), m = t && (t.moves || []).find(x => x && x.id === mid); if (!m) return;
+  const xf = !!m.xfer, mi = xf ? ((t.moves || []).find(x => x && x.ref === m.ref && x.xfer === 'in') || m) : m;
+  const mo = xf ? (t.moves || []).find(x => x && x.ref === m.ref && x.xfer === 'out') : null;
+  TM = { id, mid: mi.id, ref: m.ref, xf };
+  const inp = (id2, label, val, extra) => '<div class="field"><label for="tm_' + id2 + '">' + label + '</label><input type="text" id="tm_' + id2 + '" class="yellow" value="' + esc(val || '') + '" ' + (extra || '') + '></div>';
+  const q = Math.abs(N(mi.qty)), qs = H.qstr ? H.qstr(q) : String(q);
+  App.modal('✏️ ویرایش ردیف امانی', '<div class="trw amsw">' +
+    '<div class="status info" style="font-size:1.08rem;line-height:1.9"><b>' + esc(t.person) + '</b> — ' + esc(itemName(t)) + (xf ? ' — 🔀 جابه‌جایی از «' + esc((mo && mo.loc) || 'بدون محل') + '» به «' + esc(mi.loc || 'بدون محل') + '»' : '') + '</div>' +
+    (xf ? '' : '<div class="field"><label for="tm_dir">↕ نوع</label><select id="tm_dir" class="yellow"><option value="1"' + (N(mi.qty) >= 0 ? ' selected' : '') + '>＋ دریافت (پیش من آمد)</option><option value="-1"' + (N(mi.qty) < 0 ? ' selected' : '') + '>↩ تحویل (پس دادم)</option></select></div>') +
+    '<div class="grid2">' + inp('qty', '⚖ مقدار' + (unitOf(t) ? ' (' + esc(unitOf(t)) + ')' : ''), qs, 'inputmode="decimal" autocomplete="off"') + inp('date', '📅 تاریخ', mi.date || '', 'inputmode="numeric" autocomplete="off"') + '</div>' +
+    (xf ? '' : locSel('tm_loc', mi.loc || '', '📍 کجا')) +
+    inp('note', '✏ یادداشت', xf && mi.note === 'جابه‌جایی' ? '' : mi.note || '', 'autocomplete="off"') +
+    '<div class="ams-sure">🔒 فقط همین ردیفِ امانی عوض می‌شود؛ به هیچ حسابی دست نمی‌زند.</div></div>',
+    btn('tm-save', 'green big', '✔ ذخیره') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '600px' });
+};
+function saveTM() {
+  if (!TM) return;
+  const t = trustOf(TM.id); if (!t) return;
+  const q = num(fv('tm_qty')), date = H.normDate(fv('tm_date')), dir = TM.xf ? 1 : (+((document.getElementById('tm_dir') || {}).value) || 1), note = fv('tm_note'), loc = TM.xf ? null : locVal('tm_loc');
+  if (!(q > 0)) { App.toast('مقدار را بنویسید', true); return; }
+  if (!date) { App.toast('تاریخ را مثل 1405/08/17 بنویسید', true); return; }
+  const v = Object.assign({}, TM), apply = tt => (tt.moves || []).forEach(m => {
+    if (!m) return;
+    if (v.xf) { if (m.ref === v.ref && m.xfer) { m.qty = m.xfer === 'out' ? -q : q; m.date = date; if (m.xfer === 'in') m.note = note || 'جابه‌جایی'; } }
+    else if (m.id === v.mid) { m.qty = dir < 0 ? -q : q; m.date = date; m.loc = loc || ''; m.note = note; }
+  });
+  const sim = JSON.parse(JSON.stringify(t)); apply(sim);
+  if (qtyOf(sim) < -1e-9) { App.toast('با این تغییر، تحویل‌ها از دریافت‌ها بیشتر می‌شود (' + q4(qtyOf(sim)) + ')', true); return; }
+  App.commit('ویرایش ردیف امانی ' + t.person, db => { const tt = (db.trusts || []).find(x => x && x.id === v.id); if (!tt) return; apply(tt); tt.closed = Math.abs(qtyOf(tt)) < 1e-9; });
+  TM = null; App.closeModal(); App.toast('✔ ردیف ذخیره شد'); App.emit();
+  setTimeout(() => App.trustDetail(v.id), 30);
+}
+
 function dropMove(id, mid) {
   App.commit('حذف ردیف امانی', db => {
     const t = db.trusts.find(x => x && x.id === id); if (!t) return;
@@ -11301,7 +11758,7 @@ function dropTrust(id) { App.commit('حذف امانی', db => { db.trusts = (db
 /* ------------------------------------------------------------ clicks */
 document.addEventListener('click', ev => {
   const b = ev.target && ev.target.closest ? ev.target.closest('[data-act]') : null; if (!b) return;
-  const a = b.dataset.act; if (!/^(tr|tw|rt|trp)-/.test(a || '') && a !== 'tx-save') return;
+  const a = b.dataset.act; if (!/^(tr|tw|rt)-/.test(a || '') && !/^(tx|tp|te|tm)-save$/.test(a || '')) return;
   ev.preventDefault();
   if (a === 'tr-new') return App.trustNew(b.dataset.p ? { person: b.dataset.p } : null);
   if (a === 'tr-more') { const t = trustOf(b.dataset.id); if (t) App.trustNew({ tid: t.id, person: t.person, kind: t.kind, asset: t.asset || '', title: t.title || '', unit: t.unit || '', loc: locsOf(t)[0] || '' }); return; }
@@ -11309,22 +11766,27 @@ document.addEventListener('click', ev => {
   if (a === 'tr-det') return App.trustDetail(b.dataset.id);
   if (a === 'tr-mv') return App.trustMove(b.dataset.id);
   if (a === 'tr-rep') return App.trustReport(b.dataset.p);
-  if (a === 'trp-img') return repSend(b.dataset.p, 'png');
-  if (a === 'trp-pdf') return repSend(b.dataset.p, 'pdf');
-  if (a === 'trp-simg') return repSaveAs(b.dataset.p, 'png');
-  if (a === 'trp-spdf') return repSaveAs(b.dataset.p, 'pdf');
-  if (a === 'trp-print') return repPrint(b.dataset.p);
+  if (a === 'tr-person') return App.trustPerson(b.dataset.p, !!b.closest('#modalBg'));
+  if (a === 'tr-edit') return App.trustEdit(b.dataset.id);
+  if (a === 'tr-editmove') return App.trustMoveEdit(b.dataset.id, b.dataset.m);
+  if (a === 'tp-save') return saveTP();
+  if (a === 'te-save') return saveTE();
+  if (a === 'tm-save') return saveTM();
   if (a === 'tr-delmove') { const id = b.dataset.id, m = b.dataset.m; App.confirm('این ردیف امانی پاک شود؟', 'بله، پاک شود', () => { dropMove(id, m); App.closeModal(); App.emit(); }); return; }
   if (a === 'tr-deltrust') { const id = b.dataset.id; App.confirm('کل این امانی (همهٔ ردیف‌هایش) پاک شود؟', 'بله، همه پاک شود', () => { dropTrust(id); App.closeModal(); App.emit(); }); return; }
   if (a === 'tw-save') return saveW();
   if (a === 'rt-save') return saveRT();
   if (a === 'tx-save') return saveMV();
 });
+document.addEventListener('input', ev => { if (ev.target && /^tp_/.test(ev.target.id || '')) tpPrev(); });
 document.addEventListener('keydown', ev => {
   if (ev.key !== 'Enter' || !ev.target || !ev.target.id) return;
   if (W && /^tw_/.test(ev.target.id) && ev.target.tagName === 'INPUT') { ev.preventDefault(); saveW(); }
   else if (RT && /^rt_/.test(ev.target.id) && ev.target.tagName === 'INPUT') { ev.preventDefault(); saveRT(); }
   else if (MV && /^tx_/.test(ev.target.id) && ev.target.tagName === 'INPUT') { ev.preventDefault(); saveMV(); }
+  else if (TP && /^tp_/.test(ev.target.id) && ev.target.tagName === 'INPUT') { ev.preventDefault(); saveTP(); }
+  else if (TE && /^te_/.test(ev.target.id) && ev.target.tagName === 'INPUT') { ev.preventDefault(); saveTE(); }
+  else if (TM && /^tm_/.test(ev.target.id) && ev.target.tagName === 'INPUT') { ev.preventDefault(); saveTM(); }
 });
 
 /* ------------------------------------------------------------ «🤝 امانی نزد من» among the kinds of the entry form and on the page of every asset (like «🎁 هدیه گرفتم»):
@@ -13592,7 +14054,9 @@ function run() {
     App.commit('اصلاح اطلاعات (تأییدشده)', d => { todo.forEach(f => { f.apply(d); (d.meta.fixes = d.meta.fixes || []).push(f.id); }); });
     const small = todo.filter(f => !f.big).map(f => typeof f.text === 'function' ? '' : f.text).filter(Boolean);
     if (small.length) App.toast('✔ ' + small.join(' · '));
-    if (todo.some(f => f.big)) setTimeout(() => { try { memoShow(); } catch (e) { console.error(e); } }, 300);
+    /* v46.8: a window already open (the day's alert …) is not covered — this one waits until it is closed */
+    const showFree = () => { if (App.modalOpen) { setTimeout(showFree, 1500); return; } try { memoShow(); } catch (e) { console.error(e); } };
+    if (todo.some(f => f.big)) setTimeout(showFree, 300);
   } catch (e) { console.error(e); }
 }
 const oi = App.init;
@@ -13895,6 +14359,196 @@ document.addEventListener('click', ev => {
   else if (a === 'done') { LAST = null; App.closeModal(); refresh(); }
 });
 document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target && ev.target.id === 'rec_pw') { ev.preventDefault(); make(); } });
+})();
+/* ---------------------------------------------------------------- v46.8 — «📜 گواهی سرمایه‌گذاری»: the same official sheet for every investor
+   the owner (1405/08/17): «همین را به حالت صدور سند برای سرمایه‌گذارها هم بگذار؛ یکی‌یکی برایشان بفرستم بره.»
+   One A4 sheet per investor (a picture / a PDF, with the signature and the seal), drawn by the sheets' engine (26b_docs):
+   · «مانده سرمایه» on the date, in figures and in words;
+   · the yearly rate, the profit paid since 1 Farvardin, the profit since the last due day, the next due day (about how much);
+   · the latest turnover of his account (as many lines as fit on the page): date, description, in, out, balance.
+   Where: «👥 سرمایه‌گذاران» › «📜 گواهی برای سرمایه‌گذاران» (/mrep), the page of every investor «📜 گواهی برای ارسال», گزارش‌ها. Nothing in the books changes. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H, P = App && App.pages; if (!App || !E || !H || !P || !App.doc) return;
+const esc = H.esc, fmt = H.fmt, D = App.doc, N = v => +v || 0;
+const owner = () => D.owner();
+const isInv = name => { try { return App.C.memSet.has(name); } catch (e) { return false; } };
+function invRow(name) { try { return (E.memberTable(App.C) || []).find(r => r.name === name) || null; } catch (e) { return null; } }
+/* the investors to send to: open ones, not me */
+function investors() {
+  let L = []; try { L = E.memberTable(App.C) || []; } catch (e) { L = []; }
+  return L.filter(r => r.name !== owner() && !(App.isArchived && App.isArchived(r.name)) && Math.abs(r.bal) > 0.5);
+}
+/* v46.8 (the owner: «گواهی سرمایه‌گذار قابل ویرایش باشد؛ مثلاً نرخ سود را بزنم یا نزنم، یا هر چیز دیگر را کم و زیاد کنم»):
+   what goes on the sheet — per investor, or the default for all (db.docs.inv[name] / db.docs.inv['*']) */
+const DEF = { title: '', bal: true, words: true, rate: true, paid: true, now: true, next: true, led: true, desc: true, rows: 0, note: true, extra: [] };
+const invAll = () => (App.db.docs && App.db.docs.inv) || {};
+function cfgOf(name) { const all = invAll(); return Object.assign({}, DEF, all['*'] || {}, all[name] || {}); }
+App.invCfgOf = cfgOf;
+function invSpec(name, over) {
+  if (!isInv(name)) return null;
+  const r = invRow(name); if (!r) return null;
+  const c = over || cfgOf(name);
+  const who = owner(), nm = D.formal(name), extra = D.noteOf(name), fa = D.fa;
+  let py = { y: +String(E.serToText(App.today)).slice(0, 4), paid: 0 }, sd = null;
+  try { py = App.profitYear(name); } catch (e) { }
+  try { sd = App.profitSinceDue(name); } catch (e) { sd = null; }
+  let led = []; try { led = (E.memberLedger(App.C, name) || []).filter(x => x && Math.abs(N(x.eff)) > 0.5).map(x => ({ d: String(x.date || ''), desc: String(x.desc || ''), amt: Math.round(N(x.eff)), bal: Math.round(N(x.bal)) })); } catch (e) { led = []; }
+  if (!c.desc) led = led.map(x => Object.assign({}, x, { desc: x.amt > 0 ? 'واریز' : 'برداشت' }));
+  const bal = Math.round(N(r.bal)), rate = Math.round(N(r.rate) * 100) / 100;
+  const k = [];
+  if (c.rate) k.push(['نرخ سود سالانه', fa(rate) + '٪', '', '']);
+  if (c.paid) k.push(['سود پرداختی از اول سال ' + fa(py.y), fa(fmt(py.paid || 0)), 'ریال', '']);
+  if (sd && c.now) k.push(['سود تا این لحظه', fa(fmt(sd.amt)), 'ریال', fa(sd.days) + ' روز، از ' + fa(E.serToText(sd.prev))]);
+  if (sd && c.next) k.push(['سررسید بعدی سود', fa(E.serToText(sd.next)), '', 'حدود ' + fa(fmt(sd.est)) + ' ریال']);
+  (c.extra || []).forEach(e => { if (e && (String(e[0] || '').trim() || String(e[1] || '').trim())) k.push([String(e[0] || '').trim(), fa(String(e[1] || '').trim()), '', '']); });
+  const title = String(c.title || '').trim() || 'گواهی سرمایه‌گذاری';
+  const nRows = +c.rows > 0 ? Math.min(+c.rows, led.length) : 0;
+  const code = D.code('IV', [name, nm, bal, rate, Math.round(py.paid || 0), led.length, who, c]);
+  return {
+    kind: 'inv', title, sub: 'صورت‌حساب سرمایهٔ ' + nm, tag: c.bal ? 'مانده سرمایه' + (c.rate || c.paid || c.now ? '، نرخ و سود' : '') + ' تا تاریخ صدور — به ریال' : 'تا تاریخ صدور — به ریال', icon: 'grow', mark: 'سرمایه', seal: 'سرمایه',
+    cards: [['سرمایه‌گذار', nm], [who ? 'سرمایه نزد' : 'تاریخ صدور', who || D.dateWords()], ['تاریخ', D.dateWords()], ['شمارهٔ سند', code, true]],
+    code, sigLabel: 'صادرکننده', sigName: who, file: 'گواهی سرمایه ' + name, pdfTitle: title + ' — ' + nm,
+    data: { bal, rate, k, led, extra, c },
+    body: (m, K) => [
+      K.para(m, 'بدین‌وسیله گواهی می‌شود که ' + (c.bal ? 'مانده' : 'وضعیت') + ' سرمایهٔ ' + nm + ' نزد اینجانب در تاریخ صدور این برگه به شرح زیر است:', { gap: 16 }),
+      c.bal ? K.hero(m, { l: bal < -0.5 ? 'مانده (بدهکار)' : 'مانده سرمایه', v: fa(fmt(Math.abs(bal))), u: 'ریال', w: c.words ? 'به حروف: ' + D.words(Math.abs(bal)) + ' ریال' : '' }) : null,
+      k.length ? K.kpis(m, k) : null,
+      c.led && led.length ? K.ledger(m, { title: 'آخرین گردش‌های حساب', rows: led, min: nRows || 3, max: nRows || 12 }) : null,
+      (c.note || extra) ? K.note(m, [c.note ? 'مبالغ به ریال است. سود بر اساس نرخ سالانهٔ هر دوره و تا تاریخ صدور این برگه حساب شده است.' : '', extra]) : null
+    ]
+  };
+}
+D.register('inv', name => invSpec(name));
+App.invDocInfo = name => { const s = invSpec(name); return s ? { code: s.code, bal: s.data.bal, rate: s.data.rate, led: s.data.led.length, name: s.cards[0][1], words: D.words(Math.abs(s.data.bal)), title: s.title, tiles: s.data.k.map(x => x[0]), cfg: s.data.c } : null; };
+
+function invCard(name) {
+  const r = invRow(name), d = ' data-n="' + esc(name) + '"';
+  return D.card('inv', name, {
+    ico: '📜', head: 'گواهی سرمایه‌گذاری — ' + name, sub: 'مانده <bdi class="num">' + esc(fmt(r ? r.bal : 0)) + '</bdi> ریال · تا تاریخ <bdi class="num">' + esc(E.serToText(App.today)) + '</bdi>',
+    top: D.nameLine(name, 'iv-name', d) + '<div class="dnl noprint"><span>⚙️ روی برگه: <b>' + esc(cfgSum(name)) + '</b></span>' + D.btn('iv-cfg', 'sm violet', '⚙️ تنظیم برگه (کم و زیاد)', d) + '</div>',
+    foot: 'برگه «عکس» است (PDF هم همان عکس است)؛ متنی در آن نیست که گیرنده بتواند عوضش کند. عددها همان عددهای دفتر شما در امروز است.'
+  });
+}
+App.memberDoc = function (name) {
+  if (!isInv(name)) return;
+  App.modal('📜 گواهی سرمایه‌گذاری — ' + esc(name), invCard(name), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '760px' });
+};
+
+/* the page: every investor, one line each — the sheet opens in a window (many investors: no need to draw them all at once) */
+P.mrep = function () {
+  const L = investors();
+  let h = '<div class="bar noprint ams-bar"><a class="btn ghost" data-act="go" data-to="/members">◀ سرمایه‌گذاران</a></div>' +
+    '<div class="status info noprint" style="font-size:1.08rem;line-height:1.9">برای هر سرمایه‌گذار یک «گواهی سرمایه‌گذاری» رسمی: مانده سرمایه (با عدد و به حروف)، نرخ سود، سود پرداختی امسال، سود تا این لحظه و آخرین گردش‌ها — با امضا و مُهر شما. «📜 گواهی» را بزنید، ببینید، بعد «🖼 ارسال عکس» یا «📄 ارسال PDF».</div>' +
+    D.sigBox();
+  if (!L.length) return { title: '📜 گواهی سرمایه‌گذاران', html: h + '<div class="box">سرمایه‌گذاری با مانده نیست.</div>' };
+  h += '<div class="box"><h2>👥 سرمایه‌گذاران <small>' + L.length + ' نفر</small></h2><div class="mrl">' + L.map(r => {
+    const d = ' data-n="' + esc(r.name) + '"', full = D.fullOf(r.name);
+    return '<div class="mrr"><span class="mr-av">' + esc((r.name || '؟').charAt(0)) + '</span><div class="mr-n"><b>' + esc(r.name) + '</b><small>' + (full ? 'در گواهی: ' + esc(full) + ' · ' : '') + 'مانده <bdi class="num">' + esc(fmt(r.bal)) + '</bdi></small></div>' +
+      '<div class="mr-b">' + D.btn('iv-doc', 'blue', '📜 گواهی', d) + D.btn('iv-cfg', 'ghost sm', '⚙️ برگه', d) + D.btn('iv-name', 'ghost sm', '✏️ نام', d) + '</div></div>';
+  }).join('') + '</div></div>';
+  return { title: '📜 گواهی سرمایه‌گذاران', sub: 'برگهٔ رسمی مانده و سود هر سرمایه‌گذار — عکس یا PDF، با امضای شما', html: h };
+};
+
+/* buttons on the investors' list and on the page of every investor */
+const pms = P.members;
+if (typeof pms === 'function') P.members = function () {
+  const r = pms.apply(this, arguments);
+  if (r && typeof r.html === 'string' && r.html.indexOf('<div class="bar noprint">') >= 0) r.html = r.html.replace('<div class="bar noprint">', '<div class="bar noprint"><a class="btn gold" data-act="go" data-to="/mrep">📜 گواهی برای سرمایه‌گذاران</a>');
+  return r;
+};
+const pm = P.member;
+if (typeof pm === 'function') P.member = function (name) {
+  const r = pm.apply(this, arguments);
+  if (r && typeof r.html === 'string' && isInv(name) && name !== owner()) {
+    const b = D.btn('iv-doc', 'gold sm ax-q', '📜 گواهی برای ارسال', ' data-n="' + esc(name) + '"');
+    /* the page is reshaped after it is drawn (35_accshell): the button goes into its row of buttons, before «📤 گزارش و ارسال» */
+    const p0 = r.post;
+    r.post = function () {
+      try { if (p0) p0.apply(this, arguments); } finally {
+        try {
+          const page = document.getElementById('page'); if (!page || page.querySelector('[data-act="iv-doc"]')) return;
+          const bar = page.querySelector('.ax-bar') || page.querySelector('.bar.prim'); if (!bar) return;
+          const rp = bar.querySelector('[data-act="ax-rep"]'); if (rp) rp.insertAdjacentHTML('beforebegin', b); else bar.insertAdjacentHTML('beforeend', b);
+        } catch (e) { console.error(e); }
+      }
+    };
+  }
+  return r;
+};
+
+/* ---- ⚙️ what goes on the sheet ---- */
+const PARTS = [['bal', 'مانده سرمایه', 'عدد بزرگ وسط برگه'], ['words', 'مانده به حروف', ''], ['rate', 'نرخ سود سالانه', ''], ['paid', 'سود پرداختی از اول سال', ''], ['now', 'سود تا این لحظه', 'از سررسید قبلی'], ['next', 'سررسید بعدی سود', 'با مبلغ حدودی'], ['led', 'آخرین گردش‌های حساب', 'واریز، برداشت، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «واریز / برداشت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']];
+function cfgSum(name) {
+  const c = cfgOf(name), off = PARTS.filter(p => !c[p[0]]).map(p => p[1]), ex = (c.extra || []).filter(e => e && (e[0] || e[1])).length;
+  return (off.length ? 'بدون ' + off.join('، ') : 'همهٔ موارد') + (ex ? ' + ' + D.fa(ex) + ' سطر دلخواه' : '') + (+c.rows > 0 ? ' · ' + D.fa(c.rows) + ' ردیف گردش' : '');
+}
+let CF = null, CFT = 0;
+App.invCfg = function (name) {
+  if (!isInv(name)) return;
+  const all = invAll(); CF = { name, c: cfgOf(name), own: !!all[name] };
+  const c = CF.c, ck = p => '<label class="cf-ck"><input type="checkbox" data-cf="' + p[0] + '"' + (c[p[0]] ? ' checked' : '') + '><span><b>' + p[1] + '</b>' + (p[2] ? '<small>' + p[2] + '</small>' : '') + '</span></label>';
+  const ex = (c.extra || []).filter(e => e && (e[0] || e[1])).concat([['', ''], ['', ''], ['', ''], ['', '']]).slice(0, Math.max(4, (c.extra || []).length + 1));
+  App.modal('⚙️ چه چیزهایی روی گواهی بیاید — ' + esc(name), '<div class="cfw">' +
+    '<div class="cf-hint">هر چه نمی‌خواهید بردارید، هر چه می‌خواهید اضافه کنید؛ پیش‌نمایش پایین همان لحظه عوض می‌شود.</div>' +
+    '<div class="field"><label for="cf_title">📜 عنوان برگه</label><input type="text" id="cf_title" class="yellow" value="' + esc(c.title || '') + '" placeholder="گواهی سرمایه‌گذاری" autocomplete="off"></div>' +
+    '<div class="cf-g">' + PARTS.map(ck).join('') + '</div>' +
+    '<div class="field"><label for="cf_rows">🧾 چند ردیف از گردش حساب؟</label><select id="cf_rows" class="yellow">' + [[0, 'خودکار (تا جا هست — حدود ۴ تا ۱۲)'], [3, '۳ ردیف'], [5, '۵ ردیف'], [8, '۸ ردیف'], [12, '۱۲ ردیف'], [20, '۲۰ ردیف']].map(o => '<option value="' + o[0] + '"' + (+c.rows === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
+    '<div class="cf-x"><b>➕ سطرهای دلخواه</b><small>عنوان و مقدار — مثلاً «سود سه‌ماههٔ اول» و «120,000,000 ریال». خالی بماند، روی برگه نمی‌آید.</small>' +
+    ex.map((e, i) => '<div class="grid2"><input type="text" class="yellow" data-cx="' + i + '" data-p="0" value="' + esc(e[0] || '') + '" placeholder="عنوان" autocomplete="off"><input type="text" class="yellow" data-cx="' + i + '" data-p="1" value="' + esc(e[1] || '') + '" placeholder="مقدار" autocomplete="off"></div>').join('') + '</div>' +
+    '<div class="cf-sc"><label><input type="radio" name="cf_sc" value="one"' + (CF.own || !invAll()['*'] ? ' checked' : '') + '> فقط برای <b>' + esc(name) + '</b></label><label><input type="radio" name="cf_sc" value="all"' + (!CF.own && invAll()['*'] ? ' checked' : '') + '> برای <b>همهٔ سرمایه‌گذاران</b> (پیش‌فرض)</label></div>' +
+    '<div class="cf-pv"><b>پیش‌نمایش</b><img id="cf_img" alt="پیش‌نمایش برگه"></div></div>',
+    D.btn('cf-save', 'green big', '✔ ذخیره') + D.btn('cf-reset', 'ghost', '↺ برگشت به حالت اول') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '780px' });
+  cfPrev();
+};
+function readCF() {
+  if (!CF) return null;
+  const c = Object.assign({}, DEF);
+  document.querySelectorAll('#modalBg [data-cf]').forEach(i => { c[i.dataset.cf] = !!i.checked; });
+  c.title = String((document.getElementById('cf_title') || {}).value || '').trim();
+  c.rows = +((document.getElementById('cf_rows') || {}).value) || 0;
+  const ex = []; document.querySelectorAll('#modalBg [data-cx]').forEach(i => { const n = +i.dataset.cx; ex[n] = ex[n] || ['', '']; ex[n][+i.dataset.p] = String(i.value || '').trim(); });
+  c.extra = ex.filter(e => e && (e[0] || e[1]));
+  return c;
+}
+function cfPrev() {
+  const im = document.getElementById('cf_img'); if (!im || !CF) return;
+  try { const s = invSpec(CF.name, readCF()); if (s) im.src = D.draw(s, 0.75).toDataURL('image/jpeg', 0.85); } catch (e) { console.error(e); }
+}
+function cfSave() {
+  const c = readCF(); if (!c) return;
+  const name = CF.name, all = !!(document.querySelector('#modalBg input[name="cf_sc"][value="all"]') || {}).checked;
+  App.commit('برگهٔ گواهی: ' + (all ? 'همه' : name), db => {
+    db.docs = Object.assign({}, db.docs || {}); db.docs.inv = Object.assign({}, db.docs.inv || {});
+    if (all) { db.docs.inv['*'] = c; delete db.docs.inv[name]; } else db.docs.inv[name] = c;
+  });
+  CF = null; App.closeModal(); App.toast('✔ ذخیره شد' + (all ? ' — برای همهٔ سرمایه‌گذاران' : '')); App.emit();
+  setTimeout(() => App.memberDoc(name), 30);
+}
+function cfReset() {
+  const name = CF && CF.name; if (!name) return;
+  App.commit('برگهٔ گواهی: حالت اول ' + name, db => {
+    db.docs = Object.assign({}, db.docs || {}); db.docs.inv = Object.assign({}, db.docs.inv || {});
+    delete db.docs.inv[name];
+  });
+  CF = null; App.closeModal(); App.toast('برگهٔ ' + name + ' به حالت اول (پیش‌فرض) برگشت'); App.emit();
+  setTimeout(() => App.memberDoc(name), 30);
+}
+const cfLater = () => { clearTimeout(CFT); CFT = setTimeout(cfPrev, 180); };
+document.addEventListener('change', ev => { if (CF && ev.target && ev.target.closest && ev.target.closest('.cfw')) cfLater(); });
+document.addEventListener('input', ev => { if (CF && ev.target && ev.target.closest && ev.target.closest('.cfw')) cfLater(); });
+
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act]') : null; if (!b) return;
+  const a = b.dataset.act; if (!/^(iv-doc|iv-name|iv-cfg|cf-save|cf-reset)$/.test(a || '')) return;
+  ev.preventDefault();
+  const n = b.dataset.n;
+  if (a === 'iv-doc') return App.memberDoc(n);
+  if (a === 'iv-cfg') return App.invCfg(n);
+  if (a === 'cf-save') return cfSave();
+  if (a === 'cf-reset') return cfReset();
+  if (a === 'iv-name') { const inModal = !!b.closest('#modalBg'); return D.nameEdit(n, { after: inModal ? () => App.memberDoc(n) : null }); }
+});
 })();
 
 
@@ -14336,7 +14990,7 @@ P.reports = function () {
   const sec = (t, a) => '<h3 class="rsec">' + t + '</h3><div class="rgrid">' + a.join('') + '</div>';
   let h = sec('⏱ بر اساس زمان', [tile('/daily', '📅', 'وقایع روزانه', 'هر روز: ثبت‌ها و تغییرات ۲۴ ساعت', 't1'), tile('/mreport', '🗓', 'وقایع ماهانه', 'همهٔ رکوردهای ماه با جستجو', 't1'), tile('/journal', '📒', 'دفتر روزنامه', 'همهٔ ثبت‌ها به ترتیب تاریخ', 't1'), tile('/monthly', '💹', 'سود ماهانهٔ اعضا', 'جدول سود هر ماه', 't1')]) +
     sec('👥 گزارش حساب‌ها', Object.keys(KINDS).map(k => tile('/rep/' + k, KINDS[k].ico, 'گزارش ' + KINDS[k].t, KINDS[k].desc, 't2'))) +
-    sec('⚖ تراز، تطبیق و ارسال', [tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
+    sec('⚖ تراز، تطبیق و ارسال', [tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/mrep', '📜', 'گواهی سرمایه‌گذاران', 'برگهٔ رسمی مانده و سود هر نفر — با امضا', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
   return { title: 'گزارش‌ها', sub: 'هر گزارش اول خلاصه است؛ روی هر مورد بزنید تا ریز گردشش با فیلتر باز شود', html: h };
 };
 
