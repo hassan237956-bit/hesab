@@ -3141,7 +3141,7 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.4"; window.APP_BUILD = "1405/08/17 22:54";
+window.APP_VERSION = "47.4"; window.APP_BUILD = "1405/08/17 23:05";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -14204,7 +14204,7 @@ function everyBox(list) {
     if (x.price > 0 && x.cost > 0.5) g += kv('خرید ← امروز', fmt(x.avg) + ' → ' + fmt(x.price));
     const tr = people(x).filter(t => t.q - (t.qb || 0) > 1e-9).map(t => qtyTxt(t.q - (t.qb || 0), x) + ' امانیِ ' + t.person).join('، ');
     return '<a class="fxpr ' + cl + '" data-act="go" data-to="/asset/' + esc(H.slug(x.name)) + '"><span class="fxpn">' + esc(x.display || x.name) + '</span><b class="fxpv num">' + pctS(p) + '</b>' +
-      '<div class="fxpg">' + g + '</div>' + (note ? '<small class="fxpno">' + note + '</small>' : '') + (tr ? '<small class="fxpt">🤝 ＋ ' + esc(tr) + ' هم پیش شماست (انتظامی؛ در این عددها نیست)</small>' : '') + '</a>';
+      '<div class="fxpg">' + g + '</div>' + (note ? '<small class="fxpno">' + note + '</small>' : '') + (tr ? '<small class="fxpt">🤝 ＋ ' + esc(tr) + ' هم پیش شماست (انتظامی؛ در این عددها نیست)</small>' : '') + (x.tmi > 1e-9 ? '<small class="fxpt">🤝 از این عدد، ' + esc(people(x).filter(t => t.qb > 1e-9).map(t => qtyTxt(t.qb, x) + ' امانیِ ' + t.person).join('، ')) + ' است (در دفتر هم ثبت شده)</small>' : '') + '</a>';
   }).join('') + '</div><div class="hint" style="margin-top:6px">درصد سود = سود ارزیابی ÷ بهای تمام‌شده × ۱۰۰ — یعنی قیمت روز چند درصد بالاتر (یا پایین‌تر) از میانگین قیمتی است که خریده‌اید.</div></div>';
 }
 
