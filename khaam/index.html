@@ -3088,7 +3088,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "46.9"; window.APP_BUILD = "1405/08/17 19:01";
+window.APP_VERSION = "46.9"; window.APP_BUILD = "1405/08/17 19:12";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -14397,7 +14397,7 @@ document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target
 })();
 /* ---------------------------------------------------------------- v46.8 / v46.9 — the official sheets of the accounts: «📜 گواهی سرمایه‌گذاری» and «📜 گواهی بدهی»
    the owner (1405/08/17): «همین را به حالت صدور سند برای سرمایه‌گذارها هم بگذار؛ یکی‌یکی برایشان بفرستم بره.» … «قابل ویرایش باشد؛ نرخ سود را بزنم یا نزنم،
-   هر چیز را کم و زیاد کنم» … «برای بدهکاران هم همین‌طور یک رسید صادر کن با ماهیت برعکس: خانم فلان به حسن احمدی بدهکار است، از تاریخ فلان گردشش هم
+   هر چیز را کم و زیاد کنم» … «برای بدهکاران هم همین‌طور یک رسید صادر کن با ماهیت برعکس: خانم فلان به من بدهکار است، از تاریخ فلان گردشش هم
    نشان بدهد، بسمه تعالی هم بالایش باشد.»
    One A4 sheet per person (a picture / a PDF, with the signature and the seal), drawn by the sheets' engine (26b_docs):
    · investor («inv»): «مانده سرمایه» in figures and in words; the yearly rate, the profit paid since 1 Farvardin, the profit since the last due day,
@@ -14473,7 +14473,7 @@ function invSpec(name, over) {
 D.register('inv', name => invSpec(name));
 App.invDocInfo = name => { const s = invSpec(name); return s ? { code: s.code, bal: s.data.bal, rate: s.data.rate, led: s.data.led.length, name: s.cards[0][1], words: D.words(Math.abs(s.data.bal)), title: s.title, tiles: s.data.k.map(x => x[0]), cfg: s.data.c } : null; };
 
-/* ---- 📜 debtor: the same sheet, the other way round («… به حسن احمدی بدهکار است») ---- */
+/* ---- 📜 debtor: the same sheet, the other way round («… به من بدهکار است») ---- */
 const serOf = t => { const d = H.normDate(String(t || '')); if (!d) return 0; try { return +E.jser(d) || 0; } catch (e) { return 0; } };
 function debtSpec(name, over) {
   if (!isDebt(name)) return null;
