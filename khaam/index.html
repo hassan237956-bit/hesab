@@ -3102,6 +3102,32 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 .dar-b{display:flex;gap:6px}
 .dar-no{font-size:1.05rem;font-weight:800;color:#64748B;line-height:1.9}
 .mr-av.crd{background:linear-gradient(145deg,#F472B6,#9D174D)}
+/* v47.2 — in every place: «جمع موجود», «👤 مال خودم», «🤝 امانیِ …» */
+.lci.lcx{grid-template-columns:1fr auto;background:#F5F3FF;border-radius:10px;padding:6px 8px;margin-top:4px;border-bottom:0}
+.lci.lcx .dep b{font-size:1.25rem;color:#1E1B4B}
+.lcj{grid-column:1/-1;font-size:.88rem;font-weight:800;color:#6D28D9}
+.lcb{display:grid;grid-template-columns:1fr auto;gap:0 10px;padding:4px 8px 4px 4px;margin-right:12px;border-bottom:1px dotted #E2E8F0;font-size:1.02rem;font-weight:800;color:#334155}
+.lcb b{white-space:nowrap}
+.lcb .bal,.lcb .lcj{grid-column:1/-1;text-align:left;font-size:.9rem}
+.lcb.tr{color:#4338CA}
+.lcb.tr .lcj{color:#7C3AED}
+td.trs{font-size:.98rem;color:#334155;background:#FAFAFF}
+td.trs.fc{padding-right:26px!important}
+td.trs.tr{color:#4338CA}
+td.trs.tot{background:#EEF2FF;color:#1E1B4B;font-weight:900}
+tr.trs td{font-size:1rem;background:#FAFAFF;color:#334155}
+tr.trs td:first-child{padding-right:24px}
+tr.trs.tr td{color:#4338CA}
+tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
+.fxtt{font-size:.85rem;color:#6D28D9;font-weight:800}
+@media (max-width:700px){ tr.trs td:empty, td.trs:empty{display:none} }
+.dnl.why{background:#FFF7ED;border-color:#FED7AA}
+.dnl.why b{color:#7C2D12}
+.cf-rows{font-size:1.15rem;font-weight:900}
+
+/* v47.3: the signature, bigger and darker in the app too */
+.dsg-pv{padding:10px 22px;border:2.5px solid #1E3A8A;box-shadow:0 2px 10px rgba(15,42,74,.12)}
+.dsg-pv img{max-width:min(420px,78vw);max-height:150px;filter:drop-shadow(0 0 .7px #071640) drop-shadow(0 0 .7px #071640) brightness(.55)}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3109,7 +3135,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.1"; window.APP_BUILD = "1405/08/17 21:23";
+window.APP_VERSION = "47.3"; window.APP_BUILD = "1405/08/17 22:30";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -6079,18 +6105,18 @@ P.fxloc = function () {
   let h = '<div class="cards">' + card('c-gold', 'ارزش روز همهٔ ارز و طلا (ریال)', fmt(R.totalVal), R.locs.filter(l => !l.unknown).length + ' محل نگهداری') + card(R.totalVal - R.totalCost >= 0 ? 'c-green' : 'c-red', 'سود/زیان ارزیابی', sgn(R.totalVal - R.totalCost), 'بهای خرید ' + fmt(R.totalCost)) + '</div>';
   h += '<div class="bar noprint"><a class="btn sm ghost" data-act="go" data-to="/fx" style="text-decoration:none">◀ خلاصهٔ سود و زیان ارز و طلا</a><button class="btn sm teal" data-act="move-new">🔀 انتقال بین محل‌ها</button><button class="btn sm ghost" data-act="print">🖨 چاپ</button></div>';
   if (noPrice.length) h += '<div class="status warn" style="margin-bottom:10px">⚠ برای ' + noPrice.map(p => esc(p.display || p.name)).join('، ') + ' هنوز «قیمت روز» ثبت نشده؛ ارزش آن صفر دیده می‌شود.</div>';
-  R.locs.forEach(l => {
-    h += '<div class="box"><h2>' + (l.unknown ? '❓ محل نامشخص' : '📍 ' + esc(l.name)) + '<span class="fxtot">ارزش روز: <b class="num">' + fmt(l.val) + '</b> ریال</span></h2>';
+  (App.fxLocsPlus ? App.fxLocsPlus(R.locs) : R.locs).forEach(l => {
+    h += '<div class="box"><h2>' + (l.unknown ? '❓ محل نامشخص' : '📍 ' + esc(l.name)) + '<span class="fxtot">' + (App.fxLocHead ? App.fxLocHead(l) : '') + 'ارزش روز: <b class="num">' + fmt(l.val) + '</b> ریال</span></h2>';
     if (l.unknown) h += '<div class="hint" style="margin-bottom:6px">اینها در ثبت‌های خرید/فروش محل نگهداری نداشتند. اگر ثبت را ویرایش کنید و محل را بزنید، به محل درستش می‌رود.</div>';
     h += '<div class="wrap"><table class="tbl"><thead><tr><th>دارایی</th><th class="dep">مقدار</th><th>قیمت روز (ریال)</th><th class="bal">ارزش روز (ریال)</th><th class="prf">سود/زیان تقریبی</th></tr></thead><tbody>' +
-      l.items.map(i => '<tr><td style="font-size:1.1rem">' + link(i.display, '/asset/' + H.slug(i.name)) + '</td><td class="n dep" style="font-size:1.15rem"><b>' + H.fmtq(i.qty) + '</b> <span class="hint">' + esc(i.unit) + '</span></td><td class="n">' + fmt(i.price) + '</td><td class="n bal"><b>' + fmt(i.val) + '</b></td><td class="n prf' + (i.unreal < -0.5 ? ' neg' : '') + '">' + sgn(i.unreal) + '</td></tr>').join('') +
+      l.items.map(i => '<tr><td style="font-size:1.1rem">' + link(i.display, '/asset/' + H.slug(i.name)) + '</td><td class="n dep" style="font-size:1.15rem">' + (App.fxLocQty ? App.fxLocQty(l, i) : '<b>' + H.fmtq(i.qty) + '</b> <span class="hint">' + esc(i.unit) + '</span>') + '</td><td class="n">' + fmt(i.price) + '</td><td class="n bal"><b>' + fmt(i.val) + '</b></td><td class="n prf' + (i.unreal < -0.5 ? ' neg' : '') + '">' + sgn(i.unreal) + '</td></tr>' + (App.fxLocItem ? App.fxLocItem(l, i) : '')).join('') + (App.fxLocMore ? App.fxLocMore(l) : '') +
       '</tbody></table></div></div>';
   });
   if (!R.locs.length) h += '<div class="box">هنوز خرید یا فروشی ثبت نشده است.</div>';
   // totals per asset across all places
   const rows = R.pos.filter(p => Math.abs(p.qty) > 1e-7);
   if (rows.length) h += '<div class="box"><h2>جمع هر دارایی در همهٔ محل‌ها</h2><div class="wrap"><table class="tbl"><thead><tr><th>دارایی</th><th class="dep">مقدار کل</th><th>قیمت روز (ریال)</th><th class="bal">ارزش روز (ریال)</th></tr></thead><tbody>' +
-    rows.map(p => '<tr><td>' + esc(p.display || p.name) + '</td><td class="n dep"><b>' + H.fmtq(p.qty) + '</b> <span class="hint">' + esc(p.unit) + '</span></td><td class="n">' + fmt(p.price) + '</td><td class="n bal"><b>' + fmt(p.val) + '</b></td></tr>').join('') +
+    rows.map(p => '<tr><td>' + esc(p.display || p.name) + '</td><td class="n dep"><b>' + H.fmtq(p.qty) + '</b> <span class="hint">' + esc(p.unit) + '</span></td><td class="n">' + fmt(p.price) + '</td><td class="n bal"><b>' + fmt(p.val) + '</b></td></tr>' + (App.fxTotItem ? App.fxTotItem(p) : '')).join('') +
     '</tbody></table></div><div class="hint" style="margin-top:6px">این صفحه فقط گزارش است. محل نگهداری را هنگام «خرید» و «فروش / خرج» انتخاب می‌کنید.</div></div>';
   h += App.movesBox();
   return { title: 'محل نگهداری ارز و طلا', html: h };
@@ -7131,15 +7157,31 @@ function locBox(name) {
       (r.q > 1e-7 && r.loc !== '' ? lbtn('gold', 'new-entry', ' data-tpl="sell"' + x + l, 'فروش') + lbtn('teal', 'move-new', ' data-asset="' + en + '" data-from="' + esc(r.loc) + '"', 'انتقال') : '') + '</span>';
   };
   const many = S.rows.length > 1, showSh = many && !neg;
-  const rows = S.rows.map(r => [c('nm', (r.loc === '' ? '❓ <b>محل نامشخص</b>' : '📍 <b>' + esc(r.loc) + '</b>') + (r.q < -1e-7 ? ' <em class="jc wd">منفی</em>' : '') + (showSh ? ' <span class="pc num">' + pctOf(r.share) + '</span>' : '')),
-    c('n dep' + (r.q < -1e-7 ? ' neg' : ''), '<b>' + H.fmtq(r.q) + '</b> <small>' + unit + '</small>'), c('n hid', pr > 0 ? fmt(pr) : '—'), c('n bal', '<b>' + fmt(r.v) + '</b>'), ['n hid', showSh ? shareBar(r.share) : ''], ['act noprint', acts(r)]]);
+  /* v47.2 (the owner: each place broken down: his own so much, each trust so much — and the total shown):
+     under every place, what lies there for others (memorandum) and «= جمع موجود در این محل»; the value stays only mine */
+  const TM = r => (App.fxTrustAt && r.loc !== '' ? App.fxTrustAt(r.loc, name) : []);
+  const key = l => (App.trustLocKey ? App.trustLocKey(l) : l);
+  const extraLocs = (App.trustLocs ? App.trustLocs() : []).filter(P => P.fx.has(name) && !S.rows.some(r => r.loc !== '' && key(r.loc) === P.key)).map(P => ({ loc: P.loc, q: 0, v: 0, share: 0, only: true }));
+  const anyT = S.rows.some(r => TM(r).length) || extraLocs.length;
+  const sub = r => {
+    const tm = r.only ? (App.fxTrustAt ? App.fxTrustAt(r.loc, name) : []) : TM(r); if (!tm.length) return [];
+    const tq = tm.reduce((t, x) => t + x.q, 0);
+    return [[c('nm trs', '👤 مال خودم'), c('n dep trs', H.fmtq(r.q) + ' <small>' + unit + '</small>'), c('n hid', ''), c('n bal trs', r.q ? fmt(r.v) : '—'), ['n hid', ''], ['act noprint', '']]]
+      .concat(tm.map(t => [c('nm trs tr', '🤝 امانیِ ' + esc(t.person)), c('n dep trs tr', H.fmtq(t.q) + ' <small>' + unit + '</small>'), c('n hid', ''), c('n bal trs tr', '<small>انتظامی</small>'), ['n hid', ''], ['act noprint', '']]));
+  };
+  const tqOf = r => { const tm = r.only ? (App.fxTrustAt ? App.fxTrustAt(r.loc, name) : []) : TM(r); return tm.reduce((t, x) => t + x.q, 0); };
+  const rows0 = S.rows.concat(extraLocs);
+  const rows = [].concat(...rows0.map(r => [[c('nm', (r.loc === '' ? '❓ <b>محل نامشخص</b>' : '📍 <b>' + esc(r.loc) + '</b>') + (r.q < -1e-7 ? ' <em class="jc wd">منفی</em>' : '') + (showSh && !r.only ? ' <span class="pc num">' + pctOf(r.share) + '</span>' : '') + (r.only ? ' <small>(فقط امانی)</small>' : '')),
+    c('n dep' + (r.q < -1e-7 ? ' neg' : ''), tqOf(r) > 1e-9 ? '<b>' + H.fmtq(r.q + tqOf(r)) + '</b> <small>' + unit + '</small><br><small class="fxtt">جمع موجود در این محل</small>' : '<b>' + H.fmtq(r.q) + '</b> <small>' + unit + '</small>'), c('n hid', pr > 0 ? fmt(pr) : '—'), c('n bal', '<b>' + fmt(r.v) + '</b>' + (tqOf(r) > 1e-9 ? '<br><small class="fxtt">فقط مال خودم</small>' : '')), ['n hid', showSh && !r.only ? shareBar(r.share) : ''], ['act noprint', r.only ? '' : acts(r)]]].concat(sub(r))));
   const foot = many ? [c('', 'جمع ' + disp), c('n dep', '<b>' + H.fmtq(S.tq) + '</b> <small>' + unit + '</small>'), c('n hid', ''), c('n bal', '<b>' + fmt(S.tv) + '</b>'), c('n hid', ''), c('', '')] : null;
   let h = '<div class="box lsb"><h2>📍 ' + disp + ' نزد من — در هر محل</h2>';
-  if (!S.rows.length) h += '<div class="chempty">هیچ موجودی ' + disp + ' ندارید. با دکمهٔ «خرید» ثبت کنید؛ محل نگهداری را همان‌جا می‌پرسد.</div>';
-  else h += '<div class="lsub">قیمت روز <b class="num">' + (pr > 0 ? fmt(pr) : '—') + '</b> ریال · جمع موجودی <b class="num dep">' + H.fmtq(S.tq) + '</b> ' + unit + ' · ارزش <b class="num bal">' + fmt(S.tv) + '</b> ریال</div>' +
+  if (!S.rows.length && !extraLocs.length) h += '<div class="chempty">هیچ موجودی ' + disp + ' ندارید. با دکمهٔ «خرید» ثبت کنید؛ محل نگهداری را همان‌جا می‌پرسد.</div>';
+  else h += '<div class="lsub">قیمت روز <b class="num">' + (pr > 0 ? fmt(pr) : '—') + '</b> ریال · جمع موجودی ' + (anyT ? 'خودم ' : '') + '<b class="num dep">' + H.fmtq(S.tq) + '</b> ' + unit + ' · ارزش <b class="num bal">' + fmt(S.tv) + '</b> ریال' +
+    (anyT ? (() => { const tt = (App.trustMemo ? App.trustMemo(name) : []).reduce((t, x) => t + x.q, 0); return ' · <b>با امانی‌ها: <span class="num">' + H.fmtq(S.tq + tt) + '</span> ' + unit + '</b>'; })() : '') + '</div>' +
     sumTable([['محل', ''], ['موجودی', 'dep'], ['قیمت روز', 'hid'], ['ارزش (ریال)', 'bal'], ['سهم', 'hid'], ['', '']], rows, foot);
   if (!(pr > 0)) h += '<div class="status warn">⚠ برای ' + disp + ' هنوز «قیمت روز» ثبت نشده؛ ارزش صفر دیده می‌شود. ' + lbtn('violet', 'new-entry', ' data-tpl="price" data-x="' + en + '"', '🏷 قیمت روز') + '</div>';
   if (unk) h += '<div class="status info">❓ بخشی از موجودی از قدیم محل ندارد (در خرید و فروشِ جدید دیگر «نامشخص» نداریم). «مشخص کن کجاست» را بزنید تا به محل درستش (مثلاً بانک دی) برود؛ بعد از آن می‌توانید از همان محل بفروشید.</div>';
+  if (anyT) h += '<div class="hint" style="margin-top:6px">🤝 ردیف‌های «امانیِ …» مال دیگران است و فقط برای اینکه بدانید در هر محل جمعاً چقدر هست آمده؛ در ارزش، سهم و ترازنامهٔ شما حساب نمی‌شود.</div>';
   if (neg) h += '<div class="status warn">⚠ «منفی» یعنی از آن محل بیشتر از موجودی برداشت یا فروش ثبت شده؛ احتمالاً یک خرید یا انتقال جا افتاده.</div>';
   return h + '</div>';
 }
@@ -7153,12 +7195,33 @@ function holdBox(cur) {
 }
 /* every place with what it holds (all currencies and gold) — one small card per place */
 function locAllBox() {
-  const R = E.fxByLocation(App.C); if (!R.locs.length) return '';
-  const cards = R.locs.map(l => '<div class="lcard' + (l.unknown ? ' unk' : '') + '"><div class="lch"><b>' + (l.unknown ? '❓ محل نامشخص' : '📍 ' + esc(l.name)) + '</b><span class="num">' + fmt(l.val) + '</span></div>' +
-    l.items.map(i => '<div class="lci"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep">' + H.fmtq(i.qty) + ' <small>' + esc(i.unit) + '</small></span><span class="num bal">' + fmt(i.val) + '</span></div>' +
-      (App.fxTrustAt && !l.unknown ? App.fxTrustAt(l.name, i.name).map(t => '<div class="lct">🤝 ＋ <b class="num">' + H.fmtq(t.q) + '</b> ' + esc(i.unit) + ' امانیِ ' + esc(t.person) + ' هم اینجاست <small>(انتظامی؛ جزو این عدد نیست)</small></div>').join('') : '')).join('') +   /* v45.5: the units of others, named where they are */
+  const R = E.fxByLocation(App.C);
+  /* v47.2: a place with others' things too — «جمع موجود» and under it «👤 مال خودم» and «🤝 امانیِ …» (the value stays only mine);
+     places / items that hold only others' things are added */
+  const TL = App.trustLocs ? App.trustLocs() : [], key = l => (App.trustLocKey ? App.trustLocKey(l) : l);
+  const owner = App.C.owner || 'خودم';
+  const locs = R.locs.map(l => Object.assign({}, l, { items: l.items.slice() }));
+  TL.forEach(P => {
+    let l = locs.find(x => !x.unknown && key(x.name) === P.key);
+    if (!l) { l = { name: P.loc, unknown: false, val: 0, items: [], only: true }; locs.push(l); }
+    P.fx.forEach((ppl, asset) => { if (!l.items.some(i => i.name === asset)) { const a = (App.db.assets || []).find(x => x.name === asset) || {}; l.items.push({ name: asset, display: a.display || asset, unit: a.unit || '', qty: 0, val: 0 }); } });
+    l.other = P.other;
+  });
+  if (!locs.length) return '';
+  const item = (l, i) => {
+    const tm = App.fxTrustAt && !l.unknown ? App.fxTrustAt(l.name, i.name) : [];
+    if (!tm.length) return '<div class="lci"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep">' + H.fmtq(i.qty) + ' <small>' + esc(i.unit) + '</small></span><span class="num bal">' + fmt(i.val) + '</span></div>';
+    const tq = tm.reduce((t, x) => t + x.q, 0), u = ' <small>' + esc(i.unit) + '</small>';
+    return '<div class="lci lcx"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep"><b>' + H.fmtq(i.qty + tq) + '</b>' + u + '</span><span class="lcj">جمع موجود</span></div>' +
+      '<div class="lcb"><span>👤 مال خودم' + (owner !== 'خودم' ? ' (' + esc(owner) + ')' : '') + '</span><b class="num">' + H.fmtq(i.qty) + u + '</b><span class="num bal">' + (i.qty ? fmt(i.val) : '—') + '</span></div>' +
+      tm.map(t => '<div class="lcb tr"><span>🤝 امانیِ ' + esc(t.person) + '</span><b class="num">' + H.fmtq(t.q) + u + '</b><span class="lcj">انتظامی</span></div>').join('');
+  };
+  const cards = locs.map(l => '<div class="lcard' + (l.unknown ? ' unk' : '') + '"><div class="lch"><b>' + (l.unknown ? '❓ محل نامشخص' : '📍 ' + esc(l.name)) + '</b><span class="num">' + (l.only ? '—' : fmt(l.val)) + '</span></div>' +
+    l.items.map(i => item(l, i)).join('') +
+    (l.other && l.other.length ? l.other.map(o => '<div class="lcb tr"><span>🤝 امانیِ ' + esc(o.person) + '</span><b>' + esc(o.text) + '</b><span class="lcj">انتظامی</span></div>').join('') : '') +
+    (TL.some(P => !l.unknown && P.key === key(l.name)) ? '<div class="lct">🤝 امانی‌ها مال دیگران است؛ ارزش بالای کارت فقط مال خودم است.</div>' : '') +   /* v45.5: the units of others, named where they are */
     (l.unknown ? '<div class="hint">محل در ثبت‌ها گفته نشده؛ از صفحهٔ هر ارز «مشخص کن کجاست» را بزنید.</div>' : '') + '</div>').join('');
-  const empty = (App.db.locations || []).map(l => l.name).filter(n => !R.locs.some(l => l.name === n));
+  const empty = (App.db.locations || []).map(l => l.name).filter(n => !locs.some(l => key(l.name) === key(n)));
   return '<div class="box lsb"><h2>📍 دارایی من در هر محل <small>همهٔ ارزها و طلا · ریال</small></h2><div class="lgrid">' + cards + '</div>' + (empty.length ? '<div class="hint" style="margin-top:6px">محل‌های بدون موجودی: ' + empty.map(esc).join('، ') + '</div>' : '') +
     '<div class="lsumline">جمع کل: <b class="num bal">' + fmt(R.totalVal) + '</b> ریال</div>' +
     '<div class="bar noprint" style="margin-top:8px"><input type="text" id="newloc2" class="yellow" placeholder="نام محل جدید (مثلاً بانک دی)" style="max-width:260px"><button type="button" class="btn sm green" data-act="loc-add2">＋ محل جدید</button><button type="button" class="btn sm teal" data-act="move-new">🔀 انتقال بین محل‌ها</button></div></div>';
@@ -10864,6 +10927,9 @@ const docs = () => (App.db && App.db.docs) || {};
 D.formal = name => String(((docs().names || {})[name]) || '').trim() || name;
 D.fullOf = name => String(((docs().names || {})[name]) || '').trim();
 D.noteOf = name => String(((docs().notes || {})[name]) || '').trim();
+/* v47.3 (the owner: «برای بدهکار و بستانکار بنویسم بابت چه بوده — مثلاً بابت پرداخت اقساط بانک ملی — که درشت روی برگه بیاید») */
+D.whyOf = name => String(((docs().why || {})[name]) || '').trim();
+D.setWhy = function (db, name, v) { db.docs = Object.assign({}, db.docs || {}); db.docs.why = Object.assign({}, db.docs.why || {}); const w = String(v || '').trim().replace(/^بابت\s+/, '').trim(); if (w) db.docs.why[name] = w; else delete db.docs.why[name]; };
 /* inside App.commit: the full name / the note of one person (empty → removed) */
 D.setNames = function (db, name, full, note) {
   db.docs = Object.assign({}, db.docs || {}); db.docs.names = Object.assign({}, db.docs.names || {}); db.docs.notes = Object.assign({}, db.docs.notes || {});
@@ -10885,6 +10951,18 @@ function sigImg() {
   return SIGI && SIGI.complete && SIGI.naturalWidth ? SIGI : null;
 }
 D.hasSig = () => !!docs().sig;
+let INK = null, INKK = '';
+function sigInk(si, w, h) {
+  const key = SIGU.length + ':' + SIGU.slice(-32) + ':' + Math.round(w) + 'x' + Math.round(h);
+  if (INK && INKK === key) return INK;
+  const S = 2, p = 4, c = document.createElement('canvas'); c.width = Math.round((w + p * 2) * S); c.height = Math.round((h + p * 2) * S);
+  const g = c.getContext('2d'); g.imageSmoothingQuality = 'high';
+  const r = 1.7 * S;   // about 1.7 px thicker on every side of each stroke
+  for (let a = 0; a < 16; a++) g.drawImage(si, p * S + Math.cos(a * Math.PI / 8) * r, p * S + Math.sin(a * Math.PI / 8) * r, w * S, h * S);
+  g.drawImage(si, p * S, p * S, w * S, h * S);
+  g.globalCompositeOperation = 'source-in'; g.fillStyle = '#071640'; g.fillRect(0, 0, c.width, c.height);
+  INK = { c, p }; INKK = key; return INK;
+}
 setInterval(() => { try { if (App.db) sigImg(); } catch (e) { } }, 1500);   // the picture is ready before any click (it loads asynchronously)
 
 /* ---- drawing ---- */
@@ -10892,7 +10970,7 @@ const DFF = '"N_vazir","B Nazanin","Nazanin","IRANSans","Vazirmatn",Tahoma,"Sego
 const fnt = (w, px) => w + ' ' + px + 'px ' + DFF;
 const DFL = '"Segoe UI",Tahoma,"B Nazanin",Arial,sans-serif', fntL = (w, px) => w + ' ' + px + 'px ' + DFL;   // the code (Latin letters + digits): not the «FD» digits
 const DC = { navy: '#0F2A4A', navy2: '#1E3A8A', gold: '#A8781A', gold2: '#E2BE5A', paper: '#FFFDF7', ink: '#0F172A', mut: '#475569', edge: '#D6DCE8', card: '#F4F6FB', green: '#15803D', red: '#B91C1C' };
-const DW = 1240, DH0 = 1754, DX0 = 96, DX1 = DW - 96, DIW = DX1 - DX0, BODY0 = 554, SIGH = 200, FOOTH = 74;
+const DW = 1240, DH0 = 1754, DX0 = 96, DX1 = DW - 96, DIW = DX1 - DX0, BODY0 = 554, SIGH = 240, FOOTH = 74;
 function rrect(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
 function txt(x, s, px, py, f, col, al, dir) { x.font = f; x.fillStyle = col; x.textAlign = al || 'right'; x.direction = dir || 'rtl'; x.fillText(s, px, py); }
 function wrap(x, s, f, w) {
@@ -10994,8 +11072,9 @@ const K = {
   },
   /* dated lines: [date] [tag] what — fills the page (between min and max lines) */
   list(m, o) {
-    const RH = 44, all = o.rows, blk = { gap: 20, flex: { rowH: RH, total: all.length, min: Math.min(all.length, o.min || 5), max: Math.min(all.length, o.max || 14) } };
+    let RH = 44; const all = o.rows, blk = { gap: 20, flex: { rowH: RH, total: all.length, min: Math.min(all.length, o.min || 5), max: Math.min(all.length, o.max || 14) } };
     blk.setN = n => { blk.n = n; blk.more = all.length - n; blk.h = 62 + (blk.more > 0 ? 36 : 0) + n * RH; };
+    blk.squeeze = over => { const r = Math.max(32, RH - Math.ceil(over / Math.max(1, blk.n))); if (r < RH) { RH = r; blk.setN(blk.n); } };   // v47.3: the number of lines he chose stays; the lines get a little closer
     blk.setN(blk.flex.min);
     blk.draw = (x, y) => {
       txt(x, o.title, DX1, y + 32, fnt(900, 29), DC.navy);
@@ -11005,21 +11084,30 @@ const K = {
       all.slice(-blk.n).forEach((h, i) => {
         const b = y + i * RH;
         if (i) { x.save(); x.strokeStyle = '#E2E8F0'; x.setLineDash([6, 6]); x.lineWidth = 1.2; x.beginPath(); x.moveTo(DX0, b); x.lineTo(DX1, b); x.stroke(); x.restore(); }
-        txt(x, fa(h.d), DX1, b + 33, fnt(700, 24), DC.mut);
-        const cx = DX1 - 190; rrect(x, cx - 96, b + 7, 96, 33, 16); x.fillStyle = h.tc === 'r' ? '#FEE2E2' : '#DCFCE7'; x.fill();
-        txt(x, h.tag, cx - 48, b + 32, fnt(800, 22), h.tc === 'r' ? DC.red : DC.green, 'center');
-        txt(x, h.what, cx - 116, b + 33, fitFont(x, h.what, cx - 116 - DX0, 800, 27, 18), DC.ink);
+        const yb = b + Math.round(RH / 2) + 11, th = Math.min(33, RH - 8);
+        txt(x, fa(h.d), DX1, yb, fnt(700, RH < 40 ? 22 : 24), DC.mut);
+        const cx = DX1 - 190; rrect(x, cx - 96, b + (RH - th) / 2, 96, th, th / 2); x.fillStyle = h.tc === 'r' ? '#FEE2E2' : '#DCFCE7'; x.fill();
+        txt(x, h.tag, cx - 48, yb - 1, fnt(800, RH < 40 ? 20 : 22), h.tc === 'r' ? DC.red : DC.green, 'center');
+        txt(x, h.what, cx - 116, yb, fitFont(x, h.what, cx - 116 - DX0, 800, RH < 40 ? 24 : 27, 17), DC.ink);
       });
     };
     return blk;
   },
   /* an account's turnover: date | description | in | out | balance — fills the page */
   ledger(m, o) {
-    const RH = 46, TH = 50, all = o.rows, blk = { gap: 22, flex: { rowH: RH, total: all.length, min: Math.min(all.length, o.min || 3), max: Math.min(all.length, o.max || 12) } };
+    let RH = 46; const TH = 50, all = o.rows, blk = { gap: 22, flex: { rowH: RH, total: all.length, min: Math.min(all.length, o.min || 3), max: Math.min(all.length, o.max || 12) } };
     blk.setN = n => { blk.n = n; blk.h = 54 + TH + n * RH; };
+    blk.squeeze = over => { const r = Math.max(34, RH - Math.ceil(over / Math.max(1, blk.n))); if (r < RH) { RH = r; blk.setN(blk.n); } };
     blk.setN(blk.flex.min);
-    const cD = 170, cA = 210, cB = 210, cW = 210, cS = DIW - cD - cA - cB - cW;   // date | description | in | out | balance (right to left)
+    /* v47.3 (the owner: «شرح نصفه‌نیمه می‌افتد»): the number columns only as wide as their numbers; the rest goes to «شرح» */
     blk.draw = (x, y) => {
+      const rows = all.slice(-blk.n), head = o.head || ['تاریخ', 'شرح', 'واریز', 'برداشت', 'مانده'];
+      const mw = (L, f) => { x.font = f; return L.reduce((m, t) => Math.max(m, x.measureText(t).width), 0); };
+      const fit = (L, h, lo, hi) => Math.round(Math.max(lo, Math.min(hi, Math.max(mw(L, fnt(800, 23)), mw([h], fnt(800, 23))) + 30)));
+      const cD = fit(rows.map(r => fa(r.d)), head[0], 128, 170);
+      const cA = fit(rows.filter(r => r.amt > 0).map(r => fa(H.fmt(r.amt))), head[2], 112, 210);
+      const cW = fit(rows.filter(r => r.amt < 0).map(r => fa(H.fmt(-r.amt))), head[3], 112, 210);
+      const cB = fit(rows.map(r => fa(H.fmt(r.bal))), head[4], 120, 210), cS = DIW - cD - cA - cB - cW;   // date | description | in | out | balance (right to left)
       txt(x, o.title, DX1, y + 30, fnt(900, 28), DC.navy);
       x.font = fnt(900, 28); const tw = x.measureText(o.title).width; x.fillStyle = DC.gold2; x.fillRect(DX1 - tw, y + 41, tw, 4);
       y += 54; const tH = TH + blk.n * RH;
@@ -11027,13 +11115,18 @@ const K = {
       x.save(); rrect(x, DX0, y, DIW, tH, 14); x.clip();
       x.fillStyle = DC.navy; x.fillRect(DX0, y, DIW, TH);
       const xs = [DX1, DX1 - cD, DX1 - cD - cS, DX1 - cD - cS - cA, DX1 - cD - cS - cA - cW];   // right edges
-      (o.head || ['تاریخ', 'شرح', 'واریز', 'برداشت', 'مانده']).forEach((t, i) => txt(x, t, i === 1 ? xs[1] - 16 : xs[i] - [cD, cS, cA, cW, cB][i] / 2, y + 34, fnt(800, 23), '#FFFFFF', i === 1 ? 'right' : 'center'));
-      all.slice(-blk.n).forEach((r, i) => {
+      head.forEach((t, i) => txt(x, t, i === 1 ? xs[1] - 16 : xs[i] - [cD, cS, cA, cW, cB][i] / 2, y + 34, fnt(800, 23), '#FFFFFF', i === 1 ? 'right' : 'center'));
+      rows.forEach((r, i) => {
         const b = y + TH + i * RH;
         x.fillStyle = i % 2 ? '#F8F5EC' : '#FFFFFF'; x.fillRect(DX0, b, DIW, RH);
-        const yb = b + 31, ds = String(r.desc || '').replace(/\d/g, c => FDG[c]);
+        const yb = b + Math.round(RH / 2) + 8, ds = String(r.desc || '').replace(/\d/g, c => FDG[c]), wt = r.open ? 900 : 700, col = r.open ? DC.navy : DC.ink, dw = cS - 28;
         txt(x, fa(r.d), xs[0] - cD / 2, yb, fnt(700, 22), DC.mut, 'center');
-        txt(x, clip(x, ds, fnt(r.open ? 900 : 700, 22), cS - 30), xs[1] - 16, yb, fnt(r.open ? 900 : 700, 22), r.open ? DC.navy : DC.ink);
+        x.font = fnt(wt, 18);
+        if (x.measureText(ds).width <= dw) txt(x, ds, xs[1] - 14, yb, fitFont(x, ds, dw, wt, 22, 18), col);
+        else {   // still long: the whole of it, in two lines
+          const z = RH >= 42 ? 18 : 15, L = wrap(x, ds, fnt(wt, z), dw), l2 = L.length > 2 ? clip(x, L.slice(1).join(' '), fnt(wt, z), dw) : (L[1] || ''), y1 = b + Math.round(RH / 2) - 2;
+          txt(x, L[0], xs[1] - 14, y1, fnt(wt, z), col); txt(x, l2, xs[1] - 14, y1 + z + 3, fnt(wt, z), col);
+        }
         if (r.amt > 0) txt(x, fa(H.fmt(r.amt)), xs[2] - cA / 2, yb, fitFont(x, fa(H.fmt(r.amt)), cA - 20, 800, 23, 15), DC.green, 'center');
         if (r.amt < 0) txt(x, fa(H.fmt(-r.amt)), xs[3] - cW / 2, yb, fitFont(x, fa(H.fmt(-r.amt)), cW - 20, 800, 23, 15), DC.red, 'center');
         txt(x, fa(H.fmt(r.bal)), xs[4] - cB / 2, yb, fitFont(x, fa(H.fmt(r.bal)), cB - 20, 800, 23, 15), DC.navy2, 'center');
@@ -11043,6 +11136,14 @@ const K = {
       rrect(x, DX0, y, DIW, tH, 14); x.strokeStyle = DC.navy; x.lineWidth = 2; x.stroke();
     };
     return blk;
+  },
+  why(m, text) {
+    const f = fnt(900, 36), L = wrap(m, 'بابت ' + String(text).replace(/^\s*بابت\s*/, ''), f, DIW - 80), h = 30 + L.length * 52;
+    return { h, gap: 22, draw(x, y) {
+      rrect(x, DX0, y, DIW, h, 16); x.fillStyle = '#FFF7ED'; x.fill(); x.strokeStyle = '#F59E0B'; x.lineWidth = 2.5; x.stroke();
+      x.fillStyle = '#F59E0B'; x.fillRect(DX1 - 8, y + 14, 8, h - 28);
+      L.forEach((l, i) => txt(x, l, DX1 - 32, y + 54 + i * 52, f, '#7C2D12'));
+    } };
   },
   note(m, paras) {
     const f = fnt(700, 25), L = []; (Array.isArray(paras) ? paras : [paras]).filter(Boolean).forEach((p, i) => wrap(m, p, f, DIW - 60).forEach(l => L.push({ l, b: i > 0 })));
@@ -11062,6 +11163,10 @@ D.draw = function (spec, scale) {
   const sum = () => blocks.reduce((s, b) => s + b.h + (b.gap == null ? 24 : b.gap), 0);
   const fl = blocks.find(b => b.flex);
   if (fl) { const free = DH0 - (BODY0 + sum() + SIGH + FOOTH); fl.setN(Math.max(fl.flex.min, Math.min(fl.flex.max, fl.n + Math.floor(free / fl.flex.rowH)))); }
+  /* v47.3: still taller than A4 (he asked for a fixed number of lines)? the gaps a little smaller, then the lines a little closer */
+  let over = BODY0 + sum() + SIGH + FOOTH - DH0;
+  if (over > 0) blocks.forEach(b => { const g = b.gap == null ? 24 : b.gap, d = Math.min(g - 10, over); if (d > 0) { b.gap = g - d; over -= d; } });
+  if (over > 0 && fl && fl.squeeze) fl.squeeze(over);
   const DH = Math.max(DH0, Math.ceil(BODY0 + sum() + SIGH + FOOTH));
   cv.width = Math.round(DW * scale); cv.height = Math.round(DH * scale);
   x = cv.getContext('2d'); x.scale(scale, scale); x.textBaseline = 'alphabetic';
@@ -11101,16 +11206,28 @@ D.draw = function (spec, scale) {
   blocks.forEach(b => { b.draw(x, y); y += b.h + (b.gap == null ? 24 : b.gap); });
   /* the signature and the seal, at the foot of the sheet */
   const sy = Math.max(y, DH - FOOTH - SIGH), who = spec.sigName || '';
-  txt(x, spec.sigLabel || 'امضاکننده', DX1, sy + 44, fnt(700, 25), DC.mut);
-  if (who) txt(x, who, DX1, sy + 92, fitFont(x, who, 420, 900, 37, 24), DC.navy);
+  /* v47.3 (the owner: «امضا بزرگ‌تر، پررنگ‌تر، با کادر»): a framed box — his name on a navy band, the signature large and dark */
+  const BW = 580, BH = 226, bx0 = DX1 - BW, by = sy + 6;
+  x.save(); x.shadowColor = 'rgba(15,42,74,.18)'; x.shadowBlur = 14; x.shadowOffsetY = 4; rrect(x, bx0, by, BW, BH, 20); x.fillStyle = '#FFFFFF'; x.fill(); x.restore();
+  x.save(); rrect(x, bx0, by, BW, BH, 20); x.clip();
+  x.fillStyle = DC.navy; x.fillRect(bx0, by, BW, 56);
+  x.fillStyle = DC.gold2; x.fillRect(bx0, by + 56, BW, 4);
+  const g0 = x.createLinearGradient(0, by + 60, 0, by + BH); g0.addColorStop(0, '#FFFFFF'); g0.addColorStop(1, '#F3F6FC'); x.fillStyle = g0; x.fillRect(bx0, by + 60, BW, BH - 60);
+  x.restore();
+  rrect(x, bx0, by, BW, BH, 20); x.strokeStyle = DC.navy; x.lineWidth = 3.5; x.stroke();
+  rrect(x, bx0 + 7, by + 67, BW - 14, BH - 74, 13); x.strokeStyle = DC.gold2; x.lineWidth = 1.6; x.stroke();
+  const hd = (spec.sigLabel || 'امضاکننده') + (who ? ': ' + who : '');
+  txt(x, hd, bx0 + BW - 26, by + 39, fitFont(x, hd, BW - 52, 900, 32, 20), '#FFFFFF');
+  const lineY = by + BH - 46, cxs = bx0 + BW / 2;
+  x.save(); x.strokeStyle = '#64748B'; x.lineWidth = 2.2; x.setLineDash([4, 8]); x.beginPath(); x.moveTo(bx0 + 40, lineY); x.lineTo(bx0 + BW - 40, lineY); x.stroke(); x.restore();
   const si = sigImg();
-  if (si) {   // the hand signature: over the line, as on paper
-    const bw = 340, bh = 74, k = Math.min(bw / si.naturalWidth, bh / si.naturalHeight), w = si.naturalWidth * k, h = si.naturalHeight * k;
-    x.drawImage(si, DX1 - 190 - w / 2, sy + 170 - h, w, h);
-  }
-  x.save(); x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.setLineDash([3, 7]); x.beginPath(); x.moveTo(DX1, sy + 156); x.lineTo(DX1 - 380, sy + 156); x.stroke(); x.restore();
-  txt(x, 'امضا', DX1 - 190, sy + 186, fnt(700, 23), DC.mut, 'center');
-  x.save(); x.translate(DX0 + 165, sy + 96); x.rotate(-0.21); x.globalAlpha = 0.86;
+  if (si) {   // the hand signature: large, dark and bold, sitting on the line as on paper
+    const mw = BW - 80, mh = lineY - (by + 64) + 8, k = Math.min(mw / si.naturalWidth, mh / si.naturalHeight), w = si.naturalWidth * k, h = si.naturalHeight * k;
+    const ink = sigInk(si, w, h);
+    x.drawImage(ink.c, cxs - w / 2 - ink.p, lineY + 6 - h - ink.p, w + ink.p * 2, h + ink.p * 2);
+  } else txt(x, '(محل امضا)', cxs, lineY - 34, fnt(700, 26), '#CBD5E1', 'center');
+  txt(x, 'امضا', cxs, by + BH - 14, fnt(900, 25), DC.navy2, 'center');
+  x.save(); x.translate(DX0 + 165, sy + 118); x.rotate(-0.21); x.globalAlpha = 0.86;
   x.strokeStyle = DC.navy2; x.fillStyle = DC.navy2; x.lineWidth = 6; x.beginPath(); x.arc(0, 0, 96, 0, Math.PI * 2); x.stroke();
   x.lineWidth = 2; x.beginPath(); x.arc(0, 0, 83, 0, Math.PI * 2); x.stroke();
   for (let k = 0; k < 36; k++) { const a = k * Math.PI / 18; x.beginPath(); x.arc(Math.cos(a) * 89.5, Math.sin(a) * 89.5, 1.7, 0, Math.PI * 2); x.fill(); }
@@ -11214,7 +11331,7 @@ App.docLog = () => LOG();
 App.renameMore = function (db, oldName, nn) {
   if (!db.docs) return;
   db.docs = Object.assign({}, db.docs);
-  ['names', 'notes', 'inv', 'debt', 'cred'].forEach(k => { const o = db.docs[k]; if (o && o[oldName] != null) { db.docs[k] = Object.assign({}, o); db.docs[k][nn] = o[oldName]; delete db.docs[k][oldName]; } });
+  ['names', 'notes', 'why', 'inv', 'debt', 'cred', 'trust'].forEach(k => { const o = db.docs[k]; if (o && o[oldName] != null) { db.docs[k] = Object.assign({}, o); db.docs[k][nn] = o[oldName]; delete db.docs[k][oldName]; } });
   if (db.docs.log) db.docs.log = db.docs.log.map(r => (r && r.name === oldName ? Object.assign({}, r, { name: nn }) : r));
 };
 
@@ -11318,7 +11435,7 @@ D.nameLine = (name, act, data) => '<div class="dnl noprint"><span>در گواه�
 /* ---- ✍️ the signature box (on the pages of the sheets) ---- */
 D.sigBox = function () {
   sigImg(); const u = docs().sig || '';
-  return '<div class="box dsg noprint"><div class="dsg-h"><b>✍️ امضای من</b><small>پای همهٔ گواهی‌ها (امانی و سرمایه‌گذاری) می‌آید' + (u && docs().sigAt ? ' · ثبت ' + esc(docs().sigAt) : '') + '</small></div>' +
+  return '<div class="box dsg noprint"><div class="dsg-h"><b>✍️ امضای من</b><small>پای همهٔ گواهی‌ها (امانت، سرمایه‌گذاری، بدهی و طلب) می‌آید' + (u && docs().sigAt ? ' · ثبت ' + esc(docs().sigAt) : '') + '</small></div>' +
     (u ? '<div class="dsg-pv"><img alt="امضای من" src="' + esc(u) + '"></div>' : '<div class="dsg-no">هنوز امضا نکرده‌اید؛ یک بار امضا کنید تا روی همهٔ برگه‌ها بیاید.</div>') +
     '<div class="bar dsg-b">' + btn('sg-open', u ? 'ghost' : 'violet', u ? '✏️ امضای دوباره' : '✍️ امضا کردن') + (u ? btn('sg-del', 'ghost', '🗑 برداشتن امضا') : '') + '</div></div>';
 };
@@ -11338,7 +11455,7 @@ D.sigPad = function () {
   cv.addEventListener('pointermove', ev => {
     if (!PAD || !PAD.pts) return; ev.preventDefault();
     const p = at(ev), L = PAD.pts, q = L[L.length - 1], dt = Math.max(1, p[2] - q[2]), v = Math.hypot(p[0] - q[0], p[1] - q[1]) / dt;
-    PAD.w = PAD.w * 0.7 + Math.max(3.5, Math.min(8.5, 9 - v * 2.2)) * 0.3;   // faster → thinner, like ink
+    PAD.w = PAD.w * 0.7 + Math.max(5, Math.min(11, 11.5 - v * 2.4)) * 0.3;   // faster → thinner, like ink
     L.push(p);
     if (L.length >= 3) {
       const a = L[L.length - 3], b = L[L.length - 2], c = L[L.length - 1];
@@ -11490,10 +11607,28 @@ App.trustMemo = function (asset) {
   const by = new Map(); open().filter(t => t.kind === 'fx' && t.asset === asset).forEach(t => by.set(t.person, (by.get(t.person) || 0) + qtyOf(t)));
   return [...by.entries()].filter(e => e[1] > 1e-9).map(e => ({ person: e[0], q: e[1] }));
 };
+/* v47.2: a place is the same place whatever its spelling («صندوق ارزی» = «صندوق‌ارزی  مانا») */
+const locKey = l => (App.norm ? App.norm(String(l || '')) : String(l || '').trim()).replace(/\s+/g, '');
+App.trustLocKey = locKey;
 App.trustMemoAt = function (loc, asset) {
-  const by = new Map();
-  open().filter(t => t.kind === 'fx' && t.asset === asset).forEach(t => (t.moves || []).forEach(m => { if (m && (m.loc || '') === (loc || '')) by.set(t.person, (by.get(t.person) || 0) + N(m.qty)); }));
+  const by = new Map(), k = locKey(loc);
+  open().filter(t => t.kind === 'fx' && t.asset === asset).forEach(t => (t.moves || []).forEach(m => { if (m && locKey(m.loc) === k) by.set(t.person, (by.get(t.person) || 0) + N(m.qty)); }));
   return [...by.entries()].filter(e => e[1] > 1e-9).map(e => ({ person: e[0], q: e[1] }));
+};
+/* every place that holds something of others: [{loc, key, fx: Map(asset → [{person, q}]), other: [{person, text}]}] */
+App.trustLocs = function () {
+  const P0 = new Map();
+  open().forEach(t => {
+    const L = new Map(); (t.moves || []).forEach(m => { if (m && m.loc) { const k = locKey(m.loc); const o = L.get(k) || { loc: m.loc, q: 0 }; o.q += N(m.qty); L.set(k, o); } });
+    L.forEach((o, k) => {
+      if (o.q <= 1e-9) return;
+      if (!P0.has(k)) P0.set(k, { loc: o.loc, key: k, fx: new Map(), other: [] });
+      const P = P0.get(k);
+      if (t.kind === 'fx') { if (!P.fx.has(t.asset)) P.fx.set(t.asset, []); P.fx.get(t.asset).push({ person: t.person, q: o.q }); }
+      else P.other.push({ person: t.person, text: qtyTxt(t, o.q) });
+    });
+  });
+  return [...P0.values()];
 };
 App.trustQtyTxt = qtyTxt;
 
@@ -11575,36 +11710,39 @@ function docHist(p) {
   return L.sort((a, b) => a.d.localeCompare(b.d));
 }
 /* v47.0: what is on the sheet (a plain «state», kept in the archive) → the sheet */
-function trustState(person) {
+function trustState(person, over) {
   const p = people().find(x => x.person === person), D = App.doc; if (!p || !D) return null;
+  const c = over || (App.docCfgOf ? App.docCfgOf('trust', person) : { hist: true, rows: 5, note: true, extra: [] });
   const who = owner(), nm = D.formal(person), rows = docRows(p), hist = docHist(p), extra = D.noteOf(person);
-  return { v: 1, person, nm, who, rows, hist, extra, today: App.today, date: D.dateWords(), code: D.code('TR', [person, nm, rows.map(r => [r.name, r.q]), who]) };
+  return { v: 1, person, nm, who, rows, hist, extra, c, k: App.docExtraTiles ? App.docExtraTiles(c) : [], today: App.today, date: D.dateWords(), code: D.code('TR', [person, nm, rows.map(r => [r.name, r.q]), who, c]) };
 }
 function trustSheet(st) {
   if (!st) return null;
-  const D = App.doc, nm = st.nm, who = st.who, rows = st.rows, hist = st.hist || [];
+  const D = App.doc, nm = st.nm, who = st.who, rows = st.rows, hist = st.hist || [], c = st.c || { hist: true, rows: 0, note: true }, n = +c.rows > 0 ? Math.min(+c.rows, hist.length) : 0;
   return {
-    kind: 'trust', title: 'گواهی امانت', sub: 'صورت اقلام امانیِ ' + nm, tag: 'فقط مقدار — بدون مبلغ ریالی', icon: 'lock', mark: 'امانت', seal: 'امانت',
+    kind: 'trust', title: String(c.title || '').trim() || 'گواهی امانت', sub: 'صورت اقلام امانیِ ' + nm, tag: 'فقط مقدار — بدون مبلغ ریالی', icon: 'lock', mark: 'امانت', seal: 'امانت',
     cards: [['صاحب امانت', nm], [who ? 'امانت‌دار' : 'تعداد اقلام', who || D.fa(rows.length) + ' قلم'], ['تاریخ', st.date], ['شمارهٔ سند', st.code, true]],
     code: st.code, today: st.today, sigLabel: 'امانت‌دار', sigName: who, file: 'امانی ' + st.person, pdfTitle: 'گواهی امانت — ' + nm,
-    state: st, data: { rows, hist, extra: st.extra },
+    state: st, data: { rows, hist, extra: st.extra, n, c },
     body: (m, K) => [
       K.para(m, 'بدین‌وسیله گواهی می‌شود که اقلام زیر متعلق به ' + nm + ' است و به‌صورت امانت نزد ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' نگهداری می‌شود.'),
       K.table(m, { head: ['ردیف', 'شرح دارایی', 'مقدار'], rows }),
-      hist.length ? K.list(m, { title: 'ریز دریافت و تحویل', min: 3, max: 14, rows: hist.map(h => ({ d: h.d, tag: h.inn ? 'دریافت' : 'تحویل', tc: h.inn ? 'g' : 'r', what: h.q + ' ' + (h.u && h.n.indexOf(h.u) < 0 ? h.u + ' ' : '') + h.n })) }) : null,
-      K.note(m, ['این برگه فقط «مقدار» هر قلم را نشان می‌دهد و مبلغ ریالی ندارد. اقلام بالا تماماً متعلق به ' + nm + ' است و جزو دارایی امانت‌دار نیست.', st.extra])
+      (st.k || []).length ? K.kpis(m, st.k) : null,
+      c.hist !== false && hist.length ? K.list(m, { title: 'ریز دریافت و تحویل', min: n || 3, max: n || 14, rows: hist.map(h => ({ d: h.d, tag: h.inn ? 'دریافت' : 'تحویل', tc: h.inn ? 'g' : 'r', what: h.q + ' ' + (h.u && h.n.indexOf(h.u) < 0 ? h.u + ' ' : '') + h.n })) }) : null,
+      (c.note !== false || st.extra) ? K.note(m, [c.note !== false ? 'این برگه فقط «مقدار» هر قلم را نشان می‌دهد و مبلغ ریالی ندارد. اقلام بالا تماماً متعلق به ' + nm + ' است و جزو دارایی امانت‌دار نیست.' : '', st.extra]) : null
     ]
   };
 }
-const trustSpec = person => trustSheet(trustState(person));
+const trustSpec = (person, over) => trustSheet(trustState(person, over));
+App.trustSpec = trustSpec;
 if (App.doc) App.doc.register('trust', trustSpec, trustSheet);
 App.trustDocFile = (person, kind) => App.doc.file('trust', person, kind);
-App.trustDocInfo = person => { const s = trustSpec(person); return s ? { date: App.doc.dateWords(), code: s.code, rows: s.data.rows, hist: s.data.hist.length, name: s.cards[0][1] } : null; };
+App.trustDocInfo = person => { const s = trustSpec(person); return s ? { date: App.doc.dateWords(), code: s.code, rows: s.data.rows, hist: s.data.hist.length, n: s.data.n, title: s.title, name: s.cards[0][1] } : null; };
 function repCard(p) {
   const who = owner(), d = ' data-p="' + esc(p.person) + '"';
   return App.doc.card('trust', p.person, {
     ico: '🤝', head: 'امانی‌های ' + p.person, sub: (who ? 'نزد ' + esc(who) + ' · ' : '') + 'تا تاریخ <bdi class="num">' + esc(today()) + '</bdi> · ' + p.rows.length + ' قلم',
-    top: App.doc.nameLine(p.person, 'tr-person', d),
+    top: App.doc.nameLine(p.person, 'tr-person', d) + (App.docCfgLine ? App.docCfgLine('trust', p.person) : ''),
     foot: 'برگه «عکس» است (PDF هم همان عکس است)؛ متنی در آن نیست که گیرنده بتواند عوضش کند. فقط مقدار دارد — نه مبلغ، نه محل نگهداری.'
   });
 }
@@ -11973,19 +12111,44 @@ document.addEventListener('change', ev => {
   setTimeout(() => App.trustNew(asset ? { asset } : null), 30);
 }, true);
 
-/* ------------------------------------------------------------ the places page: what lies there for others (memorandum) */
-{ const f0 = P.fxloc;
-  if (typeof f0 === 'function') P.fxloc = function () {
-    const r = f0.apply(this, arguments);
-    try {
-      const by = new Map();
-      open().forEach(t => { const L = new Map(); (t.moves || []).forEach(m => { if (m && m.loc) L.set(m.loc, (L.get(m.loc) || 0) + N(m.qty)); }); L.forEach((q, l) => { if (q > 1e-9) { if (!by.has(l)) by.set(l, []); by.get(l).push(qtyTxt(t, q) + ' ← ' + t.person); } }); });
-      if (by.size && r && typeof r.html === 'string') r.html += '<div class="box"><h2>🤝 امانی نزد من در این محل‌ها <small>انتظامی؛ علاوه بر موجودی خودتان — فقط مقدار</small></h2>' +
-        [...by.entries()].map(([l, L]) => '<div class="trq-l" style="margin:8px 0"><b>📍 ' + esc(l) + '</b>' + L.map(x => '<span class="trq sm">' + esc(x) + '</span>').join('') + '</div>').join('') + '</div>';
-    } catch (e) { }
-    return r;
+/* ------------------------------------------------------------ v47.2 — the places page («محل نگهداری ارز و طلا»): in every place, under each asset,
+   «👤 مال خودم» and «🤝 امانیِ …» and «＝ جمع موجود در این محل» (others' things are memorandum: not in the values) */
+{
+  const fmt = H.fmt;
+  const tr5 = (a, b, c2, d, e, cls) => '<tr class="' + cls + '"><td>' + a + '</td><td class="n dep">' + b + '</td><td class="n">' + (c2 || '') + '</td><td class="n bal">' + (d || '') + '</td><td class="n prf">' + (e || '') + '</td></tr>';
+  App.fxLocsPlus = function (locs) {
+    const L = locs.map(l => Object.assign({}, l, { items: l.items.slice() }));
+    App.trustLocs().forEach(P => {
+      let l = L.find(x => !x.unknown && locKey(x.name) === P.key);
+      if (!l) { l = { name: P.loc, unknown: false, val: 0, items: [], only: true }; L.push(l); }
+      P.fx.forEach((ppl, asset) => { if (!l.items.some(i => i.name === asset)) { const a = (App.db.assets || []).find(x => x.name === asset) || {}; const pos = (E.fxPositions(App.C) || []).find(x => x.name === asset) || {}; l.items.push({ name: asset, display: a.display || asset, unit: a.unit || '', qty: 0, val: 0, price: pos.price || 0, unreal: 0, onlyT: true }); } });
+      l.tOther = P.other;
+    });
+    return L;
+  };
+  App.fxLocHead = l => (App.trustLocs().some(P => !l.unknown && P.key === locKey(l.name)) ? '<small class="fxtt">🤝 امانی هم دارد · </small>' : '');
+  /* the row of the asset: «جمع موجود» (mine + others'); under it, how much is whose */
+  App.fxLocQty = function (l, i) {
+    const tm = l.unknown ? [] : App.trustMemoAt(l.name, i.name), u = ' <span class="hint">' + esc(i.unit) + '</span>';
+    if (!tm.length) return '<b>' + H.fmtq(i.qty) + '</b>' + u;
+    return '<b>' + H.fmtq(i.qty + tm.reduce((t, x) => t + x.q, 0)) + '</b>' + u + '<br><small class="fxtt">جمع موجود در این محل</small>';
+  };
+  App.fxLocItem = function (l, i) {
+    if (l.unknown) return '';
+    const tm = App.trustMemoAt(l.name, i.name); if (!tm.length) return '';
+    const u = ' <span class="hint">' + esc(i.unit) + '</span>';
+    return tr5('　👤 مال خودم' + (App.C.owner ? ' (' + esc(App.C.owner) + ')' : ''), H.fmtq(i.qty) + u, '', i.qty ? fmt(i.val) : '—', '', 'trs') +
+      tm.map(t => tr5('　🤝 امانیِ ' + esc(t.person), H.fmtq(t.q) + u, '', '<small>انتظامی</small>', '', 'trs tr')).join('');
+  };
+  App.fxLocMore = l => (l.tOther && l.tOther.length ? l.tOther.map(o => tr5('🤝 امانیِ ' + esc(o.person), esc(o.text), '', '<small>انتظامی</small>', '', 'trs tr')).join('') : '');
+  App.fxTotItem = function (p) {
+    const tm = App.trustMemo(p.name); if (!tm.length) return '';
+    const tq = tm.reduce((t, x) => t + x.q, 0), u = ' <span class="hint">' + esc(p.unit) + '</span>';
+    return tm.map(t => '<tr class="trs tr"><td>　🤝 ＋ امانیِ ' + esc(t.person) + '</td><td class="n dep">' + H.fmtq(t.q) + u + '</td><td></td><td class="n bal"><small>انتظامی</small></td></tr>').join('') +
+      '<tr class="trs tot"><td>　＝ جمع نزد من (با امانی‌ها)</td><td class="n dep"><b>' + H.fmtq(p.qty + tq) + '</b>' + u + '</td><td></td><td></td></tr>';
   };
 }
+
 
 /* ------------------------------------------------------------ the balance sheet: memorandum accounts under the totals (quantities only) */
 function bsMemo() {
@@ -14556,19 +14719,25 @@ const extraTiles = c => (c.extra || []).filter(e => e && (String(e[0] || '').tri
 /* ---- the settings of a kind of sheet ---- */
 const KIND = {
   inv: {
-    DEF: { title: '', bal: true, words: true, rate: true, paid: true, now: true, next: true, led: true, desc: true, rows: 0, note: true, extra: [] },
+    DEF: { title: '', bal: true, words: true, rate: true, paid: true, now: true, next: true, led: true, desc: true, rows: 5, note: true, extra: [] },
     PARTS: [['bal', 'مانده سرمایه', 'عدد بزرگ وسط برگه'], ['words', 'مانده به حروف', ''], ['rate', 'نرخ سود سالانه', ''], ['paid', 'سود پرداختی از اول سال', ''], ['now', 'سود تا این لحظه', 'از سررسید قبلی'], ['next', 'سررسید بعدی سود', 'با مبلغ حدودی'], ['led', 'آخرین گردش‌های حساب', 'واریز، برداشت، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «واریز / برداشت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']],
     title: 'گواهی سرمایه‌گذاری', who: 'سرمایه‌گذاران', ok: isInv, open: n => App.memberDoc(n)
   },
   debt: {
-    DEF: { title: '', bal: true, words: true, led: true, desc: true, rows: 0, from: '', note: true, extra: [] },
-    PARTS: [['bal', 'مبلغ بدهی', 'عدد بزرگ وسط برگه'], ['words', 'مبلغ به حروف', ''], ['led', 'گردش حساب', 'بدهکار، بستانکار، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «پرداخت / دریافت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']],
+    DEF: { title: '', bal: true, words: true, why: true, led: true, desc: true, rows: 5, note: true, extra: [] },
+    PARTS: [['bal', 'مبلغ بدهی', 'عدد بزرگ وسط برگه'], ['words', 'مبلغ به حروف', ''], ['why', '📌 «بابت …» با خط درشت', 'در «✏️ ویرایش» می‌نویسید'], ['led', 'گردش حساب', 'بدهکار، بستانکار، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «پرداخت / دریافت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']],
     title: 'گواهی بدهی', who: 'بدهکاران', ok: isDebt, open: n => App.debtDoc(n)
   },
   cred: {
-    DEF: { title: '', bal: true, words: true, led: true, desc: true, rows: 0, from: '', note: true, extra: [] },
-    PARTS: [['bal', 'مبلغ طلب ایشان', 'عدد بزرگ وسط برگه'], ['words', 'مبلغ به حروف', ''], ['led', 'گردش حساب', 'بدهکار، بستانکار، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «پرداخت / دریافت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']],
+    DEF: { title: '', bal: true, words: true, why: true, led: true, desc: true, rows: 5, note: true, extra: [] },
+    PARTS: [['bal', 'مبلغ طلب ایشان', 'عدد بزرگ وسط برگه'], ['words', 'مبلغ به حروف', ''], ['why', '📌 «بابت …» با خط درشت', 'در «✏️ ویرایش» می‌نویسید'], ['led', 'گردش حساب', 'بدهکار، بستانکار، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «پرداخت / دریافت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']],
     title: 'گواهی طلب', who: 'بستانکاران', ok: isCred, open: n => App.credDoc(n)
+  },
+  /* v47.3: «گواهی امانت» too — how many lines of «ریز دریافت و تحویل», the title, lines of his own */
+  trust: {
+    DEF: { title: '', hist: true, rows: 5, note: true, extra: [] },
+    PARTS: [['hist', 'ریز دریافت و تحویل', 'تاریخ‌دار'], ['note', 'توضیح پایین برگه', '«این برگه فقط مقدار …»']],
+    title: 'گواهی امانت', who: 'صاحبان امانت', ok: n => !!(App.trustPeople && App.trustPeople().some(p => p.person === n)), open: n => App.trustReport(n)
   }
 };
 const store = kind => ((App.db.docs && App.db.docs[kind]) || {});
@@ -14637,15 +14806,15 @@ function accState(kind, name, over) {
   let bal = 0; try { bal = Math.round(N(App.C.balance(name))); } catch (e) { bal = 0; }
   let all = []; try { all = (E.ledger(App.C, name) || []).filter(x => Math.abs(N(x.dr) - N(x.cr)) > 0.5).map(x => ({ d: String(x.date || ''), T: (x.row && x.row.T) || 0, desc: String(x.desc || ''), amt: Math.round(N(x.dr) - N(x.cr)), bal: Math.round(N(x.bal)) })); } catch (e) { all = []; }
   if (!c.desc) all = all.map(x => Object.assign({}, x, { desc: x.amt > 0 ? 'پرداخت به ایشان' : 'دریافت از ایشان' }));
-  const from = H.normDate(String(c.from || '')) || '', fs = from ? serOf(from) : 0;
+  const from = '', fs = 0;   // v47.3 (the owner: «از تاریخ نمی‌خواهم؛ تعداد گردش — مثلاً پنج گردش آخر»)
   let led = all, lim = 0;
   if (fs) {
     const before = all.filter(x => x.T && x.T < fs), after = all.filter(x => !x.T || x.T >= fs);
     led = (before.length ? [{ d: from, desc: 'مانده از قبل', amt: 0, bal: before[before.length - 1].bal, open: true }] : []).concat(after);
     lim = +c.rows > 0 ? Math.min(+c.rows, led.length) : led.length;   // from a date: every line from it (a long period makes a longer page)
   } else { if (+c.rows > 0) lim = Math.min(+c.rows, led.length); led = led.slice(-20); }
-  const code = D.code(ACC[kind].pre, [name, nm, bal, all.length, from, who, c]);
-  return { v: 1, kind, name, nm, who, extra, c, bal, from, lim, k: extraTiles(c), led: led.slice(-80).map(x => { const o = Object.assign({}, x); delete o.T; return o; }), today: App.today, date: D.dateWords(), code };
+  const code = D.code(ACC[kind].pre, [name, nm, bal, all.length, D.whyOf(name), who, c]);
+  return { v: 1, kind, name, nm, who, extra, why: D.whyOf(name), c, bal, from, lim, k: extraTiles(c), led: led.slice(-80).map(x => { const o = Object.assign({}, x); delete o.T; return o; }), today: App.today, date: D.dateWords(), code };
 }
 function accSheet(kind, st) {
   if (!st) return null;
@@ -14655,9 +14824,10 @@ function accSheet(kind, st) {
     kind, title, sub: W.sub(nm, who), tag: (c.bal ? W.tag : 'حساب') + (c.led ? ' و گردش حساب' + (from ? ' از ' + fa(from) : '') : '') + ' تا تاریخ صدور — به ریال', icon: 'coins', mark: W.mark, seal: W.seal,
     cards: [[W.him, nm], [who ? W.me : 'تاریخ صدور', who || st.date], ['تاریخ', st.date], ['شمارهٔ سند', st.code, true]],
     code: st.code, today: st.today, sigLabel: W.me, sigName: who, file: W.file + st.name, pdfTitle: title + ' — ' + nm,
-    state: st, data: { bal, k, led, extra: st.extra, c, from },
+    state: st, data: { bal, k, led, extra: st.extra, c, from, lim, why: c.why !== false ? st.why : '' },
     body: (m, K) => [
       K.para(m, c.bal ? W.intro(nm, who) : 'بدین‌وسیله گواهی می‌شود که حساب ' + nm + ' نزد ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' به شرح زیر است:', { gap: 16 }),
+      c.why !== false && st.why ? K.why(m, st.why) : null,
       c.bal ? K.hero(m, { l: bal < -0.5 ? W.heroNeg : W.hero, v: fa(fmt(Math.abs(bal))), u: 'ریال', w: c.words ? 'به حروف: ' + D.words(Math.abs(bal)) + ' ریال' : '' }) : null,
       k.length ? K.kpis(m, k) : null,
       c.led && led.length ? K.ledger(m, { title: 'گردش حساب' + (from ? ' از ' + fa(from) : ''), head: ['تاریخ', 'شرح', 'بدهکار', 'بستانکار', 'مانده'], rows: led, min: lim || 3, max: lim || 12 }) : null,
@@ -14669,22 +14839,24 @@ const debtSheet = st => accSheet('debt', st), credSheet = st => accSheet('cred',
 const debtSpec = (name, over) => debtSheet(accState('debt', name, over)), credSpec = (name, over) => credSheet(accState('cred', name, over));
 D.register('debt', name => debtSpec(name), debtSheet);
 D.register('cred', name => credSpec(name), credSheet);
-const accInfo = s => (s ? { code: s.code, bal: s.data.bal, led: s.data.led.length, first: s.data.led[0] || null, name: s.cards[0][1], title: s.title, from: s.data.from, words: D.words(Math.abs(s.data.bal)) } : null);
+const accInfo = s => (s ? { code: s.code, bal: s.data.bal, led: s.data.led.length, first: s.data.led[0] || null, name: s.cards[0][1], title: s.title, from: s.data.from, lim: s.data.lim, why: s.data.why, words: D.words(Math.abs(s.data.bal)) } : null);
 App.debtDocInfo = name => accInfo(debtSpec(name));
 App.credDocInfo = name => accInfo(credSpec(name));
-const SPEC = { inv: invSpec, debt: debtSpec, cred: credSpec };
+const SPEC = { inv: invSpec, debt: debtSpec, cred: credSpec, trust: (name, over) => (App.trustSpec ? App.trustSpec(name, over) : null) };
+App.docExtraTiles = extraTiles;
 
 /* ---- the cards and the windows ---- */
 function cfgSum(kind, name) {
-  const c = cfgOf(kind, name), P0 = KIND[kind].PARTS, on = P0.filter(p => c[p[0]] && !(p[0] === 'desc' && !c.led)).map(p => p[1]), ex = (c.extra || []).filter(e => e && (e[0] || e[1])).length;
-  return (on.length ? on.join('، ') : 'هیچ') + (c.led && c.from ? ' · گردش از ' + c.from : '') + (ex ? ' + ' + fa(ex) + ' سطر دلخواه' : '') + (c.led && +c.rows > 0 ? ' · ' + fa(c.rows) + ' ردیف گردش' : '');
+  const c = cfgOf(kind, name), P0 = KIND[kind].PARTS, on = P0.filter(p => c[p[0]] && !(p[0] === 'desc' && !c.led) && !(p[0] === 'why' && !D.whyOf(name))).map(p => p[1].replace(/^📌 /, '')), ex = (c.extra || []).filter(e => e && (e[0] || e[1])).length;
+  return (on.length ? on.join('، ') : 'هیچ') + (ex ? ' + ' + fa(ex) + ' سطر دلخواه' : '') + (c.led || c.hist ? ' · ' + (+c.rows > 0 ? fa(c.rows) + ' گردش آخر' : 'گردش تا جا هست') : '');
 }
+App.docCfgLine = (kind, name) => '<div class="dnl noprint"><span>⚙️ روی برگه: <b>' + esc(cfgSum(kind, name)) + '</b></span>' + D.btn('ad-cfg', 'sm violet', '⚙️ تنظیم برگه (کم و زیاد)', ' data-k="' + kind + '" data-n="' + esc(name) + '"') + '</div>';
 function docCard(kind, name) {
   const d = ' data-k="' + kind + '" data-n="' + esc(name) + '"';
   let bal = 0; try { bal = kind === 'inv' ? (invRow(name) || {}).bal || 0 : App.C.balance(name); } catch (e) { bal = 0; }
   return D.card(kind, name, {
     ico: '📜', head: KIND[kind].title + ' — ' + name, sub: (kind === 'inv' ? 'مانده ' : kind === 'debt' ? 'بدهی ' : 'طلب ') + '<bdi class="num">' + esc(fmt(bal)) + '</bdi> ریال · تا تاریخ <bdi class="num">' + esc(E.serToText(App.today)) + '</bdi>',
-    top: D.nameLine(name, 'ad-edit', d) + '<div class="dnl noprint"><span>⚙️ روی برگه: <b>' + esc(cfgSum(kind, name)) + '</b></span>' + D.btn('ad-cfg', 'sm violet', '⚙️ تنظیم برگه (کم و زیاد)', d) + '</div>',
+    top: D.nameLine(name, 'ad-edit', d) + (kind === 'debt' || kind === 'cred' ? '<div class="dnl why noprint"><span>📌 بابت: <b>' + (D.whyOf(name) ? esc(D.whyOf(name)) : '<i>هنوز نوشته نشده</i>') + '</b></span>' + D.btn('ad-edit', 'sm ghost', '✏️ نوشتن «بابت»', d) + '</div>' : '') + '<div class="dnl noprint"><span>⚙️ روی برگه: <b>' + esc(cfgSum(kind, name)) + '</b></span>' + D.btn('ad-cfg', 'sm violet', '⚙️ تنظیم برگه (کم و زیاد)', d) + '</div>',
     foot: 'برگه «عکس» است (PDF هم همان عکس است)؛ متنی در آن نیست که گیرنده بتواند عوضش کند. عددها همان عددهای دفتر شما در امروز است.'
   });
 }
@@ -14762,7 +14934,8 @@ App.personEdit = function (kind, name, back) {
   let h = '<div class="trw amsw pew">' +
     '<div class="pe-sec"><b>👤 نام</b>' + f('pe_name', 'نام حساب <small>(در همه‌جای برنامه و دفتر عوض می‌شود)</small>', name) +
     f('pe_full', '📜 نام کامل و رسمی در گواهی‌ها <small>(اختیاری)</small>', D.fullOf(name), '', 'مثلاً: ' + name + ' (نام و نام خانوادگی)') +
-    f('pe_note', '🖊 توضیح روی گواهی‌ها <small>(اختیاری)</small>', D.noteOf(name), '', 'یک یا دو جمله') + '</div>';
+    f('pe_note', '🖊 توضیح روی گواهی‌ها <small>(اختیاری)</small>', D.noteOf(name), '', 'یک یا دو جمله') +
+    (kind === 'debt' || kind === 'cred' ? f('pe_why', '📌 بابت چه؟ <small>(روی گواهی با خط درشت می‌آید)</small>', D.whyOf(name), '', 'مثلاً: پرداخت اقساط بانک ملی') : '') + '</div>';
   if (kind === 'inv') {
     let cur = 0; try { cur = App.C.eng.rateOn(name, App.today); } catch (e) { cur = 0; }
     const pf = ((App.db.profitFrom || {})[name]) || '';
@@ -14776,7 +14949,7 @@ App.personEdit = function (kind, name, back) {
 };
 function peSave() {
   if (!PE) return;
-  const { kind, name, back } = PE, nn = peVal('pe_name'), full = peVal('pe_full'), note = peVal('pe_note');
+  const { kind, name, back } = PE, nn = peVal('pe_name'), full = peVal('pe_full'), note = peVal('pe_note'), why = document.getElementById('pe_why') ? peVal('pe_why') : null;
   if (!nn) { App.toast('نام را بنویسید', true); return; }
   if (nn !== name && (App.db.accounts || []).some(a => App.norm(a.name) === App.norm(nn))) { App.toast('نام «' + nn + '» از قبل هست', true); return; }
   let rate = null, base = '', pday = null, pfrom = null;
@@ -14792,6 +14965,7 @@ function peSave() {
   const route0 = App.accountRoute(name);
   App.commit('ویرایش ' + name, db => {
     D.setNames(db, name, full, note);
+    if (why != null) D.setWhy(db, name, why);
     if (rate != null) db.rates.push({ member: name, rate, scope: E.SCOPES[0], base, to: '' });
     if (pday != null) { db.profitDay = db.profitDay || {}; db.profitDay[name] = pday; }
     if (pfrom != null) { db.profitFrom = db.profitFrom || {}; if (pfrom) db.profitFrom[name] = pfrom; else delete db.profitFrom[name]; }
@@ -14816,8 +14990,8 @@ App.docCfg = function (kind, name) {
     '<div class="cf-hint">هر چه نمی‌خواهید بردارید، هر چه می‌خواهید اضافه کنید؛ پیش‌نمایش پایین همان لحظه عوض می‌شود.</div>' +
     '<div class="field"><label for="cf_title">📜 عنوان برگه</label><input type="text" id="cf_title" class="yellow" value="' + esc(c.title || '') + '" placeholder="' + esc(KIND[kind].title) + '" autocomplete="off"></div>' +
     '<div class="cf-g">' + KIND[kind].PARTS.map(ck).join('') + '</div>' +
-    (kind !== 'inv' ? '<div class="field"><label for="cf_from">📅 گردش حساب از تاریخ <small>(خالی = آخرین ردیف‌ها، تا جا هست)</small></label><input type="text" id="cf_from" class="yellow" value="' + esc(c.from || '') + '" placeholder="مثلاً 1405/01/01" inputmode="numeric" autocomplete="off"></div>' : '') +
-    '<div class="field"><label for="cf_rows">🧾 چند ردیف از گردش حساب؟</label><select id="cf_rows" class="yellow">' + [[0, kind !== 'inv' ? 'خودکار (از آن تاریخ همه، وگرنه تا جا هست)' : 'خودکار (تا جا هست — حدود ۴ تا ۱۲)'], [3, '۳ ردیف'], [5, '۵ ردیف'], [8, '۸ ردیف'], [12, '۱۲ ردیف'], [20, '۲۰ ردیف']].map(o => '<option value="' + o[0] + '"' + (+c.rows === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
+    '<div class="field"><label for="cf_rows">🧾 ' + (kind === 'trust' ? 'چند ردیف آخرِ «دریافت و تحویل» روی برگه بیاید؟' : 'چند گردش آخر روی برگه بیاید؟') + '</label><select id="cf_rows" class="yellow cf-rows">' +
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20].map(n => '<option value="' + n + '"' + (+c.rows === n ? ' selected' : '') + '>' + fa(n) + (kind === 'trust' ? ' ردیف آخر' : ' گردش آخر') + '</option>').join('') + '<option value="0"' + (!(+c.rows > 0) ? ' selected' : '') + '>همه، تا جا هست</option></select></div>' +
     '<div class="cf-x"><b>➕ سطرهای دلخواه</b><small>عنوان و مقدار — مثلاً «قسط بعدی» و «50,000,000 ریال»؛ به حروفِ مبلغ را خود برنامه می‌نویسد. خالی بماند، روی برگه نمی‌آید.</small>' +
     ex.map((e, i) => '<div class="grid2"><input type="text" class="yellow" data-cx="' + i + '" data-p="0" value="' + esc(e[0] || '') + '" placeholder="عنوان" autocomplete="off"><input type="text" class="yellow" data-cx="' + i + '" data-p="1" value="' + esc(e[1] || '') + '" placeholder="مقدار" autocomplete="off"></div>').join('') + '</div>' +
     '<div class="cf-sc"><label><input type="radio" name="cf_sc" value="one"' + (CF.own || !all['*'] ? ' checked' : '') + '> فقط برای <b>' + esc(name) + '</b></label><label><input type="radio" name="cf_sc" value="all"' + (!CF.own && all['*'] ? ' checked' : '') + '> برای <b>همهٔ ' + KIND[kind].who + '</b> (پیش‌فرض)</label></div>' +
@@ -14832,7 +15006,7 @@ function readCF() {
   document.querySelectorAll('#modalBg [data-cf]').forEach(i => { c[i.dataset.cf] = !!i.checked; });
   c.title = String((document.getElementById('cf_title') || {}).value || '').trim();
   c.rows = +((document.getElementById('cf_rows') || {}).value) || 0;
-  if (CF.kind !== 'inv') c.from = H.normDate(String((document.getElementById('cf_from') || {}).value || '').trim()) || '';
+  delete c.from;
   const ex = []; document.querySelectorAll('#modalBg [data-cx]').forEach(i => { const n = +i.dataset.cx; ex[n] = ex[n] || ['', '']; ex[n][+i.dataset.p] = String(i.value || '').trim(); });
   c.extra = ex.filter(e => e && (e[0] || e[1]));
   return c;
@@ -14844,8 +15018,6 @@ function cfPrev() {
 function cfSave() {
   const c = readCF(); if (!c) return;
   const { kind, name } = CF, all = !!(document.querySelector('#modalBg input[name="cf_sc"][value="all"]') || {}).checked;
-  const raw = String((document.getElementById('cf_from') || {}).value || '').trim();
-  if (kind !== 'inv' && raw && !c.from) { App.toast('تاریخ را مثل 1405/01/01 بنویسید', true); return; }
   App.commit('برگهٔ گواهی: ' + (all ? 'همه' : name), db => {
     db.docs = Object.assign({}, db.docs || {}); db.docs[kind] = Object.assign({}, db.docs[kind] || {});
     if (all) { db.docs[kind]['*'] = c; delete db.docs[kind][name]; } else db.docs[kind][name] = c;
