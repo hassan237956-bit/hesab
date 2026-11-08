@@ -2696,6 +2696,15 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 @media print{ .tm-fly,.tm-back{display:none!important} }
 .pcs.inf{font-size:1.15em;letter-spacing:.02em}
 
+/* v46.6 (the owner: «حروف را تکه‌تکه کردی؛ اسم را قشنگ بزن») — a name is never squeezed letter by letter: the amounts go to the next line when there is no room;
+   a trust row: the name, then its quantities as chips under it */
+.tm-fly a.tm-r{flex-wrap:wrap;row-gap:8px}
+.tm-fly a.tm-r .nm{min-width:8.5em;overflow-wrap:normal;word-break:normal}
+.tm-fly a.tm-r .bs{flex:1 0 100%;display:flex;flex-wrap:wrap;gap:6px;padding-inline-start:52px;box-sizing:border-box}
+.tm-fly a.tm-r .bs .b{flex:none;color:#3730A3!important;background:#EEF2FF;border:1px solid #C7D2FE;font-size:1.05rem;padding:3px 10px;white-space:nowrap}
+.tm-fly a.tm-r.k-trust .nm{font-size:1.22rem}
+.tm-fly a.tm-r.k-trust .av{background:linear-gradient(145deg,#818CF8,#4338CA)}
+
 /* ---------------------------------------------------------------- v46.1 — the password screen (see the lock module): light, colourful, big and bold
    :is(#lockScr,#lockOut) — the screen keeps its look while it fades away (lockOut) over the program */
 :is(#lockScr,#lockOut){position:fixed;inset:0;z-index:100003;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:14px;
@@ -3019,7 +3028,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "46.5"; window.APP_BUILD = "1405/08/17 15:03";
+window.APP_VERSION = "46.6"; window.APP_BUILD = "1405/08/17 15:25";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -13436,7 +13445,10 @@ function fly(key) {
     if (a.classList.contains('all')) { all = '<a class="tm-all" data-act="go" data-to="' + esc(a.dataset.to || '') + '">' + esc(txt(a)) + '<span>←</span></a>'; return; }
     const c = a.cloneNode(true); c.classList.add('tm-r'); c.classList.remove('on');
     if (a.classList.contains('on')) c.classList.add('here');
-    const b = $('.b', c); if (b) { const v = txt(b); if (/^[-−]/.test(v)) b.classList.add('neg'); else if (/[1-9]/.test(v)) b.classList.add('pos'); }
+    const bs = $$('.b', c);
+    if (bs.length > 1 || c.classList.contains('k-trust')) {                                          // v46.6: several quantities (a trust): under the name, as chips
+      const w = document.createElement('span'); w.className = 'bs'; bs.forEach(x => w.appendChild(x)); c.appendChild(w);
+    } else { const b = bs[0]; if (b) { const v = txt(b); if (/^[-−]/.test(v)) b.classList.add('neg'); else if (/[1-9]/.test(v)) b.classList.add('pos'); } }
     if (!a.classList.contains('rich') && !$('.ico', c)) c.classList.add('tm-x2');
     rows += c.outerHTML;
   });
