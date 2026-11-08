@@ -3128,6 +3128,12 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 /* v47.3: the signature, bigger and darker in the app too */
 .dsg-pv{padding:10px 22px;border:2.5px solid #1E3A8A;box-shadow:0 2px 10px rgba(15,42,74,.12)}
 .dsg-pv img{max-width:min(420px,78vw);max-height:150px;filter:drop-shadow(0 0 .7px #071640) drop-shadow(0 0 .7px #071640) brightness(.55)}
+/* v47.4 */
+.cf-av{margin-top:8px;padding:8px 12px;border-radius:12px;background:#EFF6FF;border:1.5px solid #BFDBFE;color:#1E3A8A;font-size:1.06rem;font-weight:800;line-height:1.9}
+.cf-av.warn{background:#FFF7ED;border-color:#FDBA74;color:#9A3412}
+.cf-av b{font-weight:900}
+.te-inb{margin-top:10px;border:2px solid #F59E0B;background:#FFFBEB}
+.fxtr-r.in{color:#9A3412}.fxtr-r.mine{font-weight:900;border-top:1.5px dashed #CBD5E1}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3135,7 +3141,7 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.3"; window.APP_BUILD = "1405/08/17 22:30";
+window.APP_VERSION = "47.4"; window.APP_BUILD = "1405/08/17 22:54";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -7165,19 +7171,20 @@ function locBox(name) {
   const anyT = S.rows.some(r => TM(r).length) || extraLocs.length;
   const sub = r => {
     const tm = r.only ? (App.fxTrustAt ? App.fxTrustAt(r.loc, name) : []) : TM(r); if (!tm.length) return [];
-    const tq = tm.reduce((t, x) => t + x.q, 0);
-    return [[c('nm trs', '👤 مال خودم'), c('n dep trs', H.fmtq(r.q) + ' <small>' + unit + '</small>'), c('n hid', ''), c('n bal trs', r.q ? fmt(r.v) : '—'), ['n hid', ''], ['act noprint', '']]]
-      .concat(tm.map(t => [c('nm trs tr', '🤝 امانیِ ' + esc(t.person)), c('n dep trs tr', H.fmtq(t.q) + ' <small>' + unit + '</small>'), c('n hid', ''), c('n bal trs tr', '<small>انتظامی</small>'), ['n hid', ''], ['act noprint', '']]));
+    const mine = r.q - App.trustInQ(tm);   // v47.4: a trust already inside my books is taken out of «mine», not added again
+    return [[c('nm trs', '👤 مال خودم'), c('n dep trs', H.fmtq(mine) + ' <small>' + unit + '</small>'), c('n hid', ''), c('n bal trs', mine && r.q ? fmt(Math.round(r.v * mine / r.q)) : '—'), ['n hid', ''], ['act noprint', '']]]
+      .concat(tm.map(t => [c('nm trs tr', '🤝 امانیِ ' + esc(t.person)), c('n dep trs tr', H.fmtq(t.q) + ' <small>' + unit + '</small>'), c('n hid', ''), c('n bal trs tr', '<small>' + (t.qb > 1e-9 ? 'جزو موجودی دفتر' : 'انتظامی') + '</small>'), ['n hid', ''], ['act noprint', '']]));
   };
-  const tqOf = r => { const tm = r.only ? (App.fxTrustAt ? App.fxTrustAt(r.loc, name) : []) : TM(r); return tm.reduce((t, x) => t + x.q, 0); };
+  const tmOf = r => (r.only ? (App.fxTrustAt ? App.fxTrustAt(r.loc, name) : []) : TM(r));
+  const tqOf = r => App.trustAddQ(tmOf(r)), hasT = r => tmOf(r).length > 0;
   const rows0 = S.rows.concat(extraLocs);
   const rows = [].concat(...rows0.map(r => [[c('nm', (r.loc === '' ? '❓ <b>محل نامشخص</b>' : '📍 <b>' + esc(r.loc) + '</b>') + (r.q < -1e-7 ? ' <em class="jc wd">منفی</em>' : '') + (showSh && !r.only ? ' <span class="pc num">' + pctOf(r.share) + '</span>' : '') + (r.only ? ' <small>(فقط امانی)</small>' : '')),
-    c('n dep' + (r.q < -1e-7 ? ' neg' : ''), tqOf(r) > 1e-9 ? '<b>' + H.fmtq(r.q + tqOf(r)) + '</b> <small>' + unit + '</small><br><small class="fxtt">جمع موجود در این محل</small>' : '<b>' + H.fmtq(r.q) + '</b> <small>' + unit + '</small>'), c('n hid', pr > 0 ? fmt(pr) : '—'), c('n bal', '<b>' + fmt(r.v) + '</b>' + (tqOf(r) > 1e-9 ? '<br><small class="fxtt">فقط مال خودم</small>' : '')), ['n hid', showSh && !r.only ? shareBar(r.share) : ''], ['act noprint', r.only ? '' : acts(r)]]].concat(sub(r))));
+    c('n dep' + (r.q < -1e-7 ? ' neg' : ''), hasT(r) ? '<b>' + H.fmtq(r.q + tqOf(r)) + '</b> <small>' + unit + '</small><br><small class="fxtt">جمع موجود در این محل</small>' : '<b>' + H.fmtq(r.q) + '</b> <small>' + unit + '</small>'), c('n hid', pr > 0 ? fmt(pr) : '—'), c('n bal', '<b>' + fmt(r.v) + '</b>' + (hasT(r) ? '<br><small class="fxtt">' + (App.trustInQ(tmOf(r)) > 1e-9 ? 'ارزش ثبت‌شده در دفتر' : 'فقط مال خودم') + '</small>' : '')), ['n hid', showSh && !r.only ? shareBar(r.share) : ''], ['act noprint', r.only ? '' : acts(r)]]].concat(sub(r))));
   const foot = many ? [c('', 'جمع ' + disp), c('n dep', '<b>' + H.fmtq(S.tq) + '</b> <small>' + unit + '</small>'), c('n hid', ''), c('n bal', '<b>' + fmt(S.tv) + '</b>'), c('n hid', ''), c('', '')] : null;
   let h = '<div class="box lsb"><h2>📍 ' + disp + ' نزد من — در هر محل</h2>';
   if (!S.rows.length && !extraLocs.length) h += '<div class="chempty">هیچ موجودی ' + disp + ' ندارید. با دکمهٔ «خرید» ثبت کنید؛ محل نگهداری را همان‌جا می‌پرسد.</div>';
   else h += '<div class="lsub">قیمت روز <b class="num">' + (pr > 0 ? fmt(pr) : '—') + '</b> ریال · جمع موجودی ' + (anyT ? 'خودم ' : '') + '<b class="num dep">' + H.fmtq(S.tq) + '</b> ' + unit + ' · ارزش <b class="num bal">' + fmt(S.tv) + '</b> ریال' +
-    (anyT ? (() => { const tt = (App.trustMemo ? App.trustMemo(name) : []).reduce((t, x) => t + x.q, 0); return ' · <b>با امانی‌ها: <span class="num">' + H.fmtq(S.tq + tt) + '</span> ' + unit + '</b>'; })() : '') + '</div>' +
+    (anyT ? (() => { const all = App.trustMemo ? App.trustMemo(name) : [], ib = App.trustInQ(all); return (ib > 1e-9 ? ' · <b>مال خودم (بدون امانیِ داخل دفتر): <span class="num">' + H.fmtq(S.tq - ib) + '</span> ' + unit + '</b>' : '') + ' · <b>با امانی‌ها: <span class="num">' + H.fmtq(S.tq + App.trustAddQ(all)) + '</span> ' + unit + '</b>'; })() : '') + '</div>' +
     sumTable([['محل', ''], ['موجودی', 'dep'], ['قیمت روز', 'hid'], ['ارزش (ریال)', 'bal'], ['سهم', 'hid'], ['', '']], rows, foot);
   if (!(pr > 0)) h += '<div class="status warn">⚠ برای ' + disp + ' هنوز «قیمت روز» ثبت نشده؛ ارزش صفر دیده می‌شود. ' + lbtn('violet', 'new-entry', ' data-tpl="price" data-x="' + en + '"', '🏷 قیمت روز') + '</div>';
   if (unk) h += '<div class="status info">❓ بخشی از موجودی از قدیم محل ندارد (در خرید و فروشِ جدید دیگر «نامشخص» نداریم). «مشخص کن کجاست» را بزنید تا به محل درستش (مثلاً بانک دی) برود؛ بعد از آن می‌توانید از همان محل بفروشید.</div>';
@@ -7211,10 +7218,10 @@ function locAllBox() {
   const item = (l, i) => {
     const tm = App.fxTrustAt && !l.unknown ? App.fxTrustAt(l.name, i.name) : [];
     if (!tm.length) return '<div class="lci"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep">' + H.fmtq(i.qty) + ' <small>' + esc(i.unit) + '</small></span><span class="num bal">' + fmt(i.val) + '</span></div>';
-    const tq = tm.reduce((t, x) => t + x.q, 0), u = ' <small>' + esc(i.unit) + '</small>';
+    const tq = App.trustAddQ(tm), mine = i.qty - App.trustInQ(tm), u = ' <small>' + esc(i.unit) + '</small>';
     return '<div class="lci lcx"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep"><b>' + H.fmtq(i.qty + tq) + '</b>' + u + '</span><span class="lcj">جمع موجود</span></div>' +
-      '<div class="lcb"><span>👤 مال خودم' + (owner !== 'خودم' ? ' (' + esc(owner) + ')' : '') + '</span><b class="num">' + H.fmtq(i.qty) + u + '</b><span class="num bal">' + (i.qty ? fmt(i.val) : '—') + '</span></div>' +
-      tm.map(t => '<div class="lcb tr"><span>🤝 امانیِ ' + esc(t.person) + '</span><b class="num">' + H.fmtq(t.q) + u + '</b><span class="lcj">انتظامی</span></div>').join('');
+      '<div class="lcb"><span>👤 مال خودم' + (owner !== 'خودم' ? ' (' + esc(owner) + ')' : '') + '</span><b class="num">' + H.fmtq(mine) + u + '</b><span class="num bal">' + (mine && i.qty ? fmt(Math.round(i.val * mine / i.qty)) : '—') + '</span></div>' +
+      tm.map(t => '<div class="lcb tr"><span>🤝 امانیِ ' + esc(t.person) + '</span><b class="num">' + H.fmtq(t.q) + u + '</b><span class="lcj">' + (t.qb > 1e-9 ? 'جزو موجودی دفتر' : 'انتظامی') + '</span></div>').join('');
   };
   const cards = locs.map(l => '<div class="lcard' + (l.unknown ? ' unk' : '') + '"><div class="lch"><b>' + (l.unknown ? '❓ محل نامشخص' : '📍 ' + esc(l.name)) + '</b><span class="num">' + (l.only ? '—' : fmt(l.val)) + '</span></div>' +
     l.items.map(i => item(l, i)).join('') +
@@ -11604,17 +11611,30 @@ App.isTrustAcc = n => !!n && (App.db.trusts || []).some(t => t && t.acc === n);
 App.trustSummary = () => { const L = people(); return { n: L.length, text: L.map(p => p.person + ': ' + p.rows.map(t => qtyTxt(t)).join('، ')).join(' · ') }; };
 /* how much of one asset is held for others (memorandum), per person / per place */
 App.trustMemo = function (asset) {
-  const by = new Map(); open().filter(t => t.kind === 'fx' && t.asset === asset).forEach(t => by.set(t.person, (by.get(t.person) || 0) + qtyOf(t)));
-  return [...by.entries()].filter(e => e[1] > 1e-9).map(e => ({ person: e[0], q: e[1] }));
+  const by = new Map();
+  open().filter(t => t.kind === 'fx' && t.asset === asset).forEach(t => {
+    const o = by.get(t.person) || { person: t.person, q: 0, qb: 0 }; o.q += qtyOf(t); o.qb += inbOf(t.moves); by.set(t.person, o);
+  });
+  return [...by.values()].filter(o => o.q > 1e-9).map(o => ({ person: o.person, q: o.q, qb: Math.max(0, Math.min(o.qb, o.q)) }));
 };
 /* v47.2: a place is the same place whatever its spelling («صندوق ارزی» = «صندوق‌ارزی  مانا») */
 const locKey = l => (App.norm ? App.norm(String(l || '')) : String(l || '').trim()).replace(/\s+/g, '');
 App.trustLocKey = locKey;
 App.trustMemoAt = function (loc, asset) {
   const by = new Map(), k = locKey(loc);
-  open().filter(t => t.kind === 'fx' && t.asset === asset).forEach(t => (t.moves || []).forEach(m => { if (m && locKey(m.loc) === k) by.set(t.person, (by.get(t.person) || 0) + N(m.qty)); }));
-  return [...by.entries()].filter(e => e[1] > 1e-9).map(e => ({ person: e[0], q: e[1] }));
+  open().filter(t => t.kind === 'fx' && t.asset === asset).forEach(t => {
+    const M = (t.moves || []).filter(m => m && locKey(m.loc) === k); if (!M.length) return;
+    const o = by.get(t.person) || { person: t.person, q: 0, qb: 0 }; o.q += M.reduce((s2, m) => s2 + N(m.qty), 0); o.qb += inbOf(M); by.set(t.person, o);
+  });
+  return [...by.values()].filter(o => o.q > 1e-9).map(o => ({ person: o.person, q: o.q, qb: Math.max(0, Math.min(o.qb, o.q)) }));
 };
+/* v47.4 (the owner: «۲۴۰۰ تای الف قبلاً آمده بود؛ چرا دوباره اضافه کردی؟ باید بشود ۱۲٬۷۵۲») — a trust can be marked «already in my books»
+   (m.inb on its moves): those units are inside the quantity the books show as mine, so they are NOT added again to «جمع موجود»;
+   they are taken out of «مال خودم» instead. Only the rest of the trusts is added on top. */
+function inbOf(M) { return (M || []).reduce((s2, m) => s2 + (m && m.inb ? N(m.qty) : 0), 0); }
+App.trustAddQ = tm => (tm || []).reduce((s2, x) => s2 + x.q - (x.qb || 0), 0);   // what lies there beside my books
+App.trustInQ = tm => (tm || []).reduce((s2, x) => s2 + (x.qb || 0), 0);           // what of «my books» is really theirs
+App.trustInb = t => !!t && (t.moves || []).some(m => m && m.inb);
 /* every place that holds something of others: [{loc, key, fx: Map(asset → [{person, q}]), other: [{person, text}]}] */
 App.trustLocs = function () {
   const P0 = new Map();
@@ -11980,16 +12000,19 @@ function teHtml() {
   return '<div class="trw amsw ams-te">' + f('person', '👤 مال چه کسی است؟', TE.person, 'list="te_pl" autocomplete="off"') + '<datalist id="te_pl">' + personNames().map(n => '<option value="' + esc(n) + '">').join('') + '</datalist>' +
     '<div class="field"><label for="te_item">📦 چه چیزی؟</label><select id="te_item" class="yellow">' + opts + '<option value="__other"' + (!fx ? ' selected' : '') + '>📝 چیز دیگر (سند، شمش، …)</option></select></div>' +
     (fx ? '' : '<div class="grid2">' + f('title', 'اسم آن چیز', TE.title, 'autocomplete="off"', 'مثلاً سند ملک') + f('unit', 'واحد', TE.unit, 'autocomplete="off"', 'عدد / گرم / برگ') + '</div>') +
+    /* v47.4: «already in my books» — not added again to the totals */
+    (fx ? '<label class="cf-ck te-inb"><input type="checkbox" id="te_inb"' + (TE.inb ? ' checked' : '') + '><span><b>📒 این مقدار در «موجودی خودم» (دفتر) هم ثبت شده — دوباره جمع نزن</b><small>تیک بزنید اگر این امانی جزو همان عددی است که برنامه به اسم موجودی شما نشان می‌دهد. آن‌وقت در «جمع موجود» دوباره اضافه نمی‌شود و از «مال خودم» کم می‌شود.</small></span></label>' : '') +
     '<div class="ams-sure">🔒 مقدارها و ریزِ دریافت و تحویل همان می‌ماند؛ فقط «مال کیست» و «چه چیزی» عوض می‌شود. به هیچ حسابی دست نمی‌زند.</div></div>';
 }
 function readTE() {
   const g = id => { const el = document.getElementById('te_' + id); return el ? el.value : null; };
   ['person', 'title', 'unit'].forEach(k => { const v = g(k); if (v !== null) TE[k] = v; });
   const it = g('item'); if (it !== null) { if (it === '__other') { TE.kind = 'other'; } else { TE.kind = 'fx'; TE.asset = it; } }
+  const ib = document.getElementById('te_inb'); if (ib) TE.inb = !!ib.checked;
 }
 App.trustEdit = function (id) {
   const t = trustOf(id); if (!t) return;
-  TE = { id, person: t.person, kind: t.kind, asset: t.asset || '', title: t.title || '', unit: t.unit || '' };
+  TE = { id, person: t.person, kind: t.kind, asset: t.asset || '', title: t.title || '', unit: t.unit || '', inb: App.trustInb(t) };
   App.modal('✏️ ویرایش قلم امانی', teHtml(), btn('te-save', 'green big', '✔ ذخیره') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '600px' });
 };
 document.addEventListener('change', ev => {
@@ -12008,6 +12031,8 @@ function saveTE() {
     const t = (db.trusts || []).find(x => x && x.id === e.id); if (!t) return;
     t.person = person; t.kind = e.kind;
     if (e.kind === 'fx') { t.asset = e.asset; delete t.title; delete t.unit; } else { t.title = title; t.unit = unit; delete t.asset; }
+    /* v47.4: «already in my books» — on every receipt / hand-back of this item (a 🔀 move between places stays as it is: the books did not move) */
+    if (e.kind === 'fx' && e.inb) (t.moves || []).forEach(m => { if (m && !m.xfer) m.inb = true; }); else (t.moves || []).forEach(m => { if (m) delete m.inb; });
     mergeSame(db, person);
   });
   const id = TE.id; TE = null; App.closeModal(); App.toast('✔ ذخیره شد'); App.emit();
@@ -12131,21 +12156,23 @@ document.addEventListener('change', ev => {
   App.fxLocQty = function (l, i) {
     const tm = l.unknown ? [] : App.trustMemoAt(l.name, i.name), u = ' <span class="hint">' + esc(i.unit) + '</span>';
     if (!tm.length) return '<b>' + H.fmtq(i.qty) + '</b>' + u;
-    return '<b>' + H.fmtq(i.qty + tm.reduce((t, x) => t + x.q, 0)) + '</b>' + u + '<br><small class="fxtt">جمع موجود در این محل</small>';
+    return '<b>' + H.fmtq(i.qty + App.trustAddQ(tm)) + '</b>' + u + '<br><small class="fxtt">جمع موجود در این محل</small>';
   };
   App.fxLocItem = function (l, i) {
     if (l.unknown) return '';
     const tm = App.trustMemoAt(l.name, i.name); if (!tm.length) return '';
     const u = ' <span class="hint">' + esc(i.unit) + '</span>';
-    return tr5('　👤 مال خودم' + (App.C.owner ? ' (' + esc(App.C.owner) + ')' : ''), H.fmtq(i.qty) + u, '', i.qty ? fmt(i.val) : '—', '', 'trs') +
-      tm.map(t => tr5('　🤝 امانیِ ' + esc(t.person), H.fmtq(t.q) + u, '', '<small>انتظامی</small>', '', 'trs tr')).join('');
+    const inq = App.trustInQ(tm), mine = i.qty - inq;
+    return tr5('　👤 مال خودم' + (App.C.owner ? ' (' + esc(App.C.owner) + ')' : ''), H.fmtq(mine) + u, '', mine && i.qty ? fmt(Math.round(i.val * mine / i.qty)) : '—', '', 'trs') +
+      tm.map(t => tr5('　🤝 امانیِ ' + esc(t.person), H.fmtq(t.q) + u, '', t.qb > 1e-9 ? '<small>جزو موجودی دفتر</small>' : '<small>انتظامی</small>', '', 'trs tr')).join('');
   };
   App.fxLocMore = l => (l.tOther && l.tOther.length ? l.tOther.map(o => tr5('🤝 امانیِ ' + esc(o.person), esc(o.text), '', '<small>انتظامی</small>', '', 'trs tr')).join('') : '');
   App.fxTotItem = function (p) {
     const tm = App.trustMemo(p.name); if (!tm.length) return '';
-    const tq = tm.reduce((t, x) => t + x.q, 0), u = ' <span class="hint">' + esc(p.unit) + '</span>';
-    return tm.map(t => '<tr class="trs tr"><td>　🤝 ＋ امانیِ ' + esc(t.person) + '</td><td class="n dep">' + H.fmtq(t.q) + u + '</td><td></td><td class="n bal"><small>انتظامی</small></td></tr>').join('') +
-      '<tr class="trs tot"><td>　＝ جمع نزد من (با امانی‌ها)</td><td class="n dep"><b>' + H.fmtq(p.qty + tq) + '</b>' + u + '</td><td></td><td></td></tr>';
+    const add = App.trustAddQ(tm), inq = App.trustInQ(tm), u = ' <span class="hint">' + esc(p.unit) + '</span>';
+    return (inq > 1e-9 ? '<tr class="trs"><td>　👤 مال خودم (بدون امانیِ داخل دفتر)</td><td class="n dep">' + H.fmtq(p.qty - inq) + u + '</td><td></td><td></td></tr>' : '') +
+      tm.map(t => '<tr class="trs tr"><td>　🤝 ' + (t.qb > 1e-9 ? '' : '＋ ') + 'امانیِ ' + esc(t.person) + '</td><td class="n dep">' + H.fmtq(t.q) + u + '</td><td></td><td class="n bal"><small>' + (t.qb > 1e-9 ? 'جزو همین موجودی دفتر' : 'انتظامی') + '</small></td></tr>').join('') +
+      '<tr class="trs tot"><td>　＝ جمع نزد من (با امانی‌ها)</td><td class="n dep"><b>' + H.fmtq(p.qty + add) + '</b>' + u + '</td><td></td><td></td></tr>';
   };
 }
 
@@ -14123,7 +14150,7 @@ const q4 = v => H.fmtq(v);
 let K = null, KC = null, KT = null;
 function own() {
   const C = App.C; if (K && KC === C && KT === C.db.trusts) return K;
-  const list = E.fxPositions(C).map(x => { const tm = App.trustMemo ? App.trustMemo(x.name) : []; return Object.assign({}, x, { all: x, tq: 0, tv: 0, tc: 0, tp: tm, tm, tmq: tm.reduce((s, t) => s + t.q, 0) }); });
+  const list = E.fxPositions(C).map(x => { const tm = App.trustMemo ? App.trustMemo(x.name) : []; return Object.assign({}, x, { all: x, tq: 0, tv: 0, tc: 0, tp: tm, tm, tmq: App.trustAddQ ? App.trustAddQ(tm) : tm.reduce((s, t) => s + t.q, 0), tmi: App.trustInQ ? App.trustInQ(tm) : 0 }); });
   K = { list, any: list.some(x => x.tm.length), by: new Map(list.map(x => [x.name, x])) }; KC = C; KT = C.db.trusts; return K;
 }
 App.fxOwn = own;
@@ -14150,11 +14177,16 @@ function trustBox(list, one) {
   const parts = L.map(x => {
     let h = '<div class="fxtr-a">' + (one ? '' : '<div class="fxtr-h">' + esc(x.display || x.name) + '</div>');
     h += '<div class="fxtr-r"><span>موجودی خودم (در دفتر)</span><b class="num">' + esc(qtyTxt(x.qty, x)) + '</b></div>';
-    x.tm.forEach(t => { h += '<div class="fxtr-r plus"><span>＋ امانیِ ' + esc(t.person) + '</span><b class="num">' + esc(qtyTxt(t.q, x)) + '</b></div>'; });
+    /* v47.4: a trust already inside the books is not added again; it is taken out of «mine» */
+    if (x.tmi > 1e-9) {
+      x.tm.filter(t => t.qb > 1e-9).forEach(t => { h += '<div class="fxtr-r in"><span>از همین، امانیِ ' + esc(t.person) + ' است</span><b class="num">' + esc(qtyTxt(t.qb, x)) + '</b></div>'; });
+      h += '<div class="fxtr-r mine"><span>👤 مال خودم</span><b class="num">' + esc(qtyTxt(x.qty - x.tmi, x)) + '</b></div>';
+    }
+    x.tm.filter(t => t.q - (t.qb || 0) > 1e-9).forEach(t => { h += '<div class="fxtr-r plus"><span>＋ امانیِ ' + esc(t.person) + '</span><b class="num">' + esc(qtyTxt(t.q - (t.qb || 0), x)) + '</b></div>'; });
     h += '<div class="fxtr-r tot"><span>= جمع نزد من</span><b class="num">' + esc(qtyTxt(x.qty + x.tmq, x)) + '</b></div>';
     return h + '</div>';
   }).join('');
-  return '<div class="box fxtr"><h2>🤝 امانی نزد من — انتظامی <small>فقط مقدار؛ مال دیگران است و در هیچ‌کدام از عددهای بالا نیست</small></h2><div class="fxtr-g">' + parts + '</div>' +
+  return '<div class="box fxtr"><h2>🤝 امانی نزد من — انتظامی <small>' + (L.some(x => x.tmi > 1e-9) ? 'فقط مقدار؛ مال دیگران است' : 'فقط مقدار؛ مال دیگران است و در هیچ‌کدام از عددهای بالا نیست') + '</small></h2><div class="fxtr-g">' + parts + '</div>' +
     '<div class="fxtr-f"><a data-act="go" data-to="/trust">🤝 امانی نزد من ←</a> · <a data-act="go" data-to="/trust/rep">📄 گزارش برای ارسال ←</a></div></div>';
 }
 
@@ -14170,7 +14202,7 @@ function everyBox(list) {
     if (x.cost > 0.5) g += kv('بهای تمام‌شده', fmt(x.cost)) + kv(gl(x.unreal) + ' ارزیابی', fmt(Math.abs(x.unreal)));
     if (Math.abs(x.real) > 0.5) g += kv(gl(x.real) + ' فروش‌ها', fmt(Math.abs(x.real)));
     if (x.price > 0 && x.cost > 0.5) g += kv('خرید ← امروز', fmt(x.avg) + ' → ' + fmt(x.price));
-    const tr = people(x).map(t => qtyTxt(t.q, x) + ' امانیِ ' + t.person).join('، ');
+    const tr = people(x).filter(t => t.q - (t.qb || 0) > 1e-9).map(t => qtyTxt(t.q - (t.qb || 0), x) + ' امانیِ ' + t.person).join('، ');
     return '<a class="fxpr ' + cl + '" data-act="go" data-to="/asset/' + esc(H.slug(x.name)) + '"><span class="fxpn">' + esc(x.display || x.name) + '</span><b class="fxpv num">' + pctS(p) + '</b>' +
       '<div class="fxpg">' + g + '</div>' + (note ? '<small class="fxpno">' + note + '</small>' : '') + (tr ? '<small class="fxpt">🤝 ＋ ' + esc(tr) + ' هم پیش شماست (انتظامی؛ در این عددها نیست)</small>' : '') + '</a>';
   }).join('') + '</div><div class="hint" style="margin-top:6px">درصد سود = سود ارزیابی ÷ بهای تمام‌شده × ۱۰۰ — یعنی قیمت روز چند درصد بالاتر (یا پایین‌تر) از میانگین قیمتی است که خریده‌اید.</div></div>';
@@ -14178,7 +14210,8 @@ function everyBox(list) {
 
 /* ---- the overview: of everything (name = null) or of one asset ---- */
 App.fxOverview = function (name) {
-  const O = own(), sub = O.any ? 'فقط مال خودم — امانی‌ها جداست' : '';
+  const O = own(), sub0 = O.any ? 'فقط مال خودم — امانی‌ها جداست' : '';
+  let sub = sub0;
   if (!name) {
     const L = O.list, S = k => L.reduce((t, x) => t + N(x[k]), 0);
     const P = L.filter(x => pctOf(x) !== null), pt = pctN(P.reduce((t, x) => t + x.unreal, 0), P.reduce((t, x) => t + x.cost, 0));   // the gifts are in: their whole value is profit, their cost 0
@@ -14190,6 +14223,7 @@ App.fxOverview = function (name) {
   }
   const x = O.by.get(name); if (!x) return '';
   const p = pctOf(x), u = esc(unitTxt(x));
+  sub = x.tmi > 1e-9 ? 'در دفتر — ' + x.tm.filter(t => t.qb > 1e-9).map(t => q4(t.qb) + ' آن امانیِ ' + esc(t.person)).join('، ') + ' است' : sub0;
   const psub = !(x.qty > 1e-7) ? (x.tm.length ? 'همهٔ آنچه پیش شماست امانی است' : 'موجودی ندارید') : !(x.cost > 0.5) ? (isGift(x) ? '🎁 هدیه' : 'بدون بهای خرید') + ' — هزینه‌ای نداشته؛ همهٔ ارزش روزش سود شماست (درصد بی‌نهایت)' : x.price > 0 ? 'میانگین خرید ' + fmt(x.avg) + ' ← قیمت روز ' + fmt(x.price) : 'هنوز «قیمت روز» ثبت نشده';
   return '<div class="cards fxov">' +
     card('c-violet fxq', x.tm.length ? 'موجودی خودم' : 'موجودی', esc(q4(x.qty)) + ' <small class="fxu">' + u + '</small>', 'قیمت روز هر ' + esc(x.unit || '') + ': ' + fmt(x.price) + (x.lastDate ? ' (' + esc(x.lastDate) + ')' : '')) +
@@ -14233,8 +14267,19 @@ const FIXES = [
     apply: db => { ['نیم سکه', 'سکه گرمی'].forEach(a => { const e = giftFind(db, a); if (e) { e.gift = true; e.price = 0; } }); } },
   { id: 'v458-gorami-price', text: 'قیمت روز سکه گرمی (۱۴۰۵/۰۷/۲۵) درست شد: ۳۷۰٬۰۰۰٬۰۰۰ ریال (به‌جای ۳٬۷۰۰٬۰۰۰٬۰۰۰)',
     need: db => !!priceFind(db), apply: db => { const e = priceFind(db); if (e) e.price = 370000000; } },
-  { id: 'v465-trust-memo', text: db => memoText(db), need: db => !!memoPlan(db), apply: db => memoApply(db), big: true }
+  { id: 'v465-trust-memo', text: db => memoText(db), need: db => !!memoPlan(db), apply: db => memoApply(db), big: true },
+  /* v47.4 (the owner 1405/08/17: «۲۴۰۰ تای الف قبلاً آمده بود؛ چرا دوباره اضافه کردی؟ باید بشود ۱۲٬۷۵۲»): member A's dollars are inside
+     the dollars his books show as his — mark them «already in my books» so they are not added on top again */
+  { id: 'v474-negar-usd-inbook', text: 'دلارهای امانیِ الف جزو همان موجودیِ دلارِ ثبت‌شده در دفتر شما علامت خورد؛ دیگر دوباره روی جمع اضافه نمی‌شود',
+    need: db => negUsd(db).length > 0, apply: db => negUsd(db).forEach(m => { m.inb = true; }) }
 ];
+/* the receipts / hand-backs of member A's (Fatemeh's) dollars that are not yet marked */
+function negUsd(db) {
+  const usd = new Set((db.assets || []).filter(a => a && (String(a.unit || '').toUpperCase() === 'USD' || a.name === 'دلار')).map(a => a.name));
+  const L = [];
+  (db.trusts || []).forEach(t => { if (t && t.kind === 'fx' && usd.has(t.asset) && /الف|فاطمه/.test(String(t.person || ''))) (t.moves || []).forEach(m => { if (m && !m.xfer && !m.inb) L.push(m); }); });
+  return L;
+}
 
 /* ---------------------------------------------------------------- v46.5 — «امانی» becomes a memorandum account (حساب انتظامی)
    the owner (1405/08/17): «حساب امانی فقط حالت انتظامی داشته باشد؛ نه مانده نشان بده نه مبلغ، فقط مقدار. پولش مال من نیست؛ از حساب من کم نکند.
@@ -14846,9 +14891,26 @@ const SPEC = { inv: invSpec, debt: debtSpec, cred: credSpec, trust: (name, over)
 App.docExtraTiles = extraTiles;
 
 /* ---- the cards and the windows ---- */
+/* v47.4 (the owner: «بستانکاران گردش را نمی‌آورد؛ زدم ۳ گردش، ۴ گردش») — most of his creditors have only one turnover in the books:
+   the window now says how many there are, and warns when «گردش حساب» is not ticked */
+function availOf(kind, name) {
+  try {
+    if (kind === 'trust') { const s = SPEC.trust(name); return s ? (s.data.hist || []).length : 0; }
+    if (kind === 'inv') return (E.memberLedger(App.C, name) || []).filter(x => x && Math.abs(N(x.eff)) > 0.5).length;
+    return (E.ledger(App.C, name) || []).filter(x => Math.abs(N(x.dr) - N(x.cr)) > 0.5).length;
+  } catch (e) { return null; }
+}
+const ledKey = kind => (kind === 'trust' ? 'hist' : 'led');
+function rowsHint(kind, name, c) {
+  const n = availOf(kind, name), w = kind === 'trust' ? 'ردیف دریافت و تحویل' : 'گردش';
+  if (!c[ledKey(kind)]) return '<div class="cf-av warn">⚠ تیک «' + (kind === 'trust' ? 'ریز دریافت و تحویل' : 'گردش حساب') + '» برداشته شده؛ برای اینکه ' + w + '‌ها روی برگه بیاید، بالا تیکش را بزنید.</div>';
+  if (n === null) return '';
+  if (!n) return '<div class="cf-av warn">⚠ برای ' + esc(name) + ' هنوز هیچ ' + w + 'ی در دفتر ثبت نشده؛ چیزی برای نشان دادن نیست.</div>';
+  return '<div class="cf-av' + (+c.rows > n ? ' warn' : '') + '">📌 ' + esc(name) + ' در کل <b>' + fa(n) + '</b> ' + w + ' دارد' + (+c.rows > n ? '؛ برای همین فقط همین <b>' + fa(n) + '</b> تا روی برگه می‌آید (بیشتر از این ندارد).' : '.') + '</div>';
+}
 function cfgSum(kind, name) {
   const c = cfgOf(kind, name), P0 = KIND[kind].PARTS, on = P0.filter(p => c[p[0]] && !(p[0] === 'desc' && !c.led) && !(p[0] === 'why' && !D.whyOf(name))).map(p => p[1].replace(/^📌 /, '')), ex = (c.extra || []).filter(e => e && (e[0] || e[1])).length;
-  return (on.length ? on.join('، ') : 'هیچ') + (ex ? ' + ' + fa(ex) + ' سطر دلخواه' : '') + (c.led || c.hist ? ' · ' + (+c.rows > 0 ? fa(c.rows) + ' گردش آخر' : 'گردش تا جا هست') : '');
+  return (on.length ? on.join('، ') : 'هیچ') + (ex ? ' + ' + fa(ex) + ' سطر دلخواه' : '') + (c.led || c.hist ? ' · ' + (() => { const n = availOf(kind, name); return +c.rows > 0 && !(n !== null && n < +c.rows) ? fa(c.rows) + ' گردش آخر' : n !== null && n < +c.rows ? 'همهٔ ' + fa(n) + ' گردش (بیشتر ندارد)' : 'گردش تا جا هست'; })() : '');
 }
 App.docCfgLine = (kind, name) => '<div class="dnl noprint"><span>⚙️ روی برگه: <b>' + esc(cfgSum(kind, name)) + '</b></span>' + D.btn('ad-cfg', 'sm violet', '⚙️ تنظیم برگه (کم و زیاد)', ' data-k="' + kind + '" data-n="' + esc(name) + '"') + '</div>';
 function docCard(kind, name) {
@@ -14991,7 +15053,7 @@ App.docCfg = function (kind, name) {
     '<div class="field"><label for="cf_title">📜 عنوان برگه</label><input type="text" id="cf_title" class="yellow" value="' + esc(c.title || '') + '" placeholder="' + esc(KIND[kind].title) + '" autocomplete="off"></div>' +
     '<div class="cf-g">' + KIND[kind].PARTS.map(ck).join('') + '</div>' +
     '<div class="field"><label for="cf_rows">🧾 ' + (kind === 'trust' ? 'چند ردیف آخرِ «دریافت و تحویل» روی برگه بیاید؟' : 'چند گردش آخر روی برگه بیاید؟') + '</label><select id="cf_rows" class="yellow cf-rows">' +
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20].map(n => '<option value="' + n + '"' + (+c.rows === n ? ' selected' : '') + '>' + fa(n) + (kind === 'trust' ? ' ردیف آخر' : ' گردش آخر') + '</option>').join('') + '<option value="0"' + (!(+c.rows > 0) ? ' selected' : '') + '>همه، تا جا هست</option></select></div>' +
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 15, 20].map(n => '<option value="' + n + '"' + (+c.rows === n ? ' selected' : '') + '>' + fa(n) + (kind === 'trust' ? ' ردیف آخر' : ' گردش آخر') + '</option>').join('') + '<option value="0"' + (!(+c.rows > 0) ? ' selected' : '') + '>همه، تا جا هست</option></select><div id="cf_av">' + rowsHint(kind, name, c) + '</div></div>' +
     '<div class="cf-x"><b>➕ سطرهای دلخواه</b><small>عنوان و مقدار — مثلاً «قسط بعدی» و «50,000,000 ریال»؛ به حروفِ مبلغ را خود برنامه می‌نویسد. خالی بماند، روی برگه نمی‌آید.</small>' +
     ex.map((e, i) => '<div class="grid2"><input type="text" class="yellow" data-cx="' + i + '" data-p="0" value="' + esc(e[0] || '') + '" placeholder="عنوان" autocomplete="off"><input type="text" class="yellow" data-cx="' + i + '" data-p="1" value="' + esc(e[1] || '') + '" placeholder="مقدار" autocomplete="off"></div>').join('') + '</div>' +
     '<div class="cf-sc"><label><input type="radio" name="cf_sc" value="one"' + (CF.own || !all['*'] ? ' checked' : '') + '> فقط برای <b>' + esc(name) + '</b></label><label><input type="radio" name="cf_sc" value="all"' + (!CF.own && all['*'] ? ' checked' : '') + '> برای <b>همهٔ ' + KIND[kind].who + '</b> (پیش‌فرض)</label></div>' +
@@ -15013,7 +15075,7 @@ function readCF() {
 }
 function cfPrev() {
   const im = document.getElementById('cf_img'); if (!im || !CF) return;
-  try { const s = SPEC[CF.kind](CF.name, readCF()); if (s) im.src = D.draw(s, 0.75).toDataURL('image/jpeg', 0.85); } catch (e) { console.error(e); }
+  try { const c = readCF(), s = SPEC[CF.kind](CF.name, c); if (s) im.src = D.draw(s, 0.75).toDataURL('image/jpeg', 0.85); const av = document.getElementById('cf_av'); if (av) av.innerHTML = rowsHint(CF.kind, CF.name, c); } catch (e) { console.error(e); }
 }
 function cfSave() {
   const c = readCF(); if (!c) return;
