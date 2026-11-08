@@ -3080,6 +3080,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 .cf-pv{margin-top:8px}
 .cf-pv>b{display:block;font-size:1.1rem;font-weight:900;color:#0F2A4A;margin-bottom:6px}
 .cf-pv img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid #CBD5E1;box-shadow:0 14px 28px -20px #0F2A4A}
+.mr-av.dbt{background:linear-gradient(145deg,#FB923C,#C2410C)}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3087,7 +3088,7 @@ td .pdd>span{display:inline-block;max-width:100%;overflow-wrap:anywhere}   /* v4
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "46.8"; window.APP_BUILD = "1405/08/17 17:24";
+window.APP_VERSION = "46.9"; window.APP_BUILD = "1405/08/17 19:01";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -10056,7 +10057,8 @@ document.addEventListener('click', ev => {
 (function () {
 'use strict';
 const App = window.App, latin = App.H.latin;
-const IDS = { ef_amt: 1, ef_price: 1, ef_fee: 1, ef_qty: 1, lf_principal: 1, lf_amt: 1, lf_prepaid: 1, mv_qty: 1 };
+const IDS = { ef_amt: 1, ef_price: 1, ef_fee: 1, ef_qty: 1, lf_principal: 1, lf_amt: 1, lf_prepaid: 1, mv_qty: 1,
+  axtA: 1, ap_amt: 1, tw_qty: 1, rt_qty: 1, tx_qty: 1, tm_qty: 1 };   // v46.9 (the owner: «در انتقال بین بانک‌ها و کارگزاری‌ها رقم می‌زنم، از هم تفکیک نمی‌کند»): the «↔ انتقال» window and the others too
 const isMoney = el => !!(el && el.tagName === 'INPUT' && el.id && IDS[el.id] && (el.type === 'text' || el.type === 'tel' || el.type === 'search' || !el.type));
 /* «1234567.5» → «1,234,567.5»; anything that is not a plain number is returned unchanged (null) */
 function group(v) {
@@ -10817,6 +10819,23 @@ D.words = function (v) {
   while (n > 0 && i < SCALE.length) { const k = n % 1000; if (k) g.unshift(w3(k) + (SCALE[i] ? ' ' + SCALE[i] : '')); n = Math.floor(n / 1000); i++; }
   return (v < 0 ? 'منفی ' : '') + g.join(' و ');
 };
+/* v46.9 (the owner: «در گواهی سپرده و امانت اگر مبلغی به ریال یا این‌ها نوشتم، خودت به حروفش را بنویس»):
+   a quantity in words, with its decimal part (17.86 → «هفده ممیز هشتاد و شش صدم») */
+const PLACE = ['', 'دهم', 'صدم', 'هزارم', 'ده‌هزارم', 'صدهزارم', 'میلیونیم'];
+D.qWords = function (v) {
+  const s = String(Math.abs(N(v))).replace(/e.*$/, ''), dot = s.indexOf('.');
+  const ip = dot < 0 ? s : s.slice(0, dot), dp = dot < 0 ? '' : s.slice(dot + 1).replace(/0+$/, '').slice(0, 6);
+  return (N(v) < 0 ? 'منفی ' : '') + D.words(+ip) + (dp ? ' ممیز ' + D.words(+dp) + ' ' + PLACE[dp.length] : '');
+};
+/* a line written by hand («120,000,000 ریال», «۵۰۰ دلار», «2.5 گرم») → its words with the unit; not for a date or a percent */
+D.amountWords = function (t) {
+  const s = H.latin ? H.latin(String(t || '')) : String(t || '');
+  if (/\d\s*[\/٪%]|[\/٪%]\s*\d/.test(s)) return '';
+  const m = /(\d[\d,٬\s]*(?:[.٫]\d+)?)/.exec(s); if (!m) return '';
+  const v = +m[1].replace(/[,٬\s]/g, '').replace('٫', '.'); if (!isFinite(v)) return '';
+  const after = s.slice(m.index + m[1].length).trim(), u = (/^([\u0600-\u06FF\u200c]+)/.exec(after) || [])[1] || '';
+  return D.qWords(v) + (u ? ' ' + u : '');
+};
 D.owner = () => (App.db && App.db.meta && App.db.meta.owner) || '';
 const docs = () => (App.db && App.db.docs) || {};
 D.formal = name => String(((docs().names || {})[name]) || '').trim() || name;
@@ -10850,7 +10869,7 @@ const DFF = '"N_vazir","B Nazanin","Nazanin","IRANSans","Vazirmatn",Tahoma,"Sego
 const fnt = (w, px) => w + ' ' + px + 'px ' + DFF;
 const DFL = '"Segoe UI",Tahoma,"B Nazanin",Arial,sans-serif', fntL = (w, px) => w + ' ' + px + 'px ' + DFL;   // the code (Latin letters + digits): not the «FD» digits
 const DC = { navy: '#0F2A4A', navy2: '#1E3A8A', gold: '#A8781A', gold2: '#E2BE5A', paper: '#FFFDF7', ink: '#0F172A', mut: '#475569', edge: '#D6DCE8', card: '#F4F6FB', green: '#15803D', red: '#B91C1C' };
-const DW = 1240, DH0 = 1754, DX0 = 96, DX1 = DW - 96, DIW = DX1 - DX0, BODY0 = 530, SIGH = 210, FOOTH = 84;
+const DW = 1240, DH0 = 1754, DX0 = 96, DX1 = DW - 96, DIW = DX1 - DX0, BODY0 = 554, SIGH = 200, FOOTH = 74;
 function rrect(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); }
 function txt(x, s, px, py, f, col, al, dir) { x.font = f; x.fillStyle = col; x.textAlign = al || 'right'; x.direction = dir || 'rtl'; x.fillText(s, px, py); }
 function wrap(x, s, f, w) {
@@ -10876,6 +10895,14 @@ function growIcon(x, cx, cy, s, col) {
   x.restore();
 }
 
+function coinsIcon(x, cx, cy, s, col) {
+  x.save(); x.fillStyle = col; x.strokeStyle = DC.navy; x.lineWidth = s * 0.03;
+  for (let i = 0; i < 4; i++) { const y0 = cy + s * 0.34 - i * s * 0.16; x.beginPath(); x.ellipse(cx - s * 0.12, y0, s * 0.3, s * 0.1, 0, 0, Math.PI * 2); x.fill(); x.stroke(); }
+  for (let i = 0; i < 2; i++) { const y0 = cy + s * 0.34 - i * s * 0.16; x.beginPath(); x.ellipse(cx + s * 0.26, y0, s * 0.22, s * 0.08, 0, 0, Math.PI * 2); x.fill(); x.stroke(); }
+  x.beginPath(); x.arc(cx + s * 0.22, cy - s * 0.24, s * 0.2, 0, Math.PI * 2); x.fill(); x.stroke();
+  x.beginPath(); x.arc(cx + s * 0.22, cy - s * 0.24, s * 0.12, 0, Math.PI * 2); x.stroke();
+  x.restore();
+}
 /* the blocks of a sheet's body: each one says its height and draws itself at y */
 const K = {
   para(m, text, o) {
@@ -10884,7 +10911,7 @@ const K = {
   },
   /* row | item | quantity */
   table(m, o) {
-    const c1 = 120, c3 = o.c3 || 400, c2 = DIW - c1 - c3, TH = 64, RH = o.RH || 86, rows = o.rows, tH = TH + rows.length * RH;
+    const c1 = 120, c3 = o.c3 || 400, c2 = DIW - c1 - c3, TH = 64, rows = o.rows, ww = rows.some(r => r.w), RH = o.RH || (ww ? 96 : 86), tH = TH + rows.length * RH;
     return { h: tH, gap: 28, draw(x, y) {
       rrect(x, DX0, y, DIW, tH, 16); x.fillStyle = '#FFFFFF'; x.fill();
       x.save(); rrect(x, DX0, y, DIW, tH, 16); x.clip();
@@ -10898,7 +10925,8 @@ const K = {
         if (i) { x.fillStyle = '#E5E7EB'; x.fillRect(DX0, b, DIW, 1.5); }
         x.beginPath(); x.arc(DX1 - c1 / 2, md, 24, 0, Math.PI * 2); x.fillStyle = '#FBF3DC'; x.fill(); x.strokeStyle = DC.gold; x.lineWidth = 2; x.stroke();
         txt(x, fa(i + 1), DX1 - c1 / 2, md + 10, fnt(900, 27), DC.gold, 'center');
-        txt(x, r.name, DX1 - c1 - 22, md + 12, fitFont(x, r.name, c2 - 40, 800, 35, 20), DC.ink);
+        txt(x, r.name, DX1 - c1 - 22, md + (r.w ? -4 : 12), fitFont(x, r.name, c2 - 40, 800, 35, 20), DC.ink);
+        if (r.w) txt(x, r.w, DX1 - c1 - 22, md + 29, fitFont(x, r.w, c2 - 40, 700, 21, 14), '#3730A3');
         const fq = fitFont(x, r.q, c3 - 150, 900, 44, 26); x.font = fq; const wq = x.measureText(r.q).width;
         x.font = fnt(700, 27); const wu = r.u ? x.measureText(r.u).width : 0, tot = wq + (r.u ? 12 + wu : 0), e = DX0 + c3 / 2 + tot / 2;
         txt(x, r.q, e, md + 15, fq, DC.navy2);
@@ -10925,7 +10953,8 @@ const K = {
   },
   /* small tiles, two in a row: [label, value, unit, small] */
   kpis(m, list) {
-    const cw = (DIW - 20) / 2, ch = 90, rows = Math.ceil(list.length / 2), h = rows * ch + (rows - 1) * 14;
+    const cw = (DIW - 20) / 2, fw = fnt(700, 18), W = list.map(k => (k[4] ? wrap(m, k[4], fw, cw - 44).slice(0, 2) : []));
+    const ch = 90 + Math.max(0, ...W.map(L => L.length)) * 24, rows = Math.ceil(list.length / 2), h = rows * ch + (rows - 1) * 14;
     return { h, gap: 24, draw(x, y) {
       list.forEach((k, i) => {
         const col = i % 2, row = Math.floor(i / 2), a = col === 0 ? DX1 - cw : DX0, b = y + row * (ch + 14);
@@ -10936,19 +10965,20 @@ const K = {
         txt(x, k[1], a + cw - 22, b + 70, fv, DC.navy2);
         if (k[2]) txt(x, k[2], a + cw - 22 - wv - 10, b + 69, fnt(700, 22), DC.mut);
         if (k[3]) txt(x, k[3], a + 18, b + 78, fitFont(x, k[3], cw * 0.5, 700, 19, 14), DC.mut, 'left');
+        W[i].forEach((l, j) => txt(x, l, a + cw - 22, b + 100 + j * 24, fw, '#3730A3'));
       });
     } };
   },
   /* dated lines: [date] [tag] what — fills the page (between min and max lines) */
   list(m, o) {
-    const RH = 46, all = o.rows, blk = { gap: 20, flex: { rowH: RH, total: all.length, min: Math.min(all.length, o.min || 5), max: Math.min(all.length, o.max || 14) } };
-    blk.setN = n => { blk.n = n; blk.more = all.length - n; blk.h = 62 + (blk.more > 0 ? 40 : 0) + n * RH; };
+    const RH = 44, all = o.rows, blk = { gap: 20, flex: { rowH: RH, total: all.length, min: Math.min(all.length, o.min || 5), max: Math.min(all.length, o.max || 14) } };
+    blk.setN = n => { blk.n = n; blk.more = all.length - n; blk.h = 62 + (blk.more > 0 ? 36 : 0) + n * RH; };
     blk.setN(blk.flex.min);
     blk.draw = (x, y) => {
       txt(x, o.title, DX1, y + 32, fnt(900, 29), DC.navy);
       x.font = fnt(900, 29); const tw = x.measureText(o.title).width; x.fillStyle = DC.gold2; x.fillRect(DX1 - tw, y + 45, tw, 4);
       y += 62;
-      if (blk.more > 0) { txt(x, '… ' + fa(blk.more) + ' ردیف قدیمی‌تر در این برگه نیامده', DX1, y + 28, fnt(700, 22), DC.mut); y += 40; }
+      if (blk.more > 0) { txt(x, '… ' + fa(blk.more) + ' ردیف قدیمی‌تر در این برگه نیامده', DX1, y + 26, fnt(700, 22), DC.mut); y += 36; }
       all.slice(-blk.n).forEach((h, i) => {
         const b = y + i * RH;
         if (i) { x.save(); x.strokeStyle = '#E2E8F0'; x.setLineDash([6, 6]); x.lineWidth = 1.2; x.beginPath(); x.moveTo(DX0, b); x.lineTo(DX1, b); x.stroke(); x.restore(); }
@@ -10974,13 +11004,13 @@ const K = {
       x.save(); rrect(x, DX0, y, DIW, tH, 14); x.clip();
       x.fillStyle = DC.navy; x.fillRect(DX0, y, DIW, TH);
       const xs = [DX1, DX1 - cD, DX1 - cD - cS, DX1 - cD - cS - cA, DX1 - cD - cS - cA - cW];   // right edges
-      ['تاریخ', 'شرح', 'واریز', 'برداشت', 'مانده'].forEach((t, i) => txt(x, t, i === 1 ? xs[1] - 16 : xs[i] - [cD, cS, cA, cW, cB][i] / 2, y + 34, fnt(800, 23), '#FFFFFF', i === 1 ? 'right' : 'center'));
+      (o.head || ['تاریخ', 'شرح', 'واریز', 'برداشت', 'مانده']).forEach((t, i) => txt(x, t, i === 1 ? xs[1] - 16 : xs[i] - [cD, cS, cA, cW, cB][i] / 2, y + 34, fnt(800, 23), '#FFFFFF', i === 1 ? 'right' : 'center'));
       all.slice(-blk.n).forEach((r, i) => {
         const b = y + TH + i * RH;
         x.fillStyle = i % 2 ? '#F8F5EC' : '#FFFFFF'; x.fillRect(DX0, b, DIW, RH);
         const yb = b + 31, ds = String(r.desc || '').replace(/\d/g, c => FDG[c]);
         txt(x, fa(r.d), xs[0] - cD / 2, yb, fnt(700, 22), DC.mut, 'center');
-        txt(x, clip(x, ds, fnt(700, 22), cS - 30), xs[1] - 16, yb, fnt(700, 22), DC.ink);
+        txt(x, clip(x, ds, fnt(r.open ? 900 : 700, 22), cS - 30), xs[1] - 16, yb, fnt(r.open ? 900 : 700, 22), r.open ? DC.navy : DC.ink);
         if (r.amt > 0) txt(x, fa(H.fmt(r.amt)), xs[2] - cA / 2, yb, fitFont(x, fa(H.fmt(r.amt)), cA - 20, 800, 23, 15), DC.green, 'center');
         if (r.amt < 0) txt(x, fa(H.fmt(-r.amt)), xs[3] - cW / 2, yb, fitFont(x, fa(H.fmt(-r.amt)), cW - 20, 800, 23, 15), DC.red, 'center');
         txt(x, fa(H.fmt(r.bal)), xs[4] - cB / 2, yb, fitFont(x, fa(H.fmt(r.bal)), cB - 20, 800, 23, 15), DC.navy2, 'center');
@@ -11018,21 +11048,25 @@ D.draw = function (spec, scale) {
   x.strokeStyle = DC.gold2; x.lineWidth = 2; x.strokeRect(38, 38, DW - 76, DH - 76);
   [[38, 38], [DW - 38, 38], [38, DH - 38], [DW - 38, DH - 38]].forEach(([a, b]) => { x.save(); x.translate(a, b); x.rotate(Math.PI / 4); x.fillStyle = DC.gold; x.fillRect(-9, -9, 18, 18); x.fillStyle = DC.paper; x.fillRect(-4, -4, 8, 8); x.restore(); });
   /* the head band */
-  const g = x.createLinearGradient(0, 58, 0, 270); g.addColorStop(0, '#0B2140'); g.addColorStop(1, '#1E3A8A');
-  rrect(x, 58, 58, DW - 116, 212, 20); x.fillStyle = g; x.fill();
-  x.save(); rrect(x, 58, 58, DW - 116, 212, 20); x.clip(); x.strokeStyle = 'rgba(226,190,90,.16)'; x.lineWidth = 1.2;
-  for (let k = 0; k < 9; k++) { x.beginPath(); for (let a = 58; a <= DW - 58; a += 6) { const yy = 106 + k * 14 + Math.sin(a / 46 + k * 0.7) * 20 + Math.sin(a / 13 + k) * 3; if (a === 58) x.moveTo(a, yy); else x.lineTo(a, yy); } x.stroke(); }
+  /* «بسمه تعالی» at the head of the sheet (the owner, 1405/08/17) */
+  txt(x, 'بسمه تعالی', DW / 2, 80, fnt(800, 30), DC.navy, 'center');
+  x.font = fnt(800, 30); const bw0 = x.measureText('بسمه تعالی').width / 2 + 22;
+  [-1, 1].forEach(sg => { x.fillStyle = DC.gold2; x.fillRect(sg < 0 ? DW / 2 - bw0 - 130 : DW / 2 + bw0, 69, 130, 2); x.save(); x.translate(DW / 2 + sg * (bw0 + 136), 70); x.rotate(Math.PI / 4); x.fillStyle = DC.gold; x.fillRect(-5, -5, 10, 10); x.restore(); });
+  const g = x.createLinearGradient(0, 96, 0, 286); g.addColorStop(0, '#0B2140'); g.addColorStop(1, '#1E3A8A');
+  rrect(x, 58, 96, DW - 116, 190, 20); x.fillStyle = g; x.fill();
+  x.save(); rrect(x, 58, 96, DW - 116, 190, 20); x.clip(); x.strokeStyle = 'rgba(226,190,90,.16)'; x.lineWidth = 1.2;
+  for (let k = 0; k < 9; k++) { x.beginPath(); for (let a = 58; a <= DW - 58; a += 6) { const yy = 138 + k * 13 + Math.sin(a / 46 + k * 0.7) * 18 + Math.sin(a / 13 + k) * 3; if (a === 58) x.moveTo(a, yy); else x.lineTo(a, yy); } x.stroke(); }
   x.restore();
-  x.fillStyle = DC.gold2; x.fillRect(58, 262, DW - 116, 3);
-  txt(x, spec.title, DX1 - 10, 142, fitFont(x, spec.title, DIW - 300, 900, 74, 50), '#FFFFFF');
-  txt(x, spec.sub, DX1 - 10, 200, fitFont(x, spec.sub, DIW - 300, 800, 36, 22), DC.gold2);
-  if (spec.tag) txt(x, spec.tag, DX1 - 10, 242, fitFont(x, spec.tag, DIW - 300, 700, 23, 16), 'rgba(255,255,255,.78)');
-  x.save(); x.strokeStyle = DC.gold2; x.lineWidth = 5; x.beginPath(); x.arc(192, 162, 72, 0, Math.PI * 2); x.stroke(); x.lineWidth = 1.5; x.beginPath(); x.arc(192, 162, 61, 0, Math.PI * 2); x.stroke(); x.restore();
-  if (spec.icon === 'grow') growIcon(x, 192, 158, 82, DC.gold2); else lockIcon(x, 192, 150, 84, DC.gold2);
+  x.fillStyle = DC.gold2; x.fillRect(58, 278, DW - 116, 3);
+  txt(x, spec.title, DX1 - 10, 172, fitFont(x, spec.title, DIW - 300, 900, 70, 48), '#FFFFFF');
+  txt(x, spec.sub, DX1 - 10, 226, fitFont(x, spec.sub, DIW - 300, 800, 34, 22), DC.gold2);
+  if (spec.tag) txt(x, spec.tag, DX1 - 10, 264, fitFont(x, spec.tag, DIW - 300, 700, 22, 16), 'rgba(255,255,255,.78)');
+  x.save(); x.strokeStyle = DC.gold2; x.lineWidth = 5; x.beginPath(); x.arc(192, 191, 68, 0, Math.PI * 2); x.stroke(); x.lineWidth = 1.5; x.beginPath(); x.arc(192, 191, 57, 0, Math.PI * 2); x.stroke(); x.restore();
+  if (spec.icon === 'grow') growIcon(x, 192, 187, 76, DC.gold2); else if (spec.icon === 'coins') coinsIcon(x, 192, 191, 80, DC.gold2); else lockIcon(x, 192, 179, 78, DC.gold2);
   /* the four cards */
   const cw = (DIW - 24) / 2;
   (spec.cards || []).slice(0, 4).forEach((c, i) => {
-    const a = i % 2 === 0 ? DX1 - cw : DX0, b = 296 + Math.floor(i / 2) * 110;
+    const a = i % 2 === 0 ? DX1 - cw : DX0, b = 310 + Math.floor(i / 2) * 110;
     rrect(x, a, b, cw, 96, 16); x.fillStyle = DC.card; x.fill(); x.strokeStyle = DC.edge; x.lineWidth = 1.5; x.stroke();
     x.fillStyle = DC.gold2; x.fillRect(a + cw - 6, b + 14, 6, 68);
     txt(x, c[0], a + cw - 26, b + 35, fnt(700, 23), DC.mut);
@@ -11049,11 +11083,11 @@ D.draw = function (spec, scale) {
   const si = sigImg();
   if (si) {   // the hand signature: over the line, as on paper
     const bw = 340, bh = 74, k = Math.min(bw / si.naturalWidth, bh / si.naturalHeight), w = si.naturalWidth * k, h = si.naturalHeight * k;
-    x.drawImage(si, DX1 - 190 - w / 2, sy + 174 - h, w, h);
+    x.drawImage(si, DX1 - 190 - w / 2, sy + 170 - h, w, h);
   }
-  x.save(); x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.setLineDash([3, 7]); x.beginPath(); x.moveTo(DX1, sy + 160); x.lineTo(DX1 - 380, sy + 160); x.stroke(); x.restore();
-  txt(x, 'امضا', DX1 - 190, sy + 194, fnt(700, 23), DC.mut, 'center');
-  x.save(); x.translate(DX0 + 165, sy + 98); x.rotate(-0.21); x.globalAlpha = 0.86;
+  x.save(); x.strokeStyle = '#94A3B8'; x.lineWidth = 2; x.setLineDash([3, 7]); x.beginPath(); x.moveTo(DX1, sy + 156); x.lineTo(DX1 - 380, sy + 156); x.stroke(); x.restore();
+  txt(x, 'امضا', DX1 - 190, sy + 186, fnt(700, 23), DC.mut, 'center');
+  x.save(); x.translate(DX0 + 165, sy + 96); x.rotate(-0.21); x.globalAlpha = 0.86;
   x.strokeStyle = DC.navy2; x.fillStyle = DC.navy2; x.lineWidth = 6; x.beginPath(); x.arc(0, 0, 96, 0, Math.PI * 2); x.stroke();
   x.lineWidth = 2; x.beginPath(); x.arc(0, 0, 83, 0, Math.PI * 2); x.stroke();
   for (let k = 0; k < 36; k++) { const a = k * Math.PI / 18; x.beginPath(); x.arc(Math.cos(a) * 89.5, Math.sin(a) * 89.5, 1.7, 0, Math.PI * 2); x.fill(); }
@@ -11068,7 +11102,7 @@ D.draw = function (spec, scale) {
   x.fillStyle = DC.gold2; x.fillRect(DX0, DH - FOOTH, DIW, 2);
   const ft = 'شمارهٔ سند ' + spec.code + '   |   ' + D.dateWords() + '   |   این برگه به‌صورت تصویر صادر شده و متن آن قابل ویرایش نیست';
   let fz = 21; x.font = fntL(600, fz); while (fz > 14 && x.measureText(ft).width > DIW) { fz -= 1; x.font = fntL(600, fz); }
-  txt(x, ft, DW / 2, DH - 50, fntL(600, fz), DC.mut, 'center');
+  txt(x, ft, DW / 2, DH - 40, fntL(600, fz), DC.mut, 'center');
   /* the watermark, over everything, very light */
   if (spec.mark) { x.save(); x.translate(DW / 2, DH / 2 + 60); x.rotate(-0.5); x.globalAlpha = 0.045; txt(x, spec.mark, 0, 80, fitFont(x, spec.mark, DW * 0.9, 900, 260, 120), DC.navy, 'center'); x.restore(); }
   return cv;
@@ -11405,7 +11439,8 @@ function histBox(person) {
    the owner (1405/08/17): «گزارش را متنی نفرست؛ همان را به صورت عکس بفرست — شکیل و آبرومند، حالت PDF — که طرف نتواند تغییرش بدهد.»
    · drawn by the sheets' engine (26b_docs): whose it is (the full name, if one is set), who keeps it, the date in words, a document code,
      the items (quantity + unit only — never a rial value, never the place), the dated receipts / hand-overs, the signature and a seal. */
-function docRows(p) { return p.rows.map(t => ({ name: itemName(t) || unitOf(t), q: App.doc.fa(q4(qtyOf(t))), u: unitOf(t) })); }
+/* v46.9 (the owner: «اگر مبلغی نوشتم، خودت به حروفش را بنویس»): every quantity also in words, with its unit */
+function docRows(p) { return p.rows.map(t => ({ name: itemName(t) || unitOf(t), q: App.doc.fa(q4(qtyOf(t))), u: unitOf(t), w: 'به حروف: ' + App.doc.qWords(qtyOf(t)) + (unitOf(t) ? ' ' + unitOf(t) : '') })); }
 function docHist(p) {
   const L = [];
   (App.db.trusts || []).filter(t => t && t.person === p.person).forEach(t => (t.moves || []).forEach(m => {
@@ -11425,7 +11460,7 @@ function trustSpec(person) {
     body: (m, K) => [
       K.para(m, 'بدین‌وسیله گواهی می‌شود که اقلام زیر متعلق به ' + nm + ' است و به‌صورت امانت نزد ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' نگهداری می‌شود.'),
       K.table(m, { head: ['ردیف', 'شرح دارایی', 'مقدار'], rows }),
-      hist.length ? K.list(m, { title: 'ریز دریافت و تحویل', min: 5, max: 14, rows: hist.map(h => ({ d: h.d, tag: h.inn ? 'دریافت' : 'تحویل', tc: h.inn ? 'g' : 'r', what: h.q + ' ' + (h.u && h.n.indexOf(h.u) < 0 ? h.u + ' ' : '') + h.n })) }) : null,
+      hist.length ? K.list(m, { title: 'ریز دریافت و تحویل', min: 3, max: 14, rows: hist.map(h => ({ d: h.d, tag: h.inn ? 'دریافت' : 'تحویل', tc: h.inn ? 'g' : 'r', what: h.q + ' ' + (h.u && h.n.indexOf(h.u) < 0 ? h.u + ' ' : '') + h.n })) }) : null,
       K.note(m, ['این برگه فقط «مقدار» هر قلم را نشان می‌دهد و مبلغ ریالی ندارد. اقلام بالا تماماً متعلق به ' + nm + ' است و جزو دارایی امانت‌دار نیست.', extra])
     ]
   };
@@ -14360,36 +14395,53 @@ document.addEventListener('click', ev => {
 });
 document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target && ev.target.id === 'rec_pw') { ev.preventDefault(); make(); } });
 })();
-/* ---------------------------------------------------------------- v46.8 — «📜 گواهی سرمایه‌گذاری»: the same official sheet for every investor
-   the owner (1405/08/17): «همین را به حالت صدور سند برای سرمایه‌گذارها هم بگذار؛ یکی‌یکی برایشان بفرستم بره.»
-   One A4 sheet per investor (a picture / a PDF, with the signature and the seal), drawn by the sheets' engine (26b_docs):
-   · «مانده سرمایه» on the date, in figures and in words;
-   · the yearly rate, the profit paid since 1 Farvardin, the profit since the last due day, the next due day (about how much);
-   · the latest turnover of his account (as many lines as fit on the page): date, description, in, out, balance.
-   Where: «👥 سرمایه‌گذاران» › «📜 گواهی برای سرمایه‌گذاران» (/mrep), the page of every investor «📜 گواهی برای ارسال», گزارش‌ها. Nothing in the books changes. */
+/* ---------------------------------------------------------------- v46.8 / v46.9 — the official sheets of the accounts: «📜 گواهی سرمایه‌گذاری» and «📜 گواهی بدهی»
+   the owner (1405/08/17): «همین را به حالت صدور سند برای سرمایه‌گذارها هم بگذار؛ یکی‌یکی برایشان بفرستم بره.» … «قابل ویرایش باشد؛ نرخ سود را بزنم یا نزنم،
+   هر چیز را کم و زیاد کنم» … «برای بدهکاران هم همین‌طور یک رسید صادر کن با ماهیت برعکس: خانم فلان به حسن احمدی بدهکار است، از تاریخ فلان گردشش هم
+   نشان بدهد، بسمه تعالی هم بالایش باشد.»
+   One A4 sheet per person (a picture / a PDF, with the signature and the seal), drawn by the sheets' engine (26b_docs):
+   · investor («inv»): «مانده سرمایه» in figures and in words; the yearly rate, the profit paid since 1 Farvardin, the profit since the last due day,
+     the next due day; the latest turnover of his account;
+   · debtor («debt»): «مبلغ بدهی» in figures and in words; the turnover of the account — from a date he chooses (with the balance before it) or the
+     latest lines;
+   · «⚙️ تنظیم برگه»: every part on / off, the number of lines, the date to start from, the title, lines of his own (their amounts written in words
+     by themselves); for one person or for all of the same kind (db.docs.inv / db.docs.debt, «*» = all).
+   Where: the investors' / debtors' lists, the page of every investor / debtor, گزارش‌ها (/mrep, /drep).  Nothing in the books changes. */
 (function () {
 'use strict';
 const App = window.App, E = window.Engine, H = App && App.H, P = App && App.pages; if (!App || !E || !H || !P || !App.doc) return;
-const esc = H.esc, fmt = H.fmt, D = App.doc, N = v => +v || 0;
+const esc = H.esc, fmt = H.fmt, D = App.doc, N = v => +v || 0, fa = D.fa;
 const owner = () => D.owner();
+const G_DEBT = (App.G && App.G.DEBT) || 'بدهکاران';
 const isInv = name => { try { return App.C.memSet.has(name); } catch (e) { return false; } };
+const isDebt = name => (App.db.accounts || []).some(a => a.name === name && a.group === G_DEBT);
 function invRow(name) { try { return (E.memberTable(App.C) || []).find(r => r.name === name) || null; } catch (e) { return null; } }
-/* the investors to send to: open ones, not me */
-function investors() {
-  let L = []; try { L = E.memberTable(App.C) || []; } catch (e) { L = []; }
-  return L.filter(r => r.name !== owner() && !(App.isArchived && App.isArchived(r.name)) && Math.abs(r.bal) > 0.5);
-}
-/* v46.8 (the owner: «گواهی سرمایه‌گذار قابل ویرایش باشد؛ مثلاً نرخ سود را بزنم یا نزنم، یا هر چیز دیگر را کم و زیاد کنم»):
-   what goes on the sheet — per investor, or the default for all (db.docs.inv[name] / db.docs.inv['*']) */
-const DEF = { title: '', bal: true, words: true, rate: true, paid: true, now: true, next: true, led: true, desc: true, rows: 0, note: true, extra: [] };
-const invAll = () => (App.db.docs && App.db.docs.inv) || {};
-function cfgOf(name) { const all = invAll(); return Object.assign({}, DEF, all['*'] || {}, all[name] || {}); }
-App.invCfgOf = cfgOf;
+const extraTiles = c => (c.extra || []).filter(e => e && (String(e[0] || '').trim() || String(e[1] || '').trim()))
+  .map(e => [String(e[0] || '').trim(), fa(String(e[1] || '').trim()), '', '', D.amountWords(e[1]) ? 'به حروف: ' + D.amountWords(e[1]) : '']);
+
+/* ---- the settings of a kind of sheet ---- */
+const KIND = {
+  inv: {
+    DEF: { title: '', bal: true, words: true, rate: true, paid: true, now: true, next: true, led: true, desc: true, rows: 0, note: true, extra: [] },
+    PARTS: [['bal', 'مانده سرمایه', 'عدد بزرگ وسط برگه'], ['words', 'مانده به حروف', ''], ['rate', 'نرخ سود سالانه', ''], ['paid', 'سود پرداختی از اول سال', ''], ['now', 'سود تا این لحظه', 'از سررسید قبلی'], ['next', 'سررسید بعدی سود', 'با مبلغ حدودی'], ['led', 'آخرین گردش‌های حساب', 'واریز، برداشت، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «واریز / برداشت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']],
+    title: 'گواهی سرمایه‌گذاری', who: 'سرمایه‌گذاران', ok: isInv, open: n => App.memberDoc(n)
+  },
+  debt: {
+    DEF: { title: '', bal: true, words: true, led: true, desc: true, rows: 0, from: '', note: true, extra: [] },
+    PARTS: [['bal', 'مبلغ بدهی', 'عدد بزرگ وسط برگه'], ['words', 'مبلغ به حروف', ''], ['led', 'گردش حساب', 'بدهکار، بستانکار، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «پرداخت / دریافت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']],
+    title: 'گواهی بدهی', who: 'بدهکاران', ok: isDebt, open: n => App.debtDoc(n)
+  }
+};
+const store = kind => ((App.db.docs && App.db.docs[kind]) || {});
+function cfgOf(kind, name) { const all = store(kind); return Object.assign({}, KIND[kind].DEF, all['*'] || {}, all[name] || {}); }
+App.docCfgOf = cfgOf;
+
+/* ---- 📜 investor ---- */
 function invSpec(name, over) {
   if (!isInv(name)) return null;
   const r = invRow(name); if (!r) return null;
-  const c = over || cfgOf(name);
-  const who = owner(), nm = D.formal(name), extra = D.noteOf(name), fa = D.fa;
+  const c = over || cfgOf('inv', name);
+  const who = owner(), nm = D.formal(name), extra = D.noteOf(name);
   let py = { y: +String(E.serToText(App.today)).slice(0, 4), paid: 0 }, sd = null;
   try { py = App.profitYear(name); } catch (e) { }
   try { sd = App.profitSinceDue(name); } catch (e) { sd = null; }
@@ -14401,9 +14453,8 @@ function invSpec(name, over) {
   if (c.paid) k.push(['سود پرداختی از اول سال ' + fa(py.y), fa(fmt(py.paid || 0)), 'ریال', '']);
   if (sd && c.now) k.push(['سود تا این لحظه', fa(fmt(sd.amt)), 'ریال', fa(sd.days) + ' روز، از ' + fa(E.serToText(sd.prev))]);
   if (sd && c.next) k.push(['سررسید بعدی سود', fa(E.serToText(sd.next)), '', 'حدود ' + fa(fmt(sd.est)) + ' ریال']);
-  (c.extra || []).forEach(e => { if (e && (String(e[0] || '').trim() || String(e[1] || '').trim())) k.push([String(e[0] || '').trim(), fa(String(e[1] || '').trim()), '', '']); });
-  const title = String(c.title || '').trim() || 'گواهی سرمایه‌گذاری';
-  const nRows = +c.rows > 0 ? Math.min(+c.rows, led.length) : 0;
+  extraTiles(c).forEach(t => k.push(t));
+  const title = String(c.title || '').trim() || KIND.inv.title, nRows = +c.rows > 0 ? Math.min(+c.rows, led.length) : 0;
   const code = D.code('IV', [name, nm, bal, rate, Math.round(py.paid || 0), led.length, who, c]);
   return {
     kind: 'inv', title, sub: 'صورت‌حساب سرمایهٔ ' + nm, tag: c.bal ? 'مانده سرمایه' + (c.rate || c.paid || c.now ? '، نرخ و سود' : '') + ' تا تاریخ صدور — به ریال' : 'تا تاریخ صدور — به ریال', icon: 'grow', mark: 'سرمایه', seal: 'سرمایه',
@@ -14422,117 +14473,164 @@ function invSpec(name, over) {
 D.register('inv', name => invSpec(name));
 App.invDocInfo = name => { const s = invSpec(name); return s ? { code: s.code, bal: s.data.bal, rate: s.data.rate, led: s.data.led.length, name: s.cards[0][1], words: D.words(Math.abs(s.data.bal)), title: s.title, tiles: s.data.k.map(x => x[0]), cfg: s.data.c } : null; };
 
-function invCard(name) {
-  const r = invRow(name), d = ' data-n="' + esc(name) + '"';
-  return D.card('inv', name, {
-    ico: '📜', head: 'گواهی سرمایه‌گذاری — ' + name, sub: 'مانده <bdi class="num">' + esc(fmt(r ? r.bal : 0)) + '</bdi> ریال · تا تاریخ <bdi class="num">' + esc(E.serToText(App.today)) + '</bdi>',
-    top: D.nameLine(name, 'iv-name', d) + '<div class="dnl noprint"><span>⚙️ روی برگه: <b>' + esc(cfgSum(name)) + '</b></span>' + D.btn('iv-cfg', 'sm violet', '⚙️ تنظیم برگه (کم و زیاد)', d) + '</div>',
+/* ---- 📜 debtor: the same sheet, the other way round («… به حسن احمدی بدهکار است») ---- */
+const serOf = t => { const d = H.normDate(String(t || '')); if (!d) return 0; try { return +E.jser(d) || 0; } catch (e) { return 0; } };
+function debtSpec(name, over) {
+  if (!isDebt(name)) return null;
+  const c = over || cfgOf('debt', name);
+  const who = owner(), nm = D.formal(name), extra = D.noteOf(name);
+  let bal = 0; try { bal = Math.round(N(App.C.balance(name))); } catch (e) { bal = 0; }
+  let all = []; try { all = (E.ledger(App.C, name) || []).filter(x => Math.abs(N(x.dr) - N(x.cr)) > 0.5).map(x => ({ d: String(x.date || ''), T: (x.row && x.row.T) || 0, desc: String(x.desc || ''), amt: Math.round(N(x.dr) - N(x.cr)), bal: Math.round(N(x.bal)) })); } catch (e) { all = []; }
+  if (!c.desc) all = all.map(x => Object.assign({}, x, { desc: x.amt > 0 ? 'پرداخت به ایشان' : 'دریافت از ایشان' }));
+  const from = H.normDate(String(c.from || '')) || '', fs = from ? serOf(from) : 0;
+  let led = all, lim = null;
+  if (fs) {
+    const before = all.filter(x => x.T && x.T < fs), after = all.filter(x => !x.T || x.T >= fs);
+    led = (before.length ? [{ d: from, desc: 'مانده از قبل', amt: 0, bal: before[before.length - 1].bal, open: true }] : []).concat(after);
+    lim = +c.rows > 0 ? Math.min(+c.rows, led.length) : led.length;   // from a date: every line from it (a long period makes a longer page)
+  } else if (+c.rows > 0) lim = Math.min(+c.rows, led.length);
+  const k = extraTiles(c);
+  const title = String(c.title || '').trim() || KIND.debt.title;
+  const code = D.code('DB', [name, nm, bal, all.length, from, who, c]);
+  return {
+    kind: 'debt', title, sub: 'بدهی ' + nm + ' به ' + (who || 'اینجانب'), tag: (c.bal ? 'مبلغ بدهی' : 'حساب') + (c.led ? ' و گردش حساب' + (from ? ' از ' + fa(from) : '') : '') + ' تا تاریخ صدور — به ریال', icon: 'coins', mark: 'بدهی', seal: 'بدهی',
+    cards: [['بدهکار', nm], [who ? 'بستانکار' : 'تاریخ صدور', who || D.dateWords()], ['تاریخ', D.dateWords()], ['شمارهٔ سند', code, true]],
+    code, sigLabel: 'بستانکار', sigName: who, file: 'گواهی بدهی ' + name, pdfTitle: title + ' — ' + nm,
+    data: { bal, k, led, extra, c, from },
+    body: (m, K) => [
+      K.para(m, c.bal ? 'بدین‌وسیله گواهی می‌شود که ' + nm + ' تا تاریخ صدور این برگه مبلغ زیر را به ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' بدهکار است:'
+        : 'بدین‌وسیله گواهی می‌شود که حساب ' + nm + ' نزد ' + (who ? 'اینجانب، ' + who + '،' : 'اینجانب') + ' به شرح زیر است:', { gap: 16 }),
+      c.bal ? K.hero(m, { l: bal < -0.5 ? 'مانده (طلب ایشان)' : 'مبلغ بدهی', v: fa(fmt(Math.abs(bal))), u: 'ریال', w: c.words ? 'به حروف: ' + D.words(Math.abs(bal)) + ' ریال' : '' }) : null,
+      k.length ? K.kpis(m, k) : null,
+      c.led && led.length ? K.ledger(m, { title: 'گردش حساب' + (from ? ' از ' + fa(from) : ''), head: ['تاریخ', 'شرح', 'بدهکار', 'بستانکار', 'مانده'], rows: led, min: lim || 3, max: lim || 12 }) : null,
+      (c.note || extra) ? K.note(m, [c.note ? 'مبالغ به ریال و تا تاریخ صدور این برگه است. ستون «بدهکار» پرداخت به ایشان و ستون «بستانکار» دریافت از ایشان است.' : '', extra]) : null
+    ]
+  };
+}
+D.register('debt', name => debtSpec(name));
+App.debtDocInfo = name => { const s = debtSpec(name); return s ? { code: s.code, bal: s.data.bal, led: s.data.led.length, first: s.data.led[0] || null, name: s.cards[0][1], title: s.title, from: s.data.from, words: D.words(Math.abs(s.data.bal)) } : null; };
+const SPEC = { inv: invSpec, debt: debtSpec };
+
+/* ---- the cards and the windows ---- */
+function cfgSum(kind, name) {
+  const c = cfgOf(kind, name), P0 = KIND[kind].PARTS, on = P0.filter(p => c[p[0]] && !(p[0] === 'desc' && !c.led)).map(p => p[1]), ex = (c.extra || []).filter(e => e && (e[0] || e[1])).length;
+  return (on.length ? on.join('، ') : 'هیچ') + (c.led && c.from ? ' · گردش از ' + c.from : '') + (ex ? ' + ' + fa(ex) + ' سطر دلخواه' : '') + (c.led && +c.rows > 0 ? ' · ' + fa(c.rows) + ' ردیف گردش' : '');
+}
+function docCard(kind, name) {
+  const d = ' data-k="' + kind + '" data-n="' + esc(name) + '"';
+  let bal = 0; try { bal = kind === 'inv' ? (invRow(name) || {}).bal || 0 : App.C.balance(name); } catch (e) { bal = 0; }
+  return D.card(kind, name, {
+    ico: '📜', head: KIND[kind].title + ' — ' + name, sub: (kind === 'inv' ? 'مانده ' : 'بدهی ') + '<bdi class="num">' + esc(fmt(bal)) + '</bdi> ریال · تا تاریخ <bdi class="num">' + esc(E.serToText(App.today)) + '</bdi>',
+    top: D.nameLine(name, 'ad-name', d) + '<div class="dnl noprint"><span>⚙️ روی برگه: <b>' + esc(cfgSum(kind, name)) + '</b></span>' + D.btn('ad-cfg', 'sm violet', '⚙️ تنظیم برگه (کم و زیاد)', d) + '</div>',
     foot: 'برگه «عکس» است (PDF هم همان عکس است)؛ متنی در آن نیست که گیرنده بتواند عوضش کند. عددها همان عددهای دفتر شما در امروز است.'
   });
 }
-App.memberDoc = function (name) {
-  if (!isInv(name)) return;
-  App.modal('📜 گواهی سرمایه‌گذاری — ' + esc(name), invCard(name), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '760px' });
-};
+App.memberDoc = function (name) { if (!isInv(name)) return; App.modal('📜 ' + KIND.inv.title + ' — ' + esc(name), docCard('inv', name), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '760px' }); };
+App.debtDoc = function (name) { if (!isDebt(name)) return; App.modal('📜 ' + KIND.debt.title + ' — ' + esc(name), docCard('debt', name), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '760px' }); };
 
-/* the page: every investor, one line each — the sheet opens in a window (many investors: no need to draw them all at once) */
-P.mrep = function () {
-  const L = investors();
-  let h = '<div class="bar noprint ams-bar"><a class="btn ghost" data-act="go" data-to="/members">◀ سرمایه‌گذاران</a></div>' +
-    '<div class="status info noprint" style="font-size:1.08rem;line-height:1.9">برای هر سرمایه‌گذار یک «گواهی سرمایه‌گذاری» رسمی: مانده سرمایه (با عدد و به حروف)، نرخ سود، سود پرداختی امسال، سود تا این لحظه و آخرین گردش‌ها — با امضا و مُهر شما. «📜 گواهی» را بزنید، ببینید، بعد «🖼 ارسال عکس» یا «📄 ارسال PDF».</div>' +
-    D.sigBox();
-  if (!L.length) return { title: '📜 گواهی سرمایه‌گذاران', html: h + '<div class="box">سرمایه‌گذاری با مانده نیست.</div>' };
-  h += '<div class="box"><h2>👥 سرمایه‌گذاران <small>' + L.length + ' نفر</small></h2><div class="mrl">' + L.map(r => {
-    const d = ' data-n="' + esc(r.name) + '"', full = D.fullOf(r.name);
-    return '<div class="mrr"><span class="mr-av">' + esc((r.name || '؟').charAt(0)) + '</span><div class="mr-n"><b>' + esc(r.name) + '</b><small>' + (full ? 'در گواهی: ' + esc(full) + ' · ' : '') + 'مانده <bdi class="num">' + esc(fmt(r.bal)) + '</bdi></small></div>' +
-      '<div class="mr-b">' + D.btn('iv-doc', 'blue', '📜 گواهی', d) + D.btn('iv-cfg', 'ghost sm', '⚙️ برگه', d) + D.btn('iv-name', 'ghost sm', '✏️ نام', d) + '</div></div>';
+/* the pages: one line each — the sheet opens in a window */
+function listPage(kind, L, back, intro) {
+  let h = '<div class="bar noprint ams-bar"><a class="btn ghost" data-act="go" data-to="' + back[0] + '">◀ ' + back[1] + '</a></div>' +
+    '<div class="status info noprint" style="font-size:1.08rem;line-height:1.9">' + intro + '</div>' + D.sigBox();
+  if (!L.length) return h + '<div class="box">کسی با مانده نیست.</div>';
+  return h + '<div class="box"><h2>👥 ' + KIND[kind].who + ' <small>' + L.length + ' نفر</small></h2><div class="mrl">' + L.map(r => {
+    const d = ' data-k="' + kind + '" data-n="' + esc(r.name) + '"', full = D.fullOf(r.name);
+    return '<div class="mrr"><span class="mr-av' + (kind === 'debt' ? ' dbt' : '') + '">' + esc((r.name || '؟').charAt(0)) + '</span><div class="mr-n"><b>' + esc(r.name) + '</b><small>' + (full ? 'در گواهی: ' + esc(full) + ' · ' : '') + (kind === 'inv' ? 'مانده' : 'بدهی') + ' <bdi class="num">' + esc(fmt(r.bal)) + '</bdi></small></div>' +
+      '<div class="mr-b">' + D.btn('ad-doc', 'blue', '📜 گواهی', d) + D.btn('ad-cfg', 'ghost sm', '⚙️ برگه', d) + D.btn('ad-name', 'ghost sm', '✏️ نام', d) + '</div></div>';
   }).join('') + '</div></div>';
-  return { title: '📜 گواهی سرمایه‌گذاران', sub: 'برگهٔ رسمی مانده و سود هر سرمایه‌گذار — عکس یا PDF، با امضای شما', html: h };
+}
+P.mrep = function () {
+  let L = []; try { L = (E.memberTable(App.C) || []).filter(r => r.name !== owner() && !(App.isArchived && App.isArchived(r.name)) && Math.abs(r.bal) > 0.5); } catch (e) { L = []; }
+  return { title: '📜 گواهی سرمایه‌گذاران', sub: 'برگهٔ رسمی مانده و سود هر سرمایه‌گذار — عکس یا PDF، با امضای شما',
+    html: listPage('inv', L, ['/members', 'سرمایه‌گذاران'], 'برای هر سرمایه‌گذار یک «گواهی سرمایه‌گذاری» رسمی: مانده سرمایه (با عدد و به حروف)، نرخ سود، سود پرداختی امسال، سود تا این لحظه و آخرین گردش‌ها — با امضا و مُهر شما. با «⚙️ برگه» هر چیز را کم و زیاد کنید. «📜 گواهی» را بزنید، ببینید، بعد «🖼 ارسال عکس» یا «📄 ارسال PDF».') };
+};
+P.drep = function () {
+  const L = (App.db.accounts || []).filter(a => a.group === G_DEBT && !(App.isArchived && App.isArchived(a.name))).map(a => ({ name: a.name, bal: Math.round(N(App.C.balance(a.name))) })).filter(r => Math.abs(r.bal) > 0.5);
+  return { title: '📜 گواهی بدهی بدهکاران', sub: 'برگهٔ رسمی بدهی هر نفر با گردش حساب — عکس یا PDF، با امضای شما',
+    html: listPage('debt', L, ['/debtors', 'بدهکاران'], 'برای هر بدهکار یک «گواهی بدهی» رسمی: «فلانی به شما این مبلغ بدهکار است» با عدد و به حروف، و گردش حسابش — با امضا و مُهر شما. در «⚙️ برگه» تاریخ شروع گردش (مثلاً 1405/01/01) و چیزهای دیگر را تعیین کنید.') };
 };
 
-/* buttons on the investors' list and on the page of every investor */
-const pms = P.members;
-if (typeof pms === 'function') P.members = function () {
-  const r = pms.apply(this, arguments);
-  if (r && typeof r.html === 'string' && r.html.indexOf('<div class="bar noprint">') >= 0) r.html = r.html.replace('<div class="bar noprint">', '<div class="bar noprint"><a class="btn gold" data-act="go" data-to="/mrep">📜 گواهی برای سرمایه‌گذاران</a>');
+/* buttons on the lists and on the page of every investor / debtor */
+const wrapList = (page, to, label) => { const o = P[page]; if (typeof o !== 'function') return; P[page] = function () {
+  const r = o.apply(this, arguments);
+  if (r && typeof r.html === 'string' && r.html.indexOf('<div class="bar noprint">') >= 0) r.html = r.html.replace('<div class="bar noprint">', '<div class="bar noprint"><a class="btn gold" data-act="go" data-to="' + to + '">' + label + '</a>');
   return r;
-};
-const pm = P.member;
-if (typeof pm === 'function') P.member = function (name) {
-  const r = pm.apply(this, arguments);
-  if (r && typeof r.html === 'string' && isInv(name) && name !== owner()) {
-    const b = D.btn('iv-doc', 'gold sm ax-q', '📜 گواهی برای ارسال', ' data-n="' + esc(name) + '"');
-    /* the page is reshaped after it is drawn (35_accshell): the button goes into its row of buttons, before «📤 گزارش و ارسال» */
-    const p0 = r.post;
+}; };
+wrapList('members', '/mrep', '📜 گواهی برای سرمایه‌گذاران');
+wrapList('debtors', '/drep', '📜 گواهی بدهی برای بدهکاران');
+/* the page is reshaped after it is drawn (35_accshell): the button goes into its row of buttons, before «📤 گزارش و ارسال» */
+const wrapPage = (page, kind, label) => { const o = P[page]; if (typeof o !== 'function') return; P[page] = function (name) {
+  const r = o.apply(this, arguments);
+  if (r && typeof r.html === 'string' && KIND[kind].ok(name) && name !== owner()) {
+    const b = D.btn('ad-doc', 'gold sm ax-q', label, ' data-k="' + kind + '" data-n="' + esc(name) + '"'), p0 = r.post;
     r.post = function () {
       try { if (p0) p0.apply(this, arguments); } finally {
         try {
-          const page = document.getElementById('page'); if (!page || page.querySelector('[data-act="iv-doc"]')) return;
-          const bar = page.querySelector('.ax-bar') || page.querySelector('.bar.prim'); if (!bar) return;
+          const pg = document.getElementById('page'); if (!pg || pg.querySelector('[data-act="ad-doc"]')) return;
+          const bar = pg.querySelector('.ax-bar') || pg.querySelector('.bar.prim'); if (!bar) return;
           const rp = bar.querySelector('[data-act="ax-rep"]'); if (rp) rp.insertAdjacentHTML('beforebegin', b); else bar.insertAdjacentHTML('beforeend', b);
         } catch (e) { console.error(e); }
       }
     };
   }
   return r;
-};
+}; };
+wrapPage('member', 'inv', '📜 گواهی برای ارسال');
+wrapPage('acc', 'debt', '📜 گواهی بدهی');
 
 /* ---- ⚙️ what goes on the sheet ---- */
-const PARTS = [['bal', 'مانده سرمایه', 'عدد بزرگ وسط برگه'], ['words', 'مانده به حروف', ''], ['rate', 'نرخ سود سالانه', ''], ['paid', 'سود پرداختی از اول سال', ''], ['now', 'سود تا این لحظه', 'از سررسید قبلی'], ['next', 'سررسید بعدی سود', 'با مبلغ حدودی'], ['led', 'آخرین گردش‌های حساب', 'واریز، برداشت، مانده'], ['desc', 'شرح ردیف‌های گردش', 'برداری، فقط «واریز / برداشت» می‌آید'], ['note', 'توضیح پایین برگه', '«مبالغ به ریال است …»']];
-function cfgSum(name) {
-  const c = cfgOf(name), off = PARTS.filter(p => !c[p[0]]).map(p => p[1]), ex = (c.extra || []).filter(e => e && (e[0] || e[1])).length;
-  return (off.length ? 'بدون ' + off.join('، ') : 'همهٔ موارد') + (ex ? ' + ' + D.fa(ex) + ' سطر دلخواه' : '') + (+c.rows > 0 ? ' · ' + D.fa(c.rows) + ' ردیف گردش' : '');
-}
 let CF = null, CFT = 0;
-App.invCfg = function (name) {
-  if (!isInv(name)) return;
-  const all = invAll(); CF = { name, c: cfgOf(name), own: !!all[name] };
-  const c = CF.c, ck = p => '<label class="cf-ck"><input type="checkbox" data-cf="' + p[0] + '"' + (c[p[0]] ? ' checked' : '') + '><span><b>' + p[1] + '</b>' + (p[2] ? '<small>' + p[2] + '</small>' : '') + '</span></label>';
+App.docCfg = function (kind, name) {
+  if (!KIND[kind] || !KIND[kind].ok(name)) return;
+  const all = store(kind); CF = { kind, name, own: !!all[name] };
+  const c = cfgOf(kind, name), ck = p => '<label class="cf-ck"><input type="checkbox" data-cf="' + p[0] + '"' + (c[p[0]] ? ' checked' : '') + '><span><b>' + p[1] + '</b>' + (p[2] ? '<small>' + p[2] + '</small>' : '') + '</span></label>';
   const ex = (c.extra || []).filter(e => e && (e[0] || e[1])).concat([['', ''], ['', ''], ['', ''], ['', '']]).slice(0, Math.max(4, (c.extra || []).length + 1));
   App.modal('⚙️ چه چیزهایی روی گواهی بیاید — ' + esc(name), '<div class="cfw">' +
     '<div class="cf-hint">هر چه نمی‌خواهید بردارید، هر چه می‌خواهید اضافه کنید؛ پیش‌نمایش پایین همان لحظه عوض می‌شود.</div>' +
-    '<div class="field"><label for="cf_title">📜 عنوان برگه</label><input type="text" id="cf_title" class="yellow" value="' + esc(c.title || '') + '" placeholder="گواهی سرمایه‌گذاری" autocomplete="off"></div>' +
-    '<div class="cf-g">' + PARTS.map(ck).join('') + '</div>' +
-    '<div class="field"><label for="cf_rows">🧾 چند ردیف از گردش حساب؟</label><select id="cf_rows" class="yellow">' + [[0, 'خودکار (تا جا هست — حدود ۴ تا ۱۲)'], [3, '۳ ردیف'], [5, '۵ ردیف'], [8, '۸ ردیف'], [12, '۱۲ ردیف'], [20, '۲۰ ردیف']].map(o => '<option value="' + o[0] + '"' + (+c.rows === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
-    '<div class="cf-x"><b>➕ سطرهای دلخواه</b><small>عنوان و مقدار — مثلاً «سود سه‌ماههٔ اول» و «120,000,000 ریال». خالی بماند، روی برگه نمی‌آید.</small>' +
+    '<div class="field"><label for="cf_title">📜 عنوان برگه</label><input type="text" id="cf_title" class="yellow" value="' + esc(c.title || '') + '" placeholder="' + esc(KIND[kind].title) + '" autocomplete="off"></div>' +
+    '<div class="cf-g">' + KIND[kind].PARTS.map(ck).join('') + '</div>' +
+    (kind === 'debt' ? '<div class="field"><label for="cf_from">📅 گردش حساب از تاریخ <small>(خالی = آخرین ردیف‌ها، تا جا هست)</small></label><input type="text" id="cf_from" class="yellow" value="' + esc(c.from || '') + '" placeholder="مثلاً 1405/01/01" inputmode="numeric" autocomplete="off"></div>' : '') +
+    '<div class="field"><label for="cf_rows">🧾 چند ردیف از گردش حساب؟</label><select id="cf_rows" class="yellow">' + [[0, kind === 'debt' ? 'خودکار (از آن تاریخ همه، وگرنه تا جا هست)' : 'خودکار (تا جا هست — حدود ۴ تا ۱۲)'], [3, '۳ ردیف'], [5, '۵ ردیف'], [8, '۸ ردیف'], [12, '۱۲ ردیف'], [20, '۲۰ ردیف']].map(o => '<option value="' + o[0] + '"' + (+c.rows === o[0] ? ' selected' : '') + '>' + o[1] + '</option>').join('') + '</select></div>' +
+    '<div class="cf-x"><b>➕ سطرهای دلخواه</b><small>عنوان و مقدار — مثلاً «قسط بعدی» و «50,000,000 ریال»؛ به حروفِ مبلغ را خود برنامه می‌نویسد. خالی بماند، روی برگه نمی‌آید.</small>' +
     ex.map((e, i) => '<div class="grid2"><input type="text" class="yellow" data-cx="' + i + '" data-p="0" value="' + esc(e[0] || '') + '" placeholder="عنوان" autocomplete="off"><input type="text" class="yellow" data-cx="' + i + '" data-p="1" value="' + esc(e[1] || '') + '" placeholder="مقدار" autocomplete="off"></div>').join('') + '</div>' +
-    '<div class="cf-sc"><label><input type="radio" name="cf_sc" value="one"' + (CF.own || !invAll()['*'] ? ' checked' : '') + '> فقط برای <b>' + esc(name) + '</b></label><label><input type="radio" name="cf_sc" value="all"' + (!CF.own && invAll()['*'] ? ' checked' : '') + '> برای <b>همهٔ سرمایه‌گذاران</b> (پیش‌فرض)</label></div>' +
+    '<div class="cf-sc"><label><input type="radio" name="cf_sc" value="one"' + (CF.own || !all['*'] ? ' checked' : '') + '> فقط برای <b>' + esc(name) + '</b></label><label><input type="radio" name="cf_sc" value="all"' + (!CF.own && all['*'] ? ' checked' : '') + '> برای <b>همهٔ ' + KIND[kind].who + '</b> (پیش‌فرض)</label></div>' +
     '<div class="cf-pv"><b>پیش‌نمایش</b><img id="cf_img" alt="پیش‌نمایش برگه"></div></div>',
     D.btn('cf-save', 'green big', '✔ ذخیره') + D.btn('cf-reset', 'ghost', '↺ برگشت به حالت اول') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '780px' });
   cfPrev();
 };
+App.invCfg = name => App.docCfg('inv', name);
 function readCF() {
   if (!CF) return null;
-  const c = Object.assign({}, DEF);
+  const c = Object.assign({}, KIND[CF.kind].DEF);
   document.querySelectorAll('#modalBg [data-cf]').forEach(i => { c[i.dataset.cf] = !!i.checked; });
   c.title = String((document.getElementById('cf_title') || {}).value || '').trim();
   c.rows = +((document.getElementById('cf_rows') || {}).value) || 0;
+  if (CF.kind === 'debt') c.from = H.normDate(String((document.getElementById('cf_from') || {}).value || '').trim()) || '';
   const ex = []; document.querySelectorAll('#modalBg [data-cx]').forEach(i => { const n = +i.dataset.cx; ex[n] = ex[n] || ['', '']; ex[n][+i.dataset.p] = String(i.value || '').trim(); });
   c.extra = ex.filter(e => e && (e[0] || e[1]));
   return c;
 }
 function cfPrev() {
   const im = document.getElementById('cf_img'); if (!im || !CF) return;
-  try { const s = invSpec(CF.name, readCF()); if (s) im.src = D.draw(s, 0.75).toDataURL('image/jpeg', 0.85); } catch (e) { console.error(e); }
+  try { const s = SPEC[CF.kind](CF.name, readCF()); if (s) im.src = D.draw(s, 0.75).toDataURL('image/jpeg', 0.85); } catch (e) { console.error(e); }
 }
 function cfSave() {
   const c = readCF(); if (!c) return;
-  const name = CF.name, all = !!(document.querySelector('#modalBg input[name="cf_sc"][value="all"]') || {}).checked;
+  const { kind, name } = CF, all = !!(document.querySelector('#modalBg input[name="cf_sc"][value="all"]') || {}).checked;
+  const raw = String((document.getElementById('cf_from') || {}).value || '').trim();
+  if (kind === 'debt' && raw && !c.from) { App.toast('تاریخ را مثل 1405/01/01 بنویسید', true); return; }
   App.commit('برگهٔ گواهی: ' + (all ? 'همه' : name), db => {
-    db.docs = Object.assign({}, db.docs || {}); db.docs.inv = Object.assign({}, db.docs.inv || {});
-    if (all) { db.docs.inv['*'] = c; delete db.docs.inv[name]; } else db.docs.inv[name] = c;
+    db.docs = Object.assign({}, db.docs || {}); db.docs[kind] = Object.assign({}, db.docs[kind] || {});
+    if (all) { db.docs[kind]['*'] = c; delete db.docs[kind][name]; } else db.docs[kind][name] = c;
   });
-  CF = null; App.closeModal(); App.toast('✔ ذخیره شد' + (all ? ' — برای همهٔ سرمایه‌گذاران' : '')); App.emit();
-  setTimeout(() => App.memberDoc(name), 30);
+  CF = null; App.closeModal(); App.toast('✔ ذخیره شد' + (all ? ' — برای همهٔ ' + KIND[kind].who : '')); App.emit();
+  setTimeout(() => KIND[kind].open(name), 30);
 }
 function cfReset() {
-  const name = CF && CF.name; if (!name) return;
-  App.commit('برگهٔ گواهی: حالت اول ' + name, db => {
-    db.docs = Object.assign({}, db.docs || {}); db.docs.inv = Object.assign({}, db.docs.inv || {});
-    delete db.docs.inv[name];
-  });
+  if (!CF) return; const { kind, name } = CF;
+  App.commit('برگهٔ گواهی: حالت اول ' + name, db => { db.docs = Object.assign({}, db.docs || {}); db.docs[kind] = Object.assign({}, db.docs[kind] || {}); delete db.docs[kind][name]; });
   CF = null; App.closeModal(); App.toast('برگهٔ ' + name + ' به حالت اول (پیش‌فرض) برگشت'); App.emit();
-  setTimeout(() => App.memberDoc(name), 30);
+  setTimeout(() => KIND[kind].open(name), 30);
 }
 const cfLater = () => { clearTimeout(CFT); CFT = setTimeout(cfPrev, 180); };
 document.addEventListener('change', ev => { if (CF && ev.target && ev.target.closest && ev.target.closest('.cfw')) cfLater(); });
@@ -14540,14 +14638,14 @@ document.addEventListener('input', ev => { if (CF && ev.target && ev.target.clos
 
 document.addEventListener('click', ev => {
   const b = ev.target && ev.target.closest ? ev.target.closest('[data-act]') : null; if (!b) return;
-  const a = b.dataset.act; if (!/^(iv-doc|iv-name|iv-cfg|cf-save|cf-reset)$/.test(a || '')) return;
+  const a = b.dataset.act; if (!/^(ad-doc|ad-name|ad-cfg|cf-save|cf-reset|iv-doc|iv-cfg|iv-name)$/.test(a || '')) return;
   ev.preventDefault();
-  const n = b.dataset.n;
-  if (a === 'iv-doc') return App.memberDoc(n);
-  if (a === 'iv-cfg') return App.invCfg(n);
+  const n = b.dataset.n, k = b.dataset.k || 'inv';
+  if (a === 'ad-doc' || a === 'iv-doc') return KIND[k].open(n);
+  if (a === 'ad-cfg' || a === 'iv-cfg') return App.docCfg(k, n);
   if (a === 'cf-save') return cfSave();
   if (a === 'cf-reset') return cfReset();
-  if (a === 'iv-name') { const inModal = !!b.closest('#modalBg'); return D.nameEdit(n, { after: inModal ? () => App.memberDoc(n) : null }); }
+  if (a === 'ad-name' || a === 'iv-name') { const inModal = !!b.closest('#modalBg'); return D.nameEdit(n, { after: inModal ? () => KIND[k].open(n) : null }); }
 });
 })();
 
@@ -14990,7 +15088,7 @@ P.reports = function () {
   const sec = (t, a) => '<h3 class="rsec">' + t + '</h3><div class="rgrid">' + a.join('') + '</div>';
   let h = sec('⏱ بر اساس زمان', [tile('/daily', '📅', 'وقایع روزانه', 'هر روز: ثبت‌ها و تغییرات ۲۴ ساعت', 't1'), tile('/mreport', '🗓', 'وقایع ماهانه', 'همهٔ رکوردهای ماه با جستجو', 't1'), tile('/journal', '📒', 'دفتر روزنامه', 'همهٔ ثبت‌ها به ترتیب تاریخ', 't1'), tile('/monthly', '💹', 'سود ماهانهٔ اعضا', 'جدول سود هر ماه', 't1')]) +
     sec('👥 گزارش حساب‌ها', Object.keys(KINDS).map(k => tile('/rep/' + k, KINDS[k].ico, 'گزارش ' + KINDS[k].t, KINDS[k].desc, 't2'))) +
-    sec('⚖ تراز، تطبیق و ارسال', [tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/mrep', '📜', 'گواهی سرمایه‌گذاران', 'برگهٔ رسمی مانده و سود هر نفر — با امضا', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
+    sec('⚖ تراز، تطبیق و ارسال', [tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/mrep', '📜', 'گواهی سرمایه‌گذاران', 'برگهٔ رسمی مانده و سود هر نفر — با امضا', 't3'), tile('/drep', '📜', 'گواهی بدهی بدهکاران', 'فلانی این مبلغ بدهکار است — با گردش و امضا', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
   return { title: 'گزارش‌ها', sub: 'هر گزارش اول خلاصه است؛ روی هر مورد بزنید تا ریز گردشش با فیلتر باز شود', html: h };
 };
 
