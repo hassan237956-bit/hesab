@@ -3136,6 +3136,17 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 .fxtr-r.in{color:#9A3412}.fxtr-r.mine{font-weight:900;border-top:1.5px dashed #CBD5E1}
 /* v47.6 */
 .fxst-bar{margin:0 0 12px}.fxst-bar .btn{min-height:56px;font-size:1.15rem;font-weight:900;width:100%;max-width:520px}
+/* v47.7 — places */
+.lmw .lm-add{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.lmw .lm-add input{flex:1 1 260px;min-height:52px;font-size:1.12rem;font-weight:800}
+.lm-hint{padding:8px 12px;border-radius:12px;background:#EFF6FF;border:1.5px solid #BFDBFE;color:#1E3A8A;font-size:1.02rem;font-weight:800;line-height:1.9;margin:6px 0 10px}
+.lm-hint.warn{background:#FFF7ED;border-color:#FDBA74;color:#9A3412}
+.lm-r{border:2px solid #E2E8F0;border-radius:16px;padding:10px 12px;margin:8px 0;background:#fff}.lm-r.em{background:#F8FAFC;border-style:dashed}
+.lm-h{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 10px}.lm-h>b{font-size:1.22rem;font-weight:900;color:#0F2A4A}
+.lm-b{display:flex;flex-wrap:wrap;gap:6px}.lm-b .btn{min-height:44px;font-weight:900}
+.lm-cs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.lm-c{padding:5px 10px;border-radius:999px;background:#F1F5F9;border:1.5px solid #E2E8F0;font-size:1.02rem;font-weight:800;color:#0F172A}
+.lm-c .num{font-weight:900;color:#1E3A8A}.lm-c small.tr,.lm-c.tr{color:#9D174D}.lm-empty{color:#64748B;font-weight:800}
+.lm-sure{margin-top:10px;font-size:.98rem;font-weight:800;color:#475569}
+.lm-bar,.lm-ab{margin:8px 0 12px;gap:8px;flex-wrap:wrap}.lm-bar .btn,.lm-ab .btn{min-height:52px;font-size:1.08rem;font-weight:900}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3143,7 +3154,7 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.6"; window.APP_BUILD = "1405/08/18 00:57";
+window.APP_VERSION = "47.7"; window.APP_BUILD = "1405/08/18 01:01";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -3824,7 +3835,7 @@ function loadInitial() {
 /* ---------------------------------------------------------------- v38: identity of every record (so two devices can be merged)
    entries / FX moves get a permanent «u» (unique id) and «m» (time of the last change); deleted ones leave a mark in db.tomb;
    the lists that have no ids of their own (rates, loans …) carry a «last changed» time in meta.cm.  Nothing here touches the calculation engine. */
-const CFG_KEYS = ['rates', 'loans', 'units', 'closedMembers', 'actuals', 'special', 'profitDay', 'profitFrom', 'profitDone', 'trusts', 'docs', 'members'];   // the newer side wins as a whole
+const CFG_KEYS = ['rates', 'loans', 'units', 'closedMembers', 'actuals', 'special', 'profitDay', 'profitFrom', 'profitDone', 'trusts', 'docs', 'locGone', 'members'];   // the newer side wins as a whole
 const UNION_KEYS = ['accounts', 'assets', 'locations'];                                                            // names are only ever added
 function hash2(s) { let a = 0x811c9dc5, b = 0x9747b28c ^ s.length; for (let i = 0; i < s.length; i++) { const c = s.charCodeAt(i); a = Math.imul(a ^ c, 16777619) >>> 0; b = (Math.imul(b ^ c, 2246822519) + i + 1) >>> 0; } return a.toString(36) + b.toString(36); }
 function detUid(kind, e) {
@@ -4090,7 +4101,7 @@ App.nextId = () => App.db.meta.nextId++;
    The calculation engine is not touched: after the merge everything is recalculated from the merged records, and «بازگردانی» undoes it. */
 const jclone = x => JSON.parse(JSON.stringify(x));
 const sigE = e => JSON.stringify(e, (k, v) => (k === 'm' || k === 'u' || k === 'id') ? undefined : v);
-const CFG_LABEL = { rates: 'نرخ سود', loans: 'وام‌ها', units: 'واحدهای اجاره‌ای', closedMembers: 'حساب‌های بسته‌شده', actuals: 'موجودی واقعی بانک‌ها', special: 'حساب‌های سیستمی', profitDay: 'روز سررسید سود', profitFrom: 'تاریخ شروع سود', profitDone: 'ماه‌های پرداخت‌شدهٔ سود', trusts: 'امانی‌ها', members: 'فهرست اعضا' };
+const CFG_LABEL = { rates: 'نرخ سود', loans: 'وام‌ها', units: 'واحدهای اجاره‌ای', closedMembers: 'حساب‌های بسته‌شده', actuals: 'موجودی واقعی بانک‌ها', special: 'حساب‌های سیستمی', profitDay: 'روز سررسید سود', profitFrom: 'تاریخ شروع سود', profitDone: 'ماه‌های پرداخت‌شدهٔ سود', trusts: 'امانی‌ها', locGone: 'محل‌های حذف‌شده', members: 'فهرست اعضا' };
 function planMerge(L, fileIn) {
   ensureUids(L);
   const F = fixDb(jclone(fileIn));
@@ -7192,6 +7203,8 @@ function locBox(name) {
   if (unk) h += '<div class="status info">❓ بخشی از موجودی از قدیم محل ندارد (در خرید و فروشِ جدید دیگر «نامشخص» نداریم). «مشخص کن کجاست» را بزنید تا به محل درستش (مثلاً بانک دی) برود؛ بعد از آن می‌توانید از همان محل بفروشید.</div>';
   if (anyT) h += '<div class="hint" style="margin-top:6px">🤝 ردیف‌های «امانیِ …» مال دیگران است و فقط برای اینکه بدانید در هر محل جمعاً چقدر هست آمده؛ در ارزش، سهم و ترازنامهٔ شما حساب نمی‌شود.</div>';
   if (neg) h += '<div class="status warn">⚠ «منفی» یعنی از آن محل بیشتر از موجودی برداشت یا فروش ثبت شده؛ احتمالاً یک خرید یا انتقال جا افتاده.</div>';
+  /* v47.7: carry it to another place or a new one (e.g. «طلافروشی»), and the list of places */
+  h += '<div class="bar noprint lm-ab"><button type="button" class="btn teal" data-act="lm-asset" data-asset="' + en + '">🔀 بردن ' + disp + ' به محل دیگر یا جدید</button><button type="button" class="btn violet" data-act="lm-open">📍 محل‌ها: افزودن، تغییر نام، حذف</button></div>';
   return h + '</div>';
 }
 function holdBox(cur) {
@@ -15346,6 +15359,168 @@ const BTN = '<div class="bar noprint fxst-bar"><button type="button" class="btn 
     return r;
   };
 });
+})();
+/* ---------------------------------------------------------------- v47.7 — «📍 محل‌های نگهداری»: add, rename, delete — and what each one holds
+   the owner (1405/08/18): «برای محل جدید هم ادیت و اد کردن بگذار؛ مثلاً طلافروشی یا غیره، که در هر کدام از دارایی‌ها بشود اضافه و کم کرد»
+   · one window lists every place with what lies there (mine and the trusts), with ✏️ rename, 🗑 delete (only an empty place) and
+     «🔀 بردن دارایی به اینجا» (the move form, this place already chosen);
+   · renaming changes the place in every record, move and trust (a name that already exists → the two become one place);
+   · a deleted / renamed name is remembered (db.locGone, synced) so another device's file does not bring it back as an empty place;
+   · on the page of every currency / gold: «🔀 بردن به محل دیگر یا جدید» and «📍 محل‌ها». Nothing in the books moves. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc, N = v => +v || 0;
+const key = l => (App.trustLocKey ? App.trustLocKey(l) : String(l || '').replace(/\s+/g, ''));
+const btn = (act, cls, html, data) => '<button type="button" class="btn ' + cls + '" data-act="' + act + '"' + (data || '') + '>' + html + '</button>';
+const UW = { USD: 'دلار', EUR: 'یورو', USDT: 'تتر', GBP: 'پوند', AED: 'درهم', TRY: 'لیر' };
+const unitOf = a => UW[String(a.unit || '').toUpperCase()] || a.unit || '';
+
+/* every place: the list of the program, then any other name that records / moves / trusts use */
+function places() {
+  const L = (App.db.locations || []).map(l => l.name), seen = new Set(L.map(key)), add = n => { if (n && !seen.has(key(n))) { seen.add(key(n)); L.push(n); } };
+  (App.db.entries || []).forEach(e => e && e.loc && add(e.loc));
+  (App.db.moves || []).forEach(m => { if (m) { add(m.from); add(m.to); } });
+  (App.db.trusts || []).forEach(t => t && (t.moves || []).forEach(m => m && add(m.loc)));
+  const gone = new Set((App.db.locGone || []).map(key));
+  return L.filter(n => !gone.has(key(n)) || held(n).length);
+}
+/* what lies in one place: [{name, disp, u, own, tq}] (mine from the books; tq = the trusts there) + others' things */
+function held(name) {
+  const out = [];
+  (App.db.assets || []).forEach(a => {
+    let own = 0; try { const h = E.holdingsByAsset(App.C, a.name) || {}; Object.keys(h).forEach(l => { if (l !== '' && key(l) === key(name)) own += N(h[l]); }); } catch (e) { own = 0; }
+    const tm = App.trustMemoAt ? App.trustMemoAt(name, a.name) : [], tq = tm.reduce((s, t) => s + t.q, 0);
+    if (Math.abs(own) > 1e-9 || tq > 1e-9) out.push({ name: a.name, disp: a.display || a.name, u: unitOf(a), own, tq, tm });
+  });
+  (App.trustLocs ? App.trustLocs() : []).forEach(P => { if (P.key === key(name)) P.other.forEach(o => out.push({ name: '', disp: o.text, u: '', own: 0, tq: 1, other: o.person })); });
+  return out;
+}
+App.locPlaces = places;
+App.locHeld = held;
+const q = v => H.fmtq(Math.round(N(v) * 10000) / 10000);
+
+/* ---- the window ---- */
+let LM = null;
+function lmHtml() {
+  const L = places();
+  const row = n => {
+    const hh = held(n), empty = !hh.length;
+    const chips = empty ? '<span class="lm-empty">خالی</span>' : hh.map(x => x.other ? '<span class="lm-c tr">🤝 ' + esc(x.disp) + ' <small>امانیِ ' + esc(x.other) + '</small></span>' :
+      '<span class="lm-c"><b>' + esc(x.disp) + '</b> ' + (Math.abs(x.own) > 1e-9 ? '<span class="num">' + esc(q(x.own)) + '</span> ' + esc(x.u) : '') +
+      (x.tq > 1e-9 ? ' <small class="tr">' + (Math.abs(x.own) > 1e-9 ? '+ ' : '') + '🤝 ' + esc(x.tm.map(t => t.person + ' ' + q(t.q)).join('، ')) + '</small>' : '') + '</span>').join('');
+    const d = ' data-n="' + esc(n) + '"';
+    return '<div class="lm-r' + (empty ? ' em' : '') + '"><div class="lm-h"><b>📍 ' + esc(n) + '</b>' +
+      '<span class="lm-b">' + btn('lm-ren', 'sm ghost', '✏️ تغییر نام', d) + btn('lm-to', 'sm teal', '🔀 بردن دارایی به اینجا', d) +
+      (empty ? btn('lm-del', 'sm red', '🗑 حذف', d) : '<button type="button" class="btn sm ghost" disabled title="اول موجودی‌اش را به محل دیگری ببرید">🗑 حذف</button>') + '</span></div>' +
+      '<div class="lm-cs">' + chips + '</div></div>';
+  };
+  return '<div class="lmw"><div class="lm-add"><input type="text" id="lm_new" class="yellow" placeholder="نام محل جدید — مثلاً طلافروشی، بانک ملی، صندوق امانات" autocomplete="off">' + btn('lm-add', 'green big', '＋ افزودن محل') + '</div>' +
+    '<div class="lm-hint">برای اینکه دارایی به یک محل برود یا از آن کم شود: «🔀 بردن دارایی به اینجا» (یا در صفحهٔ هر ارز و طلا «انتقال»). خرید و فروش هم محل را می‌پرسد.</div>' +
+    (L.length ? L.map(row).join('') : '<div class="chempty">هنوز محلی ندارید.</div>') +
+    '<div class="lm-sure">🔒 تغییر نام و حذف محل به مبلغ و موجودی‌ها دست نمی‌زند؛ فقط اسم محل عوض می‌شود. محلی که چیزی در آن هست حذف نمی‌شود.</div></div>';
+}
+App.locManage = function () {
+  LM = {};
+  App.modal('📍 محل‌های نگهداری — افزودن، تغییر نام، حذف', lmHtml(), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '820px' });
+};
+const lmRefresh = () => { const w = document.querySelector('#modalBg.show .lmw'); if (w) w.outerHTML = lmHtml(); else App.locManage(); };
+
+function lmAdd() {
+  const el = document.getElementById('lm_new'), v = String((el && el.value) || '').replace(/\s+/g, ' ').trim();
+  if (!v) { App.toast('اسم محل را بنویسید', true); return; }
+  if (places().some(n => key(n) === key(v))) { App.toast('این محل از قبل هست', true); return; }
+  App.commit('محل جدید: ' + v, db => {
+    db.locations = db.locations || []; if (!db.locations.some(l => key(l.name) === key(v))) db.locations.push({ name: v, pinned: false });
+    db.locGone = (db.locGone || []).filter(n => key(n) !== key(v));
+  });
+  App.toast('✔ محل «' + v + '» اضافه شد'); App.emit(); lmRefresh();
+}
+/* ✏️ rename (or join two places) */
+let LR = null;
+function lrOpen(n) {
+  LR = { old: n, join: false };
+  App.modal('✏️ تغییر نام محل', '<div class="lmw"><div class="field"><label for="lr_name">نام تازهٔ «' + esc(n) + '»</label><input type="text" id="lr_name" class="yellow" value="' + esc(n) + '" autocomplete="off"></div>' +
+    '<div id="lr_msg" class="lm-hint">در همهٔ ثبت‌ها، انتقال‌ها و امانی‌هایی که این محل را دارند عوض می‌شود. اگر اسم یکی از محل‌های دیگر را بنویسید، دو محل یکی می‌شوند.</div></div>',
+    btn('lr-save', 'green big', '✔ ذخیره') + btn('lr-back', 'ghost', 'انصراف'), { width: '600px' });
+}
+function renameIn(db, o, n) {
+  const ko = key(o), now = new Date().toISOString(), same = l => l && key(l) === ko;
+  let k = 0;
+  (db.entries || []).forEach(e => { if (e && same(e.loc)) { e.loc = n; e.m = now; k++; } });
+  (db.moves || []).forEach(m => { if (!m) return; let ch = false; if (same(m.from)) { m.from = n; ch = true; } if (same(m.to)) { m.to = n; ch = true; } if (ch) { m.m = now; k++; } });
+  (db.trusts || []).forEach(t => t && (t.moves || []).forEach(m => { if (m && same(m.loc)) { m.loc = n; k++; } }));
+  db.locations = db.locations || [];
+  const i = db.locations.findIndex(l => same(l.name)), j = db.locations.findIndex(l => key(l.name) === key(n));
+  if (i >= 0 && j >= 0 && i !== j) db.locations.splice(i, 1); else if (i >= 0) db.locations[i] = Object.assign({}, db.locations[i], { name: n }); else if (j < 0) db.locations.push({ name: n, pinned: false });
+  if (ko !== key(n)) db.locGone = Array.from(new Set((db.locGone || []).filter(x => key(x) !== key(n)).concat([o])));
+  return k;
+}
+App.locRenameIn = renameIn;
+function lrSave() {
+  if (!LR) return;
+  const el = document.getElementById('lr_name'), v = String((el && el.value) || '').replace(/\s+/g, ' ').trim(), o = LR.old;
+  if (!v) { App.toast('اسم محل را بنویسید', true); return; }
+  if (v === o) { LR = null; App.locManage(); return; }
+  const other = places().find(n => n !== o && key(n) === key(v));
+  if (other && !LR.join) {
+    LR.join = true;
+    const m = document.getElementById('lr_msg'); if (m) { m.className = 'lm-hint warn'; m.innerHTML = '⚠ محل «' + esc(other) + '» از قبل هست. اگر دوباره «✔ ذخیره» را بزنید، «' + esc(o) + '» با آن <b>یکی می‌شود</b> (همهٔ موجودی‌هایش می‌رود زیر «' + esc(other) + '»).'; }
+    return;
+  }
+  let k = 0; App.commit('تغییر نام محل: ' + o + ' ← ' + (other || v), db => { k = renameIn(db, o, other || v); });
+  LR = null; App.toast('✔ «' + o + '» شد «' + (other || v) + '»' + (k ? ' (' + k + ' ثبت)' : '')); App.emit(); App.locManage();
+}
+function lmDel(n) {
+  if (held(n).length) { App.toast('در این محل هنوز چیزی هست؛ اول آن را به محل دیگری ببرید', true); return; }
+  App.commit('حذف محل: ' + n, db => {
+    db.locations = (db.locations || []).filter(l => key(l.name) !== key(n));
+    db.locGone = Array.from(new Set((db.locGone || []).concat([n])));
+  });
+  App.toast('✔ محل «' + n + '» حذف شد'); App.emit(); lmRefresh();
+}
+/* the move form with this place already chosen as «to» (or as «from», and the asset) */
+App.locMoveTo = function (to, asset, from) {
+  App.closeModal && App.modalOpen && App.closeModal();
+  setTimeout(() => {
+    App.openMoveForm({ asset: asset || '' });
+    const set = (id, v) => { const s = document.getElementById(id); if (s && v != null && [...s.options].some(o => o.value === v)) { s.value = v; s.dispatchEvent(new Event('change', { bubbles: true })); } };
+    setTimeout(() => { if (from != null) set('mv_from', from); if (to) set('mv_to', to); }, 60);
+  }, 40);
+};
+
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act]') : null; if (!b) return;
+  const a = b.dataset.act; if (!/^(lm-open|lm-add|lm-ren|lm-del|lm-to|lr-save|lr-back|lm-asset)$/.test(a || '')) return;
+  ev.preventDefault();
+  const n = b.dataset.n;
+  if (a === 'lm-open') return App.locManage();
+  if (a === 'lm-add') return lmAdd();
+  if (a === 'lm-ren') return lrOpen(n);
+  if (a === 'lm-del') return lmDel(n);
+  if (a === 'lm-to') return App.locMoveTo(n);
+  if (a === 'lm-asset') return App.locMoveTo('', b.dataset.asset, b.dataset.from);
+  if (a === 'lr-save') return lrSave();
+  if (a === 'lr-back') { LR = null; return App.locManage(); }
+});
+document.addEventListener('keydown', ev => { if (ev.key !== 'Enter' || !ev.target) return; if (ev.target.id === 'lm_new') { ev.preventDefault(); lmAdd(); } else if (ev.target.id === 'lr_name') { ev.preventDefault(); lrSave(); } });
+
+/* a name another device's file brings back (the list of places is only ever added to when merging): out again, if it holds nothing */
+function clean() {
+  const G = new Set((App.db.locGone || []).map(key)); if (!G.size) return;
+  const drop = (App.db.locations || []).filter(l => G.has(key(l.name)) && !held(l.name).length);
+  if (drop.length) App.commit('محل‌های حذف‌شده', db => { db.locations = (db.locations || []).filter(l => !drop.some(d => d.name === l.name)); });
+}
+App.locClean = clean;
+const om = App.mergeApply;
+if (typeof om === 'function') App.mergeApply = function () { const r = om.apply(this, arguments); setTimeout(() => { try { clean(); App.emit(); } catch (e) { console.error(e); } }, 50); return r; };
+const oi = App.init;
+if (typeof oi === 'function') App.init = function () { const r = oi.apply(this, arguments); setTimeout(() => { try { clean(); } catch (e) { } }, 7000); return r; };
+
+/* ---- the buttons: the places page, and the page of every currency / gold ---- */
+const P = App.pages;
+const wrap = (k, f) => { const o = P && P[k]; if (typeof o !== 'function') return; P[k] = function () { const r = o.apply(this, arguments), add = f.apply(this, arguments); if (!add) return r; if (typeof r === 'string') return add + r; if (r && typeof r.html === 'string') return Object.assign({}, r, { html: add + r.html }); return r; }; };
+wrap('fxloc', () => '<div class="bar noprint lm-bar">' + btn('lm-open', 'violet big', '📍 محل‌ها: افزودن، تغییر نام، حذف') + '</div>');
 })();
 
 
