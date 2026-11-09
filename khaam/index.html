@@ -3368,7 +3368,7 @@ details.hpr.bad{background:#FFF7F7}details.hpr.bad .hr-n{color:#9F1239}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.3"; window.APP_BUILD = "1405/08/18 21:59";
+window.APP_VERSION = "48.3"; window.APP_BUILD = "1405/08/18 22:26";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -16535,7 +16535,7 @@ App.afterRender = function (r) {
 };
 })();
 /* ---------------------------------------------------------------- v48.3 — the greeting by the time of day · «🅰 فونت تیترها»
-   the owner (1405/08/18): «صفحهٔ خانه، آن سلام حسن جان را یکم تنوعش را بیشتر کن، رنگ و لعابش بیشتر … بعضی رنگ‌هایش را عوض کن» ·
+   the owner (1405/08/18): «صفحهٔ خانه، آن سلام … جان را یکم تنوعش را بیشتر کن، رنگ و لعابش بیشتر … بعضی رنگ‌هایش را عوض کن» ·
    «فونت‌ها: عدد انگلیسی را قشنگ‌تر و مجلسی‌تر کن، و فونت تیترها را اگر بهتر می‌شود بگذار».
    · the greeting box takes the colours of the hour: صبح (turquoise to lapis, a saffron sunrise), روز (lapis and turquoise), عصر (pomegranate
      and saffron), شب (deep navy with stars) — over a faint «خاتم» (eight-point star) pattern; a line «☀️ صبح‌تان بخیر» above «سلام … جان»;
@@ -16580,7 +16580,7 @@ const tset = v => { try { if (v) localStorage.setItem(TKEY, v); else localStorag
 let cv = null;
 function has(stack) {   // does this device have one of the fonts of the stack? (the width of a Persian line against the fallback)
   try {
-    cv = cv || document.createElement('canvas').getContext('2d'); const t = 'سلام حسن جان گچپژک ۱۲۳';
+    cv = cv || document.createElement('canvas').getContext('2d'); const t = 'سلام دوست جان گچپژک ۱۲۳';
     return stack.split(',').some(f => { cv.font = '40px monospace'; const w0 = cv.measureText(t).width; cv.font = '40px ' + f.trim() + ', monospace'; return Math.abs(cv.measureText(t).width - w0) > 0.5; });
   } catch (e) { return false; }
 }
@@ -16604,7 +16604,7 @@ App.titleFontBar = () => {
     TF.map(([k, name, stack]) => {
       const ok = !k || has(stack);
       return '<button type="button" class="nf-t tf-t' + (v === k ? ' on' : '') + (ok ? '' : ' tf-no') + '" data-act="titlefont" data-v="' + k + '"><b>' + esc(name) + '</b>' +
-        '<span class="tf-s" style="font-family:' + (stack ? esc(stack) + ',' : '') + 'inherit">سلام حسن جان</span>' +
+        '<span class="tf-s" style="font-family:' + (stack ? esc(stack) + ',' : '') + 'inherit">سلام ' + esc(((App.db && App.db.meta && App.db.meta.owner) || 'دوست').split(' ')[0]) + ' جان</span>' +
         '<small class="tf-av">' + (!k ? 'همین که الان هست' : ok ? '✔ روی این دستگاه هست' : '— روی این دستگاه نیست') + '</small></button>';
     }).join('') + '</div></div>';
 };
