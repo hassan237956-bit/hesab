@@ -3158,6 +3158,74 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 .ple-q.dep{color:#15803D}.ple-q.wd{color:#B91C1C}.ple-a{display:flex;gap:6px}.ple-a .btn{min-height:44px;font-weight:900}
 .ple-b{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ple-none{color:#64748B;font-weight:800;padding:6px}.ple-sure{margin-top:8px;font-size:.98rem;font-weight:800;color:#475569;line-height:1.8}
 @media (max-width:560px){.ple-r{grid-template-columns:1fr auto}.ple-t{grid-column:1/-1;order:-1}.ple-a{grid-column:1/-1;justify-content:flex-end}}
+/* v48.0 — ⚖ the T balance sheet and 📈 profit and loss */
+.btn.navy{background:#0F2A4A;color:#fff}
+.tbw{--ta:#15803D;--tab:#F0FDF4;--tl:#B91C1C;--tlb:#FEF2F2;--te:#1D4ED8;--teb:#EFF6FF;--tn:#0F2A4A}
+.tb-top{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:10px}
+.tb-chip{border-radius:18px;padding:12px 14px;color:#fff;box-shadow:0 6px 18px rgba(15,42,74,.14);display:flex;flex-direction:column;gap:2px;min-width:0}
+.tb-chip span{font-weight:800;font-size:1rem;opacity:.95}.tb-chip b{font-size:1.32rem;font-weight:900;direction:ltr;text-align:right;overflow-wrap:anywhere}.tb-chip small{font-weight:700;opacity:.9}
+.tb-chip.a{background:linear-gradient(135deg,#15803D,#22C55E)}.tb-chip.l{background:linear-gradient(135deg,#B91C1C,#F97316)}.tb-chip.e{background:linear-gradient(135deg,#1D4ED8,#7C3AED)}
+.tb-chip.ok{background:linear-gradient(135deg,#0F2A4A,#1E3A8A)}.tb-chip.bad{background:linear-gradient(135deg,#7F1D1D,#B91C1C)}.tb-chip b.neg{color:#FECACA}
+.tb-unit{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0 12px;font-weight:800;color:#334155}
+.tbT{display:grid;grid-template-columns:1fr 1fr;background:#fff;border-radius:22px;box-shadow:0 10px 30px rgba(15,42,74,.12);overflow:hidden;border:2px solid #E2E8F0}
+.tbT-h{padding:14px 16px;border-bottom:5px solid var(--tn);display:flex;flex-direction:column;gap:2px}
+.tbT-h b{font-size:1.4rem;font-weight:900}.tbT-h small{font-weight:800;color:#64748B}
+.tbT-h.a{background:var(--tab);color:var(--ta);border-left:5px solid var(--tn)}.tbT-h.l{background:var(--tlb);color:var(--tl)}
+.tbT-c{padding:8px 10px 12px;display:flex;flex-direction:column;gap:6px}.tbT-c.a{border-left:5px solid var(--tn)}
+.tbT-f{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:12px 16px;border-top:3px double var(--tn);font-weight:900;background:#F8FAFC}
+.tbT-f.a{border-left:5px solid var(--tn)}.tbT-f span{font-size:1.1rem;color:#334155}.tbT-f b{font-size:1.32rem;color:var(--tn);direction:ltr}
+.tbr{display:grid;grid-template-columns:1fr auto;grid-template-areas:"n v" "b p";gap:2px 10px;padding:9px 10px;border-radius:14px;text-decoration:none;color:inherit;border:1.5px solid transparent}
+.tbr.a{background:#F7FEF9}.tbr.l{background:#FFF8F8}.tbr.e{background:#F6F9FF}
+a.tbr:hover,a.tbr:focus{border-color:#94A3B8;box-shadow:0 2px 8px rgba(15,42,74,.12)}
+.tbr-n{grid-area:n;font-weight:800;font-size:1.05rem;line-height:1.6;color:#0F172A}
+.tbr-v{grid-area:v;font-weight:900;font-size:1.18rem;direction:ltr;text-align:left;white-space:nowrap}.tbr.a .tbr-v{color:var(--ta)}.tbr.l .tbr-v{color:var(--tl)}.tbr.e .tbr-v{color:var(--te)}.tbr-v.neg{color:#B91C1C!important}
+.tbr-bar{grid-area:b;height:7px;border-radius:9px;background:#E2E8F0;overflow:hidden;align-self:center}.tbr-bar i{display:block;height:100%;border-radius:9px}
+.tbr-p{grid-area:p;font-weight:800;color:#64748B;text-align:left}
+.tbsec{font-weight:900;font-size:1.08rem;padding:6px 8px 2px}.tbsec.l{color:var(--tl)}.tbsec.e{color:var(--te);margin-top:6px}
+.tbsub{display:flex;justify-content:space-between;align-items:baseline;padding:8px 10px;border-radius:12px;font-weight:900}
+.tbsub.l{background:var(--tlb);color:var(--tl)}.tbsub.e{background:var(--teb);color:var(--te)}.tbsub b{font-size:1.16rem;direction:ltr}
+.tb-comp{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.tb-cb{background:#fff;border:2px solid #E2E8F0;border-radius:18px;padding:12px}.tb-cb h3{margin:0 0 10px;font-size:1.1rem;font-weight:900;color:#0F2A4A}
+.tb-stack{display:flex;height:22px;border-radius:12px;overflow:hidden;gap:2px;background:#fff}.tb-stack i{display:block;min-width:3px}
+.tb-leg{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font-weight:800;font-size:.98rem;color:#334155}.tb-leg span{display:inline-flex;align-items:center;gap:6px}.tb-leg i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.tb-note{margin:12px 0;padding:10px 14px;border-radius:14px;background:#F8FAFC;border:1.5px dashed #CBD5E1;font-weight:800;color:#475569;line-height:2}
+.tb-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.tb-tile{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:20px;color:#fff;text-decoration:none;box-shadow:0 8px 22px rgba(15,42,74,.18)}
+.tb-tile span{font-size:1.7rem}.tb-tile b{font-size:1.2rem;font-weight:900}.tb-tile small{font-weight:700;opacity:.92}
+.tb-tile.t{background:linear-gradient(135deg,#0F2A4A,#1D4ED8)}.tb-tile.p{background:linear-gradient(135deg,#15803D,#0D9488)}
+/* profit and loss */
+.pl-per{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}.pl-cus{display:inline-flex;flex-wrap:wrap;gap:6px;align-items:center}.pl-cus input{width:150px;min-height:44px;font-weight:800}
+.pl-hero{border-radius:22px;padding:16px 18px;color:#fff;display:flex;flex-direction:column;gap:2px;box-shadow:0 10px 26px rgba(15,42,74,.18);margin-bottom:6px}
+.pl-hero.g{background:linear-gradient(135deg,#15803D,#0D9488)}.pl-hero.b{background:linear-gradient(135deg,#B91C1C,#EA580C)}
+.pl-hero span{font-weight:900;font-size:1.12rem}.pl-hero b{font-size:2rem;font-weight:900;direction:ltr;text-align:right}.pl-hero small{font-weight:800;opacity:.92}
+.tbT.pl .tbT-h.a{color:var(--ta)}.tbT.pl .tbT-h.l{color:var(--tl)}
+.plr{border-radius:14px;border:1.5px solid #E2E8F0;background:#fff}.plr.i{background:#F7FEF9}.plr.x{background:#FFF8F8}
+.plr>summary,.plr.net{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:baseline;padding:10px 12px;cursor:pointer;list-style:none}
+.plr>summary::-webkit-details-marker{display:none}.plr[data-nod]>summary{cursor:default}
+.plr-n{font-weight:900;font-size:1.06rem;line-height:1.6;color:#0F172A}.plr-n small{display:block;font-weight:700;color:#64748B;font-size:.92rem}
+.plr b{font-weight:900;font-size:1.18rem;direction:ltr;white-space:nowrap}.plr.i b{color:var(--ta)}.plr.x b{color:var(--tl)}.plr b.neg{color:#B91C1C!important}
+.plr.net{border-radius:14px;border:2px solid}.plr.net.g{background:#ECFDF5;border-color:#22C55E}.plr.net.g b{color:#15803D}.plr.net.b{background:#FEF2F2;border-color:#F87171}.plr.net.b b{color:#B91C1C}
+.pld{display:flex;justify-content:space-between;gap:10px;padding:6px 14px;border-top:1px dashed #E2E8F0;font-weight:800;color:#334155}.pld b{font-size:1.04rem}
+.pl-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.pl-sum>div{background:#fff;border:2px solid #E2E8F0;border-radius:16px;padding:10px 12px;display:flex;flex-direction:column}
+.pl-sum span{font-weight:800;color:#475569}.pl-sum b{font-size:1.25rem;font-weight:900;direction:ltr;text-align:right}.pl-sum .g{border-color:#22C55E}.pl-sum .g b{color:#15803D}.pl-sum .b{border-color:#F87171}.pl-sum .b b{color:#B91C1C}
+@media (max-width:760px){
+  .tb-top{grid-template-columns:1fr 1fr}.tb-comp{grid-template-columns:1fr}.pl-sum{grid-template-columns:1fr}
+  .tbT-h{padding:10px}.tbT-h b{font-size:1.14rem}.tbT-c{padding:6px}
+  .tbr{grid-template-columns:1fr;grid-template-areas:"n" "v" "b" "p";padding:8px}.tbr-n{font-size:.98rem}.tbr-v{font-size:1.08rem;text-align:right}.tbr-p{text-align:right}
+  .tbT-f{flex-direction:column;align-items:flex-start;padding:10px}.tbT-f b{font-size:1.12rem}
+  .tbsub{flex-direction:column;align-items:flex-start}
+  .plr>summary,.plr.net{grid-template-columns:1fr}.plr b{font-size:1.08rem}
+}
+@media print{.tbT,.tb-chip,.tb-cb,.pl-hero{box-shadow:none!important}.tbr-bar i,.tb-stack i,.tb-chip,.pl-hero{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+/* v48.0 — fit: the columns never wider than the screen; the big numbers on one line */
+.tb-top{grid-template-columns:repeat(4,minmax(0,1fr))}.tbT{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.tb-comp{grid-template-columns:repeat(2,minmax(0,1fr))}.pl-sum{grid-template-columns:repeat(3,minmax(0,1fr))}.tb-tiles{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tb-chip b{white-space:nowrap;overflow-wrap:normal;font-size:clamp(.98rem,1.55vw,1.3rem);letter-spacing:-.3px}
+.tbr,.plr>summary,.plr.net{min-width:0}.tbr-n,.plr-n{min-width:0;overflow-wrap:anywhere}
+@media (max-width:760px){
+  .tb-top{grid-template-columns:repeat(2,minmax(0,1fr))}.tb-chip b{font-size:clamp(.95rem,4.6vw,1.2rem)}
+  .tb-comp,.pl-sum{grid-template-columns:minmax(0,1fr)}
+  .tbr-v,.plr b,.tbT-f b,.tbsub b{font-size:clamp(.9rem,4vw,1.08rem);white-space:normal;overflow-wrap:anywhere;letter-spacing:-.3px}
+}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3165,7 +3233,7 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.9"; window.APP_BUILD = "1405/08/18 15:35";
+window.APP_VERSION = "48.0"; window.APP_BUILD = "1405/08/18 16:25";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -15616,6 +15684,194 @@ document.addEventListener('click', ev => {
   if (a === 'pl-tdel') App.confirm('این ردیف امانی پاک شود؟', 'بله، پاک شود', () => { App.trustDropMove(id, m); App.toast('✔ پاک شد'); App.emit(); setTimeout(back(v), 30); });
 });
 })();
+/* ---------------------------------------------------------------- v48.0 — «⚖ ترازنامه (حساب T)» and «📈 صورت سود و زیان»
+   the owner (1405/08/18): «یک گزارش در همان صفحهٔ خانه: ترازنامه به صورت T (تی حسابداری) که بالانسش را ببینم، در گوشی و لپ‌تاپ؛
+   با دقت و دیزاین خاص و تفکیک رنگ. صورت سود و زیان هم می‌توانی دربیاوری؟»
+   · /tbs — the balance sheet of the engine (E.balanceSheet, with the trusts' adjustment) drawn as a T: «دارایی‌ها» on the right,
+     «بدهی‌ها» + «سرمایه» on the left, each line with its share, both sides' totals at the foot (equal = ✓ تراز), and two bars of
+     what makes each side. Green = what I have, red = what I owe, blue = capital. Every line opens its page.
+   · /pl — the books have no separate income / expense accounts, so the statement is made of what the program knows exactly, for a period:
+     درآمد: سود فروش ارز و طلا (تحقق‌یافته: the gain of every sale in the period) + سود ارزیابی (the change of «value − cost» of what is
+     held, from the day before the period to its last day, at the prices of those days) + «سایر درآمدها و هزینه‌ها» if used;
+     هزینه: the profit the program put into the accounts of the investors / creditors from mine (the «profit-owner» records).
+     Drawn as a T too (درآمدها | هزینه‌ها + سود خالص), with the details of each line under it.
+   Amounts in ریال (exact), تومان or میلیون تومان. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc, N = v => +v || 0, P = App.pages;
+const sp = () => App.db.special || {};
+/* ---- the unit of the amounts (per viewer) ---- */
+const UNITS = [['r', 'ریال', 1, 0], ['t', 'تومان', 10, 0], ['mt', 'میلیون تومان', 1e7, 1]];
+let U = 'r'; try { U = localStorage.getItem('tbsUnit') || 'r'; } catch (e) { }
+const uOf = () => UNITS.find(x => x[0] === U) || UNITS[0];
+const money = v => { const u = uOf(), x = N(v) / u[2]; return H.fmt(u[3] ? Math.round(x * 10) / 10 : Math.round(x), u[3]); };
+const unitBar = () => '<div class="tb-unit noprint"><span>واحد مبلغ‌ها:</span>' + UNITS.map(x => '<button type="button" class="btn sm ' + (x[0] === U ? 'navy' : 'ghost') + '" data-act="tb-unit" data-u="' + x[0] + '">' + x[1] + '</button>').join('') + '</div>';
+const pct = (v, t) => (t > 0 ? Math.round(Math.max(0, v) / t * 1000) / 10 : 0);
+function route(l) {
+  const s = sp(), m = { cash: '/banks', brk: '/banks', inv: '/invest', fx: '/fx', debt: '/debtors', ten: '/acc/' + H.slug(s.A_TEN || ''), oth: '/chart', cred: '/creditors', reza: '/acc/' + H.slug(s.REZA_L || ''), loan: '/loans', trust: '/trust' };
+  return m[l.key] || '';
+}
+const PAL = { a: ['#15803D', '#16A34A', '#22C55E', '#0D9488', '#059669', '#65A30D', '#84CC16', '#10B981'], l: ['#B91C1C', '#DC2626', '#EA580C', '#F97316'], e: ['#1D4ED8', '#4F46E5', '#7C3AED', '#0891B2', '#2563EB'] };
+
+/* ---- one side of a T ---- */
+function line(l, tot, col, side) {
+  const to = route(l), v = N(l.v), neg = v < -0.5, w = pct(v, tot);
+  const inner = '<span class="tbr-n">' + esc(l.label) + '</span><b class="tbr-v num' + (neg ? ' neg' : '') + '">' + money(v) + '</b>' +
+    '<span class="tbr-bar"><i style="width:' + Math.min(100, w) + '%;background:' + col + '"></i></span><small class="tbr-p">' + (neg ? 'منفی' : H.fmt(w, 1) + '٪') + '</small>';
+  return to ? '<a class="tbr ' + side + '" data-act="go" data-to="' + esc(to) + '">' + inner + '</a>' : '<div class="tbr ' + side + '">' + inner + '</div>';
+}
+function bar(parts, tot) {
+  const P0 = parts.filter(p => p.v > 0.5);
+  return '<div class="tb-stack">' + P0.map(p => '<i style="flex:' + p.v + ';background:' + p.c + '" title="' + esc(p.t) + '"></i>').join('') + '</div>' +
+    '<div class="tb-leg">' + P0.map(p => '<span><i style="background:' + p.c + '"></i>' + esc(p.t) + ' <b class="num">' + H.fmt(pct(p.v, tot), 1) + '٪</b></span>').join('') + '</div>';
+}
+
+/* ================================================================ ⚖ the balance sheet as a T */
+P.tbs = function () {
+  const C = App.C, bs = E.balanceSheet(C), ok = Math.abs(N(bs.diff)) < 1;
+  const A = bs.assets.filter(l => Math.abs(N(l.v)) > 0.5), L = bs.liab.filter(l => Math.abs(N(l.v)) > 0.5), Q = bs.eq.filter(l => Math.abs(N(l.v)) > 0.5);
+  const tA = N(bs.totalA), tL = N(bs.totalL), tE = N(bs.totalE), tR = tL + tE;
+  const chip = (cls, t, v, s) => '<div class="tb-chip ' + cls + '"><span>' + t + '</span><b class="num' + (v < -0.5 ? ' neg' : '') + '">' + money(v) + '</b>' + (s ? '<small>' + s + '</small>' : '') + '</div>';
+  let h = '<div class="tbw">' +
+    '<div class="tb-top">' + chip('a', '🟢 جمع دارایی‌ها', tA, 'آنچه دارم') + chip('l', '🔴 جمع بدهی‌ها', tL, 'آنچه بدهکارم') + chip('e', '🔵 جمع سرمایه', tE, 'دارایی − بدهی') +
+    '<div class="tb-chip ' + (ok ? 'ok' : 'bad') + '"><span>⚖ تراز</span><b>' + (ok ? '✔ تراز است' : '✖ اختلاف') + '</b><small>' + (ok ? 'دو طرف برابرند' : money(bs.diff) + ' ' + uOf()[1]) + '</small></div></div>' +
+    unitBar() +
+    '<div class="tbT">' +
+      '<div class="tbT-h a"><b>دارایی‌ها</b><small>آنچه دارم — بدهکار</small></div><div class="tbT-h l"><b>بدهی‌ها و سرمایه</b><small>از کجا آمده — بستانکار</small></div>' +
+      '<div class="tbT-c a">' + A.map((l, i) => line(l, tA, PAL.a[i % PAL.a.length], 'a')).join('') + '</div>' +
+      '<div class="tbT-c l"><div class="tbsec l">🔴 بدهی‌ها</div>' + L.map((l, i) => line(l, tR, PAL.l[i % PAL.l.length], 'l')).join('') +
+        '<div class="tbsub l"><span>جمع بدهی‌ها</span><b class="num">' + money(tL) + '</b></div>' +
+        '<div class="tbsec e">🔵 سرمایه</div>' + Q.map((l, i) => line(l, tR, PAL.e[i % PAL.e.length], 'e')).join('') +
+        '<div class="tbsub e"><span>جمع سرمایه</span><b class="num' + (tE < -0.5 ? ' neg' : '') + '">' + money(tE) + '</b></div></div>' +
+      '<div class="tbT-f a"><span>جمع</span><b class="num">' + money(tA) + '</b></div><div class="tbT-f l"><span>جمع</span><b class="num">' + money(tR) + '</b></div>' +
+    '</div>' +
+    '<div class="tb-comp"><div class="tb-cb"><h3>🟢 دارایی‌ها از چه ساخته شده؟</h3>' + bar(A.map((l, i) => ({ t: l.label, v: N(l.v), c: PAL.a[i % PAL.a.length] })), tA) + '</div>' +
+    '<div class="tb-cb"><h3>🔴🔵 از کجا آمده؟</h3>' + bar(L.map((l, i) => ({ t: l.label, v: N(l.v), c: PAL.l[i % PAL.l.length] })).concat(Q.map((l, i) => ({ t: l.label, v: N(l.v), c: PAL.e[i % PAL.e.length] }))), tR) + '</div></div>' +
+    '<div class="tb-note">• طلا، سکه و ارز به <b>قیمت روز</b> است. • امانی‌ها مال دیگران است و فقط با مقدار در «🤝 امانی نزد من» آمده (حساب انتظامی). • روی هر ردیف بزنید تا ریزش باز شود.</div>' +
+    '<div class="bar noprint">' + '<a class="btn violet" data-act="go" data-to="/pl">📈 صورت سود و زیان</a><a class="btn ghost" data-act="go" data-to="/bs">⚖ ترازنامهٔ جدولی</a><button type="button" class="btn ghost" data-act="print">🖨 چاپ</button></div>' +
+    '</div>';
+  return { title: '⚖ ترازنامه — حساب T', sub: 'دارایی‌ها در برابر بدهی‌ها و سرمایه — امروز ' + esc(E.serToText(App.today)), html: h };
+};
+
+/* ================================================================ 📈 profit and loss */
+const ser = d => E.jser(String(d || ''));
+function dbUpTo(t) {   // the data as it was at the end of day t (its records and its day prices)
+  const db = App.db;
+  /* a correction (e.fix) counts as if it had always been there: it is not a trade, so it makes no profit or loss */
+  return Object.assign({}, db, { entries: (db.entries || []).filter(e => e && (e.fix || (ser(e.date) && ser(e.date) <= t))), moves: (db.moves || []).filter(m => m && ser(m.date) && ser(m.date) <= t) });
+}
+function unrealAt(t) {   // name → { u: value − cost, ok: a price was known that day (or nothing is held) }
+  const m = new Map(); let C;
+  try { C = t >= App.today ? App.C : E.compute(dbUpTo(t), t); (E.fxPositions(C) || []).forEach(p => m.set(p.name, { u: N(p.unreal), ok: N(p.price) > 0 || Math.abs(N(p.qty)) < 1e-9 })); } catch (e) { console.error(e); }
+  return m;
+}
+function plCalc(from, to) {
+  const C = App.C, db = App.db, owner = C.owner, s = sp(), disp = n => { const a = (db.assets || []).find(x => x.name === n); return (a && a.display) || n; };
+  const inR = t => t >= from && t <= to;
+  /* 1. realized: the gain of every sale in the period */
+  const real = new Map();
+  (C.rows || []).forEach(r => { if (r && r.X === 5 && !(r.e && r.e.fix) && inR(N(r.T) || ser(r.date))) real.set(r.item, (real.get(r.item) || 0) + N(r.gain)); });
+  /* 2. the change of «value − cost» of what is held */
+  /* the day before the period — or, for what had no price yet (before the start of the book), its first day */
+  const open = ser((db.meta || {}).openDate) || from, bDay = Math.max(from, open);
+  const u0 = unrealAt(from - 1), miss = [...u0.values()].some(x => !x.ok), u0b = miss ? unrealAt(bDay) : u0, u1 = unrealAt(to), unreal = new Map();
+  const base = k => { const a = u0.get(k); if (a && a.ok) return a.u; const b = u0b.get(k); return b ? b.u : 0; };
+  new Set([...u0.keys(), ...u1.keys()]).forEach(k => { const d = N((u1.get(k) || {}).u) - N(base(k)); if (Math.abs(d) > 0.5) unreal.set(k, d); });
+  /* 3. «سایر درآمدها و هزینه‌ها» */
+  let othI = 0, othE = 0; const PO = s.PL_OTH;
+  (db.entries || []).forEach(e => { if (!e || !PO || !inR(ser(e.date))) return; const a = N(e.amt); if (e.cr === PO) othI += a; if (e.dr === PO) othE += a; });
+  /* 4. the profit put into the investors' / creditors' accounts from mine */
+  const inv = new Map();
+  (db.entries || []).forEach(e => {
+    if (!e || !/^profit-owner/.test(String(e.auto || '')) || e.dr !== owner || !inR(ser(e.date))) return;
+    const who = String(e.auto).split(':')[2] || String(e.desc || '').replace(/^سود\s*/, '').replace(/\s*(فروردین|اردیبهشت|خرداد|تیر|مرداد|شهریور|مهر|آبان|آذر|دی|بهمن|اسفند)\s*\d*\s*$/, '').trim() || 'سرمایه‌گذاران';
+    inv.set(who, (inv.get(who) || 0) + N(e.amt));
+  });
+  const sum = m => [...m.values()].reduce((a, b) => a + b, 0);
+  const rT = sum(real), uT = sum(unreal), iT = sum(inv);
+  const inc = rT + uT + othI, exp = iT + othE;
+  return { from, to, real, unreal, inv, rT, uT, iT, othI, othE, inc, exp, net: inc - exp, disp, uFrom: miss && bDay > from ? bDay : 0 };
+}
+function periodOf(q) {
+  const today = App.today, j = E.serToJ(today), y = j[0], m = j[1];
+  const open = ser((App.db.meta || {}).openDate) || 0, p = (q && q.get('p')) || 'book';
+  const ms = (yy, mm) => ser(yy + '/' + String(mm).padStart(2, '0') + '/01');
+  if (p === 'month') return { p, from: ms(y, m), to: today, t: 'این ماه' };
+  if (p === 'last') { const py = m === 1 ? y - 1 : y, pm = m === 1 ? 12 : m - 1; return { p, from: ms(py, pm), to: ms(y, m) - 1, t: 'ماه قبل' }; }
+  if (p === 'year') return { p, from: ser(y + '/01/01'), to: today, t: 'امسال (' + y + ')' };
+  if (p === 'custom') { const f = ser(H.normDate((q.get('f') || '')) || ''), t = ser(H.normDate((q.get('t') || '')) || '') || today; if (f) return { p, from: f, to: Math.min(t, today), t: 'دلخواه' }; }
+  return { p: 'book', from: open || ser(y + '/01/01'), to: today, t: 'از شروع دفتر' };
+}
+P.pl = function (arg, q) {
+  const per = periodOf(q), R = plCalc(per.from, per.to), T = x => esc(E.serToText(x));
+  const chipP = (p, t) => '<a class="btn sm ' + (per.p === p ? 'navy' : 'ghost') + '" data-act="go" data-to="/pl?p=' + p + '">' + t + '</a>';
+  const det = (m, f) => [...m.entries()].sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).map(([k, v]) => '<div class="pld"><span>' + esc(f ? f(k) : k) + '</span><b class="num' + (v < -0.5 ? ' neg' : '') + '">' + money(v) + '</b></div>').join('');
+  const row = (cls, t, v, sub, d) => '<details class="plr ' + cls + '"' + (d ? '' : ' data-nod="1"') + '><summary><span class="plr-n">' + t + (sub ? '<small>' + sub + '</small>' : '') + '</span><b class="num' + (v < -0.5 ? ' neg' : '') + '">' + money(v) + '</b></summary>' + (d || '') + '</details>';
+  const net = R.net, good = net >= 0;
+  const incRows = row('i', '💱 سود فروش ارز و طلا', R.rT, 'تحقق‌یافته — فروخته شده', det(R.real, R.disp)) +
+    row('i', '📊 سود ارزیابی ارز و طلا', R.uT, 'تغییر ارزش روز، هنوز نفروخته', det(R.unreal, R.disp)) +
+    (Math.abs(R.othI) > 0.5 ? row('i', '➕ سایر درآمدها', R.othI, '«' + esc(sp().PL_OTH || '') + '»', '') : '');
+  const expRows = row('x', '👥 سود سرمایه‌گذاران و بستانکاران', R.iT, 'از سرمایهٔ من به حسابشان رفته', det(R.inv)) +
+    (Math.abs(R.othE) > 0.5 ? row('x', '➖ سایر هزینه‌ها', R.othE, '«' + esc(sp().PL_OTH || '') + '»', '') : '');
+  const bal = Math.max(R.inc, R.exp + Math.max(0, net)), tl = R.exp + (good ? net : 0), tr = R.inc + (good ? 0 : -net);
+  const h = '<div class="tbw">' +
+    '<div class="pl-per noprint">' + chipP('book', 'از شروع دفتر') + chipP('month', 'این ماه') + chipP('last', 'ماه قبل') + chipP('year', 'امسال') +
+      '<span class="pl-cus"><input type="text" id="pl_f" class="yellow num" placeholder="از 1405/07/01" value="' + (per.p === 'custom' ? T(per.from) : '') + '" inputmode="numeric"><input type="text" id="pl_t" class="yellow num" placeholder="تا امروز" value="' + (per.p === 'custom' ? T(per.to) : '') + '" inputmode="numeric"><button type="button" class="btn sm teal" data-act="pl-go">نمایش</button></span></div>' +
+    '<div class="pl-hero ' + (good ? 'g' : 'b') + '"><span>' + (good ? '✅ سود خالص' : '🔻 زیان خالص') + ' — ' + esc(per.t) + '</span><b class="num">' + money(Math.abs(net)) + '</b><small>' + T(per.from) + ' تا ' + T(per.to) + ' · ' + uOf()[1] + '</small></div>' +
+    unitBar() +
+    '<div class="tbT pl">' +
+      '<div class="tbT-h a"><b>🟢 درآمدها</b><small>بستانکار</small></div><div class="tbT-h l"><b>🔴 هزینه‌ها</b><small>بدهکار</small></div>' +
+      '<div class="tbT-c a">' + incRows + (good ? '' : '<div class="plr net b"><span class="plr-n">🔻 زیان خالص <small>برای برابر شدن دو طرف</small></span><b class="num">' + money(-net) + '</b></div>') + '</div>' +
+      '<div class="tbT-c l">' + expRows + (good ? '<div class="plr net g"><span class="plr-n">✅ سود خالص <small>درآمد − هزینه</small></span><b class="num">' + money(net) + '</b></div>' : '') + '</div>' +
+      '<div class="tbT-f a"><span>جمع</span><b class="num">' + money(tr) + '</b></div><div class="tbT-f l"><span>جمع</span><b class="num">' + money(tl) + '</b></div>' +
+    '</div>' +
+    '<div class="pl-sum"><div><span>جمع درآمدها</span><b class="num">' + money(R.inc) + '</b></div><div><span>جمع هزینه‌ها</span><b class="num">' + money(R.exp) + '</b></div><div class="' + (good ? 'g' : 'b') + '"><span>' + (good ? 'سود خالص' : 'زیان خالص') + '</span><b class="num">' + money(Math.abs(net)) + '</b></div></div>' +
+    '<div class="tb-note">• روی هر ردیف بزنید تا ریزش (هر ارز و طلا، هر نفر) باز شود. • «سود ارزیابی» یعنی تغییر «ارزش روز − بهای خرید» آنچه دارید، از روز قبلِ شروع دوره تا آخر دوره، با قیمت‌های همان روزها. ' +
+      (R.uFrom ? '• قیمت ارز و طلا از ' + T(R.uFrom) + ' (شروع دفتر) ثبت شده؛ برای همین «سود ارزیابی» از همان روز حساب شده. ' : '') +
+      '• درآمدهایی که در برنامه ثبت جدا ندارند — مثل اجاره، سود سپردهٔ ریالی یا سود کارگزاری — اینجا نیامده‌اند؛ اگر بخواهید، می‌شود برایشان سرفصل جدا گذاشت.</div>' +
+    '<div class="bar noprint"><a class="btn navy" data-act="go" data-to="/tbs">⚖ ترازنامه (حساب T)</a><button type="button" class="btn ghost" data-act="print">🖨 چاپ</button></div>' +
+    '</div>';
+  return { title: '📈 صورت سود و زیان', sub: esc(per.t) + ' — ' + T(per.from) + ' تا ' + T(per.to), html: h };
+};
+App.plCalc = plCalc;
+
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act]') : null; if (!b) return;
+  const a = b.dataset.act;
+  if (a === 'tb-unit') { ev.preventDefault(); U = b.dataset.u || 'r'; try { localStorage.setItem('tbsUnit', U); } catch (e) { } App.emit(); return; }
+  if (a === 'pl-go') {
+    ev.preventDefault();
+    const f = H.normDate((document.getElementById('pl_f') || {}).value || ''), t = H.normDate((document.getElementById('pl_t') || {}).value || '');
+    if (!f) { App.toast('تاریخ شروع را مثل 1405/07/01 بنویسید', true); return; }
+    App.go('/pl?p=custom&f=' + encodeURIComponent(f) + (t ? '&t=' + encodeURIComponent(t) : ''));
+  }
+});
+document.addEventListener('keydown', ev => { if (ev.key === 'Enter' && ev.target && (ev.target.id === 'pl_f' || ev.target.id === 'pl_t')) { ev.preventDefault(); const b = document.querySelector('[data-act=pl-go]'); if (b) b.click(); } });
+
+/* ---- where they open: the home page (under the greeting), the reports page, the table balance sheet ---- */
+const TILES = '<div class="tb-tiles noprint"><a class="tb-tile t" data-act="go" data-to="/tbs"><span>⚖</span><b>ترازنامه (حساب T)</b><small>دارایی‌ها در برابر بدهی‌ها و سرمایه</small></a>' +
+  '<a class="tb-tile p" data-act="go" data-to="/pl"><span>📈</span><b>صورت سود و زیان</b><small>درآمدها، هزینه‌ها، سود خالص</small></a></div>';
+const ph = P.home;
+if (typeof ph === 'function') P.home = function () {
+  const r = ph.apply(this, arguments);
+  try {
+    if (r && typeof r.html === 'string') {
+      const t = document.createElement('template'); t.innerHTML = r.html;
+      const hero = t.content.querySelector('.hero2');
+      if (hero) { hero.insertAdjacentHTML('afterend', TILES); r.html = t.innerHTML; } else r.html = TILES + r.html;
+    }
+  } catch (e) { console.error(e); }
+  return r;
+};
+/* the reports page is made later in the program: its two tiles are added by patches.py */
+const pb = P.bs;
+if (typeof pb === 'function') P.bs = function () {
+  const r = pb.apply(this, arguments), bar = '<div class="bar noprint"><a class="btn navy big" data-act="go" data-to="/tbs">⚖ نمای T</a><a class="btn violet big" data-act="go" data-to="/pl">📈 صورت سود و زیان</a></div>';
+  if (r && typeof r.html === 'string') return Object.assign({}, r, { html: bar + r.html });
+  return r;
+};
+})();
 
 
 /* daily and monthly event reports: records that were entered + what changed in the program */
@@ -16056,7 +16312,7 @@ P.reports = function () {
   const sec = (t, a) => '<h3 class="rsec">' + t + '</h3><div class="rgrid">' + a.join('') + '</div>';
   let h = sec('⏱ بر اساس زمان', [tile('/daily', '📅', 'وقایع روزانه', 'هر روز: ثبت‌ها و تغییرات ۲۴ ساعت', 't1'), tile('/mreport', '🗓', 'وقایع ماهانه', 'همهٔ رکوردهای ماه با جستجو', 't1'), tile('/journal', '📒', 'دفتر روزنامه', 'همهٔ ثبت‌ها به ترتیب تاریخ', 't1'), tile('/monthly', '💹', 'سود ماهانهٔ اعضا', 'جدول سود هر ماه', 't1')]) +
     sec('👥 گزارش حساب‌ها', Object.keys(KINDS).map(k => tile('/rep/' + k, KINDS[k].ico, 'گزارش ' + KINDS[k].t, KINDS[k].desc, 't2'))) +
-    sec('⚖ تراز، تطبیق و ارسال', [tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/mrep', '📜', 'گواهی سرمایه‌گذاران', 'برگهٔ رسمی مانده و سود هر نفر — با امضا', 't3'), tile('/drep', '📜', 'گواهی بدهی بدهکاران', 'فلانی این مبلغ بدهکار است — با گردش و امضا', 't3'), tile('/crep', '📜', 'گواهی طلب بستانکاران', 'این مبلغ را به فلانی بدهکارم — با گردش و امضا', 't3'), tile('/docs', '🗂', 'بایگانی گواهی‌ها', 'هر گواهی که دادم: کی، به چه کسی، چطور', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
+    sec('⚖ تراز، تطبیق و ارسال', [tile('/tbs', '⚖', 'ترازنامه (حساب T)', 'دو طرف، با رنگ و سهم هر ردیف', 't3'), tile('/pl', '📈', 'صورت سود و زیان', 'درآمدها، هزینه‌ها، سود خالص یک دوره', 't3'), tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/mrep', '📜', 'گواهی سرمایه‌گذاران', 'برگهٔ رسمی مانده و سود هر نفر — با امضا', 't3'), tile('/drep', '📜', 'گواهی بدهی بدهکاران', 'فلانی این مبلغ بدهکار است — با گردش و امضا', 't3'), tile('/crep', '📜', 'گواهی طلب بستانکاران', 'این مبلغ را به فلانی بدهکارم — با گردش و امضا', 't3'), tile('/docs', '🗂', 'بایگانی گواهی‌ها', 'هر گواهی که دادم: کی، به چه کسی، چطور', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
   return { title: 'گزارش‌ها', sub: 'هر گزارش اول خلاصه است؛ روی هر مورد بزنید تا ریز گردشش با فیلتر باز شود', html: h };
 };
 
