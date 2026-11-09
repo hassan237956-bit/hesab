@@ -3165,7 +3165,7 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.8"; window.APP_BUILD = "1405/08/18 15:15";
+window.APP_VERSION = "47.9"; window.APP_BUILD = "1405/08/18 15:35";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -3786,7 +3786,7 @@ function qstr(n) { n = Number(n); if (n === null || !isFinite(n)) return ''; con
 function numCell(n, cls) { return '<td class="n ' + (cls || '') + (Number(n) < -0.5 ? ' neg' : '') + '">' + (n === '' || n === null || n === undefined ? '' : fmt(n)) + '</td>'; }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function parseAmount(s) {
-  s = latin(s).replace(/,/g, '').replace(/\s/g, '');
+  s = latin(s).replace(/,/g, '').replace(/\s/g, '').replace(/^(-?\d+)\/(\d+)$/, '$1.$2');
   if (s === '') return NaN;
   const m = /^(-?\d+(?:\.\d+)?)$/.exec(s);
   return m ? Number(m[1]) : NaN;
@@ -10183,7 +10183,8 @@ const IDS = { ef_amt: 1, ef_price: 1, ef_fee: 1, ef_qty: 1, lf_principal: 1, lf_
 const isMoney = el => !!(el && el.tagName === 'INPUT' && el.id && IDS[el.id] && (el.type === 'text' || el.type === 'tel' || el.type === 'search' || !el.type));
 /* «1234567.5» → «1,234,567.5»; anything that is not a plain number is returned unchanged (null) */
 function group(v) {
-  const s = latin(String(v)).replace(/[٫٬،]/g, m => m === '٫' ? '.' : ',');
+  let s = latin(String(v)).replace(/[٫٬،]/g, m => m === '٫' ? '.' : ',');
+  if (/^[\s\-]*[\d,]+\/\d*$/.test(s)) s = s.replace('/', '.');   // v47.9: «۱۸/۷۰» (the decimal point of a Persian keyboard) → 18.70
   if (!/^[\s\-]*[\d,\s]*(\.\d*)?$/.test(s)) return null;
   const neg = /^\s*-/.test(s), t = s.replace(/[^\d.]/g, '');
   const dot = t.indexOf('.'), ip = dot < 0 ? t : t.slice(0, dot), dp = dot < 0 ? '' : '.' + t.slice(dot + 1).replace(/\./g, '');
@@ -10193,7 +10194,7 @@ function fix(el, keepCaret) {
   const v = el.value; if (!v) return;
   const out = group(v); if (out === null || out === v) return;
   let pos = null;
-  if (keepCaret) { try { if (document.activeElement === el && el.selectionStart != null) { const n = (latin(v.slice(0, el.selectionStart)).match(/[\d.]/g) || []).length; let c = 0, i = 0; for (; i < out.length && c < n; i++) if (/[\d.]/.test(out[i])) c++; pos = i; } } catch (e) { pos = null; } }
+  if (keepCaret) { try { if (document.activeElement === el && el.selectionStart != null) { const n = (latin(v.slice(0, el.selectionStart)).replace(/\//g, '.').match(/[\d.]/g) || []).length; let c = 0, i = 0; for (; i < out.length && c < n; i++) if (/[\d.]/.test(out[i])) c++; pos = i; } } catch (e) { pos = null; } }
   el.value = out;
   if (pos !== null) { try { el.setSelectionRange(pos, pos); } catch (e) { } }
 }
