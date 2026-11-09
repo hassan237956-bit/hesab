@@ -3147,6 +3147,17 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 .lm-c .num{font-weight:900;color:#1E3A8A}.lm-c small.tr,.lm-c.tr{color:#9D174D}.lm-empty{color:#64748B;font-weight:800}
 .lm-sure{margin-top:10px;font-size:.98rem;font-weight:800;color:#475569}
 .lm-bar,.lm-ab{margin:8px 0 12px;gap:8px;flex-wrap:wrap}.lm-bar .btn,.lm-ab .btn{min-height:52px;font-size:1.08rem;font-weight:900}
+/* v47.8 — ✏️ every record of a place */
+.btn.xs{min-height:34px;padding:2px 9px;font-size:1rem;margin-inline-start:6px;vertical-align:middle}
+.plew .ple-top{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;font-size:1.2rem;font-weight:900;color:#0F2A4A;margin-bottom:6px}.plew .ple-top span{font-size:1.08rem;color:#1E3A8A}
+.ple-hint{padding:9px 12px;border-radius:12px;background:#F5F3FF;border:1.5px solid #C4B5FD;color:#4C1D95;font-size:1.06rem;font-weight:800;line-height:1.9;margin:6px 0 10px}
+.ple-sec{border:2px solid #E2E8F0;border-radius:16px;padding:8px 10px;margin:10px 0;background:#fff}.ple-sec.tr{border-color:#FBCFE8;background:#FFF7FB}
+.ple-sec h3{margin:2px 0 8px;font-size:1.14rem;font-weight:900;color:#0F2A4A}.ple-sec.tr h3{color:#9D174D}
+.ple-r{display:grid;grid-template-columns:auto 1fr auto auto;gap:4px 10px;align-items:center;padding:8px 4px;border-top:1px dashed #E2E8F0}
+.ple-d{font-weight:800;color:#475569;font-size:1rem}.ple-t{font-weight:800;color:#0F172A;font-size:1.02rem;line-height:1.7}.ple-q{font-size:1.12rem;font-weight:900;white-space:nowrap}
+.ple-q.dep{color:#15803D}.ple-q.wd{color:#B91C1C}.ple-a{display:flex;gap:6px}.ple-a .btn{min-height:44px;font-weight:900}
+.ple-b{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.ple-none{color:#64748B;font-weight:800;padding:6px}.ple-sure{margin-top:8px;font-size:.98rem;font-weight:800;color:#475569;line-height:1.8}
+@media (max-width:560px){.ple-r{grid-template-columns:1fr auto}.ple-t{grid-column:1/-1;order:-1}.ple-a{grid-column:1/-1;justify-content:flex-end}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3154,7 +3165,7 @@ tr.trs.tot td{background:#EEF2FF;color:#1E1B4B;font-weight:900}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "47.7"; window.APP_BUILD = "1405/08/18 01:01";
+window.APP_VERSION = "47.8"; window.APP_BUILD = "1405/08/18 15:15";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -7173,7 +7184,8 @@ function locBox(name) {
   const acts = r => {
     const l = ' data-loc="' + esc(r.loc) + '"', x = ' data-x="' + en + '"';
     return '<span class="locact">' + (r.loc === '' ? lbtn('teal', 'move-new', ' data-asset="' + en + '" data-from=""', '📍 مشخص کن کجاست') : lbtn('green', 'new-entry', ' data-tpl="buy"' + x + l, 'خرید')) +
-      (r.q > 1e-7 && r.loc !== '' ? lbtn('gold', 'new-entry', ' data-tpl="sell"' + x + l, 'فروش') + lbtn('teal', 'move-new', ' data-asset="' + en + '" data-from="' + esc(r.loc) + '"', 'انتقال') : '') + '</span>';
+      (r.q > 1e-7 && r.loc !== '' ? lbtn('gold', 'new-entry', ' data-tpl="sell"' + x + l, 'فروش') + lbtn('teal', 'move-new', ' data-asset="' + en + '" data-from="' + esc(r.loc) + '"', 'انتقال') : '') +
+      lbtn('violet', 'pl-edit', ' data-asset="' + en + '"' + l, '✏️ ویرایش') + '</span>';   // v47.8: every record of this place, editable
   };
   const many = S.rows.length > 1, showSh = many && !neg;
   /* v47.2 (the owner: each place broken down: his own so much, each trust so much — and the total shown):
@@ -7232,9 +7244,10 @@ function locAllBox() {
   if (!locs.length) return '';
   const item = (l, i) => {
     const tm = App.fxTrustAt && !l.unknown ? App.fxTrustAt(l.name, i.name) : [];
-    if (!tm.length) return '<div class="lci"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep">' + H.fmtq(i.qty) + ' <small>' + esc(i.unit) + '</small></span><span class="num bal">' + fmt(i.val) + '</span></div>';
+    const ed = '<button type="button" class="btn xs violet noprint pl-ed" data-act="pl-edit" data-asset="' + esc(i.name) + '" data-loc="' + esc(l.unknown ? '' : l.name) + '" title="ویرایش">✏️</button>';
+    if (!tm.length) return '<div class="lci"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep">' + H.fmtq(i.qty) + ' <small>' + esc(i.unit) + '</small>' + ed + '</span><span class="num bal">' + fmt(i.val) + '</span></div>';
     const tq = App.trustAddQ(tm), mine = i.qty - App.trustInQ(tm), u = ' <small>' + esc(i.unit) + '</small>';
-    return '<div class="lci lcx"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep"><b>' + H.fmtq(i.qty + tq) + '</b>' + u + '</span><span class="lcj">جمع موجود</span></div>' +
+    return '<div class="lci lcx"><a data-act="go" data-to="/asset/' + esc(H.slug(i.name)) + '">' + esc(i.display) + '</a><span class="num dep"><b>' + H.fmtq(i.qty + tq) + '</b>' + u + ed + '</span><span class="lcj">جمع موجود</span></div>' +
       '<div class="lcb"><span>👤 مال خودم' + (owner !== 'خودم' ? ' (' + esc(owner) + ')' : '') + '</span><b class="num">' + H.fmtq(mine) + u + '</b><span class="num bal">' + (mine && i.qty ? fmt(Math.round(i.val * mine / i.qty)) : '—') + '</span></div>' +
       tm.map(t => '<div class="lcb tr"><span>🤝 امانیِ ' + esc(t.person) + '</span><b class="num">' + H.fmtq(t.q) + u + '</b><span class="lcj">' + App.trustTag(t) + '</span></div>').join('');
   };
@@ -11693,7 +11706,7 @@ function personBox(p, full) {
       const L = locsOf(t);
       return '<div class="ams-it"><div class="ams-q"><b class="num">' + esc(q4(qtyOf(t))) + '</b><span>' + esc(unitOf(t) || '') + '</span></div>' +
         '<div class="ams-in"><b>' + esc(itemName(t)) + '</b><small>' + (L.length ? '📍 ' + esc(L.join('، ')) + ' · ' : '') + 'آخرین تغییر ' + esc(lastOf(t) || '—') + '</small></div>' +
-        '<div class="ams-ib noprint">' + btn('tr-more', 'sm green', '＋ دریافت', ' data-id="' + t.id + '"') + btn('tr-ret', 'sm gold', '↩ تحویل', ' data-id="' + t.id + '"') + btn('tr-mv', 'sm teal', '🔀 جابه‌جایی', ' data-id="' + t.id + '"') + btn('tr-det', 'sm ghost', '🕘 ریز', ' data-id="' + t.id + '"') + '</div></div>';
+        '<div class="ams-ib noprint">' + btn('tr-more', 'sm green', '＋ دریافت', ' data-id="' + t.id + '"') + btn('tr-ret', 'sm gold', '↩ تحویل', ' data-id="' + t.id + '"') + btn('tr-mv', 'sm teal', '🔀 جابه‌جایی', ' data-id="' + t.id + '"') + btn('tr-det', 'sm violet', '✏️ ویرایش مقدار، محل، تاریخ', ' data-id="' + t.id + '"') + '</div></div>';
     }).join('') + '</div></div>';
 }
 function totalsBox() {
@@ -11731,10 +11744,11 @@ function histBox(person) {
   if (!rows.length) return '';
   const fromOf = (t, m) => ((t.moves || []).find(x => x && x.xfer === 'out' && x.ref === m.ref) || {}).loc || 'بدون محل';
   rows.sort((a, b) => String(b.m.date).localeCompare(String(a.m.date)));
-  return '<div class="box"><h2>🕘 ریز دریافت و تحویل <small>' + esc(person) + '</small></h2><div class="wrap"><table class="tbl ams-ht"><thead><tr><th>تاریخ</th><th>چه چیزی</th><th class="dep">دریافت</th><th class="wd">تحویل</th><th>کجا</th><th>یادداشت</th></tr></thead><tbody>' +
-    rows.map(({ t, m }) => m.xfer === 'in'
-      ? '<tr class="ams-xf"><td class="c num">' + esc(m.date || '') + '</td><td>' + esc(itemName(t)) + '</td><td class="c" colspan="2">🔀 جابه‌جایی ' + esc(q4(m.qty)) + ' <small>' + esc(unitOf(t)) + '</small></td><td>' + esc(fromOf(t, m)) + ' ← ' + esc(m.loc || 'بدون محل') + '</td><td>' + esc(m.note === 'جابه‌جایی' ? '' : m.note || '') + '</td></tr>'
-      : '<tr><td class="c num">' + esc(m.date || '') + '</td><td>' + esc(itemName(t)) + '</td><td class="n dep">' + (N(m.qty) > 0 ? esc(q4(m.qty)) + ' <small>' + esc(unitOf(t)) + '</small>' : '') + '</td><td class="n wd">' + (N(m.qty) < 0 ? esc(q4(-m.qty)) + ' <small>' + esc(unitOf(t)) + '</small>' : '') + '</td><td>' + esc(m.loc || '') + '</td><td>' + esc(m.note || '') + '</td></tr>').join('') +
+  return '<div class="box"><h2>🕘 ریز دریافت و تحویل <small>' + esc(person) + '</small></h2><div class="wrap"><table class="tbl ams-ht"><thead><tr><th>تاریخ</th><th>چه چیزی</th><th class="dep">دریافت</th><th class="wd">تحویل</th><th>کجا</th><th>یادداشت</th><th class="noprint"></th></tr></thead><tbody>' +
+    rows.map(({ t, m }) => (m.xfer === 'in'
+      ? '<tr class="ams-xf"><td class="c num">' + esc(m.date || '') + '</td><td>' + esc(itemName(t)) + '</td><td class="c" colspan="2">🔀 جابه‌جایی ' + esc(q4(m.qty)) + ' <small>' + esc(unitOf(t)) + '</small></td><td>' + esc(fromOf(t, m)) + ' ← ' + esc(m.loc || 'بدون محل') + '</td><td>' + esc(m.note === 'جابه‌جایی' ? '' : m.note || '') + '</td>'
+      : '<tr><td class="c num">' + esc(m.date || '') + '</td><td>' + esc(itemName(t)) + '</td><td class="n dep">' + (N(m.qty) > 0 ? esc(q4(m.qty)) + ' <small>' + esc(unitOf(t)) + '</small>' : '') + '</td><td class="n wd">' + (N(m.qty) < 0 ? esc(q4(-m.qty)) + ' <small>' + esc(unitOf(t)) + '</small>' : '') + '</td><td>' + esc(m.loc || '') + '</td><td>' + esc(m.note || '') + '</td>') +
+      '<td class="act noprint">' + btn('tr-editmove', 'sm violet', '✏️', ' data-id="' + t.id + '" data-m="' + esc(m.id) + '" title="ویرایش این ردیف"') + '</td></tr>').join('') +
     '</tbody></table></div></div>';
 }
 
@@ -12063,18 +12077,18 @@ function saveTE() {
 
 /* ✏️ a line of the history */
 let TM = null;
-App.trustMoveEdit = function (id, mid) {
+App.trustMoveEdit = function (id, mid, back) {
   const t = trustOf(id), m = t && (t.moves || []).find(x => x && x.id === mid); if (!m) return;
   const xf = !!m.xfer, mi = xf ? ((t.moves || []).find(x => x && x.ref === m.ref && x.xfer === 'in') || m) : m;
   const mo = xf ? (t.moves || []).find(x => x && x.ref === m.ref && x.xfer === 'out') : null;
-  TM = { id, mid: mi.id, ref: m.ref, xf };
+  TM = { id, mid: mi.id, ref: m.ref, xf, back: typeof back === 'function' ? back : null };
   const inp = (id2, label, val, extra) => '<div class="field"><label for="tm_' + id2 + '">' + label + '</label><input type="text" id="tm_' + id2 + '" class="yellow" value="' + esc(val || '') + '" ' + (extra || '') + '></div>';
   const q = Math.abs(N(mi.qty)), qs = H.qstr ? H.qstr(q) : String(q);
   App.modal('✏️ ویرایش ردیف امانی', '<div class="trw amsw">' +
     '<div class="status info" style="font-size:1.08rem;line-height:1.9"><b>' + esc(t.person) + '</b> — ' + esc(itemName(t)) + (xf ? ' — 🔀 جابه‌جایی از «' + esc((mo && mo.loc) || 'بدون محل') + '» به «' + esc(mi.loc || 'بدون محل') + '»' : '') + '</div>' +
     (xf ? '' : '<div class="field"><label for="tm_dir">↕ نوع</label><select id="tm_dir" class="yellow"><option value="1"' + (N(mi.qty) >= 0 ? ' selected' : '') + '>＋ دریافت (پیش من آمد)</option><option value="-1"' + (N(mi.qty) < 0 ? ' selected' : '') + '>↩ تحویل (پس دادم)</option></select></div>') +
     '<div class="grid2">' + inp('qty', '⚖ مقدار' + (unitOf(t) ? ' (' + esc(unitOf(t)) + ')' : ''), qs, 'inputmode="decimal" autocomplete="off"') + inp('date', '📅 تاریخ', mi.date || '', 'inputmode="numeric" autocomplete="off"') + '</div>' +
-    (xf ? '' : locSel('tm_loc', mi.loc || '', '📍 کجا')) +
+    (xf ? '<div class="grid2">' + locSel('tm_from', (mo && mo.loc) || '', '📤 از کجا') + locSel('tm_to', mi.loc || '', '📥 به کجا') + '</div>' : locSel('tm_loc', mi.loc || '', '📍 کجا')) +
     inp('note', '✏ یادداشت', xf && mi.note === 'جابه‌جایی' ? '' : mi.note || '', 'autocomplete="off"') +
     '<div class="ams-sure">🔒 فقط همین ردیفِ امانی عوض می‌شود؛ به هیچ حسابی دست نمی‌زند.</div></div>',
     btn('tm-save', 'green big', '✔ ذخیره') + '<button type="button" class="btn ghost" data-act="modal-close">انصراف</button>', { width: '600px' });
@@ -12083,18 +12097,20 @@ function saveTM() {
   if (!TM) return;
   const t = trustOf(TM.id); if (!t) return;
   const q = num(fv('tm_qty')), date = H.normDate(fv('tm_date')), dir = TM.xf ? 1 : (+((document.getElementById('tm_dir') || {}).value) || 1), note = fv('tm_note'), loc = TM.xf ? null : locVal('tm_loc');
+  const xFrom = TM.xf ? locVal('tm_from') : null, xTo = TM.xf ? locVal('tm_to') : null;
+  if (TM.xf && (!xTo || xFrom === xTo)) { App.toast(!xTo ? 'بگویید به کجا' : 'مبدأ و مقصد یکی است', true); return; }
   if (!(q > 0)) { App.toast('مقدار را بنویسید', true); return; }
   if (!date) { App.toast('تاریخ را مثل 1405/08/17 بنویسید', true); return; }
   const v = Object.assign({}, TM), apply = tt => (tt.moves || []).forEach(m => {
     if (!m) return;
-    if (v.xf) { if (m.ref === v.ref && m.xfer) { m.qty = m.xfer === 'out' ? -q : q; m.date = date; if (m.xfer === 'in') m.note = note || 'جابه‌جایی'; } }
+    if (v.xf) { if (m.ref === v.ref && m.xfer) { m.qty = m.xfer === 'out' ? -q : q; m.date = date; m.loc = m.xfer === 'out' ? (xFrom || '') : xTo; if (m.xfer === 'in') m.note = note || 'جابه‌جایی'; } }
     else if (m.id === v.mid) { m.qty = dir < 0 ? -q : q; m.date = date; m.loc = loc || ''; m.note = note; }
   });
   const sim = JSON.parse(JSON.stringify(t)); apply(sim);
   if (qtyOf(sim) < -1e-9) { App.toast('با این تغییر، تحویل‌ها از دریافت‌ها بیشتر می‌شود (' + q4(qtyOf(sim)) + ')', true); return; }
   App.commit('ویرایش ردیف امانی ' + t.person, db => { const tt = (db.trusts || []).find(x => x && x.id === v.id); if (!tt) return; apply(tt); tt.closed = Math.abs(qtyOf(tt)) < 1e-9; });
   TM = null; App.closeModal(); App.toast('✔ ردیف ذخیره شد'); App.emit();
-  setTimeout(() => App.trustDetail(v.id), 30);
+  setTimeout(() => (v.back ? v.back() : App.trustDetail(v.id)), 30);
 }
 
 function dropMove(id, mid) {
@@ -12105,6 +12121,7 @@ function dropMove(id, mid) {
     if (!t.moves.length) db.trusts = db.trusts.filter(x => x !== t); else t.closed = Math.abs(qtyOf(t)) < 1e-9;
   });
 }
+App.trustDropMove = (id, mid) => dropMove(id, mid);   // v47.8: for «✏️ ویرایش … در این محل»
 function dropTrust(id) { App.commit('حذف امانی', db => { db.trusts = (db.trusts || []).filter(x => !(x && x.id === id)); }); }
 
 /* ------------------------------------------------------------ clicks */
@@ -12177,8 +12194,9 @@ document.addEventListener('change', ev => {
   /* the row of the asset: «جمع موجود» (mine + others'); under it, how much is whose */
   App.fxLocQty = function (l, i) {
     const tm = l.unknown ? [] : App.trustMemoAt(l.name, i.name), u = ' <span class="hint">' + esc(i.unit) + '</span>';
-    if (!tm.length) return '<b>' + H.fmtq(i.qty) + '</b>' + u;
-    return '<b>' + H.fmtq(i.qty + App.trustAddQ(tm)) + '</b>' + u + '<br><small class="fxtt">جمع موجود در این محل</small>';
+    const ed = l.unknown && false ? '' : ' <button type="button" class="btn xs violet noprint pl-ed" data-act="pl-edit" data-asset="' + esc(i.name) + '" data-loc="' + esc(l.unknown ? '' : l.name) + '" title="ویرایش مقدار، محل، تاریخ">✏️</button>';
+    if (!tm.length) return '<b>' + H.fmtq(i.qty) + '</b>' + u + ed;
+    return '<b>' + H.fmtq(i.qty + App.trustAddQ(tm)) + '</b>' + u + ed + '<br><small class="fxtt">جمع موجود در این محل</small>';
   };
   App.fxLocItem = function (l, i) {
     if (l.unknown) return '';
@@ -15521,6 +15539,81 @@ if (typeof oi === 'function') App.init = function () { const r = oi.apply(this, 
 const P = App.pages;
 const wrap = (k, f) => { const o = P && P[k]; if (typeof o !== 'function') return; P[k] = function () { const r = o.apply(this, arguments), add = f.apply(this, arguments); if (!add) return r; if (typeof r === 'string') return add + r; if (r && typeof r.html === 'string') return Object.assign({}, r, { html: add + r.html }); return r; }; };
 wrap('fxloc', () => '<div class="bar noprint lm-bar">' + btn('lm-open', 'violet big', '📍 محل‌ها: افزودن، تغییر نام، حذف') + '</div>');
+})();
+/* ---------------------------------------------------------------- v47.8 — «✏️ ویرایش ‹دارایی› در ‹محل›»
+   the owner (1405/08/18): «ادیت کلاً چیزهای امانی را بگذار؛ مثلاً وزن آن طلا را می‌خواهم عوض کنم، نمی‌توانم؛ محلش را می‌خواهم عوض کنم، نمی‌توانم.
+   هر چیزی — چه مال من، چه امانی — را بتوانم صد در صد ویرایش کنم.»
+   From the ✏️ beside any quantity (the page of each currency / gold, «دارایی در هر محل», the places table) one window lists EVERY record that
+   makes that number, each with a big ✏️:
+   · «👤 مال خودم»: the purchases / sales / … of that place (✏️ = the full form of that record: quantity / weight, price, place, date, text …)
+     and the moves between places (✏️ = the move form: from, to, quantity, date);
+   · «🤝 امانیِ …»: every line of every trust there (✏️ = quantity / weight, place, date, note — a move between places: both its places too),
+     🗑 a line; ＋ دریافت, 🔀 جابه‌جایی, ✏️ the item itself (whose / what). After a trust line is saved, the window comes back. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc, N = v => +v || 0;
+const key = l => (App.trustLocKey ? App.trustLocKey(l) : String(l || '').replace(/\s+/g, ''));
+const q4 = v => H.fmtq(Math.round(N(v) * 10000) / 10000);
+const UW = { USD: 'دلار', EUR: 'یورو', USDT: 'تتر', GBP: 'پوند', AED: 'درهم', TRY: 'لیر' };
+const assetOf = n => (App.db.assets || []).find(a => a.name === n) || { name: n, unit: '' };
+const unitOf = a => UW[String(a.unit || '').toUpperCase()] || a.unit || '';
+const btn = (act, cls, html, data) => '<button type="button" class="btn ' + cls + '" data-act="' + act + '"' + (data || '') + '>' + html + '</button>';
+
+function rowsOf(asset, loc) {
+  const same = l => (loc === '' ? !l : !!l && key(l) === key(loc)), R = [];
+  (App.db.entries || []).forEach(e => {
+    if (!e || !N(e.qty)) return; const d = e.dr === asset ? 1 : e.cr === asset ? -1 : 0; if (!d || !same(e.loc)) return;
+    R.push({ k: 'e', id: e.id, date: e.date || '', desc: e.desc || '', q: d * N(e.qty) });
+  });
+  (App.db.moves || []).forEach(m => {
+    if (!m || m.asset !== asset) return;
+    if (same(m.from)) R.push({ k: 'm', id: m.id, date: m.date || '', desc: '🔀 انتقال به «' + (m.to || '') + '»' + (m.desc ? ' — ' + m.desc : ''), q: -N(m.qty) });
+    if (same(m.to)) R.push({ k: 'm', id: m.id, date: m.date || '', desc: '🔀 انتقال از «' + (m.from || 'بدون محل') + '»' + (m.desc ? ' — ' + m.desc : ''), q: N(m.qty) });
+  });
+  R.sort((a, b) => String(b.date).localeCompare(String(a.date)) || (b.id > a.id ? 1 : -1));
+  const T = (App.db.trusts || []).filter(t => t && t.kind === 'fx' && t.asset === asset).map(t => ({ t, rows: (t.moves || []).filter(m => m && same(m.loc)).sort((a, b) => String(b.date).localeCompare(String(a.date))) })).filter(x => x.rows.length);
+  return { R, T };
+}
+let PE = null;
+function peHtml() {
+  const { asset, loc } = PE, a = assetOf(asset), u = unitOf(a), disp = a.display || asset, { R, T } = rowsOf(asset, loc);
+  const own = R.reduce((s, r) => s + r.q, 0), tq = T.reduce((s, x) => s + x.rows.reduce((s2, m) => s2 + N(m.qty), 0), 0);
+  const line = (date, desc, q, act) => '<div class="ple-r"><span class="ple-d num">' + esc(date) + '</span><span class="ple-t">' + esc(desc) + '</span><b class="ple-q num ' + (q < 0 ? 'wd' : 'dep') + '">' + (q > 0 ? '+' : '−') + esc(q4(Math.abs(q))) + ' <small>' + esc(u) + '</small></b><span class="ple-a">' + act + '</span></div>';
+  let h = '<div class="plew"><div class="ple-top">📍 <b>' + esc(loc || 'بدون محل') + '</b> — <b>' + esc(disp) + '</b><span>جمع در این محل: <b class="num">' + esc(q4(own + tq)) + '</b> ' + esc(u) + '</span></div>';
+  h += '<div class="ple-hint">برای عوض کردن <b>مقدار / وزن، محل، تاریخ</b> یا هر چیز دیگر، روی <b>✏️</b> همان ردیف بزنید.</div>';
+  h += '<div class="ple-sec"><h3>👤 مال خودم در این محل: <b class="num">' + esc(q4(own)) + '</b> ' + esc(u) + '</h3>' +
+    (R.length ? R.map(r => line(r.date, r.desc, r.q, r.k === 'e' ? btn('edit-entry', 'violet', '✏️ ویرایش', ' data-id="' + r.id + '"') : btn('move-edit', 'violet', '✏️ ویرایش', ' data-id="' + r.id + '"'))).join('') : '<div class="ple-none">ثبتی از خودتان در این محل نیست.</div>') +
+    '<div class="ple-b">' + (loc ? btn('new-entry', 'sm green', '＋ خرید در همین محل', ' data-tpl="buy" data-x="' + esc(asset) + '" data-loc="' + esc(loc) + '"') : '') + btn('lm-asset', 'sm teal', '🔀 بردن به محل دیگر', ' data-asset="' + esc(asset) + '" data-from="' + esc(loc) + '"') + '</div></div>';
+  T.forEach(({ t, rows }) => {
+    const qq = rows.reduce((s, m) => s + N(m.qty), 0);
+    h += '<div class="ple-sec tr"><h3>🤝 امانیِ ' + esc(t.person) + ' در این محل: <b class="num">' + esc(q4(qq)) + '</b> ' + esc(u) + '</h3>' +
+      rows.map(m => {
+        const out = (t.moves || []).find(x => x && x.xfer === 'out' && x.ref === m.ref), inn = (t.moves || []).find(x => x && x.xfer === 'in' && x.ref === m.ref);
+        const desc = m.xfer === 'in' ? '🔀 جابه‌جایی از «' + ((out && out.loc) || 'بدون محل') + '»' : m.xfer === 'out' ? '🔀 جابه‌جایی به «' + ((inn && inn.loc) || '') + '»' : (N(m.qty) > 0 ? 'دریافت' : 'تحویل') + (m.note ? ' — ' + m.note : '');
+        const d = ' data-id="' + esc(t.id) + '" data-m="' + esc(m.id) + '"';
+        return line(m.date || '', desc, N(m.qty), btn('pl-tm', 'violet', '✏️ ویرایش', d) + btn('pl-tdel', 'sm red', '🗑', d + ' title="پاک کردن این ردیف"'));
+      }).join('') +
+      '<div class="ple-b">' + btn('tr-more', 'sm green', '＋ دریافت', ' data-id="' + esc(t.id) + '"') + btn('tr-mv', 'sm teal', '🔀 جابه‌جایی', ' data-id="' + esc(t.id) + '"') + btn('tr-edit', 'sm ghost', '✏️ مال کیست / چه چیزی', ' data-id="' + esc(t.id) + '"') + '</div></div>';
+  });
+  h += '<div class="ple-sure">🔒 «✏️» هر ردیف فقط همان ردیف را عوض می‌کند. ردیف‌های «مال خودم» فرم کامل همان ثبت است (مبلغ و حساب‌ها هم همان‌جا)؛ ردیف‌های امانی به هیچ حسابی دست نمی‌زند.</div></div>';
+  return h;
+}
+App.placeEdit = function (asset, loc) {
+  PE = { asset, loc: loc || '' };
+  const a = assetOf(asset);
+  App.modal('✏️ ویرایش ' + esc(a.display || asset) + ' — ' + esc(loc || 'بدون محل'), peHtml(), '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '820px' });
+};
+const back = v => () => App.placeEdit(v.asset, v.loc);
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act]') : null; if (!b) return;
+  const a = b.dataset.act; if (a !== 'pl-edit' && a !== 'pl-tm' && a !== 'pl-tdel') return;
+  ev.preventDefault();
+  if (a === 'pl-edit') return App.placeEdit(b.dataset.asset, b.dataset.loc || '');
+  const v = Object.assign({}, PE || {}), id = b.dataset.id, m = b.dataset.m;
+  if (a === 'pl-tm') return App.trustMoveEdit(id, m, v.asset != null ? back(v) : null);
+  if (a === 'pl-tdel') App.confirm('این ردیف امانی پاک شود؟', 'بله، پاک شود', () => { App.trustDropMove(id, m); App.toast('✔ پاک شد'); App.emit(); setTimeout(back(v), 30); });
+});
 })();
 
 
