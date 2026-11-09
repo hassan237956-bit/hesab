@@ -3366,6 +3366,149 @@ details.hpr.bad{background:#FFF7F7}details.hpr.bad .hr-n{color:#9F1239}
 .hp-h h2{flex:1 0 auto!important;min-width:auto!important;white-space:nowrap}
 .hp-h .hp-v{flex:0 1 auto;margin-inline-start:auto;min-width:0}
 .hp-h .hp-v b{overflow-wrap:anywhere}
+/* v48.5 — the ruled table of each asset: a row per place, a column per owner, the sums; the rial values; the reconciliation */
+.sg-w{overflow-x:auto;margin:6px 0 10px;-webkit-overflow-scrolling:touch}
+.sgt{width:100%;border-collapse:collapse;border:1.5px solid #B8C2D1;font-size:1rem;background:#fff;min-width:280px}
+.sgt th,.sgt td{border:1px solid #CFD7E3;padding:7px 6px;text-align:center;vertical-align:middle;line-height:1.5}
+.sgt thead th{background:#EEF2F7;color:#1F2937;font-weight:900;font-size:.92rem;border-bottom:2.5px solid var(--k,#1E3A8A)}
+.sgt thead th small{font-weight:700;color:#64748B}
+.sgt th.sg-l{text-align:start;font-weight:800;background:#F8FAFC;min-width:7em}
+.sgt thead th.sg-l{background:#EEF2F7}
+.sgt td b{font-size:1.12rem;font-weight:900;color:#0F1E36}
+.sgt td.sg-me b{color:#1E3A8A}.sgt td.sg-tr b{color:#92400E}.sgt td.sg-t{background:#F8FAFC}.sgt td.sg-t b{color:var(--k,#0F1E36)}
+.sgt tfoot th,.sgt tfoot td{background:#EEF2F7;border-top:2.5px solid var(--k,#1E3A8A);font-weight:900}
+.sgt tfoot td b{font-size:1.2rem}
+.sg-0{color:#CBD5E1;font-weight:700}
+#page .sgt .sg-pl,#modalBg .sgt .sg-pl{all:unset;cursor:pointer;color:#0F1E36;font-weight:800;line-height:1.5;text-decoration:underline dotted #94A3B8 1.5px;text-underline-offset:4px;overflow-wrap:break-word}
+#page .sgt .sg-pl i{font-style:normal;font-size:.8em;opacity:.75;text-decoration:none;display:inline-block}
+#page .sgt .sg-pl:hover,#page .sgt .sg-pl:focus-visible{color:#1D4ED8;text-decoration-color:#1D4ED8}
+.sgv td{text-align:start}.sgv thead th:last-child{text-align:start;font-weight:700}
+.sgv tr.sg-sum th,.sgv tr.sg-sum td{background:#EEF2F7;border-top:2px solid var(--k,#1E3A8A)}
+.sgc tr.sg-ok td,.sgc tr.sg-ok th{background:#F0FDF4}.sgc tr.sg-bad td,.sgc tr.sg-bad th{background:#FEF2F2}
+.sg-x{color:#B91C1C!important}.sg-v{color:#16A34A;font-size:1.15rem}
+.sg-d{display:block;font-size:.78rem;color:#64748B;font-weight:600}
+.sg-a{white-space:nowrap}.sg-a .btn{margin:1px}
+.smx{padding:6px 14px 14px}.sm-in .smx{padding:4px 0 0}
+@media (max-width:520px){.sgt{font-size:.92rem}.sgt th,.sgt td{padding:6px 4px}.sgt td b{font-size:1.02rem}.sgt th.sg-l{min-width:6em}.smx{padding:6px 8px 12px}}
+.th-sw{display:flex;justify-content:center;margin:18px 0 8px}
+.thbox .th-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+.th-t{display:grid;gap:6px;justify-items:center;padding:12px;border-radius:16px;border:2px solid #E2E8F0;background:#fff;cursor:pointer;font:inherit;font-weight:900;color:#0F1E36}
+.th-t.on{border-color:#16A34A;outline:2px solid #BBF7D0}
+.th-t .th-p{width:100%;height:58px;border-radius:10px;border:1px solid #E2E8F0}
+.th-t .th-p.c{background:linear-gradient(180deg,#fff 0 30%,#F4F6FA 30%);box-shadow:inset 0 0 0 6px #fff}
+.th-t .th-p.k{background:linear-gradient(135deg,#0E7C7B,#1E3A8A 60%,#C98A12)}
+
+/* ================================================================ v48.5 — «ساده و روشن»: the second look (html.th-clean; ⚙ › نمایش › 🎨 ظاهر)
+   white surfaces on a very light grey, hairline borders, no gradients or heavy shadows, one blue accent, green / red for + / −,
+   ruled tables; the letters stay bold and large */
+html.th-clean{--bg:#F4F6FA;--paper:#F4F6FA;--edge:#E4E8EF;--shadow:0 1px 2px rgba(16,24,40,.06);--shadow2:0 1px 3px rgba(16,24,40,.08);--gold:#2563EB;--gold2:#BFDBFE}
+html.th-clean body{background:#F4F6FA!important;background-image:none!important}
+html.th-clean #top{background:#fff!important;background-image:none!important;border-bottom:1px solid #E4E8EF!important;box-shadow:none!important}
+html.th-clean #top button,html.th-clean #top .pill,html.th-clean #top a.go{background:#fff!important;background-image:none!important;color:#1F2937!important;border:1px solid #E4E8EF!important;box-shadow:none!important;text-shadow:none!important}
+html.th-clean #top .exitbtn{color:#DC2626!important;border-color:#FECACA!important}
+html.th-clean #tabbar{background:#fff!important;background-image:none!important;border-color:#E4E8EF!important;box-shadow:0 1px 2px rgba(16,24,40,.05)!important}
+html.th-clean #tabbar a{color:#4B5563!important;background:transparent!important}
+html.th-clean #tabbar a.on{background:#EFF4FF!important;color:#1D4ED8!important}
+html.th-clean #tabbar a.mid{background:#2563EB!important;background-image:none!important;color:#fff!important;border:0!important;box-shadow:none!important}
+html.th-clean #side{background:#fff!important;background-image:none!important;color:#111827!important;border-color:#E4E8EF!important;box-shadow:none!important}
+html.th-clean .tm-t{background:#fff!important;background-image:none!important;border:1px solid #E4E8EF!important;box-shadow:none!important;color:#111827!important}
+html.th-clean .tm-t.on{background:#EFF4FF!important;border-color:#BFDBFE!important;color:#1D4ED8!important}
+html.th-clean .tm-i{background:#F1F5F9!important;background-image:none!important;box-shadow:none!important}
+html.th-clean .big-add,html.th-clean a.big-add{background:#2563EB!important;background-image:none!important;box-shadow:none!important;color:#fff!important;border:0!important}
+html.th-clean #bstrip{background:#fff!important;background-image:none!important;border:1px solid #E4E8EF!important;box-shadow:none!important}
+html.th-clean #bstrip,html.th-clean #bstrip *{color:#111827!important;text-shadow:none!important}
+html.th-clean #bstrip span,html.th-clean #bstrip b{background-color:transparent!important}
+html.th-clean #page .hero2,html.th-clean #page .hero2.tod{background:#fff!important;background-image:none!important;border:1px solid #E4E8EF!important;box-shadow:0 1px 2px rgba(16,24,40,.06)!important}
+html.th-clean #page .hero2 *{color:#111827!important;text-shadow:none!important}
+html.th-clean #page .hero2 .h2-date,html.th-clean #page .hero2 .h2-net span,html.th-clean #page .hero2 .h2-chips span{color:#6B7280!important}
+html.th-clean #page .hero2 .h2-tod{background:#F1F5F9!important;border-color:#E4E8EF!important}
+html.th-clean #page .hero2 .h2-chips a{background:#fff!important;border:1px solid #E4E8EF!important}
+html.th-clean #page .hero2 .neg{color:#DC2626!important}
+html.th-clean #page .box,html.th-clean #page .card,html.th-clean #page .hp,html.th-clean #page details.hf{background:#fff!important;background-image:none!important;border:1px solid #E4E8EF!important;border-radius:14px!important;box-shadow:0 1px 2px rgba(16,24,40,.05)!important}
+html.th-clean #page .rtile,html.th-clean #page .fxc,html.th-clean #page .bk,html.th-clean #page .lnrow,html.th-clean #page .lns,html.th-clean #page .lcard,html.th-clean #page .phcard,html.th-clean #page .pfr,html.th-clean #page tr,html.th-clean #page td{border-right-width:3px}
+html.th-clean #page .rtile,html.th-clean #page .fxc,html.th-clean #page .bk{background:#fff!important;background-image:none!important;box-shadow:none!important;border-right-width:3px!important}
+html.th-clean #page .hp-h{background:#fff!important;border-bottom:1px solid #E4E8EF!important}
+html.th-clean #page .hp-h h2{color:#111827!important}
+html.th-clean .btn{background-image:none!important;box-shadow:none!important;text-shadow:none!important;border-radius:10px!important;background-color:#fff;color:#1F2937;border:1px solid #D0D5DD}
+html.th-clean .btn.ghost{background:#fff!important;color:#1F2937!important;border:1px solid #D0D5DD!important}
+html.th-clean .btn.green{background:#16A34A!important;color:#fff!important;border:1px solid #16A34A!important}
+html.th-clean .btn.gold,html.th-clean .btn.blue{background:#2563EB!important;color:#fff!important;border:1px solid #2563EB!important}
+html.th-clean .btn.violet{background:#4F46E5!important;color:#fff!important;border:1px solid #4F46E5!important}
+html.th-clean .btn.navy{background:#1F2937!important;color:#fff!important;border:1px solid #1F2937!important}
+html.th-clean .btn.teal{background:#0D9488!important;color:#fff!important;border:1px solid #0D9488!important}
+html.th-clean .btn.red{background:#DC2626!important;color:#fff!important;border:1px solid #DC2626!important}
+html.th-clean .btn.orange{background:#EA580C!important;color:#fff!important;border:1px solid #EA580C!important}
+html.th-clean .pback,html.th-clean #backBtn{background:#fff!important;background-image:none!important;color:#1D4ED8!important;border:1px solid #BFDBFE!important;box-shadow:none!important}
+html.th-clean .sxt,html.th-clean a.sxt{background:#fff!important;background-image:none!important;border:1px solid #E4E8EF!important;box-shadow:none!important}
+html.th-clean .sxt,html.th-clean .sxt *{color:#111827!important;text-shadow:none!important}
+html.th-clean #page table{border-collapse:collapse}
+html.th-clean #page table th{background:#F1F5F9!important;background-image:none!important;color:#1F2937!important;border:1px solid #E2E8F0!important;text-shadow:none!important;box-shadow:none!important}
+html.th-clean #page table td{border-top:1px solid #E9EDF3!important;border-bottom:1px solid #E9EDF3!important;border-left:1px solid #EEF1F5!important;background-image:none!important;box-shadow:none!important}
+html.th-clean #page table tr{box-shadow:none!important}
+html.th-clean #page .sgt td{border:1px solid #DDE3EC!important}
+html.th-clean #page .sgt thead th{background:#F1F5F9!important;border-bottom:2px solid #94A3B8!important}
+html.th-clean #page .sgt tfoot th,html.th-clean #page .sgt tfoot td{background:#F8FAFC!important;border-top:2px solid #94A3B8!important}
+html.th-clean .mh{background:#fff!important;background-image:none!important;color:#111827!important;border-bottom:1px solid #E4E8EF!important}
+html.th-clean .mh *{color:#111827!important}
+html.th-clean .modal{box-shadow:0 20px 50px rgba(16,24,40,.18)!important;border:1px solid #E4E8EF!important}
+html.th-clean .lnh{background:#FEF2F2!important;background-image:none!important;color:#991B1B!important}
+html.th-clean .lnh *{color:#991B1B!important}
+html.th-clean .lnm.alldone .lnh{background:#F0FDF4!important}html.th-clean .lnm.alldone .lnh *{color:#166534!important}
+html.th-clean .phs{background:#fff!important;background-image:none!important}
+html.th-clean .bst{background:#F8FAFC!important;background-image:none!important;color:#111827!important;border:1px solid #E4E8EF!important;box-shadow:none!important}
+html.th-clean .bst *{color:#111827!important}
+html.th-clean .pl-hero{background:#fff!important;background-image:none!important;color:#111827!important;border:1px solid #E4E8EF!important;box-shadow:none!important}
+html.th-clean .pl-hero *{color:#111827!important}
+html.th-clean .sm-top{background:#fff!important;background-image:none!important;color:#111827!important;border:1px solid #E4E8EF!important}
+html.th-clean .sm-top.ok{border-inline-start:4px solid #16A34A!important}html.th-clean .sm-top.bad{border-inline-start:4px solid #DC2626!important;color:#991B1B!important}
+html.th-clean .nf-t{background:#fff!important;background-image:none!important;box-shadow:none!important;border:1px solid #E4E8EF!important}
+html.th-clean .nf-t.on{outline:2px solid #2563EB!important;border-color:#2563EB!important}
+html.th-clean #page .lnbar,html.th-clean #page .lnring{box-shadow:none!important}
+html.th-clean :focus-visible{outline:2px solid #2563EB;outline-offset:2px}
+/* v48.5 — the table fits a phone: the list lets it shrink, short names, tighter cells */
+.hp-l{grid-template-columns:minmax(0,1fr)}.hp-l>details,.smx,.sg-w{min-width:0}
+.sgt .sg-s{display:none}
+@media (max-width:520px){
+  .sgt .sg-f,.sgt .sg-ic{display:none}.sgt .sg-s{display:inline}
+  .sgt{font-size:.9rem;min-width:0}.sgt th,.sgt td{padding:5px 3px}.sgt td b{font-size:.98rem}.sgt tfoot td b{font-size:1.04rem}
+  .sgt th.sg-l{min-width:0;width:40%}.sgt thead th{font-size:.86rem}
+  #page .sgt .sg-pl{font-size:.9rem}
+}
+/* v48.5 — the looks' previews in ⚙ › نمایش */
+.th-t .th-p{position:relative;display:block;width:100%;height:64px;border-radius:10px;border:1px solid #E2E8F0;overflow:hidden;background:#F4F6FA}
+.th-t .th-p i{position:absolute;display:block;border-radius:4px}
+.th-t .th-p i:nth-child(1){top:8px;right:8px;left:8px;height:12px;background:#fff;border:1px solid #E2E8F0}
+.th-t .th-p i:nth-child(2){top:26px;right:8px;width:44%;height:30px;background:#fff;border:1px solid #E2E8F0}
+.th-t .th-p i:nth-child(3){top:26px;left:8px;width:38%;height:12px;background:#2563EB}
+.th-t .th-p.th-kn i:nth-child(3){background:#7C3AED}.th-t .th-p.th-kn{background:#F7F7FB}
+.th-t .th-p.th-fp i:nth-child(3){background:#16A34A}.th-t .th-p.th-fp{background:#E8F3EC}.th-t .th-p.th-fp i:nth-child(1){background:#DCFCE7}
+.th-t .th-p.th-classic{background:linear-gradient(135deg,#0E7C7B,#1E3A8A 60%,#C98A12)}.th-t .th-p.th-classic i{background:rgba(255,255,255,.85);border:0}.th-t .th-p.th-classic i:nth-child(3){background:#E0B13C}
+/* «آبی» (FinanceFlow): the active item filled blue */
+html.th-clean.ac-ff #tabbar a.on,html.th-clean.ac-ff .tm-t.on{background:#2563EB!important;color:#fff!important;border-color:#2563EB!important}
+html.th-clean.ac-ff .tm-t.on *{color:#fff!important}
+html.th-clean.ac-ff body{background:#F7F9FC!important}
+/* «بنفش» (Kanakku) */
+html.th-clean.ac-kn{--gold:#7C3AED;--gold2:#DDD6FE}
+html.th-clean.ac-kn body{background:#F7F7FB!important}
+html.th-clean.ac-kn #tabbar a.on,html.th-clean.ac-kn .tm-t.on{background:#F5F3FF!important;color:#6D28D9!important;border-color:#DDD6FE!important}
+html.th-clean.ac-kn #tabbar a.mid,html.th-clean.ac-kn .big-add,html.th-clean.ac-kn a.big-add,html.th-clean.ac-kn .btn.gold,html.th-clean.ac-kn .btn.blue{background:#7C3AED!important;border-color:#7C3AED!important;color:#fff!important}
+html.th-clean.ac-kn .pback,html.th-clean.ac-kn #backBtn{color:#6D28D9!important;border-color:#DDD6FE!important}
+html.th-clean.ac-kn #page table th,html.th-clean.ac-kn #page .sgt thead th{background:#F5F3FF!important;color:#4C1D95!important}
+html.th-clean.ac-kn #page .sgt thead th{border-bottom-color:#7C3AED!important}
+html.th-clean.ac-kn #page .hp-h{border-bottom:2px solid #7C3AED!important}
+html.th-clean.ac-kn #page .hero2 .h2-tod{background:#F5F3FF!important;border-color:#DDD6FE!important}
+html.th-clean.ac-kn :focus-visible{outline-color:#7C3AED}
+/* «سبز» (Finopia): mint around white, light-green table heads */
+html.th-clean.ac-fp{--gold:#16A34A;--gold2:#BBF7D0}
+html.th-clean.ac-fp body{background:#E8F3EC!important}
+html.th-clean.ac-fp #tabbar a.on,html.th-clean.ac-fp .tm-t.on{background:#DCFCE7!important;color:#15803D!important;border-color:#BBF7D0!important}
+html.th-clean.ac-fp #tabbar a.mid,html.th-clean.ac-fp .big-add,html.th-clean.ac-fp a.big-add,html.th-clean.ac-fp .btn.gold,html.th-clean.ac-fp .btn.blue{background:#16A34A!important;border-color:#16A34A!important;color:#fff!important}
+html.th-clean.ac-fp .pback,html.th-clean.ac-fp #backBtn{color:#15803D!important;border-color:#BBF7D0!important}
+html.th-clean.ac-fp #page table th,html.th-clean.ac-fp #page .sgt thead th{background:#DCFCE7!important;color:#14532D!important}
+html.th-clean.ac-fp #page .sgt thead th{border-bottom-color:#16A34A!important}
+html.th-clean.ac-fp #page .hp-h{border-bottom:2px solid #16A34A!important}
+html.th-clean.ac-fp #page .hero2 .h2-tod{background:#DCFCE7!important;border-color:#BBF7D0!important}
+html.th-clean.ac-fp :focus-visible{outline-color:#16A34A}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3373,7 +3516,7 @@ details.hpr.bad{background:#FFF7F7}details.hpr.bad .hr-n{color:#9F1239}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.4"; window.APP_BUILD = "1405/08/18 22:31";
+window.APP_VERSION = "48.5"; window.APP_BUILD = "1405/08/18 22:57";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -15029,7 +15172,7 @@ App.numFont = v => { set(BY[v] ? v : ''); apply(); };
 App.numFontNow = get;
 App.numFontBar = () => {
   const v = get(), tile = (k, name, fam) => '<button type="button" class="nf-t' + (v === k ? ' on' : '') + '" data-act="numfont" data-v="' + k + '"><b>' + name + '</b><span class="nf-s" style="font-family:' + fam + '">1,234,567</span></button>';
-  return '<div class="nfbox"><div class="nf-h">🔢 شکل و فونت عددها <small style="font-weight:700;color:#64748B">— روی هر کدام بزنید؛ فقط عددها عوض می‌شوند</small></div>' +
+  return (App.themeBar ? App.themeBar() : '') + '<div class="nfbox"><div class="nf-h">🔢 شکل و فونت عددها <small style="font-weight:700;color:#64748B">— روی هر کدام بزنید؛ فقط عددها عوض می‌شوند</small></div>' +
     '<div class="nf-g">' + tile('', 'پیش‌فرض (مثل قبل)', 'inherit') + '</div>' +
     [['fa', '۱۲۳ عددهای فارسی'], ['faf', '✨ ۱۲۳ فارسی فانتزی'], ['enm', '🎩 123 انگلیسی مجلسی'], ['en', '123 عددهای انگلیسی'], ['enf', '✨ 123 انگلیسی فانتزی']].map(g =>
       '<div class="nf-sub">' + g[1] + '</div><div class="nf-g">' + FONTS.filter(f => f[1] === g[0]).map(f => tile(f[0], f[2], 'N_' + f[0])).join('') + '</div>').join('') + '</div>' +
@@ -16294,37 +16437,58 @@ function priceLine(a) {
   const d = p.lastDate ? (typeof p.lastDate === 'number' ? E.serToText(p.lastDate) : String(p.lastDate)) : '';
   return '<div class="smp-pr">💰 قیمت روز' + (d ? ' <b class="num">' + esc(d) + '</b>' : '') + ': هر ' + esc(a.u) + ' <b class="num">' + money(pr) + '</b> ریال</div>';
 }
-function qtyPart(a) {
-  const pr = priceOf(a.name), ppl = a.ppl.filter(p => Math.abs(p.q) > EPS);
-  const val = q => (pr > 0 ? '<small><b class="num">' + money(q * pr) + '</b> ریال</small>' : '');
-  let h = '<div class="smp smp-q"><div class="smp-h">🔢 مقدار</div>';
-  h += '<div class="smq me"><span class="smq-n">👤 مال خودم</span><b class="num">' + q4(a.own) + ' <i>' + esc(a.u) + '</i></b>' + val(a.own) + '</div>';
-  ppl.forEach(p => { h += '<div class="smq tr"><span class="smq-n">🤝 امانیِ ' + esc(p.p) + '</span><b class="num">' + q4(p.q) + ' <i>' + esc(a.u) + '</i></b>' + val(p.q) + '</div>'; });
-  if (ppl.length) h += '<div class="smq all"><span class="smq-n">جمع نزد من</span><b class="num">' + q4(a.tot) + ' <i>' + esc(a.u) + '</i></b>' + val(a.tot) + '</div>';
-  return h + '</div>';
-}
-function placePart(a, tools) {
-  let h = '<div class="smp smp-l"><div class="smp-h">📍 محل <small>بزنید تا داخلش بروید</small></div>';
+/* v48.5 (the owner 1405/08/18: «طلا و محلش را با خط‌کشی و جدول مشخص کن») — one ruled table: a row per place, a column per owner
+   (مال من, each person's trust) and «جمع»; the last row the sums. Under it: the rial value of each column (a small ruled table), and with the
+   tools (/sum, the asset page) the reconciliation table: محل | برنامه | شمارش من | اختلاف | ✏️ (⚖ for a fund). */
+const TITLES = ['دایی', 'خاله', 'عمو', 'عمه', 'آقای', 'خانم', 'حاج', 'حاجی'];
+const shortName = n => { const w = String(n || '').trim().split(/\s+/); return TITLES.indexOf(w[0]) >= 0 ? w.slice(0, 2).join(' ') : w[0]; };
+const hd = (ic, full, short) => '<span class="sg-ic">' + ic + ' </span><span class="sg-f">' + esc(full) + '</span><span class="sg-s">' + esc(short) + '</span>';   // a narrow phone: the short name
+function cellQ(v) { return Math.abs(N(v)) > EPS ? '<b class="num">' + q4(v) + '</b>' : '<span class="sg-0">—</span>'; }
+function ownTable(a) {
+  const ppl = a.ppl.filter(p => Math.abs(p.q) > EPS), one = !ppl.length;
+  let h = '<div class="sg-w"><table class="sgt"><thead><tr><th class="sg-l">' + hd('📍', 'محل', 'محل') + '</th>' + (one ? '<th>مقدار <small>(' + esc(a.u) + ')</small></th>' :
+    '<th>' + hd('👤', 'مال من', 'من') + '</th>' + ppl.map(p => '<th title="' + esc(p.p) + '">' + hd('🤝', p.p, shortName(p.p)) + '</th>').join('') + '<th class="sg-t">جمع</th>') + '</tr></thead><tbody>';
   a.rows.forEach(r => {
-    const none = r.loc === 'محل نامشخص', c = none ? null : cnt(a.name, r.loc), d = c ? N(c.q) - r.tot : 0, A = ' data-a="' + esc(a.name) + '" data-l="' + esc(r.loc) + '"';
-    const who = r.tm && r.tm.length ? ['من ' + q4(r.own)].concat(r.tm.map(t => esc(t.p) + ' ' + q4(t.q))).join(' · ') : 'همه مال خودم';
-    h += '<div class="spl' + (c ? (Math.abs(d) > EPS ? ' cbad' : ' cok') : '') + '">' +
-      '<button type="button" class="spl-go" data-act="pl-edit" data-asset="' + esc(a.name) + '" data-loc="' + (none ? '' : esc(r.loc)) + '" title="همهٔ ثبت‌های این محل، با ✏️ ویرایش">' +
-      '<span class="spl-n">' + esc(r.loc) + '</span><b class="num">' + q4(r.tot) + '</b><span class="spl-w">' + who + '</span><span class="spl-e">✏️</span></button>';
-    if (tools) h += '<div class="spl-t">' +
-      (c ? (Math.abs(d) > EPS ? '<span class="smr-w">⚠ شمارش من (' + esc(c.d || '') + '): <b class="num">' + q4(c.q) + '</b> · اختلاف <b class="num">' + (d > 0 ? '+' : '−') + q4(Math.abs(d)) + '</b></span>' : '<span class="smr-ok">✔ با شمارش من (' + esc(c.d || '') + ') یکی است</span>') : '') +
-      (none ? '' : '<button type="button" class="btn xs ghost" data-act="sm-cnt"' + A + '>✏️ شمارش من</button>') +
-      (isFund(r.loc) ? '<button type="button" class="btn xs navy" data-act="sm-fund"' + A + '>⚖ مغایرت‌گیری با صورتحساب صندوق</button>' : '') + '</div>';
-    h += '</div>';
+    const none = r.loc === 'محل نامشخص';
+    const place = none ? '<button type="button" class="sg-pl" data-act="move-new" data-asset="' + esc(a.name) + '" data-from="">📍 بدون محل — مشخص کن</button>'
+      : '<button type="button" class="sg-pl" data-act="pl-edit" data-asset="' + esc(a.name) + '" data-loc="' + esc(r.loc) + '" title="همهٔ ثبت‌های این محل، با ✏️ ویرایش">' + esc(r.loc) + ' <i>✏️</i></button>';
+    h += '<tr><th class="sg-l" scope="row">' + place + '</th>';
+    if (one) h += '<td>' + cellQ(r.tot) + '</td>';
+    else h += '<td class="sg-me">' + cellQ(r.own) + '</td>' + ppl.map(p => { const t = (r.tm || []).find(x => x.p === p.p); return '<td class="sg-tr">' + cellQ(t ? t.q : 0) + '</td>'; }).join('') + '<td class="sg-t">' + cellQ(r.tot) + '</td>';
+    h += '</tr>';
   });
-  return h + '</div>';
+  h += '</tbody><tfoot><tr><th class="sg-l" scope="row">جمع</th>' + (one ? '<td>' + cellQ(a.tot) + '</td>' :
+    '<td class="sg-me">' + cellQ(a.own) + '</td>' + ppl.map(p => '<td class="sg-tr">' + cellQ(p.q) + '</td>').join('') + '<td class="sg-t">' + cellQ(a.tot) + '</td>') + '</tr></tfoot></table></div>';
+  return h;
+}
+function valTable(a) {
+  const p = posOf(a.name), pr = p ? N(p.price) : 0;
+  if (!(pr > 0)) return '<div class="smp-pr">برای «' + esc(a.disp) + '» هنوز «قیمت روز» ثبت نشده؛ ارزش ریالی بعد از ثبت قیمت می‌آید.</div>';
+  const d = p.lastDate ? (typeof p.lastDate === 'number' ? E.serToText(p.lastDate) : String(p.lastDate)) : '';
+  const ppl = a.ppl.filter(x => Math.abs(x.q) > EPS);
+  const rows = [['👤 مال من', a.own]].concat(ppl.map(x => ['🤝 ' + esc(x.p), x.q])).concat(ppl.length ? [['جمع نزد من', a.tot]] : []);
+  return '<div class="sg-w"><table class="sgt sgv"><thead><tr><th class="sg-l">💰 ارزش ریالی</th><th>به قیمت روز' + (d ? ' <b class="num">' + esc(d) + '</b>' : '') + ' — هر ' + esc(a.u) + ' <b class="num">' + money(pr) + '</b> ریال</th></tr></thead><tbody>' +
+    rows.map((x, k) => '<tr' + (ppl.length && k === rows.length - 1 ? ' class="sg-sum"' : '') + '><th class="sg-l" scope="row">' + x[0] + '</th><td><b class="num">' + money(x[1] * pr) + '</b> ریال</td></tr>').join('') + '</tbody></table></div>';
+}
+function cntTable(a) {
+  let h = '<div class="sg-w"><table class="sgt sgc"><thead><tr><th class="sg-l">🔍 مغایرت‌گیری</th><th>برنامه</th><th>شمارش من</th><th>اختلاف</th><th></th></tr></thead><tbody>';
+  a.rows.forEach(r => {
+    if (r.loc === 'محل نامشخص') return;
+    const c = cnt(a.name, r.loc), d = c ? N(c.q) - r.tot : 0, A = ' data-a="' + esc(a.name) + '" data-l="' + esc(r.loc) + '"', bad = c && Math.abs(d) > EPS;
+    h += '<tr class="' + (c ? (bad ? 'sg-bad' : 'sg-ok') : '') + '"><th class="sg-l" scope="row">' + esc(r.loc) + (c && c.d ? '<small class="sg-d">' + esc(c.d) + '</small>' : '') + '</th>' +
+      '<td>' + cellQ(r.tot) + '</td><td>' + (c ? '<b class="num">' + q4(c.q) + '</b>' : '<span class="sg-0">—</span>') + '</td>' +
+      '<td>' + (c ? (bad ? '<b class="num sg-x">' + (d > 0 ? '+' : '−') + q4(Math.abs(d)) + '</b>' : '<b class="sg-v">✔</b>') : '<span class="sg-0">—</span>') + '</td>' +
+      '<td class="sg-a"><button type="button" class="btn xs ghost" data-act="sm-cnt"' + A + ' title="شمارش من">✏️</button>' +
+      (isFund(r.loc) ? '<button type="button" class="btn xs navy" data-act="sm-fund"' + A + ' title="مغایرت‌گیری با صورتحساب صندوق">⚖</button>' : '') + '</td></tr>';
+  });
+  return h + '</tbody></table></div>';
 }
 function twoPart(a, opt) {
   opt = opt || {};
   const iss = checks(a);
   let h = '<div class="smx" style="--k:' + (KC[a.k] || KC.fx) + '">';
   if (iss.length) h += '<ul class="smc-is">' + iss.map(x => '<li class="' + x.lvl + '">' + (x.lvl === 'bad' ? '⚠ ' : 'ℹ ') + x.t + '</li>').join('') + '</ul>';
-  h += '<div class="smx2">' + qtyPart(a) + placePart(a, opt.tools) + '</div>' + priceLine(a);
+  h += ownTable(a) + valTable(a) + (opt.tools ? cntTable(a) + (a.rows.some(r => isFund(r.loc)) ? '<div class="smp-pr">⚖ صندوق ارزی: موجودی صورتحساب را بزنید — <b>اضافه = سود</b>، کم = می‌پرسد بابت چیست.</div>' : '') : '');
   const btns = (opt.page !== 'asset' ? '<a class="btn xs ghost" data-act="go" data-to="/asset/' + esc(H.slug(a.name)) + '">📒 صفحهٔ ' + esc(a.disp) + '</a>' : '') +
     (!opt.tools ? '<a class="btn xs ghost" data-act="go" data-to="/sum">🔍 شمارش و مغایرت</a>' : '');
   return h + (btns ? '<div class="smp-b noprint">' + btns + '</div>' : '') + '</div>';
@@ -16634,6 +16798,52 @@ if (typeof oi === 'function') App.init = function () {
   if (window.__nfMig) setTimeout(() => { try { App.toast('🔢 عددهای انگلیسی حالا با قلم مجلسی «Lora» — برای عوض کردن: ⚙ تنظیمات › نمایش › فونت عددها'); } catch (e) { } }, 5000);
   return r;
 };
+})();
+/* ---------------------------------------------------------------- v48.5 — the looks to choose from
+   the owner (1405/08/18, three pictures of accounting dashboards — FinanceFlow, Kanakku, Finopia): «ظاهر کل برنامه، همه‌چیز ساده و روشن» …
+   «ظاهر قبلی هم خوب است … دو حالت بگذار که اگر خوشم نیامد برگردم» … «با آن طرح‌هایی که دادم آماده کن و انتخاب بگذار؛ هر کدام دوست داشتم».
+   · «آبی» (like FinanceFlow), «بنفش» (like Kanakku), «سبز» (like Finopia): the light look (html.th-clean) with its own accent (ac-ff/kn/fp);
+   · «رنگی (قبلی)»: as before.
+   ⚙ تنظیمات › نمایش › «🎨 ظاهر برنامه» (a tile each, with a little preview); «🎨 ظاهر» at the foot of the home page goes to the next one.
+   The choice is kept on this device. */
+(function () {
+'use strict';
+const App = window.App; if (!App) return;
+const KEY = 'hesabk_theme';
+const LOOKS = [['clean', 'آبی', 'مثل FinanceFlow', 'ff'], ['kn', 'بنفش', 'مثل Kanakku', 'kn'], ['fp', 'سبز', 'مثل Finopia', 'fp'], ['classic', 'رنگی (قبلی)', 'رنگ‌ها و نقش‌های قبلی', '']];
+const BY = {}; LOOKS.forEach(l => { BY[l[0]] = l; });
+const get = () => { let v = ''; try { v = localStorage.getItem(KEY) || ''; } catch (e) { } return BY[v] ? v : 'clean'; };
+const set = v => { try { localStorage.setItem(KEY, BY[v] ? v : 'clean'); } catch (e) { } };
+function apply() {
+  const v = get(), D = document.documentElement, ac = BY[v][3];
+  D.classList.toggle('th-clean', v !== 'classic');
+  ['ac-ff', 'ac-kn', 'ac-fp'].forEach(c => D.classList.toggle(c, c === 'ac-' + ac));
+  document.querySelectorAll('.th-t').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  const s = document.querySelector('#page .th-sw button'); if (s) s.innerHTML = swText();
+}
+App.theme = v => { set(v); apply(); };
+App.themeNow = get;
+App.themeBar = () => {
+  const v = get();
+  return '<div class="nfbox thbox"><div class="nf-h">🎨 ظاهر برنامه <small style="font-weight:700;color:#64748B">— روی هر کدام بزنید؛ همهٔ صفحه‌ها عوض می‌شود</small></div><div class="th-g">' +
+    LOOKS.map(([k, name, sub, ac]) => '<button type="button" class="th-t' + (v === k ? ' on' : '') + '" data-act="theme" data-v="' + k + '"><span class="th-p th-' + (ac || 'classic') + '"><i></i><i></i><i></i></span><b>' + name + '</b><small>' + sub + '</small></button>').join('') +
+    '</div></div>';
+};
+const swText = () => { const v = get(), i = LOOKS.findIndex(l => l[0] === v), n = LOOKS[(i + 1) % LOOKS.length]; return '🎨 ظاهر: <b>' + BY[v][1] + '</b> — برو به «' + n[1] + '»'; };
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act="theme"],[data-act="theme-toggle"]') : null; if (!b) return;
+  ev.preventDefault(); ev.stopPropagation();
+  let v = b.dataset.v;
+  if (b.dataset.act === 'theme-toggle') { const i = LOOKS.findIndex(l => l[0] === get()); v = LOOKS[(i + 1) % LOOKS.length][0]; }
+  App.theme(v);
+  try { App.toast('✔ ظاهر: ' + BY[get()][1] + ' (' + BY[get()][2] + ')'); } catch (e) { }
+}, true);
+const oa = App.afterRender;
+App.afterRender = function (r) {
+  if (typeof oa === 'function') { try { oa.apply(this, arguments); } catch (e) { console.error(e); } }
+  try { if (r && r.page === 'home') { const pg = document.getElementById('page'); if (pg && !pg.querySelector(':scope > .th-sw')) pg.insertAdjacentHTML('beforeend', '<div class="th-sw noprint"><button type="button" class="btn ghost" data-act="theme-toggle">' + swText() + '</button></div>'); } } catch (e) { }
+};
+if (document.documentElement) apply();
 })();
 
 
