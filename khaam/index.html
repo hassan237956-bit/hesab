@@ -3226,6 +3226,16 @@ a.tbr:hover,a.tbr:focus{border-color:#94A3B8;box-shadow:0 2px 8px rgba(15,42,74,
   .tb-comp,.pl-sum{grid-template-columns:minmax(0,1fr)}
   .tbr-v,.plr b,.tbT-f b,.tbsub b{font-size:clamp(.9rem,4vw,1.08rem);white-space:normal;overflow-wrap:anywhere;letter-spacing:-.3px}
 }
+/* v48.1 — «= ۱۴ گرم و ۴۰۰ سوت» under a quantity box */
+.qread{margin-top:4px;padding:4px 10px;border-radius:10px;background:#FEF3C7;border:1.5px solid #F59E0B;color:#78350F;font-weight:900;font-size:1.08rem;display:inline-block}
+/* v48.1 — an older program / corrections made again */
+.ver-old{position:sticky;top:0;z-index:90;background:#B91C1C;color:#fff;font-weight:800;font-size:1.1rem;line-height:1.9;padding:10px 14px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,.35)}
+.ver-old b{color:#FEF08A}
+.ver-w{font-size:1.15rem;line-height:2.1}.ver-w .ver-do{background:#FEF3C7;border-radius:12px;padding:8px 12px;font-weight:800}
+.fxag{font-size:1.12rem;line-height:2.05}.fxag ul{margin:6px 0 10px;padding-inline-start:22px}.fxag li{margin:6px 0;font-weight:700}
+.fxag .fxag-n{background:#E0F2FE;border-radius:12px;padding:8px 12px;font-weight:700}
+.sv-help{margin:14px 0 4px;background:#FEF3C7;border:2px solid #F59E0B;border-radius:14px;padding:10px 14px;font-size:1.08rem;line-height:2;font-weight:600}
+.sv-help b{font-weight:800}.sv-help ol{margin:4px 0;padding-inline-start:22px}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3233,7 +3243,7 @@ a.tbr:hover,a.tbr:focus{border-color:#94A3B8;box-shadow:0 2px 8px rgba(15,42,74,
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.0"; window.APP_BUILD = "1405/08/18 16:25";
+window.APP_VERSION = "48.1"; window.APP_BUILD = "1405/08/18 18:09";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -3854,6 +3864,7 @@ function qstr(n) { n = Number(n); if (n === null || !isFinite(n)) return ''; con
 function numCell(n, cls) { return '<td class="n ' + (cls || '') + (Number(n) < -0.5 ? ' neg' : '') + '">' + (n === '' || n === null || n === undefined ? '' : fmt(n)) + '</td>'; }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 function parseAmount(s) {
+  { const k = (String(s == null ? '' : s).match(/[٬،]/g) || []).length; if (k === 1) s = String(s).replace(/[٬،]/, '.'); }
   s = latin(s).replace(/,/g, '').replace(/\s/g, '').replace(/^(-?\d+)\/(\d+)$/, '$1.$2');
   if (s === '') return NaN;
   const m = /^(-?\d+(?:\.\d+)?)$/.exec(s);
@@ -3941,7 +3952,7 @@ function fixDb(db) {
   return db;
 }
 const SNAP_SEEN = 'hesabk_snap_seen';
-const sigDb = db => JSON.stringify(db, (k, v) => (k === 'savedAt' || k === 'lastBackup' || k === 'exportedAt') ? undefined : v);
+const sigDb = db => JSON.stringify(db, (k, v) => (k === 'savedAt' || k === 'lastBackup' || k === 'exportedAt' || k === 'appMax' || k === 'appBy' || k === 'appAt' || k === 'appOld' || k === 'appOldAt') ? undefined : v);
 App.snapSeen = function (id) { try { localStorage.setItem(SNAP_SEEN, id || ''); } catch (e) { } };
 /* v40.5: does the snapshot inside this file hold anything this browser does not already have? */
 function snapNothingNew(db, snap) {
@@ -4104,11 +4115,11 @@ App.emit = () => App.listeners.forEach(f => f());
 let saveTimer = null;
 function persistSoon() { clearTimeout(saveTimer); saveTimer = setTimeout(() => { saveTimer = null; persistNow(); }, 400); }
 /* never lose the last entry when the tab / browser is closed right after saving */
-function flushNow() { if (!saveTimer) return; clearTimeout(saveTimer); saveTimer = null; try { App.db.meta.savedAt = new Date().toISOString(); localStorage.setItem(LS_KEY, JSON.stringify(App.db)); } catch (e) { } persistNow(); }
+function flushNow() { if (!saveTimer) return; clearTimeout(saveTimer); saveTimer = null; try { App.db.meta.savedAt = new Date().toISOString(); if (App.stampVer) App.stampVer(App.db); localStorage.setItem(LS_KEY, JSON.stringify(App.db)); } catch (e) { } persistNow(); }
 window.addEventListener('pagehide', flushNow); document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') flushNow(); });
 App.saveNow = () => persistNow();
 async function persistNow() {
-  const db = App.db; ensureUids(db); db.meta.savedAt = new Date().toISOString();
+  const db = App.db; ensureUids(db); db.meta.savedAt = new Date().toISOString(); try { if (App.stampVer) App.stampVer(db); } catch (e) { }
   const txt = JSON.stringify(db);
   if (App.durSave) try { App.durSave(txt, db.meta.savedAt); } catch (e) { }
   try { localStorage.setItem(LS_KEY, txt); const back = localStorage.getItem(LS_KEY); if (back === null || back.length !== txt.length) throw new Error('حافظهٔ گوشی آن را نگه نداشت'); App.saveState.err = null; App.saveState.localAt = new Date(); } catch (e) { App.saveState.err = 'ذخیره در مرورگر ناموفق بود: ' + e.message; if (App.saveFailed) try { App.saveFailed(e); } catch (x) { } }
@@ -4185,6 +4196,7 @@ function planMerge(L, fileIn) {
   ensureUids(L);
   const F = fixDb(jclone(fileIn));
   const P = { F, tomb: {}, add: [], upd: [], del: [], same: 0, keepL: 0, onlyL: 0, skipDel: 0, mvAdd: [], mvUpd: [], mvDel: [], mvSame: 0, cfg: [], accAdd: [], warn: [] };
+  try { if (App.mergeVerWarn) App.mergeVerWarn(L, F, P); } catch (e) { }
   const tomb = Object.assign({}, L.tomb || {}); Object.keys(F.tomb || {}).forEach(u => { if (!tomb[u] || F.tomb[u] > tomb[u]) tomb[u] = F.tomb[u]; });
   P.tomb = tomb;
   const dead = (u, m) => !!tomb[u] && tomb[u] > (m || '');
@@ -10167,7 +10179,8 @@ const WHY = {
   not_granted: 'اجازهٔ ذخیرهٔ فایل داده نشده است. از منوی صفحه، «Permissions» را باز کن و دانلود را روشن کن.',
   capability_disabled: 'ذخیرهٔ فایل در این نمایش خاموش است.', capability_removed: 'ذخیرهٔ فایل در این نسخه نیست.',
   bad_request: 'فایل برای ذخیره آماده نبود. صفحه را تازه کن و دوباره بزن.', transform_error: 'فایل برای ذخیره آماده نبود. صفحه را تازه کن و دوباره بزن.',
-  rejected_extension: 'نوع این فایل پذیرفته نشد.'
+  rejected_extension: 'نوع این فایل پذیرفته نشد.',
+  timeout: 'پنجرهٔ تأیید جواب نداد (شاید بسته شد یا پشت صفحه ماند). دوباره بزن.', reset: 'لغو شد؛ دوباره بزن.'
 };
 const why = e => { const c = e && e.code; return (c && WHY[c]) || ('ذخیره نشد' + (c ? ' (' + c + ')' : '') + (e && e.message ? ': ' + String(e.message).slice(0, 120) : '')); };
 
@@ -10187,6 +10200,7 @@ function row(it) {
   if (s.s === 'err') h += '<div style="font-size:1.08rem;font-weight:800;line-height:1.9;color:#991b1b;margin-top:6px">✖ ' + esc(s.m) + '</div>';
   h += '<button class="btn ' + (s.s === 'ok' ? 'green' : 'blue') + '" data-act="hb-save" data-k="' + it.k + '" ' + (busy ? 'disabled' : '') + ' style="width:100%;margin-top:8px;font-size:1.2rem;font-weight:900;padding:14px">' +
     (mine ? '⏳ ' + esc(s.phase || 'لطفاً صبر کن…') : s.s === 'ok' ? '🔁 دوباره' : s.s === 'err' ? '🔁 دوباره امتحان کن' : (dest === 'tg' ? '✈ فرستادن این فایل' : '⬇ ذخیرهٔ این فایل')) + '</button></div>';
+  if (mine) h += '<button class="btn ghost" data-act="hb-reset" style="width:100%;margin-top:6px;font-size:1.1rem;font-weight:900;padding:10px">↺ گیر کرده؟ لغو و از نو</button>';
   return h;
 }
 const HEAD = {
@@ -10210,7 +10224,9 @@ async function save(k) {
     if (!f || !f.size) throw { code: 'bad_request', message: 'empty file' };
     st[sk(k)].phase = 'منتظر تأیید در گوشی… (پنجرهٔ تأیید را بزن)'; paint();
     const d = await door(); if (!d || typeof d.save !== 'function') throw { code: 'unavailable', message: 'no downloads door' };
-    const r = await d.save({ filename: f.name, data: f });
+    /* v48.1 (the owner: «صفحهٔ ذخیره در فایل را بلاک کرده، نمی‌گذارد بزنم»): a confirm window that never answers kept every button disabled */
+    const r = await Promise.race([d.save({ filename: f.name, data: f }), new Promise((_, no) => setTimeout(() => no({ code: 'timeout', message: 'no answer in 90 s' }), 90000))]);
+    if (cur !== k) return;   // «↺ از نو» was pressed meanwhile
     st[sk(k)] = { s: 'ok', at: hm(new Date()), kb: Math.max(1, Math.round(f.size / 1024)), status: r && r.status };
     if (it.mark) { try { const m = App.db.meta; m.hbSent = Object.assign({}, m.hbSent, { [dest === 'tg' ? 'tg' : 'file']: new Date().toISOString() }); App.markBackup(); App.emit && App.emit(); } catch (e) { } }
     App.toast('✔ ' + it.t + ': ' + (it.mark ? 'پشتیبان ثبت شد' : 'ذخیره شد'));
@@ -10218,7 +10234,7 @@ async function save(k) {
   } catch (e) {
     st[sk(k)] = { s: 'err', m: why(e) };
     note(dest + '/' + k, (e && e.code) || 'err', (e && e.message) || e, Date.now() - t0, f ? f.size : 0);
-  } finally { cur = ''; paint(); }
+  } finally { if (cur === k) { cur = ''; paint(); } }
 }
 
 App.hostBackup = function (d) {
@@ -10235,6 +10251,8 @@ const take = () => { ['sendSet', 'saveToFlash', 'shareHtml', 'shareEach', 'share
 let tk = 0; const iv = setInterval(() => { if (typeof App.shareHtml === 'function' && typeof App.shareBackup === 'function' && typeof App.saveToFlash === 'function' && typeof App.buildFullHtml === 'function' && App.db) { clearInterval(iv); take(); } else if (++tk > 3000) clearInterval(iv); }, 10);
 
 document.addEventListener('click', ev => {
+  const r = ev.target && ev.target.closest ? ev.target.closest('[data-act="hb-reset"]') : null;
+  if (r) { ev.preventDefault(); const k = cur; cur = ''; if (k) { st[sk(k)] = { s: 'err', m: WHY.reset }; note(dest + '/' + k, 'reset', '', 0, 0); } paint(); return; }
   const b = ev.target && ev.target.closest ? ev.target.closest('[data-act="hb-save"]') : null; if (!b) return;
   ev.preventDefault(); save(b.getAttribute('data-k'));
 });
@@ -10251,7 +10269,9 @@ const IDS = { ef_amt: 1, ef_price: 1, ef_fee: 1, ef_qty: 1, lf_principal: 1, lf_
 const isMoney = el => !!(el && el.tagName === 'INPUT' && el.id && IDS[el.id] && (el.type === 'text' || el.type === 'tel' || el.type === 'search' || !el.type));
 /* «1234567.5» → «1,234,567.5»; anything that is not a plain number is returned unchanged (null) */
 function group(v) {
-  let s = latin(String(v)).replace(/[٫٬،]/g, m => m === '٫' ? '.' : ',');
+  /* «٬» / «،» inside a box are never the program's own commas: one of them is the decimal point, two or more are a pasted grouping */
+  const nSep = (String(v).match(/[٬،]/g) || []).length;
+  let s = latin(String(v).replace(/[٬،]/g, m => (nSep === 1 ? '.' : ','))).replace(/[٫٬،]/g, m => m === '٫' ? '.' : ',');
   if (/^[\s\-]*[\d,]+\/\d*$/.test(s)) s = s.replace('/', '.');   // v47.9: «۱۸/۷۰» (the decimal point of a Persian keyboard) → 18.70
   if (!/^[\s\-]*[\d,\s]*(\.\d*)?$/.test(s)) return null;
   const neg = /^\s*-/.test(s), t = s.replace(/[^\d.]/g, '');
@@ -10266,11 +10286,52 @@ function fix(el, keepCaret) {
   el.value = out;
   if (pos !== null) { try { el.setSelectionRange(pos, pos); } catch (e) { } }
 }
-document.addEventListener('input', e => { if (isMoney(e.target)) fix(e.target, true); }, true);        // capture: runs BEFORE the form reads the box
+/* v48.1 (the owner: «۴۰۰ سوت طلا می‌خواهم بخرم، نمی‌گذارد؛ ۴۰۰ گرم می‌زند — اعشار و سوت و سنت را درست کن»): the decimal key of a phone
+   keyboard types «٬» or «،» (or «/», «٫», «,»), which were read as a thousands separator and dropped («۰٬۴۰۰» → 400). The program puts
+   the thousands commas itself, so a separator the person TYPES is the decimal point: it becomes «.» (only one in the box). */
+const SEP = /[٬،\/٫.,]/;
+const touch = (() => { try { return (navigator.maxTouchPoints || 0) > 0 || 'ontouchstart' in window; } catch (e) { return false; } })();
+function typedSep(e) {
+  const el = e.target, d = e.data;
+  if (!d || d.length !== 1 || !SEP.test(d) || (d === ',' && !touch)) return false;
+  const pos = el.selectionStart; if (pos == null || pos < 1) return false;
+  const v = el.value, ch = v.charAt(pos - 1); if (!SEP.test(ch)) return false;
+  const left = v.slice(0, pos - 1).replace(/[.٫\/]/g, ''), right = v.slice(pos).replace(/[.٫\/٬،]/g, '');
+  el.value = (left === '' || left === '-' ? left + '0' : left) + '.' + right;
+  const at = el.value.length - right.length; try { el.setSelectionRange(at, at); } catch (x) { }
+  return true;
+}
+/* «= ۱۴ گرم و ۴۰۰ سوت» / «= ۱۸ دلار و ۷۰ سنت» under a quantity box */
+const QIDS = { ef_qty: 1, mv_qty: 1, tw_qty: 1, rt_qty: 1, tx_qty: 1, tm_qty: 1 };
+const faD = s => String(s).replace(/\d/g, c => '۰۱۲۳۴۵۶۷۸۹'[c]);
+function unitNear(el) {
+  const A = (App.db && App.db.assets) || [];
+  let n = el.id === 'ef_qty' ? (App.form && App.form.x) : el.id === 'mv_qty' ? (App.moveForm && App.moveForm.asset) : el.id === 'tw_qty' ? (document.getElementById('tw_item') || {}).value : '';
+  let a = A.find(x => x.name === n);
+  if (!a) { const box = el.closest('#modalBg') || document.body, t = box.innerText || ''; a = A.find(x => t.indexOf(x.display || x.name) >= 0) || A.find(x => t.indexOf(x.name) >= 0); }
+  return a ? String(a.unit || '') : '';
+}
+function readout(el) {
+  if (!el || !QIDS[el.id]) return;
+  let r = el.parentNode && el.parentNode.querySelector('.qread[data-for="' + el.id + '"]');
+  const q = App.H.parseAmount(el.value || ''), u = unitNear(el), U = u.toUpperCase();
+  let t = '';
+  if (!isNaN(q) && q > 0 && Math.abs(q - Math.round(q)) > 1e-9) {
+    const i = Math.floor(q + 1e-9), f = q - i;
+    if (u === 'گرم') { const s0 = Math.round(f * 1000); t = '= ' + (i ? faD(i) + ' گرم و ' : '') + faD(s0) + ' سوت' + (i ? '' : ' (' + faD(String(q).replace('.', '٫')) + ' گرم)'); }
+    else if (U === 'USD' || U === 'EUR' || U === 'USDT') { const c = Math.round(f * 100), w = U === 'EUR' ? 'یورو' : U === 'USDT' ? 'تتر' : 'دلار'; t = '= ' + (i ? faD(i) + ' ' + w + ' و ' : '') + faD(c) + ' سنت'; }
+    else t = '= ' + faD(String(q).replace('.', '٫'));
+  }
+  if (!t) { if (r) r.remove(); return; }
+  if (!r) { r = document.createElement('div'); r.className = 'qread'; r.dataset.for = el.id; el.insertAdjacentElement('afterend', r); }
+  r.textContent = t;
+}
+App.qtyReadout = readout;
+document.addEventListener('input', e => { if (isMoney(e.target)) { typedSep(e); fix(e.target, true); readout(e.target); } }, true);        // capture: runs BEFORE the form reads the box
 document.addEventListener('focusin', e => { if (isMoney(e.target)) fix(e.target, false); }, true);
 /* boxes that are already filled when a form opens (editing an entry, a suggested amount) */
 let tm = 0;
-const sweep = () => { tm = 0; Object.keys(IDS).forEach(id => { const el = document.getElementById(id); if (el && document.activeElement !== el) fix(el, false); }); };
+const sweep = () => { tm = 0; Object.keys(IDS).forEach(id => { const el = document.getElementById(id); if (el && document.activeElement !== el) { fix(el, false); readout(el); } }); };
 try { new MutationObserver(() => { if (!tm) tm = setTimeout(sweep, 120); }).observe(document.documentElement, { childList: true, subtree: true }); } catch (e) { }
 App.groupDigits = group;
 })();
@@ -14369,13 +14430,13 @@ function giftFind(db, asset) {
 const priceFind = db => (db.entries || []).find(e => e && e.dr === 'سکه گرمی' && e.date === '1405/07/25' && !(N(e.qty) > 0) && N(e.price) === 3700000000) || null;
 const FIXES = [
   { id: 'v455-negar-gold-10g', text: 'قیمت ۱۰ گرم طلای امانی (۱۴۰۵/۰۷/۳۰) درست شد: هر گرم ۲۶۵٬۸۰۰٬۰۰۰ ریال (به‌جای ۲۶٬۵۸۰٬۰۰۰)',
-    need: db => { const r = goldFind(db); return !!(r.m || r.e); },
+    need: db => { const r = goldFind(db); return !!(r.m || r.e); }, sticky: true,
     apply: db => { const r = goldFind(db); if (r.m) r.m.price = goldFix.to; if (r.e) r.e.price = goldFix.to; } },
   { id: 'v457-gift-coins', text: 'نیم سکه و سکه گرمی: اولین ثبتشان «🎁 هدیه» شد (بدون پول؛ همهٔ ارزششان سود شماست)',
     need: db => !!(giftFind(db, 'نیم سکه') || giftFind(db, 'سکه گرمی')),
     apply: db => { ['نیم سکه', 'سکه گرمی'].forEach(a => { const e = giftFind(db, a); if (e) { e.gift = true; e.price = 0; } }); } },
   { id: 'v458-gorami-price', text: 'قیمت روز سکه گرمی (۱۴۰۵/۰۷/۲۵) درست شد: ۳۷۰٬۰۰۰٬۰۰۰ ریال (به‌جای ۳٬۷۰۰٬۰۰۰٬۰۰۰)',
-    need: db => !!priceFind(db), apply: db => { const e = priceFind(db); if (e) e.price = 370000000; } },
+    need: db => !!priceFind(db), apply: db => { const e = priceFind(db); if (e) e.price = 370000000; }, sticky: true },
   { id: 'v465-trust-memo', text: db => memoText(db), need: db => !!memoPlan(db), apply: db => memoApply(db), big: true },
   /* v47.4 (the owner 1405/08/17: «۲۴۰۰ تای الف قبلاً آمده بود؛ چرا دوباره اضافه کردی؟ باید بشود ۱۲٬۷۵۲»): member A's dollars are inside
      the dollars his books show as his — mark them «already in my books» so they are not added on top again */
@@ -14385,13 +14446,47 @@ const FIXES = [
      his books at Mana are 9,850 (9,550 + 300 from بانک دی); 9,850 + 2,800 (Daei Hossein) + 2,000 = 14,650 — so only member A's 400
      (1404/11/27) is inside his books; her 2,000 bought on 1405/07/30 lies beside them and is added on top */
   { id: 'v475-negar-usd-2000-beside', text: '۲٬۰۰۰ دلار امانیِ الف (خرید ۱۴۰۵/۰۷/۳۰) جدا از موجودی دفتر شماست و روی جمع صندوق ارزی می‌آید؛ فقط ۴۰۰ دلار او جزو موجودی دفتر است',
-    need: db => !!neg2000(db), apply: db => { const m = neg2000(db); if (m) delete m.inb; } },
+    need: db => !!neg2000(db), apply: db => { const m = neg2000(db); if (m) delete m.inb; }, sticky: true },
   /* v47.6 (the owner 1405/08/18: «مانده دلارهای من کلاً ۹٬۵۵۲ باید باشد، بعلاوه ۲٬۸۰۰ دایی بعلاوه ۲٬۴۰۰ الف = ۱۴٬۷۵۲؛ ولی مانده من را
      ۹٬۹۵۲ زدید که غلط است — اصلاحش کن»): one visible record takes member A's 400 out of HIS dollars (at his average cost of the dollar, so no
      profit or loss is made), in «صندوق ارزی»; her 400 is then only her trust (beside the books), like her 2,000 */
   { id: 'v476-usd-own-9552', text: 'موجودی دلار خودتان اصلاح شد: ۴۰۰ دلار امانیِ الف از دلارهای ثبت‌شده به اسم شما (صندوق ارزی) کم شد',
-    need: db => !!neg400(db) && !(db.entries || []).some(e => e && e.u === FIX476U), apply: db => fix476(db) }
+    need: db => !!neg400(db) && !gone(db, FIX476U), sticky: true,
+    apply: db => { if ((db.entries || []).some(e => e && e.u === FIX476U)) { const m = neg400(db); if (m) delete m.inb; } else fix476(db); } },
+  /* v48.1 (the owner 1405/08/18: «طلافروشی ملکا سلامی‌زاده باید بشود ۱۴ گرم و ۴۰۰ سوت — ۱۰ گرم الف، ۴ گرم مال خودم، ۴۰۰ سوت تازه —
+     هر کاری می‌کنم نمی‌شود؛ آن ۴ گرمی که منزل زده بودم را می‌خواهم انتقال بدهم … ۴۰۰ سوت به قیمت ۲۵۸٬۸۰۰ هزار ریال در تاریخ ۱۷ بزن»;
+     paid from «بانک مسکن ممتاز ۴۶», the price is per gram — his answers) */
+  { id: 'v481-gold-dup-move', text: '۴ گرم طلا دو بار به طلافروشی ملکا رفته بود (محل خرید ۱۴۰۵/۰۷/۲۲ را عوض کرده بودید و یک انتقال «منزل ← طلافروشی» هم زده بودید)؛ انتقال تکراری برداشته شد: منزل ۰، طلافروشی ۴ گرم',
+    need: db => !!dupMv(db), apply: db => { const m = dupMv(db); db.moves = (db.moves || []).filter(x => x !== m); }, sticky: true },
+  { id: 'v481-dh-gold-30.9', text: 'طلای امانیِ دایی حسین ۳۰٬۹۰۰ «گرم» ثبت شده بود (ممیز گوشی خوانده نشده بود)؛ درست شد: ۳۰٫۹ گرم (۳۰ گرم و ۹۰۰ سوت)',
+    need: db => !!dhGold(db), apply: db => { const m = dhGold(db); if (m) m.qty = 30.9; }, sticky: true },
+  { id: 'v481-gold-400sut', text: 'خرید ۴۰۰ سوت (۰٫۴ گرم) طلا از سلامی‌زاده ثبت شد: ۱۴۰۵/۰۸/۱۷، گرمی ۲۵۸٬۸۰۰٬۰۰۰ ریال (جمع ۱۰۳٬۵۲۰٬۰۰۰)، از «بانک مسکن ممتاز ۴۶»، محل: طلافروشی ملکا سلامی‌زاده',
+    need: db => canBuy481(db) && !gone(db, U481), apply: db => buy481(db), sticky: true }
 ];
+const MALAKA = 'طلا فروشی ملکا سلامی زاده', GOLD = 'طلا ۱۸ عیار', BANK46 = 'بانک مسکن ممتاز ۴۶', U481 = 'fix-v481-gold-400sut';
+/* the move «منزل ← طلافروشی» of 1405/08/18, while the purchase of 1405/07/22 itself already says «طلافروشی» */
+function dupMv(db) {
+  const buy = (db.entries || []).find(e => e && e.u === 'nmv7teahs-g9g32');
+  if (!buy || buy.loc !== MALAKA) return null;
+  return (db.moves || []).find(m => m && m.u === 'nmw9axj8g-gian3' && m.asset === GOLD && N(m.qty) === 4 && m.from === 'منزل' && m.to === MALAKA) || null;
+}
+function dhGold(db) {
+  let r = null;
+  (db.trusts || []).forEach(t => { if (t && t.person === 'دایی حسین' && t.asset === GOLD) (t.moves || []).forEach(m => { if (m && m.id === 'mmw7oje9tja5' && N(m.qty) === 30900) r = m; }); });
+  return r;
+}
+function canBuy481(db) {
+  return !(db.entries || []).some(e => e && e.u === U481) && (db.locations || []).some(l => l && l.name === MALAKA) &&
+    (db.accounts || []).some(a => a && a.name === BANK46) && (db.assets || []).some(a => a && a.name === GOLD) &&
+    (db.entries || []).some(e => e && e.u === 'nmw98vayh-r1jmb');   // his data of 1405/08/18 (the 100 sut given back to Daei Hossein)
+}
+function buy481(db) {
+  const now = new Date().toISOString();
+  const e = { date: '1405/08/17', desc: 'خرید ۴۰۰ سوت (۰٫۴ گرم) طلای آب‌شده از سلامی‌زاده — گرمی ۲۵۸٬۸۰۰٬۰۰۰ — امانت نزد طلافروشی ملکا (مال خودم)',
+    dr: GOLD, cr: BANK46, amt: null, qty: 0.4, price: 258800000, fee: null, loc: MALAKA, dest: null, src: 'user', u: U481, m: now, c: now };
+  e.id = db.meta.nextId++; App.insertEntry(db, e);
+}
+const gone = (db, u) => !!(db.tomb && db.tomb[u]);   // v48.1: deleted on purpose (on any device): never written again
 const FIX476U = 'fix-v476-usd-negar400';   // one fixed id: two devices doing it the same day merge into ONE record
 function neg400(db) {
   let r = null;
@@ -14560,19 +14655,20 @@ if (typeof oc === 'function') App.commit = function () {
 };
 App.reopenActive = reopenActive;
 let done = false;
-function run() {
-  if (done) return; const db = App.db; if (!db || !db.entries || !db.meta) return;
-  if (document.querySelector('#modalBg.show .durrep')) { setTimeout(run, 1500); return; }     // first the window about the entries that came back
+function run(again) {
+  if (done && !again) return; const db = App.db; if (!db || !db.entries || !db.meta) return;
+  if (document.querySelector('#modalBg.show .durrep')) { setTimeout(() => run(again), 1500); return; }     // first the window about the entries that came back
   done = true;
   try { reopenActive(); } catch (e) { console.error(e); }
-  const left = FIXES.filter(f => (db.meta.fixes || []).indexOf(f.id) < 0);
-  if (!left.some(f => f.need(db))) return;
+  const had = (db.meta.fixes || []).slice(), left = FIXES.filter(f => had.indexOf(f.id) < 0 || f.sticky);
+  if (!left.some(f => { try { return f.need(db); } catch (e) { return false; } })) return;
   /* v47.6: in order, each one looking at the data the ones before it left (one correction can make the next one needed) */
   const todo = [];
   try {
-    App.commit('اصلاح اطلاعات (تأییدشده)', d => { left.forEach(f => { let n = false; try { n = f.need(d); } catch (e) { n = false; } if (!n) return; f.apply(d); (d.meta.fixes = d.meta.fixes || []).push(f.id); todo.push(f); }); });
-    const small = todo.filter(f => !f.big).map(f => typeof f.text === 'function' ? '' : f.text).filter(Boolean);
+    App.commit(left.some(f => { try { return had.indexOf(f.id) >= 0 && f.need(db); } catch (e) { return false; } }) ? 'اصلاح دوباره (یک نسخه یا فایل قدیمی آن را برگردانده بود)' : 'اصلاح اطلاعات (تأییدشده)', d => { left.forEach(f => { let n = false; try { n = f.need(d); } catch (e) { n = false; } if (!n) return; f.apply(d); d.meta.fixes = d.meta.fixes || []; if (d.meta.fixes.indexOf(f.id) < 0) d.meta.fixes.push(f.id); todo.push(f); }); });
+    const again2 = todo.filter(f => had.indexOf(f.id) >= 0), small = todo.filter(f => !f.big && had.indexOf(f.id) < 0).map(f => typeof f.text === 'function' ? '' : f.text).filter(Boolean);
     if (small.length) App.toast('✔ ' + small.join(' · '));
+    if (again2.length) App.fixAgain(again2);
     /* v46.8: a window already open (the day's alert …) is not covered — this one waits until it is closed */
     const showFree = () => { if (App.modalOpen) { setTimeout(showFree, 1500); return; } try { memoShow(); } catch (e) { console.error(e); } };
     if (todo.some(f => f.big)) setTimeout(showFree, 300);
@@ -14580,6 +14676,21 @@ function run() {
 }
 const oi = App.init;
 if (typeof oi === 'function') App.init = function () { const r = oi.apply(this, arguments); setTimeout(run, 6000); return r; };
+/* v48.1: a merge (a file, the cloud, another device) or a restored backup may bring an old mistake back — the corrections are checked again */
+const later = () => setTimeout(() => { try { run(true); } catch (e) { console.error(e); } }, 700);
+['mergeApply', 'replaceDb'].forEach(k => { const o = App[k]; if (typeof o === 'function') App[k] = function () { const r = o.apply(this, arguments); later(); return r; }; });
+App.fixRecheck = () => run(true);
+/* said plainly, in a window that stays until it is closed */
+App.fixAgain = function (L) {
+  const show = () => {
+    if (App.modalOpen) { setTimeout(show, 1500); return; }
+    const esc = App.H.esc;
+    App.modal('🛡 اصلاحات دوباره برقرار شد', '<div class="fxag"><p>یک <b>نسخهٔ قدیمی‌تر برنامه</b> (یا فایلی که با آن ساخته شده) این اشتباه‌ها را که قبلاً درست شده بود، برگردانده بود. همه دوباره درست شد:</p><ul>' +
+      L.map(f => '<li>' + esc(typeof f.text === 'function' ? '' : f.text) + '</li>').join('') + '</ul><p class="fxag-n">برای اینکه دوباره پیش نیاید، فقط آخرین نسخهٔ برنامه را باز کنید و فایل‌های HTML قدیمی را (در فلش و کامپیوتر اداره) پاک کنید.</p></div>',
+      '<button type="button" class="btn green" data-act="modal-close">باشه</button>', { width: '640px' });
+  };
+  setTimeout(show, 300);
+};
 App.dataFixes = FIXES;
 })();
 /* ---------------------------------------------------------------- v45.8 — the menu as big raised tiles, each group opens its own panel in front
@@ -15871,6 +15982,90 @@ if (typeof pb === 'function') P.bs = function () {
   if (r && typeof r.html === 'string') return Object.assign({}, r, { html: bar + r.html });
   return r;
 };
+})();
+/* ---------------------------------------------------------------- v48.1 — «نسخهٔ قدیمی»
+   the owner (1405/08/18): «یک نسخه برگشته عقب … برای اینکه به نسخهٔ قبل برگردد یک سری چیزها به هم می‌ریزد؛ درستش کن که برنگردد، یا اگر هم
+   برمی‌گردد، اصلاحاتی که انجام دادی را دوباره خراب نکند».
+   · every save writes in the data WHICH program saved it: meta.appMax (the newest program that ever saved it), meta.appBy, meta.appAt (when);
+   · an OLDER program opening data a newer one has saved: a red bar on top that stays, and a window once («این نسخهٔ قدیمی است …»);
+     it does not claim the data (appMax stays), it only leaves its own trace (appOld);
+   · the newest program opening data an older one saved AFTER it (programs before 48.1 write only savedAt): says so once, and checks the
+     corrections again (51_fix: a mistake an old copy brought back is corrected again, nothing deleted on purpose comes back);
+   · a merge with a file made by an older / a newer program: one line in the merge window (the corrections are checked after every merge). */
+(function () {
+'use strict';
+const App = window.App; if (!App || !App.H) return;
+const esc = App.H.esc, V = () => String(window.APP_VERSION || '');
+const cmp = (a, b) => { const x = String(a || '').split('.').map(n => +n || 0), y = String(b || '').split('.').map(n => +n || 0); for (let i = 0; i < Math.max(x.length, y.length); i++) { const d = (x[i] || 0) - (y[i] || 0); if (d) return d > 0 ? 1 : -1; } return 0; };
+const fa = v => String(v || '').replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]).replace(/\./g, '٫');
+const ms = t => { const n = Date.parse(t || ''); return isNaN(n) ? 0 : n; };
+App.verCmp = cmp;
+App.stampVer = function (db) {
+  const m = db && db.meta, v = V(); if (!m || !v) return;
+  if (m.appMax && cmp(m.appMax, v) > 0) { m.appOld = v; m.appOldAt = m.savedAt || new Date().toISOString(); return; }   // an older program: leaves a trace only
+  m.appMax = v; m.appBy = v; m.appAt = m.savedAt || new Date().toISOString(); delete m.appOld; delete m.appOldAt;
+};
+/* who saved the data last: 'new' (a newer program than this one), 'old' (an older one, after the newest), '' (this one / nothing known) */
+App.verState = function (db) {
+  const m = (db && db.meta) || {}, v = V();
+  if (m.appMax && cmp(m.appMax, v) > 0) return { k: 'new', v: m.appMax };
+  if (m.appAt && ms(m.savedAt) > ms(m.appAt) + 5000) return { k: 'old', v: m.appOld || '' };
+  return { k: '' };
+};
+let oldMode = false;
+function bar(v) {
+  if (document.getElementById('verOld')) return;
+  const d = document.createElement('div'); d.id = 'verOld'; d.className = 'ver-old';
+  d.innerHTML = '⚠ این برنامه <b>نسخهٔ قدیمی (' + esc(fa(V())) + ')</b> است؛ اطلاعات شما را <b>نسخهٔ ' + esc(fa(v)) + '</b> ذخیره کرده. با این نسخه چیزی ثبت نکنید — آخرین نسخه را باز کنید.';
+  document.body.insertBefore(d, document.body.firstChild); document.body.classList.add('has-ver-old');
+}
+function oldWin(v) {
+  const show = () => {
+    if (App.modalOpen) { setTimeout(show, 1200); return; }
+    App.modal('⚠ این نسخهٔ قدیمی برنامه است', '<div class="ver-w"><p>این برنامه <b>نسخهٔ ' + esc(fa(V())) + '</b> است، ولی اطلاعات شما قبلاً با <b>نسخهٔ تازه‌تر ' + esc(fa(v)) + '</b> ذخیره شده.</p>' +
+      '<p>نسخهٔ قدیمی بعضی اصلاحات و امکانات تازه را نمی‌شناسد و ممکن است <b>عددها را اشتباه نشان دهد</b>.</p><p class="ver-do">👈 این فایل را ببندید و <b>آخرین نسخه</b> را باز کنید (آیکون برنامه روی گوشی، یا آخرین فایل HTML).</p></div>',
+      '<button type="button" class="btn ghost" data-act="modal-close">فهمیدم</button>', { width: '600px' });
+  };
+  setTimeout(show, 2500);
+}
+function check() {
+  const db = App.db; if (!db || !db.meta) return;
+  const s = App.verState(db);
+  if (s.k === 'new') { oldMode = true; bar(s.v); oldWin(s.v); return; }
+  if (s.k === 'old') {
+    App.toast('ℹ بعد از آخرین ذخیرهٔ این نسخه، یک نسخهٔ قدیمی‌تر برنامه' + (s.v ? ' (' + fa(s.v) + ')' : '') + ' اطلاعات را ذخیره کرده بود؛ اصلاحات دوباره بررسی شد.');
+    try { if (App.fixRecheck) App.fixRecheck(); } catch (e) { console.error(e); }
+  }
+  App.stampVer(db); try { if (App.saveNow) Promise.resolve(App.saveNow()).catch(() => { }); } catch (e) { }
+}
+App.verOld = () => oldMode;
+const oi = App.init;
+if (typeof oi === 'function') App.init = function () { const r = oi.apply(this, arguments); setTimeout(() => { try { check(); } catch (e) { console.error(e); } }, 7500); return r; };
+/* the merge window: which program made the file */
+App.mergeVerWarn = function (L, F, P) {
+  const fm = (F && F.meta) || {}, v = V(), fv = fm.appMax;
+  if (fv && cmp(fv, v) > 0) { P.warn.push('⚠ این فایل را <b>نسخهٔ تازه‌تر برنامه (' + esc(fa(fv)) + ')</b> ساخته و این برنامه (' + esc(fa(v)) + ') قدیمی‌تر است. اول برنامه را به‌روز کنید، بعد ادغام کنید.'); return; }
+  const st = App.verState(F);
+  if (!fv || cmp(fv, v) < 0 || st.k === 'old')
+    P.warn.push('ℹ این فایل را <b>نسخهٔ قدیمی‌تر برنامه</b>' + (fv && st.k !== 'old' ? ' (' + esc(fa(fv)) + ')' : '') + ' ذخیره کرده. بعد از ادغام، اصلاحاتی که قبلاً انجام شده خودکار دوباره بررسی می‌شود تا اشتباهی برنگردد.');
+};
+/* the backup window of the phone (one share sheet per file): what to do when «Save» in «Save to Files» stays grey
+   (the owner 1405/08/18: «سیو تو فایل را بلاک کرده، نمی‌گذارد بزنم» — the same file went fine through Telegram: the place picked was not writable) */
+const HELP = '<div class="sv-help">❓ اگر در <b>Save to Files</b> دکمهٔ <b>Save / ذخیره</b> خاکستری است و نمی‌گذارد بزنید، جایی که انتخاب شده اجازهٔ نوشتن ندارد:<ol>' +
+  '<li>یک <b>پوشه</b> را باز کنید (مثلاً <b>On My iPhone / در آیفون من</b> ← یک پوشه)، نه «Recents / اخیر».</li>' +
+  '<li><b>فلش با فرمت NTFS</b> را آیفون فقط می‌خواند و رویش نمی‌نویسد. در کامپیوتر فلش را با <b>exFAT</b> فرمت کنید (اول فایل‌هایش را جای دیگری کپی کنید؛ فرمت همه را پاک می‌کند).</li>' +
+  '<li>اگر iCloud Drive را زده‌اید، شاید جایش پر است.</li></ol>راه همیشه مطمئن: همین فایل را با <b>تلگرام</b> بفرستید.</div>';
+function wrapShare() {   // App.shareEach is made later than this part: wrapped when the program starts
+  const se = App.shareEach; if (typeof se !== 'function' || se.svWrap) return;
+  App.shareEach = Object.assign(function () {
+    const r = se.apply(this, arguments);
+    try { const b = App._setBody; if (typeof b === 'function' && !b.svHelp) { App._setBody = Object.assign(() => b() + HELP, { svHelp: 1 }); const el = document.getElementById('setBody'); if (el) el.innerHTML = App._setBody(); } } catch (e) { }
+    return r;
+  }, { svWrap: 1 });
+}
+const oi2 = App.init;
+if (typeof oi2 === 'function') App.init = function () { const r = oi2.apply(this, arguments); try { wrapShare(); } catch (e) { } return r; };
+document.addEventListener('DOMContentLoaded', () => { try { wrapShare(); } catch (e) { } });
 })();
 
 
