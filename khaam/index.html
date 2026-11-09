@@ -3236,6 +3236,65 @@ a.tbr:hover,a.tbr:focus{border-color:#94A3B8;box-shadow:0 2px 8px rgba(15,42,74,
 .fxag .fxag-n{background:#E0F2FE;border-radius:12px;padding:8px 12px;font-weight:700}
 .sv-help{margin:14px 0 4px;background:#FEF3C7;border:2px solid #F59E0B;border-radius:14px;padding:10px 14px;font-size:1.08rem;line-height:2;font-weight:600}
 .sv-help b{font-weight:800}.sv-help ol{margin:4px 0;padding-inline-start:22px}
+/* v48.2 — 📊 the one-glance summary, my count, the fund, the folded home boxes */
+.smw{display:grid;gap:12px}
+.sm-top{border-radius:18px;padding:14px 16px;color:#fff;display:flex;flex-direction:column;gap:2px;font-size:1.22rem;line-height:1.8}
+.sm-top.ok{background:linear-gradient(135deg,#15803D,#0F766E)}.sm-top.bad{background:linear-gradient(135deg,#B91C1C,#C2410C)}
+.sm-top small{font-size:.95rem;opacity:.92;font-weight:600}
+.sm-help{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:12px;padding:8px 12px;font-weight:600;line-height:1.95;color:#1E3A8A}
+.sm-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr));align-items:start}
+.smc{background:#fff;border-radius:18px;border:2px solid #E2E8F0;border-top:8px solid var(--k,#0F2748);padding:12px 14px;box-shadow:0 2px 10px rgba(15,39,72,.08);min-width:0}
+.smc.bad{border-color:#FCA5A5;border-top-color:var(--k,#0F2748)}
+.smc-h{display:flex;align-items:center;gap:8px;font-size:1.25rem}.smc-ic{font-size:1.5rem}.smc-n{flex:1;font-weight:900;color:#0F172A}
+.smc-st{border-radius:999px;padding:3px 12px;font-size:.95rem;font-weight:800;white-space:nowrap}.smc-st.ok{background:#DCFCE7;color:#166534}.smc-st.bad{background:#FEE2E2;color:#991B1B}
+.smc-t{margin:4px 0;font-weight:700}.smc-t b{font-size:2rem;font-weight:900;color:var(--k,#0F2748)}.smc-t span{font-weight:800}.smc-t small{margin-inline-start:8px;color:#64748B;font-weight:700}
+.smc-f{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#F8FAFC;border-radius:12px;padding:8px 10px;font-weight:700;line-height:1.8}
+.smc-f span{border-radius:10px;padding:2px 9px}.smc-f .me{background:#DBEAFE;color:#1E3A8A}.smc-f .tr{background:#FEF3C7;color:#92400E}.smc-f .all{background:var(--k,#0F2748);color:#fff}
+.smc-f i{font-style:normal;font-weight:900;color:#475569;font-size:1.15rem}
+.smc-pl{display:grid;gap:6px;margin-top:8px}
+.smr{border:1.5px solid #E2E8F0;border-radius:12px;padding:8px 10px;background:#fff;min-width:0}
+.smr.cok{border-color:#86EFAC;background:#F0FDF4}.smr.cbad{border-color:#FCA5A5;background:#FEF2F2}
+.smr-a{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-weight:800;font-size:1.06rem}.smr-l{min-width:0;overflow-wrap:anywhere}
+.smr-a b{font-size:1.2rem;white-space:nowrap}.smr-a b small{font-size:.8rem;color:#64748B}
+.smr-s{color:#475569;font-weight:600;font-size:.95rem;margin-top:2px;line-height:1.8}
+.smr-c{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:6px;font-weight:700;font-size:.95rem}
+.smr-w{color:#991B1B}.smr-ok{color:#166534}
+.smc-is{margin:8px 0 0;padding:0;list-style:none;display:grid;gap:5px}.smc-is li{border-radius:10px;padding:6px 10px;font-weight:700;line-height:1.85}
+.smc-is li.bad{background:#FEE2E2;color:#7F1D1D}.smc-is li.info{background:#E0F2FE;color:#0C4A6E}
+.smc-v{margin-top:8px;font-weight:700;color:#334155;line-height:1.8}.smc-v small{color:#64748B}
+.smc-b{margin-top:8px;display:flex;justify-content:flex-end}
+.sm-in{margin:12px 0}.sm-in-b{display:flex;justify-content:flex-end;margin-top:6px}
+a.sm-hero{display:block;border-radius:18px;padding:12px 14px;margin:12px 0;color:#fff;text-decoration:none;box-shadow:0 4px 16px rgba(15,39,72,.18)}
+a.sm-hero.ok{background:linear-gradient(135deg,#0F2748,#15803D)}a.sm-hero.bad{background:linear-gradient(135deg,#7F1D1D,#C2410C)}
+.sm-hh{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.sm-hh b{font-size:1.18rem}
+.sm-hs{background:rgba(255,255,255,.2);border-radius:999px;padding:2px 12px;font-weight:800}
+.sm-hc{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.sm-hc span{background:rgba(255,255,255,.15);border-radius:10px;padding:3px 9px;font-weight:700}
+.smm{display:grid;gap:10px;font-size:1.1rem;line-height:1.9}.smm-p{background:#F1F5F9;border-radius:12px;padding:8px 12px;font-weight:700}
+.smm-f{display:grid;gap:4px;font-weight:800}.smm-f input{font-size:1.3rem;font-weight:800;padding:10px 12px;border-radius:12px;border:2px solid #CBD5E1;direction:ltr;text-align:right}
+.smm-n{color:#475569;font-weight:600;font-size:1rem}.smm-ck{display:flex;gap:8px;align-items:flex-start;font-weight:700;background:#FFFBEB;border-radius:12px;padding:8px 10px}
+.smf{border-radius:12px;padding:10px 12px;font-weight:800;font-size:1.12rem;margin-bottom:8px}.smf.up,.smf.ok{background:#DCFCE7;color:#14532D}.smf.dn{background:#FEF3C7;color:#78350F}
+.smf-ops{display:grid;gap:8px}.smf-ops .btn{font-size:1.08rem;padding:12px}
+#smf_res{display:grid;gap:10px}
+details.hf{margin:10px 0;border-radius:16px;background:#fff;border:2px solid #E2E8F0;box-shadow:0 1px 6px rgba(15,39,72,.06)}
+details.hf>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;font-weight:800;font-size:1.1rem;line-height:1.7}
+details.hf>summary::-webkit-details-marker{display:none}
+.hf-t{min-width:0;overflow-wrap:anywhere}
+.hf-o{background:#E0E7FF;color:#3730A3;border-radius:999px;padding:3px 12px;font-size:.9rem;white-space:nowrap}
+.hf-o::after{content:'باز کن ▾'}details.hf[open]>summary .hf-o::after{content:'بستن ▴'}
+details.hf>.box,details.hf>.gl-cols{margin:0 8px 8px}
+.sm-list{display:grid;gap:8px}
+details.smd{background:#fff;border-radius:16px;border:2px solid #E2E8F0;border-inline-start:8px solid var(--k,#0F2748);box-shadow:0 1px 6px rgba(15,39,72,.06)}
+details.smd.bad{border-color:#FCA5A5;border-inline-start-color:#DC2626}
+details.smd>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;padding:10px 12px}
+details.smd>summary::-webkit-details-marker{display:none}
+.smd-ic{font-size:1.6rem}.smd-m{flex:1;min-width:0;display:grid;gap:2px}
+.smd-r1{display:flex;align-items:center;gap:8px}.smd-n{flex:1;min-width:0;font-size:1.15rem;font-weight:900;color:#0F172A}
+.smd-q{font-weight:800;white-space:nowrap}.smd-q b{font-size:1.3rem;color:var(--k,#0F2748)}
+.smd-p{font-weight:700;color:#334155;font-size:.97rem;line-height:1.8}.smd-l{font-weight:600;color:#475569;font-size:.92rem;line-height:1.8}
+.smd-st{flex:none;border-radius:999px;min-width:2.2em;text-align:center;padding:4px 10px;font-weight:900;font-size:1.05rem}.smd-st.ok{background:#DCFCE7;color:#166534}.smd-st.bad{background:#FEE2E2;color:#991B1B}
+details.smd[open]>summary{border-bottom:1.5px dashed #E2E8F0}
+details.smd>.smc{border:0;box-shadow:none;border-radius:0 0 16px 16px;padding-top:8px}
+.smc.cmp{border-top-width:2px}.smc-tt{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:900;font-size:1.12rem;margin-bottom:8px}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3243,7 +3302,7 @@ a.tbr:hover,a.tbr:focus{border-color:#94A3B8;box-shadow:0 2px 8px rgba(15,42,74,
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.1"; window.APP_BUILD = "1405/08/18 18:09";
+window.APP_VERSION = "48.2"; window.APP_BUILD = "1405/08/18 18:46";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -3925,7 +3984,7 @@ function loadInitial() {
 /* ---------------------------------------------------------------- v38: identity of every record (so two devices can be merged)
    entries / FX moves get a permanent «u» (unique id) and «m» (time of the last change); deleted ones leave a mark in db.tomb;
    the lists that have no ids of their own (rates, loans …) carry a «last changed» time in meta.cm.  Nothing here touches the calculation engine. */
-const CFG_KEYS = ['rates', 'loans', 'units', 'closedMembers', 'actuals', 'special', 'profitDay', 'profitFrom', 'profitDone', 'trusts', 'docs', 'locGone', 'members'];   // the newer side wins as a whole
+const CFG_KEYS = ['rates', 'loans', 'units', 'closedMembers', 'actuals', 'special', 'profitDay', 'profitFrom', 'profitDone', 'trusts', 'docs', 'locGone', 'counts', 'members'];   // the newer side wins as a whole
 const UNION_KEYS = ['accounts', 'assets', 'locations'];                                                            // names are only ever added
 function hash2(s) { let a = 0x811c9dc5, b = 0x9747b28c ^ s.length; for (let i = 0; i < s.length; i++) { const c = s.charCodeAt(i); a = Math.imul(a ^ c, 16777619) >>> 0; b = (Math.imul(b ^ c, 2246822519) + i + 1) >>> 0; } return a.toString(36) + b.toString(36); }
 function detUid(kind, e) {
@@ -4191,7 +4250,7 @@ App.nextId = () => App.db.meta.nextId++;
    The calculation engine is not touched: after the merge everything is recalculated from the merged records, and «بازگردانی» undoes it. */
 const jclone = x => JSON.parse(JSON.stringify(x));
 const sigE = e => JSON.stringify(e, (k, v) => (k === 'm' || k === 'u' || k === 'id') ? undefined : v);
-const CFG_LABEL = { rates: 'نرخ سود', loans: 'وام‌ها', units: 'واحدهای اجاره‌ای', closedMembers: 'حساب‌های بسته‌شده', actuals: 'موجودی واقعی بانک‌ها', special: 'حساب‌های سیستمی', profitDay: 'روز سررسید سود', profitFrom: 'تاریخ شروع سود', profitDone: 'ماه‌های پرداخت‌شدهٔ سود', trusts: 'امانی‌ها', locGone: 'محل‌های حذف‌شده', members: 'فهرست اعضا' };
+const CFG_LABEL = { rates: 'نرخ سود', loans: 'وام‌ها', units: 'واحدهای اجاره‌ای', closedMembers: 'حساب‌های بسته‌شده', actuals: 'موجودی واقعی بانک‌ها', special: 'حساب‌های سیستمی', profitDay: 'روز سررسید سود', profitFrom: 'تاریخ شروع سود', profitDone: 'ماه‌های پرداخت‌شدهٔ سود', trusts: 'امانی‌ها', locGone: 'محل‌های حذف‌شده', counts: 'شمارش‌های من (طلا و ارز)', members: 'فهرست اعضا' };
 function planMerge(L, fileIn) {
   ensureUids(L);
   const F = fixDb(jclone(fileIn));
@@ -10265,7 +10324,7 @@ document.addEventListener('click', ev => {
 'use strict';
 const App = window.App, latin = App.H.latin;
 const IDS = { ef_amt: 1, ef_price: 1, ef_fee: 1, ef_qty: 1, lf_principal: 1, lf_amt: 1, lf_prepaid: 1, mv_qty: 1,
-  axtA: 1, ap_amt: 1, tw_qty: 1, rt_qty: 1, tx_qty: 1, tm_qty: 1 };   // v46.9 (the owner: «در انتقال بین بانک‌ها و کارگزاری‌ها رقم می‌زنم، از هم تفکیک نمی‌کند»): the «↔ انتقال» window and the others too
+  axtA: 1, ap_amt: 1, tw_qty: 1, rt_qty: 1, tx_qty: 1, tm_qty: 1, smc_q: 1, smf_q: 1, smf_p: 1 };   // v46.9 (the owner: «در انتقال بین بانک‌ها و کارگزاری‌ها رقم می‌زنم، از هم تفکیک نمی‌کند»): the «↔ انتقال» window and the others too
 const isMoney = el => !!(el && el.tagName === 'INPUT' && el.id && IDS[el.id] && (el.type === 'text' || el.type === 'tel' || el.type === 'search' || !el.type));
 /* «1234567.5» → «1,234,567.5»; anything that is not a plain number is returned unchanged (null) */
 function group(v) {
@@ -10302,11 +10361,12 @@ function typedSep(e) {
   return true;
 }
 /* «= ۱۴ گرم و ۴۰۰ سوت» / «= ۱۸ دلار و ۷۰ سنت» under a quantity box */
-const QIDS = { ef_qty: 1, mv_qty: 1, tw_qty: 1, rt_qty: 1, tx_qty: 1, tm_qty: 1 };
+const QIDS = { ef_qty: 1, mv_qty: 1, tw_qty: 1, rt_qty: 1, tx_qty: 1, tm_qty: 1, smc_q: 1, smf_q: 1 };
 const faD = s => String(s).replace(/\d/g, c => '۰۱۲۳۴۵۶۷۸۹'[c]);
 function unitNear(el) {
   const A = (App.db && App.db.assets) || [];
   let n = el.id === 'ef_qty' ? (App.form && App.form.x) : el.id === 'mv_qty' ? (App.moveForm && App.moveForm.asset) : el.id === 'tw_qty' ? (document.getElementById('tw_item') || {}).value : '';
+  if (!n && el.dataset && el.dataset.asset) n = el.dataset.asset;   // v48.2: a box that names its asset
   let a = A.find(x => x.name === n);
   if (!a) { const box = el.closest('#modalBg') || document.body, t = box.innerText || ''; a = A.find(x => t.indexOf(x.display || x.name) >= 0) || A.find(x => t.indexOf(x.name) >= 0); }
   return a ? String(a.unit || '') : '';
@@ -14428,6 +14488,28 @@ function giftFind(db, asset) {
 }
 /* v45.8 (the owner 1405/08/15: «خودت درستش کن»): the price of the day of سکه گرمی on 1405/07/25 was written 3,700,000,000 (one 0 too many) */
 const priceFind = db => (db.entries || []).find(e => e && e.dr === 'سکه گرمی' && e.date === '1405/07/25' && !(N(e.qty) > 0) && N(e.price) === 3700000000) || null;
+/* v48.2 (the owner 1405/08/18: «صندوق امانات را دو حالت کن: یکی صندوق امانات بانک کارآفرین، یکی صندوق امانات بانک ملی. مال دایی حسین که
+   صندوق امانات زدم برود بانک ملی، مال خودم و الف برود کارآفرین؛ سکه، نیم سکه و سکه گرمی هم بروند کارآفرین») */
+const SA = 'صندوق امانات', SK = 'صندوق امانات بانک کارآفرین', SM = 'صندوق امانات بانک ملی';
+const isSA = l => !!l && String(l).replace(/\s+/g, '') === SA.replace(/\s+/g, '');
+const isCoin = n => /سکه/.test(String(n || ''));
+function saLeft(db) {      // anything still at the one old place (also: the old name brought back by a file of an older program)
+  return (db.entries || []).some(e => e && (isSA(e.loc) || isSA(e.dest))) || (db.moves || []).some(m => m && (isSA(m.from) || isSA(m.to))) ||
+    (db.trusts || []).some(t => t && (t.moves || []).some(m => m && isSA(m.loc))) || (db.locations || []).some(l => l && isSA(l.name));
+}
+function placesAdd(db) {   // the two new places where the old one was; the old name is remembered as gone (another device does not bring it back)
+  const L = db.locations = db.locations || [], i = L.findIndex(l => l && isSA(l.name)), pin = i >= 0 ? !!L[i].pinned : true;
+  const add = [SK, SM].filter(n => !L.some(l => l && l.name === n)).map(n => ({ name: n, pinned: pin }));
+  if (i >= 0) L.splice(i, 1, ...add); else L.push(...add);
+  db.locGone = db.locGone || []; if (db.locGone.indexOf(SA) < 0) db.locGone.push(SA);
+}
+function saSplit(db) {
+  (db.trusts || []).forEach(t => (t.moves || []).forEach(m => { if (m && isSA(m.loc)) m.loc = /دایی\s*حسین/.test(String(t.person || '')) ? SM : SK; }));
+  (db.entries || []).forEach(e => { if (!e) return; if (isSA(e.loc)) e.loc = SK; if (isSA(e.dest)) e.dest = SK; });
+  (db.moves || []).forEach(m => { if (!m) return; if (isSA(m.from)) m.from = SK; if (isSA(m.to)) m.to = SK; });
+  placesAdd(db);
+}
+const coinsOut = db => { const A = new Set((db.assets || []).map(a => a.name).filter(isCoin)); return (db.entries || []).filter(e => e && N(e.qty) > 0 && A.has(e.dr) && e.loc !== SK); };
 const FIXES = [
   { id: 'v455-negar-gold-10g', text: 'قیمت ۱۰ گرم طلای امانی (۱۴۰۵/۰۷/۳۰) درست شد: هر گرم ۲۶۵٬۸۰۰٬۰۰۰ ریال (به‌جای ۲۶٬۵۸۰٬۰۰۰)',
     need: db => { const r = goldFind(db); return !!(r.m || r.e); }, sticky: true,
@@ -14461,7 +14543,11 @@ const FIXES = [
   { id: 'v481-dh-gold-30.9', text: 'طلای امانیِ دایی حسین ۳۰٬۹۰۰ «گرم» ثبت شده بود (ممیز گوشی خوانده نشده بود)؛ درست شد: ۳۰٫۹ گرم (۳۰ گرم و ۹۰۰ سوت)',
     need: db => !!dhGold(db), apply: db => { const m = dhGold(db); if (m) m.qty = 30.9; }, sticky: true },
   { id: 'v481-gold-400sut', text: 'خرید ۴۰۰ سوت (۰٫۴ گرم) طلا از سلامی‌زاده ثبت شد: ۱۴۰۵/۰۸/۱۷، گرمی ۲۵۸٬۸۰۰٬۰۰۰ ریال (جمع ۱۰۳٬۵۲۰٬۰۰۰)، از «بانک مسکن ممتاز ۴۶»، محل: طلافروشی ملکا سلامی‌زاده',
-    need: db => canBuy481(db) && !gone(db, U481), apply: db => buy481(db), sticky: true }
+    need: db => canBuy481(db) && !gone(db, U481), apply: db => buy481(db), sticky: true },
+  { id: 'v482-amanat-split', text: '«صندوق امانات» دو تا شد: «صندوق امانات بانک ملی» (طلای امانیِ دایی حسین) و «صندوق امانات بانک کارآفرین» (طلای خودتان و الف، سکه امامی و نیم سکه)',
+    need: db => saLeft(db), apply: db => saSplit(db), sticky: true },
+  { id: 'v482-coins-karafarin', text: 'سکه‌ها همه در «صندوق امانات بانک کارآفرین» ثبت شد (سکه گرمی «منزل» زده شده بود)',
+    need: db => coinsOut(db).length > 0, apply: db => { coinsOut(db).forEach(e => { e.loc = SK; }); placesAdd(db); } }
 ];
 const MALAKA = 'طلا فروشی ملکا سلامی زاده', GOLD = 'طلا ۱۸ عیار', BANK46 = 'بانک مسکن ممتاز ۴۶', U481 = 'fix-v481-gold-400sut';
 /* the move «منزل ← طلافروشی» of 1405/08/18, while the purchase of 1405/07/22 itself already says «طلافروشی» */
@@ -15534,6 +15620,7 @@ function stSheet(st) {
   };
 }
 D.register('fxst', () => stSheet(stState()), stSheet);
+App.fxStateData = stState;   // v48.2: the one-glance summary (62_sum) reads the same numbers
 App.fxStatementInfo = () => { const s = stSheet(stState()); return s ? { code: s.code, A: s.data.A } : null; };
 
 /* ---- where it opens ---- */
@@ -15891,7 +15978,7 @@ function plCalc(from, to) {
   new Set([...u0.keys(), ...u1.keys()]).forEach(k => { const d = N((u1.get(k) || {}).u) - N(base(k)); if (Math.abs(d) > 0.5) unreal.set(k, d); });
   /* 3. «سایر درآمدها و هزینه‌ها» */
   let othI = 0, othE = 0; const PO = s.PL_OTH;
-  (db.entries || []).forEach(e => { if (!e || !PO || !inR(ser(e.date))) return; const a = N(e.amt); if (e.cr === PO) othI += a; if (e.dr === PO) othE += a; });
+  (db.entries || []).forEach(e => { if (!e || !PO || !inR(ser(e.date))) return; const a = N(e.amt) || N(e.qty) * N(e.price); if (e.cr === PO) othI += a; if (e.dr === PO) othE += a; });   // v48.2: a fund's profit comes as dollars × the day price
   /* 4. the profit put into the investors' / creditors' accounts from mine */
   const inv = new Map();
   (db.entries || []).forEach(e => {
@@ -16066,6 +16153,282 @@ function wrapShare() {   // App.shareEach is made later than this part: wrapped 
 const oi2 = App.init;
 if (typeof oi2 === 'function') App.init = function () { const r = oi2.apply(this, arguments); try { wrapShare(); } catch (e) { } return r; };
 document.addEventListener('DOMContentLoaded', () => { try { wrapShare(); } catch (e) { } });
+})();
+/* ---------------------------------------------------------------- v48.2 — «📊 خلاصه وضعیت» of gold, coins and currency · «✏️ شمارش من» · the currency fund
+   the owner (1405/08/18): «مثل دلار یک خلاصه وضعیت برای طلا و همه بزن؛ دقیق و شکیل، که در یک نگاه همه چیز را بفهمم و ببینم مغایرت هست یا نه …
+   محلش هم بگو کجاست» · «یک مغایرت‌گیری هم برای صندوق ارزی بگذار؛ NAV می‌خورد و سود روزشمار می‌آید. هرچه اضافه شد سود سپرده ارزی مانا،
+   هرچه کم شد بپرسد بابت چیست (مثلاً ابطال)» · «یکم جمع‌وجور و خلاصه‌ترش کن».
+   · /sum: one card per asset: «مال من + امانیِ هر کس = جمع»; every place with my share and each person's; the checks (a place below zero,
+     the places not adding up, my count ≠ the program, something with no place) → ✔ «بدون مغایرت» or ⚠ what and where.
+     The same card stands on top of each asset page;
+   · «✏️ شمارش من»: what he really has at a place (db.counts[asset][place] = {q, d, at} — a setting that goes to the other devices);
+   · a currency fund («صندوق ارزی …»): the balance of the fund's statement → more = «سود سپرده ارزی مانا» (income, at the day price),
+     less = it asks: ابطال (to another place / sold for rial), کارمزد / زیان, or later;
+   · home: one strip with the state of everything; the long boxes fold to one line (a box he opens stays open). */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H || !App.pages) return;
+const P = App.pages, esc = H.esc, N = v => +v || 0, EPS = 1e-6;
+const q4 = v => H.fmtq(Math.round(N(v) * 10000) / 10000);
+const money = v => H.fmt(Math.round(N(v)));
+const fa = v => String(v).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
+const today = () => E.serToText(App.today);
+const isFund = l => /صندوق\s*ارزی/.test(String(l || ''));
+const fundCat = l => (/مانا/.test(String(l || '')) ? 'سود سپرده ارزی مانا' : 'سود ' + String(l || '').replace(/^صندوق ارزی/, 'سپرده ارزی'));
+const fundLoss = l => (/مانا/.test(String(l || '')) ? 'کارمزد و زیان صندوق ارزی' : 'کارمزد و زیان ' + String(l || ''));
+const KC = { usd: '#15803D', eur: '#1D4ED8', usdt: '#0F766E', gold: '#B45309', coin: '#A16207', fx: '#0F2748' };
+const KI = { usd: '💵', eur: '💶', usdt: '₮', gold: '🥇', coin: '🪙', fx: '💱' };
+const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+
+function assets() { try { const s = App.fxStateData ? App.fxStateData() : null; return (s && s.A) || []; } catch (e) { console.error(e); return []; } }
+function posOf(name) { try { return (E.fxPositions(App.C) || []).find(p => p.name === name) || null; } catch (e) { return null; } }
+const priceOf = name => { const p = posOf(name); return p ? N(p.price) : 0; };
+const counts = () => (App.db && App.db.counts) || {};
+const cnt = (a, l) => { const c = counts()[a]; return c && c[l] ? c[l] : null; };
+
+/* the checks of one asset: [{lvl: 'bad' | 'info', t}] */
+function checks(a) {
+  const L = [];
+  a.rows.forEach(r => {
+    if (r.loc === 'محل نامشخص') { if (Math.abs(r.tot) > EPS) L.push({ lvl: 'info', t: '<b class="num">' + q4(r.tot) + '</b> ' + esc(a.u) + ' بدون محل ثبت شده — در «📍 دارایی در هر محل» مشخص کنید کجاست' }); return; }
+    if (r.own < -EPS) L.push({ lvl: 'bad', t: 'در «' + esc(r.loc) + '» سهم خودم منفی شده (<b class="num">' + q4(r.own) + '</b>) — بیشتر از آنچه آنجا بوده برداشته یا امانی زده شده' });
+    else if (r.tot < -EPS) L.push({ lvl: 'bad', t: 'در «' + esc(r.loc) + '» جمع منفی است (<b class="num">' + q4(r.tot) + '</b>)' });
+    const c = cnt(a.name, r.loc);
+    if (c && Math.abs(N(c.q) - r.tot) > EPS) { const d = N(c.q) - r.tot; L.push({ lvl: 'bad', t: 'شمارش شما در «' + esc(r.loc) + '» (' + esc(c.d || '') + '): <b class="num">' + q4(c.q) + '</b> — برنامه: <b class="num">' + q4(r.tot) + '</b> — اختلاف <b class="num">' + (d > 0 ? '+' : '−') + q4(Math.abs(d)) + '</b>' }); }
+  });
+  const cs = counts()[a.name] || {};
+  Object.keys(cs).forEach(l => { if (!a.rows.some(r => r.loc === l) && Math.abs(N(cs[l].q)) > EPS) L.push({ lvl: 'bad', t: 'شمارش شما در «' + esc(l) + '»: <b class="num">' + q4(cs[l].q) + '</b> — برنامه آنجا چیزی ندارد' }); });
+  const sum = a.rows.reduce((s, r) => s + r.tot, 0);
+  if (Math.abs(sum - a.tot) > 1e-4) L.push({ lvl: 'bad', t: 'جمع محل‌ها (<b class="num">' + q4(sum) + '</b>) با جمع کل (<b class="num">' + q4(a.tot) + '</b>) نمی‌خواند' });
+  return L;
+}
+const bads = a => checks(a).filter(x => x.lvl === 'bad').length;
+
+function row(a, r) {
+  const c = r.loc === 'محل نامشخص' ? null : cnt(a.name, r.loc), d = c ? N(c.q) - r.tot : 0, has = !!(r.tm && r.tm.length);
+  const parts = has ? ['من <b class="num">' + q4(r.own) + '</b>'].concat(r.tm.map(t => esc(t.p) + ' <b class="num">' + q4(t.q) + '</b>')) : [];
+  const A = ' data-a="' + esc(a.name) + '" data-l="' + esc(r.loc) + '"';
+  return '<div class="smr' + (c ? (Math.abs(d) > EPS ? ' cbad' : ' cok') : '') + '">' +
+    '<div class="smr-a"><span class="smr-l">📍 ' + esc(r.loc) + '</span><b class="num">' + q4(r.tot) + ' <small>' + esc(a.u) + '</small></b></div>' +
+    (has ? '<div class="smr-s">' + parts.join(' · ') + '</div>' : '<div class="smr-s">همه مال خودم</div>') +
+    '<div class="smr-c">' +
+      (c ? (Math.abs(d) > EPS ? '<span class="smr-w">⚠ شمارش من (' + esc(c.d || '') + '): <b class="num">' + q4(c.q) + '</b> · اختلاف <b class="num">' + (d > 0 ? '+' : '−') + q4(Math.abs(d)) + '</b></span>' : '<span class="smr-ok">✔ با شمارش من (' + esc(c.d || '') + ') یکی است</span>') : '') +
+      (r.loc === 'محل نامشخص' ? '<button type="button" class="btn xs teal" data-act="move-new" data-asset="' + esc(a.name) + '" data-from="">📍 مشخص کن کجاست</button>'
+        : '<button type="button" class="btn xs ghost" data-act="sm-cnt"' + A + '>✏️ شمارش من</button>') +
+      (isFund(r.loc) ? '<button type="button" class="btn xs navy" data-act="sm-fund"' + A + '>⚖ مغایرت‌گیری با صورتحساب صندوق</button>' : '') +
+    '</div></div>';
+}
+function card(a, opt) {
+  opt = opt || {};
+  const iss = checks(a), nb = iss.filter(x => x.lvl === 'bad').length, ppl = a.ppl.filter(p => Math.abs(p.q) > EPS), pr = priceOf(a.name);
+  let h = '<div class="smc ' + (nb ? 'bad' : 'ok') + (opt.compact ? ' cmp' : '') + '" style="--k:' + (KC[a.k] || KC.fx) + '">';
+  if (opt.title) h += '<div class="smc-tt">📊 خلاصه وضعیت ' + esc(a.disp) + '<span class="smc-st ' + (nb ? 'bad' : 'ok') + '">' + (nb ? '⚠ ' + fa(nb) + ' مغایرت' : '✔ بدون مغایرت') + '</span></div>';
+  if (!opt.compact) h += '<div class="smc-h"><span class="smc-ic">' + (KI[a.k] || KI.fx) + '</span><b class="smc-n">' + esc(a.disp) + '</b><span class="smc-st ' + (nb ? 'bad' : 'ok') + '">' + (nb ? '⚠ ' + fa(nb) + ' مغایرت' : '✔ بدون مغایرت') + '</span></div>';
+  if (!opt.compact) h += '<div class="smc-t"><b class="num">' + q4(a.tot) + '</b> <span>' + esc(a.u) + '</span><small>کل نزد من</small></div>';
+  h += '<div class="smc-f">' + (ppl.length
+    ? '<span class="me">👤 مال من <b class="num">' + q4(a.own) + '</b></span>' + ppl.map(p => '<i>+</i><span class="tr">🤝 ' + esc(p.p) + ' <b class="num">' + q4(p.q) + '</b></span>').join('') + '<i>=</i><span class="all"><b class="num">' + q4(a.tot) + '</b></span>'
+    : '<span class="me">👤 همه مال خودم</span>') + '</div>';
+  h += '<div class="smc-pl">' + a.rows.map(r => row(a, r)).join('') + '</div>';
+  if (iss.length) h += '<ul class="smc-is">' + iss.map(x => '<li class="' + x.lvl + '">' + (x.lvl === 'bad' ? '⚠ ' : 'ℹ ') + x.t + '</li>').join('') + '</ul>';
+  if (pr > 0) h += '<div class="smc-v">ارزش سهم من به قیمت روز: <b class="num">' + money(a.own * pr) + '</b> ریال <small>(هر ' + esc(a.u) + ' ' + money(pr) + ')</small></div>';
+  if (opt.link) h += '<div class="smc-b"><a class="btn xs ghost" data-act="go" data-to="/asset/' + esc(H.slug(a.name)) + '">صفحهٔ ' + esc(a.disp) + ' ←</a></div>';
+  return h + '</div>';
+}
+App.sumCard = (name, opt) => { const a = assets().find(x => x.name === name); return a ? card(a, opt) : ''; };
+App.sumState = () => { const A = assets(); return { A, bad: A.reduce((s, a) => s + bads(a), 0) }; };
+
+/* ================================================================ the page: one line per asset (all of it at a glance), it opens into its card */
+function item(a) {
+  const nb = bads(a), ppl = a.ppl.filter(p => Math.abs(p.q) > EPS), open = nb || foldGet()['sum:' + a.name];
+  return '<details class="smd ' + (nb ? 'bad' : 'ok') + '" data-k="sum:' + esc(a.name) + (nb ? ':bad' : '') + '"' + (open ? ' open' : '') + ' style="--k:' + (KC[a.k] || KC.fx) + '"><summary class="smd-s">' +
+    '<span class="smd-m">' +
+      '<span class="smd-r1"><b class="smd-n">' + (KI[a.k] || KI.fx) + ' ' + esc(a.disp) + '</b><span class="smd-q"><b class="num">' + q4(a.tot) + '</b> ' + esc(a.u) + '</span>' +
+      '<span class="smd-st ' + (nb ? 'bad' : 'ok') + '">' + (nb ? '⚠ ' + fa(nb) : '✔') + '</span></span>' +
+      '<span class="smd-p">' + (ppl.length ? '👤 من <b class="num">' + q4(a.own) + '</b>' + ppl.map(p => ' · 🤝 ' + esc(p.p) + ' <b class="num">' + q4(p.q) + '</b>').join('') : '👤 همه مال خودم') + '</span>' +
+      '<span class="smd-l">📍 ' + a.rows.map(r => esc(r.loc) + ' <b class="num">' + q4(r.tot) + '</b>').join(' · ') + '</span>' +
+    '</span></summary>' + card(a, { link: true, compact: true }) + '</details>';
+}
+P.sum = function () {
+  const { A, bad } = App.sumState();
+  let h = '<div class="smw">';
+  h += '<div class="sm-top ' + (bad ? 'bad' : 'ok') + '"><b>' + (bad ? '⚠ ' + fa(bad) + ' مغایرت پیدا شد — زیر هر کارت نوشته کجا و چقدر' : '✔ همه‌چیز می‌خواند؛ مغایرتی نیست') + '</b><small>طلا، سکه و ارز — امروز ' + esc(today()) + '</small></div>';
+  h += A.length ? '<div class="sm-list">' + A.map(item).join('') + '</div>' : '<div class="box">هنوز طلا، سکه یا ارزی ثبت نشده.</div>';
+  h += '<div class="sm-help">روی هر ردیف بزنید تا باز شود. «<b>✏️ شمارش من</b>»: آنچه <b>واقعاً</b> در آن محل دارید؛ اگر فرق کند ⚠ می‌آید. صندوق ارزی: موجودی صورتحساب را بزنید — <b>اضافه = سود</b>، کم = می‌پرسد بابت چیست.</div>';
+  h += '<div class="bar noprint"><button type="button" class="btn violet" data-act="fx-st">🖼 صورت وضعیت برای چاپ و ارسال</button><button type="button" class="btn ghost" data-act="lm-open">📍 محل‌ها: افزودن، تغییر نام</button><a class="btn ghost" data-act="go" data-to="/fxloc">📍 دارایی در هر محل</a></div></div>';
+  return { title: '📊 خلاصه وضعیت طلا، سکه و ارز', sub: 'مال من، امانی‌ها، محل‌ها و مغایرت — در یک نگاه', html: h };
+};
+
+/* ================================================================ ✏️ my count */
+function rowOf(a, l) { const A = assets().find(x => x.name === a); return { A, r: A ? A.rows.find(x => x.loc === l) : null }; }
+function cntWin(a, l) {
+  const { A, r } = rowOf(a, l), prog = r ? r.tot : 0, c = cnt(a, l), u = A ? A.u : '';
+  const parts = r && r.tm && r.tm.length ? ' <small>(من ' + q4(r.own) + r.tm.map(t => ' · ' + esc(t.p) + ' ' + q4(t.q)).join('') + ')</small>' : '';
+  App.modal('✏️ شمارش من — ' + esc(A ? A.disp : a) + ' در «' + esc(l) + '»',
+    '<div class="smm"><div class="smm-p">برنامه می‌گوید: <b class="num">' + q4(prog) + '</b> ' + esc(u) + parts + '</div>' +
+    '<label class="smm-f">واقعاً چقدر است؟ (' + esc(u) + ')<input id="smc_q" type="text" inputmode="decimal" autocomplete="off" data-asset="' + esc(a) + '" value="' + (c ? esc(String(c.q)) : '') + '"></label>' +
+    '<label class="smm-f">تاریخ شمارش<input id="smc_d" type="text" inputmode="numeric" value="' + esc(c && c.d ? c.d : today()) + '"></label>' +
+    (isFund(l) ? '<div class="smm-n">برای صندوق: همان <b>موجودی صورتحساب صندوق</b> را بنویسید. بعد از ذخیره، اختلاف را برای ثبت سود (یا پرسیدن بابت کاهش) نشان می‌دهد.</div>' : '<div class="smm-n">فقط یادداشت شما است؛ به هیچ حسابی دست نمی‌زند. اگر فرق کند، در خلاصه وضعیت ⚠ می‌آید.</div>') + '</div>',
+    '<button type="button" class="btn green" data-act="smc-save" data-a="' + esc(a) + '" data-l="' + esc(l) + '">✔ ذخیرهٔ شمارش</button>' +
+    (c ? '<button type="button" class="btn ghost" data-act="smc-del" data-a="' + esc(a) + '" data-l="' + esc(l) + '">🗑 پاک کردن شمارش</button>' : '') +
+    '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '560px' });
+  setTimeout(() => { const i = document.getElementById('smc_q'); if (i) i.focus(); }, 80);
+}
+const readQ = id => { const el = document.getElementById(id); const v = el ? H.parseAmount(el.value || '') : NaN; return isNaN(v) ? NaN : v; };
+const readD = id => { const el = document.getElementById(id); return (el && H.normDate(el.value || '')) || today(); };
+function setCount(db, a, l, q, d) { const C = db.counts = db.counts || {}; (C[a] = C[a] || {})[l] = { q: Math.round(q * 1e6) / 1e6, d, at: new Date().toISOString() }; }
+
+/* ================================================================ ⚖ the currency fund */
+function fundWin(a, l) {
+  const { A, r } = rowOf(a, l), prog = r ? r.tot : 0, c = cnt(a, l), u = A ? A.u : '';
+  App.modal('⚖ مغایرت‌گیری «' + esc(l) + '» — ' + esc(A ? A.disp : a),
+    '<div class="smm"><div class="smm-p">در دفتر: <b class="num">' + q4(prog) + '</b> ' + esc(u) + (r && r.tm && r.tm.length ? ' <small>(من ' + q4(r.own) + r.tm.map(t => ' · ' + esc(t.p) + ' ' + q4(t.q)).join('') + ')</small>' : '') + '</div>' +
+    '<label class="smm-f">📄 موجودی طبق صورتحساب صندوق (' + esc(u) + ')<input id="smf_q" type="text" inputmode="decimal" autocomplete="off" data-asset="' + esc(a) + '" value="' + (c ? esc(String(c.q)) : '') + '"></label>' +
+    '<label class="smm-f">تاریخ صورتحساب<input id="smf_d" type="text" inputmode="numeric" value="' + esc(c && c.d ? c.d : today()) + '"></label>' +
+    '<div id="smf_res"></div></div>',
+    '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '620px' });
+  App._smf = { a, l, prog, u };
+  fundRes();
+}
+function fundRes() {
+  const box = document.getElementById('smf_res'), S = App._smf; if (!box || !S) return;
+  const q = readQ('smf_q');
+  if (isNaN(q)) { box.innerHTML = '<div class="smm-n">موجودی صورتحساب را بنویسید.</div>'; return; }
+  const d = q - S.prog, pr = priceOf(S.a);
+  if (Math.abs(d) <= EPS) { box.innerHTML = '<div class="smf ok">✔ صندوق با دفتر یکی است.</div><button type="button" class="btn green" data-act="smf-same">✔ ذخیرهٔ شمارش</button>'; return; }
+  if (d > 0) {
+    const tm = App.trustMemoAt ? App.trustMemoAt(S.l, S.a) : [], side = tm.map(t => ({ p: t.person, q: N(t.q) - N(t.qb) })).filter(t => t.q > EPS);
+    const sh = side.map(t => esc(t.p) + ' ' + q4(d * t.q / S.prog)).join(' · ');
+    box.innerHTML = '<div class="smf up">➕ صندوق <b class="num">' + q4(d) + '</b> ' + esc(S.u) + ' بیشتر از دفتر است ← <b>' + esc(fundCat(S.l)) + '</b></div>' +
+      '<label class="smm-f">نرخ هر ' + esc(S.u) + ' (ریال)<input id="smf_p" type="text" inputmode="decimal" value="' + (pr > 0 ? H.fmt(Math.round(pr)) : '') + '"></label>' +
+      (side.length && S.prog > EPS ? '<label class="smm-ck"><input type="checkbox" id="smf_sp"> سهم امانی‌ها از این سود به خودشان برسد (به نسبت: ' + sh + ')</label>' : '') +
+      '<button type="button" class="btn green big" data-act="smf-up">✔ ثبت به‌عنوان «' + esc(fundCat(S.l)) + '»</button>' +
+      '<div class="smm-n">درآمد در «صورت سود و زیان» می‌آید و ' + esc(S.u) + 'ها به موجودی همین صندوق اضافه می‌شود.</div>';
+  } else {
+    box.innerHTML = '<div class="smf dn">➖ صندوق <b class="num">' + q4(-d) + '</b> ' + esc(S.u) + ' کمتر از دفتر است. <b>این کاهش بابت چیست؟</b></div>' +
+      '<div class="smf-ops"><button type="button" class="btn teal" data-act="smf-out">🔄 ابطال — به محل دیگر رفت</button>' +
+      '<button type="button" class="btn gold" data-act="smf-sell">💱 ابطال و فروش (ریال گرفتم)</button>' +
+      '<button type="button" class="btn red" data-act="smf-loss">📉 کارمزد / زیان صندوق</button>' +
+      '<button type="button" class="btn ghost" data-act="smf-later">⏳ نمی‌دانم — بعداً</button></div>';
+  }
+}
+function fundUp() {
+  const S = App._smf; if (!S) return;
+  const q = readQ('smf_q'), dt = readD('smf_d'), p = readQ('smf_p'), d = q - S.prog;
+  if (isNaN(q) || !(d > EPS)) return;
+  if (!(p > 0)) { App.toast('نرخ هر ' + S.u + ' را بنویسید', true); return; }
+  const sp = !!(document.getElementById('smf_sp') || {}).checked;
+  const tm = sp && App.trustMemoAt ? App.trustMemoAt(S.l, S.a) : [];
+  const shares = sp && S.prog > EPS ? tm.map(t => ({ p: t.person, q: Math.round(d * (N(t.q) - N(t.qb)) / S.prog * 1e4) / 1e4 })).filter(t => t.q > EPS) : [];
+  const mine = Math.round((d - shares.reduce((s, t) => s + t.q, 0)) * 1e4) / 1e4, cat = fundCat(S.l);
+  const CR = (App.db.special || {}).PL_OTH || App.C.owner;
+  App.commit(cat, db => {
+    setCount(db, S.a, S.l, q, dt);
+    if (mine > EPS) {
+      const e = { date: dt, desc: cat + ' — مغایرت‌گیری با صورتحساب صندوق (موجودی صندوق ' + q4(q) + ' · دفتر ' + q4(S.prog) + ')', dr: S.a, cr: CR, amt: null, qty: mine, price: Math.round(p), fee: null, loc: S.l, dest: null, cat, ck: 'inc', src: 'fx' };
+      e.id = db.meta.nextId++; App.insertEntry(db, e);
+    }
+    shares.forEach(s => {
+      const t = (db.trusts || []).find(x => x && x.kind === 'fx' && x.asset === S.a && x.person === s.p); if (!t) return;
+      t.closed = false; const mid = uid('m'); (t.moves = t.moves || []).push({ id: mid, ref: mid, date: dt, qty: s.q, loc: S.l, note: cat + ' (سهم از سود صندوق)' });
+    });
+  });
+  App.closeModal(); App._smf = null;
+  App.toast('✔ ' + cat + ': ' + q4(mine) + ' ' + S.u + (shares.length ? ' · سهم ' + shares.map(s => s.p + ' ' + q4(s.q)).join('، ') : '') + ' ثبت شد');
+}
+function fundLossPost() {
+  const S = App._smf; if (!S) return;
+  const q = readQ('smf_q'), dt = readD('smf_d'), d = S.prog - q; if (isNaN(q) || !(d > EPS)) return;
+  const p = posOf(S.a), avg = p && N(p.qty) > EPS ? Math.round(N(p.cost) / N(p.qty)) : Math.round(priceOf(S.a));
+  const DR = (App.db.special || {}).PL_OTH || App.C.owner, cat = fundLoss(S.l);
+  App.confirm(q4(d) + ' ' + esc(S.u) + ' به‌عنوان <b>' + esc(cat) + '</b> از «' + esc(S.l) + '» کم شود؟ (به بهای تمام‌شدهٔ میانگین، هر ' + esc(S.u) + ' ' + money(avg) + ' ریال)', 'بله، ثبت کن', () => {
+    App.commit(cat, db => {
+      setCount(db, S.a, S.l, q, dt);
+      const e = { date: dt, desc: cat + ' — مغایرت‌گیری با صورتحساب صندوق (موجودی صندوق ' + q4(q) + ' · دفتر ' + q4(S.prog) + ')', dr: DR, cr: S.a, amt: null, qty: Math.round(d * 1e4) / 1e4, price: avg || null, fee: null, loc: S.l, dest: null, cat, ck: 'exp', src: 'fx' };
+      e.id = db.meta.nextId++; App.insertEntry(db, e);
+    });
+    App._smf = null; App.toast('✔ ' + cat + ' ثبت شد');
+  });
+}
+/* the count is kept first, then the ordinary form opens with the quantity in it */
+function fundForm(kind) {
+  const S = App._smf; if (!S) return;
+  const q = readQ('smf_q'), dt = readD('smf_d'), d = S.prog - q; if (isNaN(q)) return;
+  App.commit('شمارش ' + S.a + ' در ' + S.l, db => setCount(db, S.a, S.l, q, dt));
+  App.closeModal(); App._smf = null;
+  const fill = (id, v) => { const el = document.getElementById(id); if (el) { el.value = q4(v).replace(/,/g, ''); el.dispatchEvent(new Event('input', { bubbles: true })); } };
+  if (kind === 'out') { App.locMoveTo('', S.a, S.l); setTimeout(() => fill('mv_qty', d), 350); }
+  else { setTimeout(() => { App.openEntry({ tpl: 'sell', x: S.a, loc: S.l }); setTimeout(() => fill('ef_qty', d), 350); }, 60); }
+}
+
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act]') : null; if (!b) return;
+  const act = b.dataset.act;
+  if (['sm-cnt', 'sm-fund', 'smc-save', 'smc-del', 'smf-same', 'smf-up', 'smf-out', 'smf-sell', 'smf-loss', 'smf-later'].indexOf(act) < 0) return;
+  ev.preventDefault();
+  const a = b.dataset.a, l = b.dataset.l;
+  if (act === 'sm-cnt') return cntWin(a, l);
+  if (act === 'sm-fund') return fundWin(a, l);
+  if (act === 'smc-save') {
+    const q = readQ('smc_q'), d = readD('smc_d'); if (isNaN(q)) { App.toast('عدد شمارش را بنویسید', true); return; }
+    const { r } = rowOf(a, l), prog = r ? r.tot : 0;
+    App.commit('شمارش ' + a + ' در ' + l, db => setCount(db, a, l, q, d));
+    App.closeModal();
+    if (isFund(l) && Math.abs(q - prog) > EPS) setTimeout(() => fundWin(a, l), 250);
+    else App.toast(Math.abs(q - prog) > EPS ? '⚠ شمارش ذخیره شد — با برنامه ' + q4(Math.abs(q - prog)) + ' فرق دارد' : '✔ شمارش ذخیره شد — با برنامه یکی است');
+    return;
+  }
+  if (act === 'smc-del') { App.commit('پاک کردن شمارش ' + a + ' در ' + l, db => { const C = db.counts && db.counts[a]; if (C) { delete C[l]; if (!Object.keys(C).length) delete db.counts[a]; } }); App.closeModal(); App.toast('✔ شمارش پاک شد'); return; }
+  const S = App._smf; if (!S) return;
+  if (act === 'smf-same') { const q = readQ('smf_q'), dt = readD('smf_d'); App.commit('شمارش ' + S.a + ' در ' + S.l, db => setCount(db, S.a, S.l, q, dt)); App.closeModal(); App._smf = null; App.toast('✔ صندوق با دفتر یکی است'); return; }
+  if (act === 'smf-up') return fundUp();
+  if (act === 'smf-loss') return fundLossPost();
+  if (act === 'smf-out') return fundForm('out');
+  if (act === 'smf-sell') return fundForm('sell');
+  if (act === 'smf-later') { const q = readQ('smf_q'), dt = readD('smf_d'); if (!isNaN(q)) App.commit('شمارش ' + S.a + ' در ' + S.l, db => setCount(db, S.a, S.l, q, dt)); App.closeModal(); App._smf = null; App.toast('شمارش ذخیره شد؛ در خلاصه وضعیت ⚠ می‌ماند تا بابتش را ثبت کنید'); }
+});
+document.addEventListener('input', ev => { if (ev.target && ev.target.id === 'smf_q') fundRes(); });
+
+/* ================================================================ home: one strip, and the long boxes folded */
+const FK = 'hesabk_fold';
+const foldGet = () => { try { return JSON.parse(localStorage.getItem(FK) || '{}') || {}; } catch (e) { return {}; } };
+const foldSet = (k, v) => { try { const o = foldGet(); o[k] = !!v; localStorage.setItem(FK, JSON.stringify(o)); } catch (e) { } };
+function fold(el, k) {
+  if (!el || !el.parentNode || (el.parentElement && el.parentElement.classList.contains('hf'))) return;
+  const hd = el.querySelector('h2, h3'); let t = hd ? String(hd.innerText || '').split('\n')[0].trim() : ''; if (t.length > 64) t = t.slice(0, 64) + '…';
+  const d = document.createElement('details'); d.className = 'hf'; d.dataset.k = k; if (foldGet()[k]) d.open = true;
+  d.innerHTML = '<summary class="hf-s"><span class="hf-t"></span><span class="hf-o"></span></summary>'; d.querySelector('.hf-t').textContent = t || '…';
+  el.parentNode.insertBefore(d, el); d.appendChild(el);
+}
+document.addEventListener('toggle', ev => { const d = ev.target; if (d && d.classList && d.classList.contains('smd') && !d.classList.contains('bad')) foldSet(d.dataset.k, d.open); if (d && d.classList && d.classList.contains('hf')) { foldSet(d.dataset.k, d.open); if (d.open) setTimeout(() => { try { window.dispatchEvent(new Event('resize')); } catch (e) { } }, 40); } }, true);
+function strip() {
+  const { A, bad } = App.sumState(); if (!A.length) return '';
+  return '<a class="sm-hero ' + (bad ? 'bad' : 'ok') + ' noprint" data-act="go" data-to="/sum"><span class="sm-hh"><b>📊 خلاصه وضعیت طلا، سکه و ارز</b><span class="sm-hs">' + (bad ? '⚠ ' + fa(bad) + ' مغایرت' : '✔ بدون مغایرت') + '</span></span>' +
+    '<span class="sm-hc">' + A.map(a => '<span>' + (KI[a.k] || KI.fx) + ' ' + esc(a.disp) + ' <b class="num">' + q4(a.tot) + '</b></span>').join('') + '</span></a>';
+}
+const HOME_FOLD = [[':scope > .box.pfm', 'pfm'], [':scope > .box.lnm:not(.pfm)', 'inst'], [':scope > .box.bkc', 'bkc'], [':scope > .box.gl-bs', 'glbs'], [':scope > .gl-cols', 'glcols']];
+function enhance(r) {
+  const pg = document.getElementById('page'); if (!pg || !r) return;
+  if (r.page === 'home') {
+    if (!pg.querySelector('.sm-hero')) { const s = strip(), hero = pg.querySelector('.hero2'); if (s) { if (hero) hero.insertAdjacentHTML('afterend', s); else pg.insertAdjacentHTML('afterbegin', s); } }
+    HOME_FOLD.forEach(([sel, k]) => { try { pg.querySelectorAll(sel).forEach(el => fold(el, k)); } catch (e) { } });
+  }
+  if (r.page === 'asset') {
+    const go = () => {
+      const root = pg.querySelector('.axp') || pg; if (!root || root.querySelector('.smc')) return;
+      const a = assets().find(x => x.name === r.arg); if (!a) return;
+      const html = '<div class="sm-in">' + card(a, { compact: true, title: true }) + '<div class="sm-in-b noprint"><a class="btn xs ghost" data-act="go" data-to="/sum">📊 خلاصه وضعیت همه</a></div></div>';
+      const cards = root.querySelector(':scope > .cards.fxov') || root.querySelector('.cards.fxov');
+      if (cards) cards.insertAdjacentHTML('afterend', html); else root.insertAdjacentHTML('afterbegin', html);
+      const tb = root.querySelector(':scope > .box.fxtr'); if (tb) fold(tb, 'fxtr');
+    };
+    go(); setTimeout(go, 350);
+  }
+}
+const oa = App.afterRender;
+App.afterRender = function (r) {
+  if (typeof oa === 'function') { try { oa.apply(this, arguments); } catch (e) { console.error(e); } }
+  try { enhance(r); } catch (e) { console.error(e); }
+};
 })();
 
 
@@ -16507,7 +16870,7 @@ P.reports = function () {
   const sec = (t, a) => '<h3 class="rsec">' + t + '</h3><div class="rgrid">' + a.join('') + '</div>';
   let h = sec('⏱ بر اساس زمان', [tile('/daily', '📅', 'وقایع روزانه', 'هر روز: ثبت‌ها و تغییرات ۲۴ ساعت', 't1'), tile('/mreport', '🗓', 'وقایع ماهانه', 'همهٔ رکوردهای ماه با جستجو', 't1'), tile('/journal', '📒', 'دفتر روزنامه', 'همهٔ ثبت‌ها به ترتیب تاریخ', 't1'), tile('/monthly', '💹', 'سود ماهانهٔ اعضا', 'جدول سود هر ماه', 't1')]) +
     sec('👥 گزارش حساب‌ها', Object.keys(KINDS).map(k => tile('/rep/' + k, KINDS[k].ico, 'گزارش ' + KINDS[k].t, KINDS[k].desc, 't2'))) +
-    sec('⚖ تراز، تطبیق و ارسال', [tile('/tbs', '⚖', 'ترازنامه (حساب T)', 'دو طرف، با رنگ و سهم هر ردیف', 't3'), tile('/pl', '📈', 'صورت سود و زیان', 'درآمدها، هزینه‌ها، سود خالص یک دوره', 't3'), tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/mrep', '📜', 'گواهی سرمایه‌گذاران', 'برگهٔ رسمی مانده و سود هر نفر — با امضا', 't3'), tile('/drep', '📜', 'گواهی بدهی بدهکاران', 'فلانی این مبلغ بدهکار است — با گردش و امضا', 't3'), tile('/crep', '📜', 'گواهی طلب بستانکاران', 'این مبلغ را به فلانی بدهکارم — با گردش و امضا', 't3'), tile('/docs', '🗂', 'بایگانی گواهی‌ها', 'هر گواهی که دادم: کی، به چه کسی، چطور', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
+    sec('⚖ تراز، تطبیق و ارسال', [tile('/tbs', '⚖', 'ترازنامه (حساب T)', 'دو طرف، با رنگ و سهم هر ردیف', 't3'), tile('/pl', '📈', 'صورت سود و زیان', 'درآمدها، هزینه‌ها، سود خالص یک دوره', 't3'), tile('/bs', '⚖', 'ترازنامه', 'دارایی‌ها، بدهی‌ها و سرمایه', 't3'), tile('/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'مانده بانک را با برنامه یکی کن', 't3'), tile('/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش: تاریخ، مقدار، قیمت', 't3'), tile('/trust', '🤝', 'امانی نزد من (انتظامی)', 'مال دیگران پیش من — فقط مقدار', 't3'), tile('/trust/rep', '📄', 'گزارش امانی برای ارسال', 'برای هر نفر: چند دلار، یورو، گرم طلا', 't3'), tile('/mrep', '📜', 'گواهی سرمایه‌گذاران', 'برگهٔ رسمی مانده و سود هر نفر — با امضا', 't3'), tile('/drep', '📜', 'گواهی بدهی بدهکاران', 'فلانی این مبلغ بدهکار است — با گردش و امضا', 't3'), tile('/crep', '📜', 'گواهی طلب بستانکاران', 'این مبلغ را به فلانی بدهکارم — با گردش و امضا', 't3'), tile('/docs', '🗂', 'بایگانی گواهی‌ها', 'هر گواهی که دادم: کی، به چه کسی، چطور', 't3'), tile('/sum', '📊', 'خلاصه وضعیت طلا و ارز', 'مال من، امانی‌ها، محل‌ها، مغایرت', 't3'), tile('/fxloc', '📍', 'محل نگهداری ارز و طلا', 'هر دارایی کجاست', 't3'), tile('/send', '📤', 'ارسال گزارش', 'برای واتساپ، تلگرام و ایمیل', 't3')]);
   return { title: 'گزارش‌ها', sub: 'هر گزارش اول خلاصه است؛ روی هر مورد بزنید تا ریز گردشش با فیلتر باز شود', html: h };
 };
 
