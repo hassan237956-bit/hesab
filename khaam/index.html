@@ -3710,6 +3710,12 @@ html.ac-kn .jv-sw button.on{background:#7C3AED;border-color:#7C3AED}html.ac-fp .
 }
 .bk-tabs a{padding:7px 14px!important;font-size:.95rem!important;white-space:nowrap}
 @media (max-width:640px){.bk-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}.bk-tabs a{padding:6px 11px!important;font-size:.88rem!important;flex:0 0 auto;min-height:0!important}}
+/* v48.7 · the totals of «دفتر کل» / «تراز آزمایشی» in dark ink on light grey (the app's yellow-on-navy foot was unreadable here) */
+html #page table.bk-t tfoot td,html #page table.bk-t tfoot td *{color:#0F172A!important}
+html #page table.bk-t tfoot td{background:#E2E8F0!important;font-weight:800}
+html #page table.bk-t tfoot td[data-l]:not([data-l=""])::before{color:#475569!important}
+@media (max-width:640px){.bk-t td{min-width:0;overflow:hidden}.bk-t tfoot td,.bk-t tr.bk-gh td{font-size:.86rem}.bk-t td .num{letter-spacing:-.2px}}
+@media (max-width:640px){.bk-t tfoot tr{grid-template-columns:minmax(0,1fr)}.bk-t tfoot td{font-size:1rem}.bk-t tfoot td[data-l]:not([data-l=""]){display:flex;justify-content:space-between;align-items:baseline;gap:8px}.bk-t tfoot td[data-l]:not([data-l=""])::before{display:inline}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3717,7 +3723,7 @@ html.ac-kn .jv-sw button.on{background:#7C3AED;border-color:#7C3AED}html.ac-fp .
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.7"; window.APP_BUILD = "1405/08/19 22:42";
+window.APP_VERSION = "48.7"; window.APP_BUILD = "1405/08/19 22:52";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
