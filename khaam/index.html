@@ -3509,6 +3509,110 @@ html.th-clean.ac-fp #page .sgt thead th{border-bottom-color:#16A34A!important}
 html.th-clean.ac-fp #page .hp-h{border-bottom:2px solid #16A34A!important}
 html.th-clean.ac-fp #page .hero2 .h2-tod{background:#DCFCE7!important;border-color:#BBF7D0!important}
 html.th-clean.ac-fp :focus-visible{outline-color:#16A34A}
+/* ---- v48.6 · «📊 داشبورد» on the home page (65_dash) — cards, bars, rings, the last records ---- */
+.dsh{--da:#2563EB;--da2:#EFF6FF;--dk:#0F172A;--dm:#64748B;--dl:#E5E7EB;margin:0 0 14px}
+html.ac-kn .dsh{--da:#7C3AED;--da2:#F5F3FF}
+html.ac-fp .dsh{--da:#16A34A;--da2:#F0FDF4}
+html:not(.th-clean) .dsh{--da:#B45309;--da2:#FFFBEB;--dl:#E7DCC8}
+.dsh-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 2px 10px}
+.dsh-h h2{flex:1 0 auto;margin:0;font-size:1.3rem;color:var(--dk)}
+.dsh-h h2 small{font-size:.92rem;color:var(--dm);font-weight:700;margin-right:6px}
+.dk-g{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:12px}
+@media (max-width:1100px){.dk-g{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:420px){.dk-g{gap:8px}}
+.dsh .dk{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid var(--dl);border-radius:14px;padding:14px 14px 12px;text-decoration:none;color:var(--dk);min-width:0;box-shadow:0 1px 2px rgba(16,24,40,.05);cursor:pointer}
+.dsh .dk:hover{border-color:var(--da)}
+.dk-i{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:1.3rem;margin-bottom:4px;background:#EFF6FF}
+.dk.k2 .dk-i{background:#ECFDF5}.dk.k3 .dk-i{background:#F0FDFA}.dk.k4 .dk-i{background:#FFFBEB}.dk.k1 .dk-i{background:#F5F3FF}
+.dk-t{font-size:.98rem;font-weight:800;color:var(--dm)}
+.dk-v{font-size:1.5rem;font-weight:900;color:var(--dk);line-height:1.35;overflow-wrap:anywhere}
+.dk-v bdi{white-space:nowrap}
+.dk-v small{font-size:.8rem;color:var(--dm);font-weight:700}
+.dk.neg .dk-v{color:#B91C1C}
+.dk-s{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:.86rem;min-height:1.6em}
+.dk-ch{display:inline-block;padding:1px 8px;border-radius:12px;font-weight:800;font-size:.86rem;background:#F1F5F9;color:#334155;max-width:100%;line-height:1.6}
+.dk-ch.up{background:#DCFCE7;color:#166534}.dk-ch.dn{background:#FEE2E2;color:#991B1B}
+.dk-w{color:var(--dm);font-weight:700}
+.dk-wait{color:var(--dm)}
+@media (max-width:420px){.dsh .dk{padding:11px 10px}.dk-v{font-size:1.22rem}.dk-i{width:36px;height:36px;font-size:1.1rem}.dk-t{font-size:.9rem}}
+.dsh-row{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:12px;margin-bottom:12px}
+@media (max-width:900px){.dsh-row{grid-template-columns:minmax(0,1fr)}}
+.dsh .dc{background:#fff;border:1px solid var(--dl);border-radius:14px;padding:12px 14px;min-width:0;box-shadow:0 1px 2px rgba(16,24,40,.05)}
+.dc-h{display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;margin-bottom:6px}
+.dc-h h3{margin:0;font-size:1.1rem;flex:1 0 auto;color:var(--dk)}
+.dc-h h3 small{color:var(--dm);font-weight:700;font-size:.84rem;margin-right:4px}
+.dsh-key{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.9rem;font-weight:800;color:#334155}
+.dsh-key i,.dsh-lg i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-left:5px;vertical-align:-1px;flex:0 0 12px}
+.dsh-svg{width:100%;height:auto;display:block;direction:ltr}
+.dsh-svg .gl{stroke:#EEF0F3;stroke-width:1}.dsh-svg .z{stroke:#94A3B8;stroke-width:1}
+.dsh-svg .yt{font-size:11px;fill:#64748B;text-anchor:start}
+.dsh-svg .xt{font-size:12.5px;fill:#334155;text-anchor:middle;font-weight:700}
+.dsh-svg .xs{font-size:10.5px;fill:#94A3B8;text-anchor:middle}
+.dsh-svg .yu{font-size:11px;fill:#64748B;text-anchor:end;font-weight:700}
+.dsh-svg .hit{fill:transparent;cursor:pointer}.dsh-svg .hit:hover{fill:rgba(15,23,42,.045)}
+.dsh-tip{min-height:1.7em;font-size:.92rem;font-weight:800;color:#334155;text-align:center;padding:4px 6px;border-radius:8px;line-height:1.7}
+.dsh-tip.on{background:var(--da2)}
+.dsh-tip:empty{min-height:0;padding:0}
+.dsh-sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:6px}
+.dsh-sum div{background:#F8FAFC;border:1px solid var(--dl);border-radius:10px;padding:6px 8px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.dsh-sum span{font-size:.8rem;color:var(--dm);font-weight:700}
+.dsh-sum b{font-size:1rem;line-height:1.45}
+@media (max-width:480px){.dsh-sum{gap:6px}.dsh-sum div{padding:5px 6px}.dsh-sum b{font-size:.92rem}}
+.dsh-sum .g b{color:#166534}.dsh-sum .b b{color:#B91C1C}
+.dsh-rw{display:flex;flex-direction:column;align-items:stretch;gap:8px}
+.dsh-ring{width:168px;height:auto;display:block;margin:0 auto}
+.dsh-ring .rv{font-size:21px;font-weight:900;text-anchor:middle;fill:#0F172A}
+.dsh-ring .rl{font-size:11px;text-anchor:middle;fill:#64748B;font-weight:700}
+.dsh-ring circle{cursor:pointer}.dsh-ring circle.sel{stroke-width:30}
+.dsh-lg{flex:1;min-width:0;display:flex;flex-direction:column}
+.dsh .dsh-li{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:6px;padding:6px 2px;border-bottom:1px solid #F1F5F9;text-decoration:none;color:#0F172A;font-size:.9rem;cursor:pointer}
+.dsh .dsh-li:last-child{border-bottom:0}
+.dsh-li .t{font-weight:700;line-height:1.45}
+.dsh-li b{font-weight:900;white-space:nowrap}
+.dsh-li small{color:#64748B;font-weight:700;min-width:44px;text-align:left;white-space:nowrap}
+.dsh-note{font-size:.84rem;color:#64748B;margin-top:6px;line-height:1.8}
+.dsh-note .p{color:#15803D;font-weight:900}.dsh-note .m{color:#B91C1C;font-weight:900}
+.dsh-empty,.dsh-wait{padding:24px 8px;text-align:center;color:#64748B;font-weight:700}
+.dsh-more{text-align:left;margin-top:4px}.dsh-more a{font-weight:800;color:var(--da);cursor:pointer;text-decoration:none}
+.dsh .dc-t{margin-bottom:12px}
+.dsh-btns{display:flex;gap:6px}
+.dsh-tw{overflow-x:auto}
+.dsh-t{width:100%;border-collapse:collapse;font-size:.95rem}
+.dsh-t th{text-align:right;font-size:.86rem;color:#64748B;font-weight:800;padding:8px;border-bottom:2px solid var(--dl);background:#F8FAFC}
+.dsh-t td{padding:9px 8px;border-bottom:1px solid #EEF0F3;vertical-align:middle}
+.dsh-t tbody tr{cursor:pointer}.dsh-t tbody tr:hover td{background:var(--da2)}
+.dsh-t td.d{white-space:nowrap;color:#475569;font-weight:700;width:1%}
+.dsh-t td.s .sd{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:800;color:#0F172A;line-height:1.55;overflow-wrap:anywhere}
+.dsh-t td.s small{display:block;color:#64748B;font-size:.8rem;line-height:1.55}
+.dsh-t td.a{white-space:nowrap;font-weight:900;text-align:left;width:1%}
+.dsh-t td.a.p{color:#15803D}.dsh-t td.a.m{color:#B91C1C}.dsh-t td.a.n{color:#334155}
+@media (max-width:560px){.dsh-t thead{display:none}.dsh-t,.dsh-t tbody{display:block}
+ .dsh-t tr{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:'s s' 'd a';gap:2px 8px;padding:9px 4px;border-bottom:1px solid #EEF0F3}
+ .dsh-t td{display:block;padding:0;border:0;width:auto!important}.dsh-t td.s{grid-area:s}.dsh-t td.d{grid-area:d;font-size:.84rem;align-self:center}.dsh-t td.a{grid-area:a;font-size:1rem}
+ .dsh-t tbody tr:hover td{background:none}.dsh-t tbody tr:active{background:var(--da2)}}
+/* «🎨 انتخاب طرح و ظاهر» (P.look) */
+.lk-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:560px){.lk-g{grid-template-columns:minmax(0,1fr)}}
+.lk-t{display:flex;flex-direction:column;align-items:stretch;gap:6px;text-align:right;background:#fff;border:2px solid #E2E8F0;border-radius:14px;padding:12px;cursor:pointer;font:inherit;color:#0F172A}
+.lk-t b{font-size:1.12rem}.lk-t small{color:#64748B;font-weight:700;line-height:1.75;font-size:.9rem}
+.lk-t.on{border-color:#16A34A;box-shadow:0 0 0 3px #DCFCE7}
+.lk-ok{display:none;font-style:normal;font-weight:900;color:#15803D}.lk-t.on .lk-ok{display:block}
+.lk-pv{display:grid;height:100px;border-radius:10px;background:#F1F5F9;padding:8px;gap:5px}
+.lk-pv.dash{grid-template-columns:repeat(4,1fr);grid-template-rows:22px 1fr 14px}
+.lk-pv i{display:block;font-style:normal}
+.lk-pv.dash .c{background:#fff;border-radius:5px;border:1px solid #E2E8F0}
+.lk-pv.dash .b{grid-column:span 3;background:#fff;border-radius:5px;display:flex;align-items:flex-end;gap:5px;padding:5px 8px}
+.lk-pv.dash .b em{flex:1;background:#2a78d6;border-radius:3px 3px 0 0}.lk-pv.dash .b em:nth-child(even){background:#eb6834}
+.lk-pv.dash .r{background:#fff;border-radius:5px;position:relative}
+.lk-pv.dash .r::after{content:'';position:absolute;inset:5px;margin:auto;aspect-ratio:1;max-height:calc(100% - 10px);border-radius:50%;border:7px solid #1baf7a;border-right-color:#eda100;border-top-color:#2a78d6}
+.lk-pv.dash .t{grid-column:span 4;background:repeating-linear-gradient(180deg,#fff 0 4px,#E2E8F0 4px 5px);border-radius:4px}
+.lk-pv.list{grid-template-rows:26px repeat(5,1fr)}
+.lk-pv.list .h{background:linear-gradient(90deg,#1E3A8A,#0E7490);border-radius:6px}
+.lk-pv.list .l{background:#fff;border-radius:4px;border:1px solid #E2E8F0}.lk-pv.list .l.s{width:70%}
+.lk-c .thbox{margin:0;border:0;padding:0;background:none;box-shadow:none}.lk-c .thbox .nf-h{display:none}
+.lk-f{display:flex;flex-wrap:wrap;gap:8px}
+html #page table.dsh-t td{border:0!important;border-bottom:1px solid #EEF0F3!important;box-shadow:none!important}
+@media (max-width:560px){html #page table.dsh-t td{border:0!important;background:none!important}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3516,7 +3620,7 @@ html.th-clean.ac-fp :focus-visible{outline-color:#16A34A}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.5"; window.APP_BUILD = "1405/08/18 22:57";
+window.APP_VERSION = "48.6"; window.APP_BUILD = "1405/08/19 17:52";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -9786,7 +9890,9 @@ document.addEventListener('change', e => { if (e.target && e.target.id === 'ef_t
 (function () {
 'use strict';
 const App = window.App, E = window.Engine, H = App.H, G = App.G, esc = H.esc, P = App.pages;
-const KEYS = [['mem', G.MEM, '👥 سرمایه‌گذاران', 'dep'], ['debt', G.DEBT, '🤝 بدهکاران', 'lend'], ['cred', G.CRED, '📋 بستانکاران', 'borrow'], ['asset', G.ASSET, '💱 ارز و طلا', 'buy'], ['inv', G.INV, '📈 سایر سرمایه‌گذاری‌ها', 'inv'], ['loan', G.LOAN, '🏛 وام‌های تمام‌شده', 'loan']];   // v45.5: a loan whose last instalment is paid
+const KEYS = [['mem', G.MEM, '👥 سرمایه‌گذاران', 'dep'], ['debt', G.DEBT, '🤝 بدهکاران', 'lend'], ['cred', G.CRED, '📋 بستانکاران', 'borrow'], ['asset', G.ASSET, '💱 ارز و طلا', 'buy'], ['inv', G.INV, '📈 سایر سرمایه‌گذاری‌ها', 'inv'], ['loan', G.LOAN, '🏛 وام‌های تمام‌شده', 'loan'], ['bank', G.CASH, '🏦 بانک‌ها', 'dep', 'y'], ['brk', G.BRK, '📊 کارگزاری‌ها', 'dep', 'y']];   // v45.5: a loan whose last instalment is paid
+/* v48.6 (the owner 1405/08/19: «چرا در بانک‌ها سلامی‌زاده هنوز در حساب‌ها هست با توجه به اینکه مانده صفر شده»): a bank or a broker whose
+   balance is zero goes to the archive too — out of «🏦 بانک‌ها», the menu and «مغایرت‌گیری»; in the entry windows it can still be chosen */
 const keyOf = g => { if (g === G.SHORT) g = G.CRED; const k = KEYS.find(x => x[1] === g); return k ? k[0] : ''; };
 let cacheC = null, cache = null;
 function info() {
@@ -9838,7 +9944,7 @@ P.archive = function (arg, q) {
   shown.forEach(k => {
     const L = I.list.filter(x => x.key === k[0]); if (!L.length) return; any = true;
     h += '<div class="box"><h2>' + k[2] + ' <small>' + L.length + ' مورد</small></h2><div class="wrap"><table class="tbl"><thead><tr><th>نام</th><th>اولین تاریخ</th><th>آخرین تاریخ</th><th>تعداد ردیف</th><th class="noprint"></th></tr></thead><tbody>' +
-      L.map(x => '<tr><td>' + link(x.name) + (x.closed ? ' <span class="chip">بسته‌شده</span>' : '') + '</td><td class="c num">' + esc(x.u.first || '') + '</td><td class="c num">' + esc(x.u.last || '') + '</td><td class="c">' + x.u.n + '</td><td class="act noprint"><button class="btn sm green" data-act="new-entry" data-tpl="' + k[3] + '" data-x="' + esc(x.name) + '">＋ ثبت تازه</button></td></tr>').join('') +
+      L.map(x => '<tr><td>' + link(x.name) + (x.closed ? ' <span class="chip">بسته‌شده</span>' : '') + '</td><td class="c num">' + esc(x.u.first || '') + '</td><td class="c num">' + esc(x.u.last || '') + '</td><td class="c">' + x.u.n + '</td><td class="act noprint"><button class="btn sm green" data-act="new-entry" data-tpl="' + k[3] + '" data-' + (k[4] || 'x') + '="' + esc(x.name) + '">＋ ثبت تازه</button></td></tr>').join('') +
       '</tbody></table></div></div>';
   });
   if (!any) h += '<div class="box"><div class="status ok">' + (g ? 'بایگانی این بخش خالی است.' : 'بایگانی خالی است — هنوز حسابی صفر نشده.') + '</div></div>';
@@ -13565,7 +13671,7 @@ const goes = (n, side) => (debitN(n) ? side === 'dr' : side === 'cr') ? 'زیا�
 function choices(me) {
   const own = App.db.meta.owner;
   return GROUPS.map(([g, lab]) => {
-    const uniq = App.db.accounts.filter(a => a.group === g && a.name !== me && !(App.isTrustAcc && App.isTrustAcc(a.name)) && (a.name === own || !(App.isArchived && App.isArchived(a.name))));
+    const uniq = App.db.accounts.filter(a => a.group === g && a.name !== me && !(App.isTrustAcc && App.isTrustAcc(a.name)) && (a.name === own || g === G.CASH || g === G.BRK || !(App.isArchived && App.isArchived(a.name))));   // v48.6: a bank / broker in the archive can still be chosen
     if (!uniq.length) return '';
     return '<optgroup label="' + esc(lab) + '">' + uniq.map(a => '<option value="' + esc(a.name) + '"' + (T.other === a.name ? ' selected' : '') + '>' + esc(a.name) + (a.name === own ? ' (خودم)' : '') + '</option>').join('') + '</optgroup>';
   }).join('');
@@ -15005,7 +15111,7 @@ const COL = {
   n_bank: ['#1D4ED8', '#60A5FA'], n_brk: ['#6D28D9', '#A78BFA'], n_mem: ['#047857', '#34D399'], n_fx: ['#B45309', '#FBBF24'], n_loan: ['#B91C1C', '#F87171'],
   n_debt: ['#0E7490', '#22D3EE'], n_cred: ['#9D174D', '#F472B6'], n_trust: ['#92400E', '#F59E0B'], n_inv: ['#0F766E', '#5EEAD4'],
   s_rep: ['#4338CA', '#818CF8'], s_set: ['#334155', '#94A3B8'],
-  '/home': ['#B45309', '#FCD34D'], '/bs': ['#1E3A8A', '#93C5FD'], '/journal': ['#7C2D12', '#FDBA74'], '/tasks': ['#15803D', '#86EFAC'],
+  '/home': ['#B45309', '#FCD34D'], '/look': ['#BE185D', '#F9A8D4'], '/bs': ['#1E3A8A', '#93C5FD'], '/journal': ['#7C2D12', '#FDBA74'], '/tasks': ['#15803D', '#86EFAC'],
   '/archive': ['#475569', '#CBD5E1'], '/settings': ['#6D28D9', '#C4B5FD'], '/backup': ['#0F172A', '#64748B'], '/trust': ['#92400E', '#F59E0B']
 };
 const FA = s => String(s).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
@@ -16845,6 +16951,303 @@ App.afterRender = function (r) {
 };
 if (document.documentElement) apply();
 })();
+/* ---------------------------------------------------------------- v48.6 — «📊 داشبورد» on the home page · «🎨 انتخاب طرح و ظاهر»
+   the owner (1405/08/19, the three pictures again — FinanceFlow, Kanakku, Finopia): «گفتم دیزاین با این شکل هم بزن برام، چرا نزدی؟» …
+   «منوی انتخاب این طرح و دیزاین و دیزاین قبلی را برام بگذار در منوی اصلی، با عنوان مشخص».
+   · the home page in two layouts, chosen on this device:
+       «📊 داشبورد» — under the greeting: four cards (سرمایهٔ خالص من · سود و زیان این ماه · نقد، بانک و کارگزاری · طلا، سکه و ارز),
+         each with its change; «واریز و برداشت بانک‌ها» month by month (bars); «سود و زیان» month by month since the start of the book
+         (bars: درآمد · هزینه · سود خالص, the same numbers as «📈 صورت سود و زیان»); «دارایی‌ها از چه ساخته شده» and «دارایی‌ها مال کیست»
+         (rings, the same numbers as the balance sheet); «🧾 آخرین ثبت‌ها» (a table: + green, − red); then the home page as before;
+       «📋 طرح قبلی» — the home page as it was.
+   · «🎨 انتخاب طرح و ظاهر» in the main menu (and at the foot of the home page): the layout, the colours (the four looks of 64_theme)
+     and the fonts, on one page.
+   Charts: inline SVG (no internet), the colours in a fixed order (checked for colour-blindness), a legend for every chart with two or
+   more series, the amounts written beside the rings; a tap on a bar or a slice writes its amount under the chart. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc, N = v => +v || 0, P = App.pages, G = App.G || {};
+const KEY = 'hesabk_home';
+const LAYOUTS = [['dash', '📊 داشبورد (طرح جدید)', 'کارت‌های خلاصه، نمودار ستونی و دایره‌ای، جدول آخرین ثبت‌ها — مثل عکس‌هایی که فرستادید'],
+  ['list', '📋 طرح قبلی', 'همان صفحهٔ خانهٔ قبل: سلام، طلا و ارز، سود اعضا و بانک‌ها — بدون نمودار']];
+const lget = () => { let v = ''; try { v = localStorage.getItem(KEY) || ''; } catch (e) { } return v === 'list' ? 'list' : 'dash'; };
+const lset = v => { try { localStorage.setItem(KEY, v === 'list' ? 'list' : 'dash'); } catch (e) { } };
+App.homeLayout = lget;
+
+/* ---- the colours of the charts: a fixed order (validated: lightness, chroma, colour-blind separation); grey = «سایر» ---- */
+const COLS = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4', '#008300', '#6250d6'], OTHER = '#A8A29E';
+
+/* ---- amounts: short (۱۳٫۱۰ میلیارد) with the exact rials in the tooltip ---- */
+const cm = v => {
+  const a = Math.abs(N(v)), s = N(v) < -0.5 ? '−' : '';
+  if (a >= 1e9) return s + H.fmt(Math.round(a / 1e7) / 100, 2) + ' میلیارد';
+  if (a >= 1e6) return s + H.fmt(Math.round(a / 1e5) / 10, 1) + ' میلیون';
+  return s + H.fmt(Math.round(a));
+};
+const nb = t => '<bdi dir="ltr" class="num">' + esc(t) + '</bdi>';   // a number that keeps its minus sign on the left
+const cmb = v => nb(cm(v).replace(/ (میلیارد|میلیون)$/, '')) + (/ میلیارد$/.test(cm(v)) ? ' میلیارد' : / میلیون$/.test(cm(v)) ? ' میلیون' : '');
+const full = v => H.fmt(Math.round(N(v))) + ' ریال';
+const ser = d => E.jser(String(d || ''));
+const MN = E.MONTHS || [];
+
+/* ================================================================ the numbers (kept until the data changes) */
+let cacheC = null, cache = null;
+function months(n) {   // the last n months, oldest first: { y, m, from, to }
+  const j = E.serToJ(App.today); let y = j[0], m = j[1]; const L = [];
+  for (let i = 0; i < n; i++) { const from = E.monthStart(y, m), to = Math.min(App.today, E.nextMonthStart(y, m) - 1); L.unshift({ y, m, from, to }); m--; if (!m) { m = 12; y--; } }
+  return L;
+}
+function isOpenRow(e) { return /^مانده.*(شروع|اول)/.test(String(e.desc || '')); }
+function base() {
+  const C = App.C; if (cache && cacheC === C) return cache;
+  const db = App.db, bs = E.balanceSheet(C), A = {};
+  (bs.assets || []).forEach(a => { A[a.key] = N(a.v); });
+  /* the rial amount of every record (a record of gold may have only its quantity: the program's own amount for it) */
+  const amt = new Map(); (C.rows || []).forEach(r => { if (r && r.e && !amt.has(r.e)) amt.set(r.e, N(r.M)); });
+  const amtOf = e => N(e.amt) || amt.get(e) || N(e.qty) * N(e.price);
+  /* the banks' money in and out, month by month (a transfer between two of my banks is neither) */
+  const grpOf = n => { const a = C.accts.get(n); return a ? a.group : ''; };
+  const isBank = n => grpOf(n) === G.CASH;
+  const M = months(12), byK = new Map(); M.forEach(x => { x.inn = 0; x.out = 0; byK.set(x.y * 100 + x.m, x); });
+  (db.entries || []).forEach(e => {
+    if (!e || !e.dr || !e.cr || e.fix || isOpenRow(e)) return;
+    const b1 = isBank(e.dr), b2 = isBank(e.cr); if (b1 === b2) return;
+    const s = ser(e.date); if (!s) return; const j = E.serToJ(s), x = byK.get(j[0] * 100 + j[1]); if (!x) return;
+    const v = amtOf(e); if (b1) x.inn += v; else x.out += v;
+  });
+  /* the last records */
+  const idx = new Map(); (db.entries || []).forEach((e, i) => idx.set(e, i));
+  const last = (db.entries || []).filter(e => e && e.dr && e.cr && ser(e.date)).sort((a, b) => (ser(b.date) - ser(a.date)) || (idx.get(b) - idx.get(a))).slice(0, 8).map(e => {
+    const v = amtOf(e), b1 = isBank(e.dr), b2 = isBank(e.cr);
+    const k = e.ck === 'inc' ? 'p' : e.ck === 'exp' ? 'm' : (b1 && !b2) ? 'p' : (b2 && !b1) ? 'm' : 'n';
+    return { e, v, k };
+  });
+  cacheC = C; cache = { bs, A, M, last, slow: null }; return cache;
+}
+/* the slow part (the profit and loss of each month, my net worth at the start of the month): after the page is on the screen */
+function dbUpTo(t) {
+  const db = App.db;
+  return Object.assign({}, db, { entries: (db.entries || []).filter(e => e && (e.fix || (ser(e.date) && ser(e.date) <= t))), moves: (db.moves || []).filter(m => m && ser(m.date) && ser(m.date) <= t) });
+}
+function slow() {
+  const B = base(); if (B.slow) return B.slow;
+  const open = ser((App.db.meta || {}).openDate) || 0, S = { pl: [], nw0: null };
+  if (App.plCalc) {
+    months(6).forEach(x => {
+      if (open && x.to < open) return;
+      try { const R = App.plCalc(x.from, x.to); S.pl.push({ y: x.y, m: x.m, inc: N(R.inc), exp: N(R.exp), net: N(R.net) }); } catch (e) { console.error(e); }
+    });
+  }
+  try {
+    const t = months(1)[0].from - 1;
+    if (open && t >= open) { const C0 = E.compute(dbUpTo(t), t); S.nw0 = N(E.balanceSheet(C0).myReal); }
+  } catch (e) { console.error(e); }
+  B.slow = S; return S;
+}
+
+/* ================================================================ the charts (SVG) */
+function nice(lo, hi) {   // the gridlines: about 4 round steps that cover lo…hi (0 included)
+  lo = Math.min(0, lo); hi = Math.max(0, hi); if (hi - lo < 1) hi = lo + 1;
+  const raw = (hi - lo) / 4, p = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / p, st = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 5 ? 5 : 10) * p;
+  const a = Math.floor(lo / st) * st, b = Math.ceil(hi / st) * st, T = []; for (let v = a; v <= b + st / 2; v += st) T.push(Math.round(v));
+  return T;
+}
+const unitOf = m => m >= 1e9 ? [1e9, 'میلیارد ریال'] : m >= 1e6 ? [1e6, 'میلیون ریال'] : [1, 'ریال'];
+const ax = (v, u) => (v < 0 ? '−' : '') + H.fmt(Math.abs(v) / u[0], Math.abs(v) % u[0] ? 1 : 0);
+/* grouped bars: cats oldest first (drawn from the right, as the page reads), series [{ name, col, vals }] */
+function bars(id, cats, series) {
+  const n = cats.length, ns = series.length, W = Math.max(300, Math.min(720, 70 * n + 70)), Hh = 222, top = 24, bot = 34, yl = 46;
+  const all = []; series.forEach(s => s.vals.forEach(v => all.push(N(v))));
+  if (!all.some(v => Math.abs(v) >= 1)) return '<div class="dsh-empty">هنوز ثبتی برای این نمودار نیست.</div>';
+  const T = nice(Math.min(0, ...all), Math.max(0, ...all)), lo = T[0], hi = T[T.length - 1];
+  const x0 = 6, x1 = W - yl, y = v => top + (hi - v) / (hi - lo) * (Hh - top - bot), gw = (x1 - x0) / n, U = unitOf(Math.max(Math.abs(lo), Math.abs(hi)));
+  const bw = Math.max(6, Math.min(22, (gw - 14) / ns - 2)), gin = ns * bw + (ns - 1) * 2;
+  let g = '<text x="' + (W - 2) + '" y="11" class="yu">' + esc(U[1]) + '</text>';
+  T.forEach(v => { const yy = y(v).toFixed(1); g += '<line x1="' + x0 + '" x2="' + x1 + '" y1="' + yy + '" y2="' + yy + '" class="' + (v === 0 ? 'z' : 'gl') + '"/><text x="' + (x1 + 6) + '" y="' + (+yy + 4) + '" class="yt">' + esc(ax(v, U)) + '</text>'; });
+  cats.forEach((c, i) => {
+    const cx = x1 - (i + 0.5) * gw;
+    series.forEach((s, k) => {
+      const v = N(s.vals[i]); if (Math.abs(v) < 0.5) return;
+      const bx = cx + gin / 2 - (k + 1) * bw - k * 2, y0 = y(0), y1 = y(v), h = Math.abs(y1 - y0), r = Math.min(4, h, bw / 2);
+      const up = v >= 0, yt = up ? y1 : y0, yb = up ? y0 : y1;
+      const d = up ? 'M' + bx + ',' + yb + 'V' + (yt + r) + 'Q' + bx + ',' + yt + ' ' + (bx + r) + ',' + yt + 'H' + (bx + bw - r) + 'Q' + (bx + bw) + ',' + yt + ' ' + (bx + bw) + ',' + (yt + r) + 'V' + yb + 'Z'
+        : 'M' + bx + ',' + yt + 'V' + (yb - r) + 'Q' + bx + ',' + yb + ' ' + (bx + r) + ',' + yb + 'H' + (bx + bw - r) + 'Q' + (bx + bw) + ',' + yb + ' ' + (bx + bw) + ',' + (yb - r) + 'V' + yt + 'Z';
+      const tip = c.lab + ' — ' + s.name + ': ' + cm(v) + ' ریال';
+      g += '<path d="' + d + '" fill="' + s.col + '" data-tip="' + esc(tip) + '"><title>' + esc(tip) + '</title></path>';
+    });
+    const gt = c.lab + (c.sub ? ' ' + c.sub : '') + ' — ' + series.map(s => s.name + ' ' + cm(s.vals[i])).join(' · ');
+    g += '<rect x="' + (cx - gw / 2) + '" y="' + top + '" width="' + gw + '" height="' + (Hh - top - bot) + '" class="hit" data-tip="' + esc(gt) + '"><title>' + esc(gt) + '</title></rect>';
+    g += '<text x="' + cx + '" y="' + (Hh - bot + 16) + '" class="xt">' + esc(c.lab) + '</text>' + (c.sub ? '<text x="' + cx + '" y="' + (Hh - bot + 30) + '" class="xs">' + esc(c.sub) + '</text>' : '');
+  });
+  return '<svg class="dsh-svg" id="' + id + '" viewBox="0 0 ' + W + ' ' + Hh + '" role="img" aria-label="' + esc(series.map(s => s.name).join('، ')) + '">' + g + '</svg>';
+}
+/* a ring: items [{ t, v, col, to }] (positive), the total in the middle */
+function ring(id, items, tot, mid) {
+  const R = 64, sw = 24, C0 = 2 * Math.PI * R, sum = items.reduce((a, b) => a + b.v, 0) || 1; let off = 0, g = '';
+  items.forEach(it => {
+    const len = it.v / sum * C0, gap = items.length > 1 ? Math.min(2, len / 3) : 0;
+    const tip = it.t + ': ' + cm(it.v) + ' ریال (' + H.fmt(Math.round(it.v / sum * 1000) / 10, 1) + '٪)';
+    g += '<circle r="' + R + '" cx="90" cy="90" fill="none" stroke="' + it.col + '" stroke-width="' + sw + '" stroke-dasharray="' + Math.max(0.1, len - gap).toFixed(2) + ' ' + (C0 - Math.max(0.1, len - gap)).toFixed(2) + '" stroke-dashoffset="' + (-off).toFixed(2) + '" transform="rotate(-90 90 90)" data-tip="' + esc(tip) + '"><title>' + esc(tip) + '</title></circle>';
+    off += len;
+  });
+  return '<svg class="dsh-ring" id="' + id + '" viewBox="0 0 180 180" role="img" aria-label="' + esc(mid) + '">' + g +
+    '<text x="90" y="86" class="rv">' + esc(cm(tot).replace(/ (میلیارد|میلیون)$/, '')) + '</text><text x="90" y="106" class="rl">' + esc((/ میلیارد$/.test(cm(tot)) ? 'میلیارد ' : / میلیون$/.test(cm(tot)) ? 'میلیون ' : '') + 'ریال') + '</text></svg>';
+}
+function legend(items, sum) {
+  return '<div class="dsh-lg">' + items.map(it => {
+    const p = sum > 0 ? Math.round(it.v / sum * 1000) / 10 : 0;
+    const inner = '<i style="background:' + it.col + '"></i><span class="t">' + esc(it.t) + '</span><b>' + cmb(it.v) + '</b><small>' + nb(H.fmt(p, 1) + '٪') + '</small>';
+    return it.to ? '<a class="dsh-li" data-act="go" data-to="' + esc(it.to) + '" title="' + esc(full(it.v)) + '">' + inner + '</a>' : '<div class="dsh-li" title="' + esc(full(it.v)) + '">' + inner + '</div>';
+  }).join('') + '</div>';
+}
+/* the slices: the biggest in colour (in the fixed order), the small ones (under 2٪) together as «سایر» in grey */
+function slices(L) {
+  const pos = L.filter(x => N(x.v) > 0.5).sort((a, b) => b.v - a.v), sum = pos.reduce((a, b) => a + b.v, 0);
+  const big = [], small = []; pos.forEach(x => ((x.v / (sum || 1) >= 0.02 && big.length < COLS.length) ? big : small).push(x));
+  big.forEach((x, i) => { x.col = COLS[i]; });
+  if (small.length === 1) { small[0].col = OTHER; big.push(small[0]); }
+  else if (small.length) big.push({ t: 'سایر (' + small.map(x => x.t.replace(/\s*\(.*\)\s*$/, '')).join('، ') + ')', v: small.reduce((a, b) => a + b.v, 0), col: OTHER });
+  return { L: big, sum, neg: L.filter(x => N(x.v) < -0.5) };
+}
+
+/* ================================================================ the dashboard */
+const sp = () => App.db.special || {};
+function routeA(k) { const s = sp(); return ({ cash: '/banks', brk: '/banks', inv: '/invest', fx: '/fx', debt: '/debtors', ten: s.A_TEN ? '/acc/' + H.slug(s.A_TEN) : '', oth: '/chart', cred: '/creditors', reza: s.REZA_L ? '/acc/' + H.slug(s.REZA_L) : '', loan: '/loans' })[k] || ''; }
+const chip = (d, base0, word) => {   // ▲ +x (y٪) since …
+  if (d === null || !isFinite(d)) return '';
+  if (Math.abs(d) < 0.5) return '<span class="dk-ch z">بدون تغییر</span>' + (word ? '<small class="dk-w">' + word + '</small>' : '');
+  const up = d >= 0, p = base0 && Math.abs(base0) > 0.5 ? Math.round(d / Math.abs(base0) * 1000) / 10 : null;
+  return '<span class="dk-ch ' + (Math.abs(d) < 0.5 ? 'z' : up ? 'up' : 'dn') + '">' + (up ? '▲ ' : '▼ ') + nb((up ? '+' : '−') + cm(Math.abs(d))) + (p !== null ? ' ' + nb('(' + (up ? '+' : '−') + H.fmt(Math.abs(p), 1) + '٪)') : '') + '</span>' + (word ? '<small class="dk-w">' + word + '</small>' : '');
+};
+function card(cls, ico, t, v, sub, to, id) {
+  return '<a class="dk ' + cls + '" data-act="go" data-to="' + esc(to) + '" title="' + esc(full(v)) + '"' + (id ? ' id="' + id + '"' : '') + '><span class="dk-i">' + ico + '</span><span class="dk-t">' + t + '</span>' +
+    '<b class="dk-v">' + cmb(v) + ' <small>ریال</small></b><span class="dk-s">' + sub + '</span></a>';
+}
+function html() {
+  const B = base(), bs = B.bs, A = B.A, own = (App.db.meta || {}).owner || '';
+  const cashV = N(A.cash) + N(A.brk), fxV = N(A.fx), totA = N(bs.totalA);
+  const cur = B.M[B.M.length - 1], prev = B.M[B.M.length - 2];
+  let h = '<section class="dsh noprint" aria-label="داشبورد">' +
+    '<div class="dsh-h"><h2>📊 داشبورد <small>' + esc(MN[cur.m - 1] || '') + ' ' + nb(String(cur.y)) + '</small></h2><a class="btn sm ghost dsh-lk" data-act="go" data-to="/look">🎨 طرح و ظاهر</a></div>' +
+    '<div class="dk-g">' +
+      card('k1', '💎', 'سرمایهٔ خالص من', N(bs.myReal), '<span class="dk-wait">…</span>', '/tbs', 'dkNW') +
+      card('k2', '📈', 'سود و زیان این ماه', 0, '<span class="dk-wait">در حال حساب…</span>', '/pl?p=month', 'dkPL') +
+      card('k3', '🏦', 'نقد، بانک و کارگزاری', cashV, chip(cur.inn - cur.out, null, 'خالصِ واریز − برداشت این ماه'), '/banks') +
+      card('k4', '🥇', 'طلا، سکه و ارز', fxV, '<span class="dk-ch z">' + nb(H.fmt(totA > 0 ? Math.round(fxV / totA * 1000) / 10 : 0, 1) + '٪') + '</span><small class="dk-w">از کل دارایی‌ها (' + cmb(totA) + ')</small>', '/fx') +
+    '</div>';
+  /* the banks, month by month */
+  const nM = (window.innerWidth || 1000) < 700 ? 6 : 12, Mx = B.M.slice(-nM);
+  let first = Mx.findIndex(x => x.inn > 0.5 || x.out > 0.5); if (first < 0) first = Mx.length - 1; const Mv = Mx.slice(Math.max(0, Math.min(first, Mx.length - 2)));   // from the first month that has any (at least two months)
+  const ti = Mv.reduce((a, x) => a + x.inn, 0), to = Mv.reduce((a, x) => a + x.out, 0);
+  h += '<div class="dsh-row">' +
+    '<div class="dc dc-w"><div class="dc-h"><h3>🏦 واریز و برداشت بانک‌ها <small>ماه به ماه</small></h3>' +
+      '<div class="dsh-key"><span><i style="background:' + COLS[0] + '"></i>واریز</span><span><i style="background:' + COLS[1] + '"></i>برداشت</span></div></div>' +
+      bars('dsBank', Mv.map(x => ({ lab: MN[x.m - 1] || String(x.m), sub: (x.m === 1 || x === Mv[0]) ? String(x.y) : '' })), [{ name: 'واریز', col: COLS[0], vals: Mv.map(x => x.inn) }, { name: 'برداشت', col: COLS[1], vals: Mv.map(x => x.out) }]) +
+      '<div class="dsh-tip" aria-live="polite">روی هر ستون بزنید تا مبلغش را ببینید</div>' +
+      '<div class="dsh-sum"><div><span>جمع واریز</span><b>' + cmb(ti) + '</b></div><div><span>جمع برداشت</span><b>' + cmb(to) + '</b></div><div><span>این ماه</span><b>' + cmb(cur.inn - cur.out) + '</b></div></div>' +
+      '<div class="dsh-more"><a data-act="go" data-to="/rep/banks">گردش بانک‌ها ←</a></div></div>';
+  /* the assets */
+  const SA = slices((bs.assets || []).map(a => ({ t: a.label, v: N(a.v), to: routeA(a.key) })));
+  h += '<div class="dc"><div class="dc-h"><h3>🧩 دارایی‌ها از چه ساخته شده</h3></div><div class="dsh-rw">' + ring('dsAs', SA.L, SA.sum, 'دارایی‌ها') + legend(SA.L, SA.sum) + '</div>' +
+      (SA.neg.length ? '<div class="dsh-note">منفی (در حلقه نیامده): ' + SA.neg.map(x => esc(x.t) + ' ' + cmb(x.v)).join('، ') + '</div>' : '') + '<div class="dsh-tip" aria-live="polite"></div></div></div>';
+  /* profit and loss (filled in after) · whose are the assets */
+  const W = [{ t: 'سهم خالص من' + (own ? ' (' + own.split(' ')[0] + ')' : ''), v: N(bs.myReal), to: '/tbs' }, { t: 'سرمایهٔ سرمایه‌گذاران', v: N(bs.others), to: '/members' }]
+    .concat((bs.liab || []).map(l => ({ t: l.label, v: N(l.v), to: routeA(l.key) || l.page || '' })));
+  const SW = slices(W);
+  h += '<div class="dsh-row">' +
+    '<div class="dc dc-w" id="dsPLbox"><div class="dc-h"><h3>📈 سود و زیان <small>ماه به ماه — از شروع دفتر</small></h3>' +
+      '<div class="dsh-key"><span><i style="background:' + COLS[0] + '"></i>درآمد</span><span><i style="background:' + COLS[1] + '"></i>هزینه</span><span><i style="background:' + COLS[2] + '"></i>سود خالص</span></div></div>' +
+      '<div class="dsh-wait">در حال حساب…</div></div>' +
+    '<div class="dc"><div class="dc-h"><h3>👥 دارایی‌ها مال کیست</h3></div><div class="dsh-rw">' + ring('dsWh', SW.L, SW.sum, 'مال کیست') + legend(SW.L, SW.sum) + '</div>' +
+      (SW.neg.length ? '<div class="dsh-note">منفی (در حلقه نیامده): ' + SW.neg.map(x => esc(x.t) + ' ' + cmb(x.v)).join('، ') + '</div>' : '') + '<div class="dsh-tip" aria-live="polite"></div></div></div>';
+  /* the last records */
+  const rows = B.last.map(r => {
+    const e = r.e, sg = r.k === 'p' ? '+' : r.k === 'm' ? '−' : '';
+    return '<tr' + (e.id != null && e.id !== '' ? ' data-act="edit-entry" data-id="' + esc(String(e.id)) + '"' : '') + '><td class="d">' + nb(String(e.date || '')) + '</td>' +
+      '<td class="s"><span class="sd">' + esc(e.desc || '—') + '</span><small>از ' + esc(e.cr) + ' ← به ' + esc(e.dr) + '</small></td>' +
+      '<td class="a ' + r.k + '" title="' + esc(full(r.v)) + '">' + nb(sg + H.fmt(Math.round(r.v))) + '</td></tr>';
+  }).join('');
+  h += '<div class="dc dc-t"><div class="dc-h"><h3>🧾 آخرین ثبت‌ها</h3><span class="dsh-btns"><button type="button" class="btn sm green" data-act="new-entry">＋ ثبت جدید</button><a class="btn sm ghost" data-act="go" data-to="/journal">📒 همه</a></span></div>' +
+    (rows ? '<div class="dsh-tw"><table class="dsh-t"><thead><tr><th>تاریخ</th><th>شرح · از ← به</th><th>مبلغ (ریال)</th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<div class="dsh-note"><span class="p">+ سبز</span> پول آمد (واریز، درآمد) · <span class="m">− قرمز</span> پول رفت (برداشت، هزینه) · روی هر ردیف بزنید تا باز شود</div>'
+      : '<div class="dsh-empty">هنوز ثبتی نیست — با «＋ ثبت جدید» شروع کنید.</div>') + '</div>';
+  return h + '</section>';
+}
+function fill() {   // the slow numbers, into the dashboard on the screen
+  const root = document.querySelector('#page > .dsh'); if (!root || root.dataset.f === '1') return;
+  const S = slow(), B = base(); root.dataset.f = '1';
+  const nw = document.getElementById('dkNW');
+  if (nw) nw.querySelector('.dk-s').innerHTML = S.nw0 === null ? '<small class="dk-w">کل دارایی‌ها ' + cmb(B.bs.totalA) + '</small>' : chip(N(B.bs.myReal) - S.nw0, S.nw0, 'از اول ماه');
+  const pl = document.getElementById('dkPL'), c = S.pl[S.pl.length - 1], p = S.pl[S.pl.length - 2];
+  if (pl) {
+    const v = c ? c.net : 0;
+    pl.querySelector('.dk-v').innerHTML = cmb(v) + ' <small>ریال</small>'; pl.title = full(v); pl.classList.toggle('neg', v < -0.5);
+    pl.querySelector('.dk-s').innerHTML = p ? '<span class="dk-ch ' + (p.net < -0.5 ? 'dn' : 'up') + '">' + nb(cm(p.net)) + '</span><small class="dk-w">ماه قبل (' + esc(MN[p.m - 1] || '') + ')</small>' : '<small class="dk-w">درآمد ' + cmb(c ? c.inc : 0) + ' · هزینه ' + cmb(c ? c.exp : 0) + '</small>';
+  }
+  const box = document.getElementById('dsPLbox');
+  if (box) {
+    const w = box.querySelector('.dsh-wait'); let h = '';
+    if (!S.pl.length) h = '<div class="dsh-empty">از شروع دفتر هنوز یک ماه نگذشته.</div>';
+    else {
+      h = bars('dsPL', S.pl.map(x => ({ lab: MN[x.m - 1] || String(x.m), sub: (x.m === 1 || x === S.pl[0]) ? String(x.y) : '' })), [{ name: 'درآمد', col: COLS[0], vals: S.pl.map(x => x.inc) }, { name: 'هزینه', col: COLS[1], vals: S.pl.map(x => x.exp) }, { name: 'سود خالص', col: COLS[2], vals: S.pl.map(x => x.net) }]) +
+        '<div class="dsh-tip" aria-live="polite">روی هر ستون بزنید تا مبلغش را ببینید</div>' +
+        '<div class="dsh-sum"><div><span>درآمد این ماه</span><b>' + cmb(c.inc) + '</b></div><div><span>هزینه این ماه</span><b>' + cmb(c.exp) + '</b></div><div class="' + (c.net < -0.5 ? 'b' : 'g') + '"><span>' + (c.net < -0.5 ? 'زیان خالص' : 'سود خالص') + '</span><b>' + cmb(c.net) + '</b></div></div>' +
+        '<div class="dsh-more"><a data-act="go" data-to="/pl?p=month">📈 صورت سود و زیان ←</a></div>';
+    }
+    if (w) w.outerHTML = h; else box.insertAdjacentHTML('beforeend', h);
+  }
+}
+/* a tap (or the mouse) on a bar or a slice: its amount under the chart */
+function tip(ev) {
+  const t = ev.target && ev.target.closest ? ev.target.closest('.dsh [data-tip]') : null; if (!t) return;
+  const dc = t.closest('.dc'), o = dc && dc.querySelector('.dsh-tip'); if (!o) return;
+  o.textContent = t.dataset.tip; o.classList.add('on');
+  dc.querySelectorAll('.sel').forEach(x => x.classList.remove('sel')); if (!t.classList.contains('hit')) t.classList.add('sel');
+}
+document.addEventListener('click', tip, true);
+document.addEventListener('mouseover', ev => { if (ev.target && ev.target.closest && ev.target.closest('.dsh svg')) tip(ev); });
+
+/* ================================================================ «🎨 انتخاب طرح و ظاهر» */
+const pv = k => k === 'dash'
+  ? '<span class="lk-pv dash"><i class="c"></i><i class="c"></i><i class="c"></i><i class="c"></i><i class="b"><em style="height:60%"></em><em style="height:85%"></em><em style="height:40%"></em><em style="height:70%"></em></i><i class="r"></i><i class="t"></i></span>'
+  : '<span class="lk-pv list"><i class="h"></i><i class="l"></i><i class="l"></i><i class="l s"></i><i class="l"></i><i class="l s"></i></span>';
+P.look = function () {
+  const v = lget();
+  const h = '<div class="lk">' +
+    '<div class="box lk-s"><h2>🏠 طرح صفحهٔ خانه <small>روی هر کدام بزنید؛ همان لحظه عوض می‌شود و روی همین دستگاه می‌ماند</small></h2><div class="lk-g">' +
+      LAYOUTS.map(([k, t, s]) => '<button type="button" class="lk-t' + (v === k ? ' on' : '') + '" data-act="home-layout" data-v="' + k + '">' + pv(k) + '<b>' + t + '</b><small>' + s + '</small><em class="lk-ok">✔ انتخاب شده</em></button>').join('') +
+    '</div></div>' +
+    '<div class="box lk-s lk-c"><h2>🎨 رنگ برنامه <small>همهٔ صفحه‌ها</small></h2>' + (App.themeBar ? App.themeBar() : '') + '</div>' +
+    '<div class="box lk-s"><h2>🔤 فونت‌ها</h2><div class="lk-f"><a class="btn ghost" data-act="go" data-to="/settings?tab=view&nf=1">🔢 فونت عددها و 🅰 فونت تیترها ←</a></div></div>' +
+    '<div class="bar noprint"><a class="btn green" data-act="go" data-to="/home">🏠 دیدن صفحهٔ خانه</a></div></div>';
+  return { title: '🎨 انتخاب طرح و ظاهر', sub: 'طرح صفحهٔ خانه (داشبورد یا قبلی)، رنگ‌ها و فونت‌ها', html: h };
+};
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act="home-layout"]') : null; if (!b) return;
+  ev.preventDefault(); ev.stopPropagation();
+  lset(b.dataset.v); document.querySelectorAll('.lk-t').forEach(x => x.classList.toggle('on', x.dataset.v === lget()));
+  try { App.toast('✔ طرح صفحهٔ خانه: ' + (lget() === 'dash' ? 'داشبورد' : 'طرح قبلی') + ' — «🏠 دیدن صفحهٔ خانه»'); } catch (e) { }
+}, true);
+
+/* ================================================================ hooks */
+const oa = App.afterRender;
+App.afterRender = function (r) {
+  if (typeof oa === 'function') { try { oa.apply(this, arguments); } catch (e) { console.error(e); } }
+  try {
+    if (!r || r.page !== 'home') return;
+    const pg = document.getElementById('page'); if (!pg) return;
+    /* the foot of the home page: one clear way to the choice */
+    const sw = pg.querySelector(':scope > .th-sw');
+    if (sw && !sw.dataset.lk) { sw.dataset.lk = '1'; sw.innerHTML = '<a class="btn ghost" data-act="go" data-to="/look">🎨 انتخاب طرح و ظاهر — الان: <b>' + (lget() === 'dash' ? 'داشبورد' : 'طرح قبلی') + '</b> · رنگ <b>' + esc(({ clean: 'آبی', kn: 'بنفش', fp: 'سبز', classic: 'رنگی' })[App.themeNow ? App.themeNow() : 'clean'] || '') + '</b></a>'; }
+    if (lget() !== 'dash' || pg.querySelector(':scope > .dsh')) return;
+    const hero = pg.querySelector(':scope > .hero2');
+    if (hero) hero.insertAdjacentHTML('afterend', html()); else pg.insertAdjacentHTML('afterbegin', html());
+    const B = base();
+    if (B.slow) fill(); else setTimeout(() => { try { fill(); } catch (e) { console.error(e); } }, 60);
+  } catch (e) { console.error(e); }
+};
+})();
 
 
 /* daily and monthly event reports: records that were entered + what changed in the program */
@@ -17512,7 +17915,7 @@ App.reconcileAll = function () {
 /* ------------------------------------------------------------ bank reconciliation */
 const rec = { date: '', unit: 'r', vals: {} };
 P.recon = function () {
-  const C = App.C; const banks = App.sortAcc(App.db.accounts.filter(a => a.group === G.CASH || a.group === G.BRK));
+  const C = App.C; const banks = App.sortAcc(App.db.accounts.filter(a => (a.group === G.CASH || a.group === G.BRK) && !(App.isArchived && App.isArchived(a.name))));
   if (!rec.date) rec.date = E.serToText(App.today);
   let h = '<div class="box"><h2>⚖ مغایرت‌گیری بانک‌ها <small>مانده‌ای را که در اپ هر بانک می‌بینید بنویسید؛ برنامه اختلاف را نشان می‌دهد و پیشنهاد ثبت می‌دهد</small></h2>' +
     '<div class="rfilter noprint"><label>تاریخ مغایرت‌گیری <input type="text" id="rcDate" class="yellow num" value="' + esc(rec.date) + '" inputmode="numeric"></label><label>واحد <select id="rcUnit"><option value="r">ریال</option><option value="t">تومان</option><option value="mt">میلیون تومان</option></select></label><button class="btn sm grey" id="rcClear">پاک کردن ورودی‌ها</button></div>' +
@@ -19455,7 +19858,7 @@ function renderNav(r) {
   };
   const fxItems = E.fxPositions(C).filter(x => !App.isArchived(x.name)).map(x => ({ to: '/asset/' + H.slug(x.name), label: x.display || x.name, bal: '<span class="b num">' + H.fmtq(x.qty) + '</span>' }));
   { const na = App.archiveCount(['asset']); if (na) fxItems.push({ to: '/archive?g=asset', label: '🗄 بایگانی (' + na + ')' }); }
-  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
+  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + (App.pages.look ? simple('/look', '🎨', 'انتخاب طرح و ظاهر') : '') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
   h += group('n_bank', '/banks', '🏦', 'بانک‌ها', accItems([G.CASH]).concat([{ to: '/recon', label: '⚖ مغایرت‌گیری بانک‌ها' }]), G.CASH, 'بانک جدید');
   h += group('n_brk', '/banks', '📊', 'کارگزاری‌ها', accItems([G.BRK]), G.BRK, 'کارگزاری جدید');
   h += group('n_mem', '/members', '👥', 'سرمایه‌گذاران', accItems([G.MEM]), G.MEM, 'سرمایه‌گذار جدید');
@@ -19493,7 +19896,7 @@ function renderTop() {
 /* ------------------------------------------------------------- v38 design layer
    (presentation only): quick find · card-style tables on phones · print header */
 const QPAGES = [
-  ['/home', '🏠', 'خانه', 'صفحه اصلی نمای کلی'], ['/bs', '⚖', 'تراز کل', 'ترازنامه دارایی بدهی سرمایه'], ['/journal', '📒', 'دفتر روزنامه', 'همه ثبت ها اسناد'],
+  ['/home', '🏠', 'خانه', 'صفحه اصلی نمای کلی'], ['/look', '🎨', 'انتخاب طرح و ظاهر', 'طرح ظاهر رنگ تم داشبورد دیزاین فونت'], ['/bs', '⚖', 'تراز کل', 'ترازنامه دارایی بدهی سرمایه'], ['/journal', '📒', 'دفتر روزنامه', 'همه ثبت ها اسناد'],
   ['/reports', '🗂', 'همهٔ گزارش‌ها', 'گزارش مرکز گزارش'], ['/daily', '📅', 'وقایع روزانه', 'گزارش روزانه'], ['/mreport', '🗓', 'وقایع ماهانه', 'گزارش ماهانه'],
   ['/rep/cash', '📑', 'هزینه‌ها و درآمدها', 'گزارش هزینه درآمد دسته'], ['/rep/banks', '🏦', 'گردش بانک‌ها', 'گزارش بانک'], ['/rep/brokers', '📊', 'گردش کارگزاری‌ها', 'گزارش کارگزاری'],
   ['/rep/fx', '💱', 'وضعیت و گردش ارز و طلا', 'دلار طلا سکه گزارش'], ['/rep/loans', '🏛', 'وضعیت و گردش وام‌ها', 'وام قسط گزارش'], ['/rep/debtors', '🤝', 'گزارش بدهکاران', 'بدهکار طلب'],
