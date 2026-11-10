@@ -3613,6 +3613,103 @@ html:not(.th-clean) .dsh{--da:#B45309;--da2:#FFFBEB;--dl:#E7DCC8}
 .lk-f{display:flex;flex-wrap:wrap;gap:8px}
 html #page table.dsh-t td{border:0!important;border-bottom:1px solid #EEF0F3!important;box-shadow:none!important}
 @media (max-width:560px){html #page table.dsh-t td{border:0!important;background:none!important}}
+/* ---- v48.7 · the records of the day as two-sided vouchers (66_vch) ---- */
+.jv-sw{display:flex;align-items:center;flex-wrap:wrap;gap:6px;margin:0 0 12px;font-weight:700;color:#475569}
+.jv-sw button{font:inherit;font-weight:700;padding:6px 14px;border-radius:999px;border:1px solid #CBD5E1;background:#fff;color:#334155;cursor:pointer}
+.jv-sw button.on{background:#1E3A8A;border-color:#1E3A8A;color:#fff}
+html.ac-kn .jv-sw button.on{background:#7C3AED;border-color:#7C3AED}html.ac-fp .jv-sw button.on{background:#16A34A;border-color:#16A34A}
+.jv-list{display:flex;flex-direction:column;gap:14px}
+.jv{--vb:#F6F8FB;--vl:#D6DEE8;--va:#7C8DA3;--vk:#334155;--vkb:#E6ECF3;background:var(--vb);border:1px solid var(--vl);border-right:5px solid var(--va);border-radius:12px;padding:10px 12px 9px;color:#1E293B;font-weight:500;line-height:1.7}
+.jv.jv-in{--vb:#F2FAF4;--vl:#C8E6D1;--va:#4CAF72;--vk:#15803D;--vkb:#DCF2E3}
+.jv.jv-out{--vb:#FDF5F5;--vl:#F1CFCF;--va:#E07A7A;--vk:#B42318;--vkb:#FBE1E1}
+.jv-h{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;margin-bottom:6px}
+.jv-k{background:var(--vkb);color:var(--vk);font-weight:800;padding:1px 12px;border-radius:999px;font-size:1rem}
+.jv-k small{font-weight:600;font-size:.86rem}
+.jv-tag{font-size:.82rem;color:#475569;font-weight:600}
+.jv-d{margin-right:auto;font-weight:700;color:#334155;white-space:nowrap}
+.jv-g{display:grid;grid-template-columns:minmax(0,1fr) 9.5em 9.5em;border-top:1px solid var(--vl);border-bottom:1px solid var(--vl);background:rgba(255,255,255,.55)}
+.jv-g>span{padding:6px 8px;min-width:0}
+.jv-g>.jv-am{border-right:1px solid var(--vl);text-align:left;white-space:nowrap}
+.jv-c{font-size:.76rem!important;color:#64748B;font-weight:700;padding-top:3px!important;padding-bottom:3px!important;border-bottom:1px dashed var(--vl)}
+.jv-c.jv-am{text-align:center!important}
+.jv-g>.jv-am.jv-v{font-weight:800;font-size:1.04rem;color:#0F172A}
+.jv-a{font-weight:600}
+.jv-a em{font-style:normal;font-size:.76rem;font-weight:700;color:var(--vk);background:var(--vkb);border-radius:6px;padding:0 6px;margin-left:4px;white-space:nowrap}
+.jv-a a{color:#1E293B;text-decoration:none;cursor:pointer}.jv-a a:hover{text-decoration:underline}
+.jv-a.jv-cr{padding-right:calc(8px + 4cm)!important}
+.jv-sh{display:none}
+.jv-a.jv-dr{border-bottom:1px dotted var(--vl)}.jv-a.jv-dr+.jv-am,.jv-a.jv-dr+.jv-am+.jv-am{border-bottom:1px dotted var(--vl)}
+.jv-q{font-size:.86rem;color:#475569;margin-top:4px}
+.jv-s{margin-top:6px;color:#1E293B}
+.jv-s b{font-weight:700;color:#475569}
+.jv-au{color:#6D28D9;font-weight:700}
+.jv-m{display:flex;flex-wrap:wrap;align-items:center;gap:2px 14px;font-size:.84rem;color:#64748B;margin-top:4px}
+.jv-m .num{color:#334155;font-weight:700}
+.jv-bt{margin-right:auto;display:flex;gap:6px}
+.jv-sum{margin-top:10px;text-align:left;font-weight:700;color:#334155}
+.jv-gone{padding:6px 12px;border:1px dashed #CBD5E1;border-radius:10px;color:#64748B;font-size:.9rem;background:#fff}
+@media (max-width:560px){
+ .jv{padding:9px 9px 8px}
+ .jv-g{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .jv-g>span{padding:4px 6px}
+ .jv-g>.jv-c:first-child{display:none}
+ .jv-g>.jv-a{grid-column:1/-1;border-bottom:0!important;padding-bottom:0!important}
+ .jv-g>.jv-am{border-right:0}
+ .jv-g>:nth-child(3n){border-right:1px solid var(--vl)}
+ .jv-g>.jv-am.jv-v{font-size:1rem;text-align:center}
+ .jv-a.jv-cr{padding-right:calc(6px + 5.5em)!important}
+ .jv-f{display:none}.jv-sh{display:inline}
+}
+.jv-hid{display:none!important}
+.jv-say{margin-top:7px;padding:5px 10px;border-radius:8px;background:rgba(255,255,255,.75);border:1px dashed var(--vl);color:#1E293B;line-height:1.9;font-size:.95rem}
+.jv-bal{margin-top:4px;font-size:.88rem;color:#334155;font-weight:600}
+.jv-bal .num{font-weight:800}
+.jv-sep{padding:6px 12px;border-radius:8px;background:#EEF2F7;color:#1E293B;font-weight:700;font-size:.92rem}
+.jv-more{align-self:center;margin-top:4px}
+.jv-sum{margin-top:10px;padding:8px 12px;border-radius:10px;background:#F1F5F9;font-weight:700;color:#1E293B}
+/* v48.7 · ردیف and the total of a voucher; the books (67_books) */
+.jv-rn{background:#1E293B;color:#fff;border-radius:8px;padding:1px 9px;font-weight:700;font-size:.9rem;white-space:nowrap}
+.jv-rn .num{color:#fff}
+.jv-g>.jv-tot{border-top:2px solid var(--vl);font-weight:800;color:#334155}
+.jv-a.jv-tot small{font-weight:700;color:#15803D}
+.bk-tabs{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.bk-tabs .bk-ar{font-style:normal;color:#94A3B8;font-weight:900}
+.bk-in{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:10px 14px;margin:0 0 12px;line-height:1.9;color:#334155}
+.bk-g>summary{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;cursor:pointer;list-style:none}
+.bk-g>summary::-webkit-details-marker{display:none}
+.bk-gt{flex:1 1 220px;font-size:1.12rem;font-weight:800;color:#0F172A}
+.bk-gt small{font-size:.82rem;font-weight:700;color:#64748B}
+.bk-gn{display:flex;flex-wrap:wrap;gap:6px 16px}
+.bk-gn>span{display:flex;flex-direction:column;font-weight:800;color:#0F172A;white-space:nowrap}
+.bk-gn i{font-style:normal;font-size:.76rem;color:#64748B;font-weight:700}
+.bk-w{color:#B45309;font-weight:800}
+.bk-s{font-weight:800;border-radius:6px;padding:0 5px;font-size:.78rem}.bk-s.d{background:#DBEAFE;color:#1E40AF}.bk-s.c{background:#FCE7F3;color:#9D174D}
+.bk-z{color:#94A3B8}
+.bk-t{width:100%;border-collapse:collapse;margin-top:8px}
+.bk-t th{background:#F1F5F9;font-size:.84rem;color:#475569;padding:7px 8px;text-align:right;border-bottom:2px solid #E2E8F0}
+.bk-t td{padding:7px 8px;border-bottom:1px solid #EEF2F7;vertical-align:top}
+.bk-t td:not(:first-child),.bk-t th:not(:first-child){text-align:left;white-space:nowrap}
+.bk-t tfoot td{font-weight:800;background:#F8FAFC;border-top:2px solid #CBD5E1}
+.bk-t tr.bk-x td{background:#FFFBEB}
+.bk-t tr.bk-gh td{background:#EEF2FF;font-weight:800;color:#1E1B4B;border-top:2px solid #C7D2FE}
+.bk-t tr.bk-gh small{font-weight:700;color:#6366F1}
+.bk-t.bk-only tr.bk-ar{display:none}
+.bk-t .bk-d small{display:block;color:#64748B;font-size:.8rem;white-space:normal}
+.bk-t.bk-l td:nth-child(3),.bk-t.bk-l th:nth-child(3){text-align:right;white-space:normal}
+.bk-tw{overflow-x:auto}
+.bk-ok{margin:10px 0}
+@media (max-width:640px){
+ .bk-t thead{display:none}
+ .bk-t,.bk-t tbody,.bk-t tfoot{display:block}
+ .bk-t tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 10px;padding:8px 4px;border-bottom:1px solid #E2E8F0}
+ .bk-t td{display:block;border:0!important;padding:1px 2px;text-align:right!important;white-space:normal!important}
+ .bk-t td:first-child{grid-column:1/-1;font-weight:700}
+ .bk-t td[data-l]:not([data-l=""])::before{content:attr(data-l);display:block;font-size:.72rem;color:#64748B;font-weight:700}
+ .bk-t.bk-l td:nth-child(3){grid-column:1/-1}
+ .bk-t tr.bk-gh,.bk-t tfoot tr{border-radius:8px}
+}
+.bk-tabs a{padding:7px 14px!important;font-size:.95rem!important;white-space:nowrap}
+@media (max-width:640px){.bk-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}.bk-tabs a{padding:6px 11px!important;font-size:.88rem!important;flex:0 0 auto;min-height:0!important}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3620,7 +3717,7 @@ html #page table.dsh-t td{border:0!important;border-bottom:1px solid #EEF0F3!imp
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.6"; window.APP_BUILD = "1405/08/19 17:52";
+window.APP_VERSION = "48.7"; window.APP_BUILD = "1405/08/19 22:42";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -15111,7 +15208,7 @@ const COL = {
   n_bank: ['#1D4ED8', '#60A5FA'], n_brk: ['#6D28D9', '#A78BFA'], n_mem: ['#047857', '#34D399'], n_fx: ['#B45309', '#FBBF24'], n_loan: ['#B91C1C', '#F87171'],
   n_debt: ['#0E7490', '#22D3EE'], n_cred: ['#9D174D', '#F472B6'], n_trust: ['#92400E', '#F59E0B'], n_inv: ['#0F766E', '#5EEAD4'],
   s_rep: ['#4338CA', '#818CF8'], s_set: ['#334155', '#94A3B8'],
-  '/home': ['#B45309', '#FCD34D'], '/look': ['#BE185D', '#F9A8D4'], '/bs': ['#1E3A8A', '#93C5FD'], '/journal': ['#7C2D12', '#FDBA74'], '/tasks': ['#15803D', '#86EFAC'],
+  '/home': ['#B45309', '#FCD34D'], '/look': ['#BE185D', '#F9A8D4'], '/gl': ['#0F766E', '#5EEAD4'], '/trial': ['#4338CA', '#A5B4FC'], '/bs': ['#1E3A8A', '#93C5FD'], '/journal': ['#7C2D12', '#FDBA74'], '/tasks': ['#15803D', '#86EFAC'],
   '/archive': ['#475569', '#CBD5E1'], '/settings': ['#6D28D9', '#C4B5FD'], '/backup': ['#0F172A', '#64748B'], '/trust': ['#92400E', '#F59E0B']
 };
 const FA = s => String(s).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
@@ -17245,6 +17342,339 @@ App.afterRender = function (r) {
     if (hero) hero.insertAdjacentHTML('afterend', html()); else pg.insertAdjacentHTML('afterbegin', html());
     const B = base();
     if (B.slow) fill(); else setTimeout(() => { try { fill(); } catch (e) { console.error(e); } }, 60);
+  } catch (e) { console.error(e); }
+};
+})();
+/* ---------------------------------------------------------------- v48.7 — the records of the day as two-sided vouchers («سند دوطرفه»)
+   the owner (1405/08/19): «ثبت‌های روزانه یکم گنگ است … چون حالت دوبل نزدی … می‌خواهم تاریخ بخورد بالا، پایینش طرف بدهکار با مبلغ روبه‌رویش،
+   بعد چند سانتی‌متر جلوتر پایین‌تر بستانکار و مبلغش؛ سمت راست بدهکار، سمت چپ بستانکار؛ پایینش شرح و شمارهٔ پیگیری؛ بالایش بخورد
+   برداشت است یا واریز … برداشت یک تم قرمز خیلی ملایم، واریز سبز؛ زیاد بولد نشود … عدد و حروفش با هم فرق کند».
+   · every record of «📒 دفتر روزنامه · روزانه» (the records of the day and «🕘 آخرین ثبت‌ها») as a small voucher:
+       top    — what it is (🔻 برداشت · 🔺 واریز · 🔁 انتقال · 🔺 درآمد · 🔻 هزینه · 📄 ثبت) and the date of the document;
+       middle — two lines on a ruled grid: the debit account at the right with its amount in the «بدهکار» column, the credit account lower and
+                set in, with its amount in the «بستانکار» column at the left;
+       bottom — شرح, کد پیگیری, the time it was registered, ✎ / 🗑.
+     withdrawal → a very light red sheet, deposit → a very light green one, a transfer → light grey-blue; the amounts in the digits' font,
+     the names in ordinary weight.
+   · «برداشت / واریز» is seen from the money: a bank or a broker on the credit side = money went out of it; on the debit side = money came in;
+     both = a transfer; neither: «درآمد / هزینه» when the record says so, a member's deposit / withdrawal, otherwise «ثبت».
+   · «نمایش ثبت‌ها: 🧾 سند دوطرفه | 📋 جدول (قبلی)» at the top of the page; kept on this device. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc, fmt = H.fmt, G = App.G || {}, N = v => +v || 0;
+const KEY = 'hesabk_vch';
+const vget = () => { let v = ''; try { v = localStorage.getItem(KEY) || ''; } catch (e) { } return v === 't' ? 't' : 'v'; };
+const vset = v => { try { localStorage.setItem(KEY, v === 't' ? 't' : 'v'); } catch (e) { } };
+const nb = t => '<bdi dir="ltr" class="num">' + esc(t) + '</bdi>';
+
+let RM = null, RMC = null;
+const rmap = () => { if (RM && RMC === App.C) return RM; RM = new Map(); (App.C.rows || []).forEach(r => { if (r.e && r.e.id != null && !RM.has(r.e.id)) RM.set(r.e.id, r); }); RMC = App.C; return RM; };
+const amountOf = e => { const r = rmap().get(e.id); const v = r && r.M !== '' && r.M != null ? +r.M : N(e.amt); return v || (N(e.qty) * N(e.price)) || 0; };
+const grp = n => { const a = App.C && App.C.accts && App.C.accts.get(n); return a ? a.group : ''; };
+const money = n => { const g = grp(n); return g === G.CASH || g === G.BRK; };
+function kindOf(e) {
+  const K = kind0(e), kn = K[3] || '', w = K[1].replace(/^\S+\s/, '');
+  if (kn && kn !== w && kn.indexOf(w) === 0) return [K[0], K[1].split(' ')[0] + ' ' + kn, e.cat || ''];   // «🔺 واریز عضو», not «🔺 واریز · واریز عضو»
+  return K;
+}
+function kind0(e) {
+  const r = rmap().get(e.id), X = r ? r.X : 0, kn = (E.KIND_NAMES && E.KIND_NAMES[X]) || '';
+  const dm = money(e.dr), cm = money(e.cr), sub = [kn && kn !== 'ثبت عمومی' ? kn : '', e.cat || ''].filter(Boolean).join(' · ');
+  if (dm && cm) return ['tr', '🔁 انتقال', sub, kn];
+  if (dm) return ['in', '🔺 واریز', sub || ('به ' + e.dr), kn];
+  if (cm) return ['out', '🔻 برداشت', sub || ('از ' + e.cr), kn];
+  if (e.ck === 'inc') return ['in', '🔺 درآمد', e.cat || ''];
+  if (e.ck === 'exp') return ['out', '🔻 هزینه', e.cat || ''];
+  if (X === 1) return ['in', '🔺 واریز', '', kn];
+  if (X === 2) return ['out', '🔻 برداشت', '', kn];
+  return ['tr', '📄 ثبت', sub];
+}
+/* v48.7 (the owner: «ردیف هم برای هر سند … دفتر روزنامه، بعد دفتر کل، بعد تراز»):
+   · the sides of a voucher are the program's own postings (a payment of a loan of his own: بد وام / بس بانک and بد حسن احمدی / بس کسر وام‌ها;
+     a sale: بد بانک / بس طلا به بهای تمام‌شده / بس سود فروش) — the same lines that make «📚 دفتر کل» and «🧮 تراز آزمایشی»;
+   · «ردیف»: the place of the voucher in «دفتر روزنامه» by date, from the oldest (1, 2, 3 …) — the same number everywhere. */
+let SEQ = null, SEQC = null;
+const seqOf = e => {
+  if (!SEQ || SEQC !== App.C) {
+    SEQ = new Map(); SEQC = App.C;
+    (App.C.rows || []).filter(r => r && r.e && r.a && r.a.some(x => x)).sort((x, y) => (N(x.T) - N(y.T)) || (x.k - y.k)).forEach((r, i) => SEQ.set(r.e.id, i + 1));
+  }
+  return SEQ.get(e.id) || 0;
+};
+App.journalSeq = seqOf;
+function legs(e) {
+  const r = rmap().get(e.id); let L = [];
+  if (r && r.a) r.a.forEach((a, i) => { const v = N(r.m[i]); if (a && Math.abs(v) >= 0.5) L.push({ a, v }); });
+  if (!L.length && e.dr && e.cr) { const v = amountOf(e); L = [{ a: e.dr, v }, { a: e.cr, v: -v }]; }
+  const M = []; L.forEach(x => { const o = M.find(y => y.a === x.a && (y.v > 0) === (x.v > 0)); if (o) o.v += x.v; else M.push({ a: x.a, v: x.v }); });   // one line per account and side
+  return { all: L, dr: M.filter(x => x.v > 0), cr: M.filter(x => x.v < 0).map(x => ({ a: x.a, v: -x.v })) };
+}
+App.voucherLegs = legs;
+function voucher(e, o) {
+  o = o || {};
+  const K = kindOf(e), q = N(e.qty), pr = N(e.price), L = legs(e), n = seqOf(e);
+  const code = App.trackCode ? App.trackCode(e) : '', reg = App.regText ? App.regText(e) : '';
+  const acc = (nm, sd) => '<span class="jv-a jv-' + sd + '"><em title="' + (sd === 'dr' ? 'بدهکار' : 'بستانکار') + '">' + (sd === 'dr' ? 'بد' : 'بس') + '</em> ' + (nm ? '<a data-act="go" data-to="' + esc(App.accountRoute ? App.accountRoute(nm) : '/acc/' + H.slug(nm)) + '">' + esc(nm) + '</a>' : '<i>—</i>') + '</span>';
+  const tD = L.dr.reduce((a, x) => a + x.v, 0), tC = L.cr.reduce((a, x) => a + x.v, 0), many = L.dr.length + L.cr.length > 2;
+  return '<article class="jv jv-' + K[0] + '" data-id="' + esc(String(e.id)) + '">' +
+    '<header class="jv-h">' + (n ? '<span class="jv-rn" title="ردیف در دفتر روزنامه (به ترتیب تاریخ)">ردیف ' + nb(String(n)) + '</span>' : '') + '<span class="jv-k">' + K[1] + (K[2] ? ' <small>· ' + esc(K[2]) + '</small>' : '') + '</span>' +
+      (o.tag ? '<span class="jv-tag">' + o.tag + '</span>' : '') +
+      '<span class="jv-d">📅 ' + nb(e.date || '—') + '</span></header>' +
+    '<div class="jv-g" role="table">' +
+      '<span class="jv-c">حساب</span><span class="jv-c jv-am"><span class="jv-f">بدهکار</span><span class="jv-sh">بد</span> (ریال)</span><span class="jv-c jv-am"><span class="jv-f">بستانکار</span><span class="jv-sh">بس</span> (ریال)</span>' +
+      L.dr.map(x => acc(x.a, 'dr') + '<span class="jv-am jv-v">' + nb(fmt(Math.round(x.v))) + '</span><span class="jv-am"></span>').join('') +
+      L.cr.map(x => acc(x.a, 'cr') + '<span class="jv-am"></span><span class="jv-am jv-v">' + nb(fmt(Math.round(x.v))) + '</span>').join('') +
+      (many ? '<span class="jv-a jv-tot">جمع <small>' + (Math.abs(tD - tC) < 1 ? '✓ بد = بس' : '⚠ برابر نیست') + '</small></span><span class="jv-am jv-v jv-tot">' + nb(fmt(Math.round(tD))) + '</span><span class="jv-am jv-v jv-tot">' + nb(fmt(Math.round(tC))) + '</span>' : '') +
+    '</div>' +
+    (say(e) ? '<div class="jv-say">' + say(e) + '</div>' : '') + (o.bal ? '<div class="jv-bal">' + o.bal + '</div>' : '') +
+    (q && pr ? '<div class="jv-q">مقدار ' + nb(H.fmtq ? H.fmtq(q) : String(q)) + ' × نرخ ' + nb(fmt(pr)) + '</div>' : '') +
+    '<div class="jv-s"><b>شرح:</b> ' + (esc(e.desc || '') || '<i>—</i>') + (e.auto || e.by === 'auto' ? ' <small class="jv-au">🤖 خودکار</small>' : '') + '</div>' +
+    '<div class="jv-m">' + (code ? '<span>🧾 کد پیگیری ' + nb(App.trackFmt(code)) + '</span>' : '') + (reg ? '<span>🕒 ثبت: ' + nb(reg.replace(' ساعت ', ' · ')) + '</span>' : '') +
+      '<span class="jv-no">سند ' + nb(String(e.id)) + '</span>' +
+      '<span class="jv-bt noprint"><button type="button" class="btn sm gold" data-act="edit-entry" data-id="' + esc(String(e.id)) + '" title="ویرایش این ثبت">✎ ویرایش</button>' +
+      (o.noDel ? '' : '<button type="button" class="btn sm red" data-act="del-entry" data-id="' + esc(String(e.id)) + '" title="حذف">🗑</button>') + '</span></div>' +
+  '</article>';
+}
+App.voucherHtml = voucher;
+/* «زیر هر ثبت بنویس چه شد» — short sentences from the postings: what each account is (money, a debt, a loan, a member's capital …) and its nature */
+function side(n, dr) {
+  const a = App.C && App.C.accts && App.C.accts.get(n), g = a ? a.group : '', q = '«' + esc(n) + '»';
+  if (g === G.CASH || g === G.BRK) return dr ? 'به ' + q + ' واریز شد' : 'از ' + q + ' برداشت شد';
+  if (g === G.DEBT) return dr ? 'به طلب از ' + q + ' اضافه شد' : 'از طلب از ' + q + ' کم شد';
+  if (g === G.LOAN) return dr ? 'از بدهی وام ' + q + ' کم شد' : 'به بدهی وام ' + q + ' اضافه شد';
+  if (g === G.CRED) return dr ? 'از بدهی ما به ' + q + ' کم شد' : 'به بدهی ما به ' + q + ' اضافه شد';
+  if (g === G.PL) return dr ? 'هزینهٔ ' + q + ' شد' : 'درآمد ' + q + ' شد';
+  const credit = a ? a.nature === 'بستانکار' : [G.MEM, G.SHORT, G.RES].indexOf(g) >= 0;
+  if (credit) return dr ? 'از حساب ' + q + ' کم شد' : 'به حساب ' + q + ' اضافه شد';
+  return dr ? 'به ' + q + ' اضافه شد' : 'از ' + q + ' کم شد';
+}
+function say(e) {
+  const LG = legs(e); if (!LG.dr.length || !LG.cr.length) return '';
+  const r = rmap().get(e.id), X = r ? r.X : 0, kn = (E.KIND_NAMES && E.KIND_NAMES[X]) || '', d = String(e.desc || '').trim();
+  const why = (X === 3 || X === 4 || X === 5) ? kn : (e.cat || (d ? (d.length > 42 ? d.slice(0, 40) + '…' : d) : (kn !== 'ثبت عمومی' ? kn : '')));
+  const P = [], Dl = LG.dr.slice();
+  LG.cr.forEach(c => {   // each credit with the debit of the same amount: «… از X کم شد و به Y اضافه شد»
+    const k = Dl.findIndex(x => Math.abs(x.v - c.v) < 1);
+    if (k >= 0) { P.push(nb(fmt(Math.round(c.v))) + ' ریال ' + side(c.a, false) + ' و ' + side(Dl[k].a, true)); Dl.splice(k, 1); }
+    else P.push(nb(fmt(Math.round(c.v))) + ' ریال ' + side(c.a, false));
+  });
+  Dl.forEach(x => P.push(nb(fmt(Math.round(x.v))) + ' ریال ' + side(x.a, true)));
+  return '💬 ' + P.join('؛ ') + (N(e.qty) ? ' (مقدار ' + nb(H.fmtq ? H.fmtq(N(e.qty)) : String(e.qty)) + ')' : '') + (why ? ' — بابت ' + esc(why) : '') + '.';
+}
+App.voucherSay = say;
+let EMAP = null, EDB = null, ELEN = -1;
+const entry = id => { const db = App.db; if (!db || id == null) return null; if (!EMAP || EDB !== db || ELEN !== db.entries.length) { EMAP = new Map(db.entries.map(x => [String(x.id), x])); EDB = db; ELEN = db.entries.length; } return EMAP.get(String(id)) || null; };
+
+/* every table of records in a page (دفتر روزنامه، روزانه، ماهانه، صورت‌حساب هر حساب، وام‌ها …): a table with «شرح» whose rows are records.
+   Its other rows (a day's heading, «مانده از قبل») and its foot stay as lines; the «مانده» of each row goes under its voucher; a filter that
+   hides rows of the table hides their vouchers; long lists 200 at a time. The pages of gold / currencies keep their tables (quantities). */
+const NOFX = /^#\/(fx|fxled|fxloc|trust|rep\/fx|asset\/)/;
+const txt = el => String((el && el.textContent) || '').replace(/\s+/g, ' ').trim();
+function convTable(t) {
+  if (t.dataset.jv || t.classList.contains('rcn') || t.classList.contains('dsh-t') || t.closest('.jv-list,.dsh,#modalBg,.modal')) return;
+  const hs = [...t.querySelectorAll('thead th')].map(txt); if (hs.indexOf('شرح') < 0) return;
+  const trs = [...t.querySelectorAll(':scope > tbody > tr')]; if (!trs.length) return;
+  const ids = trs.map(tr => { const b = tr.querySelector('[data-act="edit-entry"][data-id],[data-act="del-entry"][data-id]'); return b ? entry(b.dataset.id) : null; });
+  const n = ids.filter(Boolean).length; if (!n || n < trs.length * 0.5) return;
+  t.dataset.jv = '1';
+  const iB = hs.findIndex(h => /^مانده/.test(h)), bl = iB >= 0 ? hs[iB] : '';
+  const items = trs.map((tr, k) => {
+    const e = ids[k];
+    if (!e) return { tr, h: '<div class="jv-sep">' + esc(txt(tr)) + '</div>' };
+    const c = iB >= 0 ? tr.children[iB] : null, bv = c ? txt(c) : '';
+    return { tr, h: voucher(e, { bal: bv ? esc(bl) + ' بعد از این ثبت: ' + nb(bv) + (/ریال/.test(bl) ? '' : ' ریال') : '' }) };
+  });
+  const ft = t.querySelector(':scope > tfoot'), foot = ft && txt(ft) ? '<div class="jv-sum">' + esc(txt(ft)) + '</div>' : '';
+  const w = (t.parentElement && t.parentElement.children.length === 1 && t.parentElement.id !== 'page') ? t.parentElement : t;
+  w.classList.add('jv-hid');
+  w.insertAdjacentHTML('afterend', '<div class="jv-list" data-n="' + items.length + '"></div>' + foot);
+  const L = w.nextElementSibling; L._items = items; L._t = t; L._shown = 0; more(L);
+}
+function more(L) {
+  const it = L._items, a = L._shown, b = Math.min(it.length, a + 200);
+  const old = L.querySelector(':scope > .jv-more'); if (old) old.remove();
+  L.insertAdjacentHTML('beforeend', it.slice(a, b).map(x => x.h).join(''));
+  const kids = [...L.children]; it.slice(a, b).forEach((x, k) => { x.el = kids[a + k]; });
+  L._shown = b;
+  if (b < it.length) L.insertAdjacentHTML('beforeend', '<button type="button" class="btn jv-more noprint" data-act="jv-more">نمایش ۲۰۰ سند بیشتر (' + nb(String(it.length - b)) + ' مانده)</button>');
+  sync(L);
+}
+function sync(L) { (L._items || []).forEach(x => { if (x.el) { const hid = x.tr.style.display === 'none'; if ((x.el.style.display === 'none') !== hid) x.el.style.display = hid ? 'none' : ''; } }); }
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act="jv-more"]') : null; if (!b) return;
+  ev.preventDefault(); ev.stopPropagation(); const L = b.closest('.jv-list'); if (L) more(L);
+}, true);
+/* «🕘 آخرین ثبت‌ها» (its rows say when and what changed) */
+function recentBox(pg) {
+  const rb = pg.querySelector('#rcBox'); if (!rb) return;
+  const t = rb.querySelector('table.jtb'); if (!t || t.dataset.jv) return; t.dataset.jv = "1";
+  const out = [...t.querySelectorAll('tbody > tr')].map(tr => {
+    const b = tr.querySelector('[data-act="edit-entry"][data-id]'), e = b ? entry(b.dataset.id) : null;
+    const k = (tr.querySelector('em.jc') || {}).textContent || '', dt = ((tr.querySelector('td.dt') || {}).textContent || '').trim();
+    if (!e) {
+      const tx = (tr.querySelector('td.ds b') || {}).textContent || '', am = ((tr.querySelector('td.n') || {}).textContent || '').trim();
+      return '<div class="jv-gone"><span>' + esc(k.trim() || '🗑 حذف') + '</span> ' + esc(tx) + (am ? ' · ' + nb(am) + ' ریال' : '') + (dt ? ' <small>' + nb(dt) + '</small>' : '') + '</div>';
+    }
+    return voucher(e, { tag: esc(k.trim()) + (dt && dt !== '—' ? ' ' + nb(dt) : ''), noDel: true });
+  });
+  if (!out.length) return;
+  const w = t.closest('.jwrap') || t; w.style.display = 'none'; w.classList.add('jv-hid');
+  w.insertAdjacentHTML('afterend', '<div class="jv-list">' + out.join('') + '</div>');
+}
+const SW = v => '<div class="jv-sw noprint" role="group" aria-label="نمایش ثبت‌ها"><span>نمایش ثبت‌ها:</span>' +
+  '<button type="button" class="' + (v === 'v' ? 'on' : '') + '" data-act="jv-view" data-v="v">🧾 سند دوطرفه</button>' +
+  '<button type="button" class="' + (v === 't' ? 'on' : '') + '" data-act="jv-view" data-v="t">📋 جدول (قبلی)</button></div>';
+function deco() {
+  const pg = document.getElementById('page'); if (!pg || !App.db) return;
+  const fx = NOFX.test(location.hash || ''), v = vget();
+  if (v === 'v' && !fx) {
+    pg.querySelectorAll('table').forEach(t => { try { convTable(t); } catch (e) { console.error(e); } });
+    if (/^#\/daily/.test(location.hash || '')) recentBox(pg);
+    /* «🆕 ثبت‌های امروز» of every account keeps its own short coloured lines (they already say «از حساب شما کم شد …»); its statement below is in vouchers */
+    pg.querySelectorAll('.jv-list').forEach(sync);
+  }
+  /* the switch: once a page, above its first list (or its first table of records when the tables are chosen) */
+  if (!pg.querySelector('.jv-sw') && !fx) {
+    let at = pg.querySelector('.jv-list');
+    if (at) at = at.previousElementSibling || at; 
+    else { const t = [...pg.querySelectorAll('table')].find(t => [...t.querySelectorAll('thead th')].some(th => txt(th) === 'شرح') && t.querySelector('tbody [data-act="edit-entry"][data-id]')); if (t) at = t.closest('.wrap,.jwrap,.tw') || t; }
+    if (at) at.insertAdjacentHTML('beforebegin', SW(v));
+  }
+}
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act="jv-view"]') : null; if (!b) return;
+  ev.preventDefault(); ev.stopPropagation(); vset(b.dataset.v);
+  try { App.go(location.hash.slice(1) || '/daily'); } catch (e) { console.error(e); }
+}, true);
+let raf = 0;
+const run = () => { raf = 0; try { deco(); } catch (e) { console.error(e); } };
+const mo = new MutationObserver(() => { if (!raf) raf = requestAnimationFrame(run); });
+function start() { const p = document.getElementById('page'); if (!p) { setTimeout(start, 300); return; } mo.observe(p, { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] }); run(); }
+start();
+})();
+/* ---------------------------------------------------------------- v48.7 — the books in their order: «📒 دفتر روزنامه» → «📚 دفتر کل» → «🧮 تراز آزمایشی» → «⚖ ترازنامه»
+   the owner (1405/08/19): «دفتر حسابداری: اول دفتر روزنامه، بعد دفتر کل، بعد تراز … همهٔ ثبت‌ها در روزنامه بیاید، بعد بر اساس سرفصل و ماهیت
+   حساب‌ها برود سر جایش بنشیند و بعد تراز کل … که تمام اصول حسابداری رعایت شود».
+   · the postings are the program's own (every record → its lines بد / بس, the same ones the balances are made of), so the ledger and the trial
+     balance always agree with every page of the program;
+   · «📚 دفتر کل»: each سرفصل (the group of accounts = حساب کل) with its nature, debit and credit turnover and balance; under it its accounts
+     (معین) — a tap opens the account; «📜 گردش این سرفصل»: every line posted to it, by date, with the ردیف of its voucher and a running balance;
+   · «🧮 تراز آزمایشی» (four columns): گردش بدهکار · گردش بستانکار · ماندهٔ بدهکار · ماندهٔ بستانکار for every account and every سرفصل; the
+     totals must be equal (✓); an account whose balance is against its nature (a bank in credit …) is marked ⚠;
+   · the tabs «📒 روزنامه › 📅 روزانه › 📚 دفتر کل › 🧮 تراز آزمایشی › ⚖ ترازنامه › 📈 سود و زیان» on top of all of them. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc, fmt = H.fmt, P = App.pages, N = v => +v || 0;
+const nb = t => '<bdi dir="ltr" class="num">' + esc(t) + '</bdi>';
+const f0 = v => Math.abs(v) < 0.5 ? '' : nb(fmt(Math.round(v)));
+
+/* ---- the tabs ---- */
+const TABS = [['j', '/journal', '📒 دفتر روزنامه'], ['d', '/daily', '📅 روزانه'], ['gl', '/gl', '📚 دفتر کل'], ['tr', '/trial', '🧮 تراز آزمایشی'], ['bs', '/bs', '⚖ ترازنامه'], ['pl', '/pl', '📈 سود و زیان']];
+App.jtabs = on => '<div class="jtabs bk-tabs noprint">' + TABS.map(([k, to, t], i) => (i > 1 && i < 5 ? '<i class="bk-ar">›</i>' : i === 5 ? '<i class="bk-ar">·</i>' : i === 1 ? '<i class="bk-ar">·</i>' : '') + '<a data-act="go" data-to="' + to + '" class="' + (on === k ? 'on' : '') + '">' + t + '</a>').join('') + '</div>';
+
+/* ---- the postings ---- */
+let LC = null, LP = null;
+function book() {   // { acc: Map(name → {n, g, nat, dr, cr}), lines: [{r, a, v}] }
+  if (LP && LC === App.C) return LP;
+  const C = App.C, acc = new Map(), lines = [];
+  const rows = (C.rows || []).filter(r => r && r.e && r.a && r.a.some(x => x)).sort((x, y) => (N(x.T) - N(y.T)) || (x.k - y.k));
+  rows.forEach(r => r.a.forEach((a, i) => {
+    const v = N(r.m[i]); if (!a || Math.abs(v) < 0.5) return;
+    let o = acc.get(a); if (!o) { const ac = C.accts.get(a); o = { n: a, g: ac ? ac.group : 'سایر', nat: ac ? ac.nature : 'بدهکار', dr: 0, cr: 0 }; acc.set(a, o); }
+    if (v > 0) o.dr += v; else o.cr -= v; lines.push({ r, a, v });
+  }));
+  LC = C; LP = { acc, lines }; return LP;
+}
+const ORDER = () => (App.GROUP_ORDER || []).concat(['سایر']);
+function groups() {
+  const B = book(), G = new Map();
+  B.acc.forEach(o => { let g = G.get(o.g); if (!g) { g = { g: o.g, list: [], dr: 0, cr: 0, nd: 0, nc: 0 }; G.set(o.g, g); } g.list.push(o); g.dr += o.dr; g.cr += o.cr; if (o.nat === 'بستانکار') g.nc++; else g.nd++; });
+  const ord = ORDER(), L = [...G.values()].sort((a, b) => ((ord.indexOf(a.g) + 1 || 99) - (ord.indexOf(b.g) + 1 || 99)));
+  L.forEach(g => { g.nat = g.nc > g.nd ? 'بستانکار' : 'بدهکار'; g.list.sort((a, b) => Math.abs(b.dr - b.cr) - Math.abs(a.dr - a.cr)); });
+  return L;
+}
+const balTxt = (d, c) => { const b = d - c; return Math.abs(b) < 0.5 ? '<span class="bk-z">صفر</span>' : f0(Math.abs(b)) + ' <small class="bk-s ' + (b > 0 ? 'd' : 'c') + '">' + (b > 0 ? 'بد' : 'بس') + '</small>'; };
+const against = o => { const b = o.dr - o.cr; return Math.abs(b) >= 0.5 && ((o.nat === 'بستانکار') ? b > 0 : b < 0); };
+const accLink = n => '<a data-act="go" data-to="' + esc(App.accountRoute ? App.accountRoute(n) : '/acc/' + H.slug(n)) + '">' + esc(n) + '</a>';
+const okLine = (d, c, what) => Math.abs(d - c) < 1 ? '<div class="status ok bk-ok">✓ ' + what + ': جمع بدهکار با جمع بستانکار برابر است — ' + nb(fmt(Math.round(d))) + ' ریال</div>'
+  : '<div class="status bad bk-ok">⚠ ' + what + ': جمع بدهکار ' + nb(fmt(Math.round(d))) + ' و جمع بستانکار ' + nb(fmt(Math.round(c))) + ' برابر نیست (اختلاف ' + nb(fmt(Math.round(d - c))) + ')</div>';
+const intro = t => '<div class="bk-in">' + t + '</div>';
+
+/* ================================================================ 📚 دفتر کل */
+P.gl = function (arg, q) {
+  const gq = q && q.get('g');
+  if (gq) return glGroup(gq, q);
+  const L = groups(); let D = 0, Cc = 0;
+  let h = App.jtabs('gl') + intro('هر سند <b>دفتر روزنامه</b> طرف‌هایش را به حساب‌های خودش می‌برد. اینجا هر <b>سرفصل</b> (حساب کل) با <b>ماهیت</b>، <b>گردش بدهکار و بستانکار</b> و <b>مانده</b>‌اش آمده؛ حساب‌های زیرش (معین) را با زدن روی سرفصل ببینید. روی هر حساب بزنید تا صورت‌حسابش باز شود.');
+  h += '<div class="bk-gl">';
+  L.forEach(g => {
+    D += g.dr; Cc += g.cr; const bad = g.list.filter(against).length;
+    h += '<details class="box bk-g" data-k="gl:' + esc(g.g) + '"><summary><span class="bk-gt">' + esc(g.g) + ' <small>' + g.list.length + ' حساب · ماهیت ' + (g.nat === 'بستانکار' ? 'بستانکار' : 'بدهکار') + '</small>' + (bad ? ' <small class="bk-w">⚠ ' + bad + ' خلاف ماهیت</small>' : '') + '</span>' +
+      '<span class="bk-gn"><span><i>گردش بد</i>' + (f0(g.dr) || '۰') + '</span><span><i>گردش بس</i>' + (f0(g.cr) || '۰') + '</span><span><i>مانده</i>' + balTxt(g.dr, g.cr) + '</span></span></summary>' +
+      '<table class="bk-t"><thead><tr><th>حساب معین</th><th>گردش بدهکار</th><th>گردش بستانکار</th><th>مانده</th></tr></thead><tbody>' +
+      g.list.map(o => '<tr' + (against(o) ? ' class="bk-x"' : '') + '><td data-l="">' + accLink(o.n) + (against(o) ? ' <small class="bk-w" title="مانده‌اش خلاف ماهیت حساب است">⚠ خلاف ماهیت</small>' : '') + '</td><td data-l="گردش بد">' + (f0(o.dr) || '—') + '</td><td data-l="گردش بس">' + (f0(o.cr) || '—') + '</td><td data-l="مانده">' + balTxt(o.dr, o.cr) + '</td></tr>').join('') +
+      '</tbody><tfoot><tr><td data-l="">جمع ' + esc(g.g) + '</td><td data-l="گردش بد">' + (f0(g.dr) || '—') + '</td><td data-l="گردش بس">' + (f0(g.cr) || '—') + '</td><td data-l="مانده">' + balTxt(g.dr, g.cr) + '</td></tr></tfoot></table>' +
+      '<div class="bar"><a class="btn sm" data-act="go" data-to="/gl?g=' + encodeURIComponent(g.g) + '">📜 گردش این سرفصل (همهٔ ثبت‌هایش با ردیف روزنامه)</a></div></details>';
+  });
+  h += '</div>' + okLine(D, Cc, 'دفتر کل');
+  return { title: '📚 دفتر کل', sub: 'حساب‌ها بر اساس سرفصل و ماهیت — از روی همهٔ ثبت‌های دفتر روزنامه', html: h };
+};
+function glGroup(g, q) {
+  const B = book(), all = B.lines.filter(x => { const o = B.acc.get(x.a); return o && o.g === g; });
+  const nat = (groups().find(x => x.g === g) || {}).nat || 'بدهکار', sg = nat === 'بستانکار' ? -1 : 1;
+  const showAll = q && q.get('all') === '1', from = showAll ? 0 : Math.max(0, all.length - 300);
+  let run = 0; all.slice(0, from).forEach(x => { run += x.v; });
+  let rows = '';
+  all.slice(from).forEach(x => {
+    run += x.v; const e = x.r.e, n = App.journalSeq ? App.journalSeq(e) : '';
+    rows += '<tr><td data-l="ردیف">' + nb(String(n || '')) + '</td><td data-l="تاریخ">' + nb(e.date || '') + '</td><td data-l="" class="bk-d">' + accLink(x.a) + '<small>' + esc(e.desc || '') + '</small></td>' +
+      '<td data-l="بدهکار">' + (x.v > 0 ? f0(x.v) : '') + '</td><td data-l="بستانکار">' + (x.v < 0 ? f0(-x.v) : '') + '</td><td data-l="مانده">' + balTxt(Math.max(0, run), Math.max(0, -run)) + '</td>' +
+      '<td class="noprint"><button type="button" class="btn sm gold" data-act="edit-entry" data-id="' + esc(String(e.id)) + '" title="ویرایش سند">✎</button></td></tr>';
+  });
+  const d = all.reduce((a, x) => a + Math.max(0, x.v), 0), c = all.reduce((a, x) => a + Math.max(0, -x.v), 0);
+  let h = App.jtabs('gl') + '<div class="bar noprint"><a class="btn" data-act="go" data-to="/gl">→ همهٔ سرفصل‌ها</a>' + (from ? '<a class="btn" data-act="go" data-to="/gl?g=' + encodeURIComponent(g) + '&all=1">نمایش همهٔ ' + nb(fmt(all.length)) + ' ردیف</a>' : '') + '</div>' +
+    intro('همهٔ خط‌هایی که از دفتر روزنامه به سرفصل <b>' + esc(g) + '</b> (ماهیت ' + nat + ') رسیده، به ترتیب تاریخ؛ «ردیف» شمارهٔ همان سند در دفتر روزنامه است.' + (from ? ' (' + nb(fmt(all.length - from)) + ' ردیف آخر؛ ماندهٔ قبل از آن‌ها در ستون مانده حساب شده.)' : ''));
+  h += '<div class="box"><div class="bk-tw"><table class="bk-t bk-l"><thead><tr><th>ردیف</th><th>تاریخ</th><th>حساب معین · شرح سند</th><th>بدهکار</th><th>بستانکار</th><th>مانده</th><th class="noprint"></th></tr></thead><tbody>' + rows +
+    '</tbody><tfoot><tr><td></td><td></td><td>جمع گردش ' + esc(g) + '</td><td>' + (f0(d) || '—') + '</td><td>' + (f0(c) || '—') + '</td><td>' + balTxt(d, c) + '</td><td class="noprint"></td></tr></tfoot></table></div></div>';
+  void sg;
+  return { title: '📜 دفتر کل — ' + esc(g), sub: nb(fmt(all.length)) + ' خط', html: h };
+}
+
+/* ================================================================ 🧮 تراز آزمایشی (چهارستونی) */
+P.trial = function () {
+  const L = groups(); let D = 0, Cc = 0, BD = 0, BC = 0, rows = '';
+  L.forEach(g => {
+    let gd = 0, gc = 0;
+    g.list.forEach(o => { const b = o.dr - o.cr; if (b > 0) gd += b; else gc -= b; });
+    D += g.dr; Cc += g.cr; BD += gd; BC += gc;
+    rows += '<tr class="bk-gh"><td data-l="">' + esc(g.g) + ' <small>ماهیت ' + g.nat + '</small></td><td data-l="گردش بد">' + (f0(g.dr) || '—') + '</td><td data-l="گردش بس">' + (f0(g.cr) || '—') + '</td><td data-l="مانده بد">' + (f0(gd) || '—') + '</td><td data-l="مانده بس">' + (f0(gc) || '—') + '</td></tr>';
+    g.list.forEach(o => { const b = o.dr - o.cr;
+      rows += '<tr class="bk-ar' + (against(o) ? ' bk-x' : '') + '"><td data-l="">' + accLink(o.n) + (against(o) ? ' <small class="bk-w">⚠ خلاف ماهیت</small>' : '') + '</td><td data-l="گردش بد">' + (f0(o.dr) || '—') + '</td><td data-l="گردش بس">' + (f0(o.cr) || '—') + '</td><td data-l="مانده بد">' + (b > 0.5 ? f0(b) : '—') + '</td><td data-l="مانده بس">' + (b < -0.5 ? f0(-b) : '—') + '</td></tr>'; });
+  });
+  const x = L.reduce((a, g) => a + g.list.filter(against).length, 0);
+  let h = App.jtabs('tr') + intro('<b>تراز آزمایشی چهارستونی:</b> برای هر حساب، جمع گردش بدهکار و بستانکار (از همهٔ ثبت‌های دفتر روزنامه) و ماندهٔ آن در ستون بدهکار یا بستانکار. اگر همه‌چیز درست ثبت شده باشد، جمع ستون‌ها دوبه‌دو برابر است. ' + (x ? '<b class="bk-w">⚠ ' + x + ' حساب ماندهٔ خلاف ماهیت دارد</b> (مثلاً بانکی که مانده‌اش بستانکار شده).' : '✓ هیچ حسابی ماندهٔ خلاف ماهیت ندارد.')) +
+    '<div class="bar noprint"><label class="hint"><input type="checkbox" id="bkOnlyG"> فقط سرفصل‌ها (تراز کل)</label></div>';
+  h += '<div class="box"><div class="bk-tw"><table class="bk-t bk-tr" id="bkTrial"><thead><tr><th>حساب</th><th>گردش بدهکار</th><th>گردش بستانکار</th><th>ماندهٔ بدهکار</th><th>ماندهٔ بستانکار</th></tr></thead><tbody>' + rows +
+    '</tbody><tfoot><tr><td data-l="">جمع</td><td data-l="گردش بد">' + f0(D) + '</td><td data-l="گردش بس">' + f0(Cc) + '</td><td data-l="مانده بد">' + f0(BD) + '</td><td data-l="مانده بس">' + f0(BC) + '</td></tr></tfoot></table></div></div>' +
+    okLine(D, Cc, 'گردش‌ها') + okLine(BD, BC, 'مانده‌ها') +
+    '<div class="bk-in">بعد از تراز آزمایشی: <a data-act="go" data-to="/bs">⚖ ترازنامه</a> (دارایی‌ها = بدهی‌ها + سرمایه، طلا و ارز به قیمت روز) و <a data-act="go" data-to="/pl">📈 صورت سود و زیان</a>.</div>';
+  return { title: '🧮 تراز آزمایشی', sub: 'چهارستونی — تا امروز ' + nb(E.serToText(App.today)), html: h, post() {
+    const c = document.getElementById('bkOnlyG'); if (c) c.onchange = () => { const t = document.getElementById('bkTrial'); if (t) t.classList.toggle('bk-only', c.checked); };
+  } };
+};
+
+/* ---- the tabs on ⚖ ترازنامه and 📈 سود و زیان too ---- */
+const oa = App.afterRender;
+App.afterRender = function (r) {
+  if (typeof oa === 'function') { try { oa.apply(this, arguments); } catch (e) { console.error(e); } }
+  try { setTimeout(() => { const a = document.querySelector('#page .bk-tabs a.on'); if (a && a.scrollIntoView) a.scrollIntoView({ block: 'nearest', inline: 'center' }); }, 30); } catch (e) { }   // on a phone the chosen tab in sight
+  try {
+    if (!r || (r.page !== 'bs' && r.page !== 'pl')) return;
+    const pg = document.getElementById('page'); if (!pg || pg.querySelector(':scope > .bk-tabs')) return;
+    const head = pg.querySelector(':scope > .phead'); const html = App.jtabs(r.page);
+    if (head) head.insertAdjacentHTML('afterend', html); else pg.insertAdjacentHTML('afterbegin', html);
   } catch (e) { console.error(e); }
 };
 })();
@@ -19858,7 +20288,7 @@ function renderNav(r) {
   };
   const fxItems = E.fxPositions(C).filter(x => !App.isArchived(x.name)).map(x => ({ to: '/asset/' + H.slug(x.name), label: x.display || x.name, bal: '<span class="b num">' + H.fmtq(x.qty) + '</span>' }));
   { const na = App.archiveCount(['asset']); if (na) fxItems.push({ to: '/archive?g=asset', label: '🗄 بایگانی (' + na + ')' }); }
-  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + (App.pages.look ? simple('/look', '🎨', 'انتخاب طرح و ظاهر') : '') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
+  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + (App.pages.look ? simple('/look', '🎨', 'انتخاب طرح و ظاهر') : '') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + (App.pages.gl ? simple('/gl', '📚', 'دفتر کل') + simple('/trial', '🧮', 'تراز آزمایشی') : '') + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
   h += group('n_bank', '/banks', '🏦', 'بانک‌ها', accItems([G.CASH]).concat([{ to: '/recon', label: '⚖ مغایرت‌گیری بانک‌ها' }]), G.CASH, 'بانک جدید');
   h += group('n_brk', '/banks', '📊', 'کارگزاری‌ها', accItems([G.BRK]), G.BRK, 'کارگزاری جدید');
   h += group('n_mem', '/members', '👥', 'سرمایه‌گذاران', accItems([G.MEM]), G.MEM, 'سرمایه‌گذار جدید');
@@ -19896,7 +20326,7 @@ function renderTop() {
 /* ------------------------------------------------------------- v38 design layer
    (presentation only): quick find · card-style tables on phones · print header */
 const QPAGES = [
-  ['/home', '🏠', 'خانه', 'صفحه اصلی نمای کلی'], ['/look', '🎨', 'انتخاب طرح و ظاهر', 'طرح ظاهر رنگ تم داشبورد دیزاین فونت'], ['/bs', '⚖', 'تراز کل', 'ترازنامه دارایی بدهی سرمایه'], ['/journal', '📒', 'دفتر روزنامه', 'همه ثبت ها اسناد'],
+  ['/home', '🏠', 'خانه', 'صفحه اصلی نمای کلی'], ['/look', '🎨', 'انتخاب طرح و ظاهر', 'طرح ظاهر رنگ تم داشبورد دیزاین فونت'], ['/gl', '📚', 'دفتر کل', 'دفتر کل سرفصل حساب کل معین گردش'], ['/trial', '🧮', 'تراز آزمایشی', 'تراز آزمایشی چهارستونی گردش مانده بدهکار بستانکار'], ['/bs', '⚖', 'تراز کل', 'ترازنامه دارایی بدهی سرمایه'], ['/journal', '📒', 'دفتر روزنامه', 'همه ثبت ها اسناد'],
   ['/reports', '🗂', 'همهٔ گزارش‌ها', 'گزارش مرکز گزارش'], ['/daily', '📅', 'وقایع روزانه', 'گزارش روزانه'], ['/mreport', '🗓', 'وقایع ماهانه', 'گزارش ماهانه'],
   ['/rep/cash', '📑', 'هزینه‌ها و درآمدها', 'گزارش هزینه درآمد دسته'], ['/rep/banks', '🏦', 'گردش بانک‌ها', 'گزارش بانک'], ['/rep/brokers', '📊', 'گردش کارگزاری‌ها', 'گزارش کارگزاری'],
   ['/rep/fx', '💱', 'وضعیت و گردش ارز و طلا', 'دلار طلا سکه گزارش'], ['/rep/loans', '🏛', 'وضعیت و گردش وام‌ها', 'وام قسط گزارش'], ['/rep/debtors', '🤝', 'گزارش بدهکاران', 'بدهکار طلب'],
