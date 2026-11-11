@@ -3767,7 +3767,7 @@ html #page table.rv-t tfoot td.rv-p{color:#15803D!important}html #page table.rv-
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "49.1"; window.APP_BUILD = "1405/08/20 17:17";
+window.APP_VERSION = "49.2"; window.APP_BUILD = "1405/08/20 18:06";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -4608,7 +4608,11 @@ function fixProfitContra() {
   const have = new Set(db.entries.filter(e => e.auto && String(e.auto).indexOf('profit-owner:') === 0).map(e => e.auto));
   const miss = db.entries.filter(e => e.auto && String(e.auto).indexOf('profit:') === 0 && e.dr === clr && e.cr && e.cr !== own && e.amt && !have.has('profit-owner:' + String(e.auto).slice(7) + ':' + e.cr));
   if (!miss.length) return;
+  const isAcc = n => (db.accounts || []).some(x => x.name === n);
+  const orph = db.entries.filter(e => e.auto && /^profit-owner:[^:]+:/.test(String(e.auto)) && !isAcc(String(e.auto).replace(/^profit-owner:[^:]+:/, '')));
   miss.forEach(a => {
+    const k = 'profit-owner:' + String(a.auto).slice(7) + ':', o2 = orph.find(e => String(e.auto).indexOf(k) === 0 && e.dr === own && e.date === a.date && Math.abs((+e.amt || 0) - (+a.amt || 0)) < 0.5);
+    if (o2) { o2.auto = k + a.cr; orph.splice(orph.indexOf(o2), 1); return; }
     const month = String(a.desc || '').replace(/^\s*سود\s*/, '');
     const o = { date: a.date, desc: ('سود ' + a.cr + ' ' + month).trim(), dr: own, cr: clr, amt: a.amt, qty: null, price: null, fee: null, loc: null, dest: null, src: 'user', auto: 'profit-owner:' + String(a.auto).slice(7) + ':' + a.cr, id: db.meta.nextId++ };
     App.insertEntry(db, o);
@@ -7956,6 +7960,7 @@ function payModal(info, cal) {
     '<div class="field"><label>مبلغ سود (ریال)</label><input type="text" class="yellow num pfm-a" value="' + fmt(roundStep(cal.amt)) + '" inputmode="numeric"><div class="hint pfm-t"></div></div>' +
     '<div class="bar"><span>گرد کردن:</span><select class="pfm-r" style="width:auto"><option value="1">بدون گرد کردن</option><option value="100000">به ۱۰۰ هزار ریال</option><option value="1000000">به ۱ میلیون ریال</option></select><span class="hint">سود دقیق: <b class="num">' + fmt(Math.round(cal.amt)) + '</b></span></div>' +
     '<div class="field"><label>تاریخ ثبت</label><input type="text" class="yellow num pfm-d" value="' + defDate + '" inputmode="numeric" style="max-width:220px">' + (du ? '<div class="hint">سررسید سودِ ' + esc(du.month) + ' برای او: ' + E.serToText(du.due) + '</div>' : '') + '</div>' +
+    (App.profitPaySelect ? App.profitPaySelect(name, 'pfm-pay') : '') +
     '<div class="hint" style="line-height:1.9;margin-top:6px">با ثبت، دو سند زده می‌شود: ۱) <b>' + esc(name) + '</b> به اندازهٔ مبلغ بالا اضافه می‌شود ۲) همان مبلغ از سرمایهٔ <b>' + esc(own) + '</b> کم می‌شود. بانک تغییر نمی‌کند. با «↩ بازگردانی» برمی‌گردد.</div></div>';
   const m = App.modal('💰 ثبت سود ' + esc(name), body, '<button class="btn green" id="pfmOk" style="font-size:1.1rem;padding:9px 24px">✔ ثبت سود</button><button class="btn ghost" data-act="modal-close">انصراف</button>', { width: '640px' });
   const a = $('.pfm-a', m), r = $('.pfm-r', m), d = $('.pfm-d', m), t = $('.pfm-t', m); r.value = String(PS._step);
@@ -7967,8 +7972,10 @@ function payModal(info, cal) {
     if (isNaN(v) || v <= 0) { App.toast('مبلغ سود را درست بنویسید', true); return; }
     if (!dt) { App.toast('تاریخ را مثل 1405/07/21 بنویسید', true); return; }
     const amt = Math.round(v), mk = (date, ds, dr, cr, auto) => ({ date, desc: ds, dr, cr, amt, qty: null, price: null, fee: null, loc: null, dest: null, src: 'user', auto }), ids = [], h0 = App.C.balance(own), b0 = App.C.balance(name);
+    const pv = ($('#pfm-pay', m) || {}).value;
     App.closeModal();
     App.commit('ثبت سود ' + name, db2 => {
+      if (pv != null && App.profitPaySet) App.profitPaySet(db2, name, pv);   // v49.2
       const e = mk(dt, desc, db2.special.CLEAR, name, tag); e.id = db2.meta.nextId++; App.insertEntry(db2, e); ids.push(e.id);
       const o = mk(dt, descOwn, db2.meta.owner, db2.special.CLEAR, 'profit-owner:' + tag.slice(7) + ':' + name); o.id = db2.meta.nextId++; App.insertEntry(db2, o); ids.push(o.id);
     });
@@ -15016,8 +15023,35 @@ const FIXES = [
   { id: 'v482-amanat-split', text: '«صندوق امانات» دو تا شد: «صندوق امانات بانک ملی» (طلای امانیِ دایی حسین) و «صندوق امانات بانک کارآفرین» (طلای خودتان و الف، سکه امامی و نیم سکه)',
     need: db => saLeft(db), apply: db => saSplit(db), sticky: true },
   { id: 'v482-coins-karafarin', text: 'سکه‌ها همه در «صندوق امانات بانک کارآفرین» ثبت شد (سکه گرمی «منزل» زده شده بود)',
-    need: db => coinsOut(db).length > 0, apply: db => { coinsOut(db).forEach(e => { e.loc = SK; }); placesAdd(db); } }
+    need: db => coinsOut(db).length > 0, apply: db => { coinsOut(db).forEach(e => { e.loc = SK; }); placesAdd(db); } },
+  /* v49.2 (the owner 1405/08/20: «— چرا ۲ میلیارد نیست؟ سودش را پرداخت کردم … همهٔ حساب‌ها و تراز را چک کن ببین مغایرت نباشد»):
+     1) the profit of a member whose name was changed after it was registered: the owner's side was made a second time (it was looked for under the
+        new name) — 263,900,000 taken from his account twice; the second one is taken out;
+     2) «✎ پرداخت سود» only added Amir's Mehr profit to his capital; the payment itself (he pays it every month, always outside the banks —
+        «تسویه سوابق») was never written: it is written now, and his next months are paid the same way (70_profitpay) */
+  { id: 'v492-profit-owner-renamed', text: 'سود مهر ۱۴۰۵ یکی از اعضا که اسمش عوض شده بود دو بار از حساب شما کم شده بود؛ سند تکراری (۲۶۳٬۹۰۰٬۰۰۰ ریال) برداشته شد',
+    need: db => ownerDups(db).length > 0, apply: db => { const D = new Set(ownerDups(db)); db.entries = db.entries.filter(e => !D.has(e)); }, sticky: true },
+  { id: 'v492-amir-mehr-payout', text: 'پرداخت سود مهر ۱۴۰۵ — (۴۹٬۳۰۰٬۰۰۰ ریال، مثل ماه‌های قبل بیرون از بانک‌ها) ثبت شد؛ مانده‌اش ۲٬۰۰۰٬۰۰۰٬۰۰۰ شد',
+    need: db => !!amirPay(db), apply: db => { const e = amirPay(db); if (!e) return; e.id = db.meta.nextId++; App.insertEntry(db, e); const pp = db.meta.profitPay = Object.assign({}, db.meta.profitPay || {}); if (!pp[AMIR]) pp[AMIR] = e.cr; } }
 ];
+const AMIR = '—', U492 = 'fix-v492-amir-mehr-payout';
+/* an «owner's side» of a member's profit whose member is no longer an account, beside another one of the same month, amount and day */
+function ownerDups(db) {
+  const acc = new Set((db.accounts || []).map(a => a.name)), E2 = db.entries || [], out = [];
+  E2.forEach(e => {
+    const m = /^profit-owner:([^:]+):(.*)$/.exec(String((e && e.auto) || '')); if (!m || acc.has(m[2])) return;
+    const twin = E2.find(x => x !== e && x && x.dr === e.dr && x.date === e.date && Math.abs(N(x.amt) - N(e.amt)) < 0.5 && String(x.auto || '').indexOf('profit-owner:' + m[1] + ':') === 0 && acc.has(String(x.auto).slice(('profit-owner:' + m[1] + ':').length)));
+    if (twin) out.push(e);
+  });
+  return out;
+}
+function amirPay(db) {
+  const acc = (db.accounts || []).some(a => a.name === AMIR), CL = (db.special || {}).CLEAR; if (!acc || !CL || gone(db, U492)) return null;
+  const p = (db.entries || []).find(e => e && e.auto === 'profit:1405/07' && e.cr === AMIR && Math.abs(N(e.amt) - 49300000) < 1); if (!p) return null;
+  if ((db.entries || []).some(e => e && (e.u === U492 || (e.dr === AMIR && E.jser(e.date) >= E.jser('1405/08/01') && Math.abs(N(e.amt) - N(p.amt)) < 1)))) return null;
+  const now = new Date().toISOString();
+  return { date: p.date, desc: 'پرداخت سود مهر 1405 به ' + AMIR + ' (بیرون از بانک‌ها، مثل ماه‌های قبل)', dr: AMIR, cr: CL, amt: N(p.amt), qty: null, price: null, fee: null, loc: null, dest: null, src: 'user', auto: 'payout:1405/07:' + AMIR, u: U492, m: now, c: now };
+}
 const MALAKA = 'طلا فروشی ملکا سلامی زاده', GOLD = 'طلا ۱۸ عیار', BANK46 = 'بانک مسکن ممتاز ۴۶', U481 = 'fix-v481-gold-400sut';
 /* the move «منزل ← طلافروشی» of 1405/08/18, while the purchase of 1405/07/22 itself already says «طلافروشی» */
 function dupMv(db) {
@@ -17455,6 +17489,7 @@ function kindOf(e) {
 }
 function kind0(e) {
   const r = rmap().get(e.id), X = r ? r.X : 0, kn = (E.KIND_NAMES && E.KIND_NAMES[X]) || '';
+  if (/^payout:/.test(String(e.auto || ''))) return ['out', '💸 پرداخت سود', 'به ' + (e.dr || '')];   // v49.2 (70_profitpay)
   if (e.auto === 'reval-day' || e.auto === 'real-day') {   // v49.1: the valuation / the gain of a sale, into his account (69_revbook)
     const own = (App.db.meta || {}).owner || '', up = e.cr === own, rv = e.auto === 'reval-day';
     return [up ? 'in' : 'out', rv ? (up ? '📈 سود به قیمت روز' : '📉 زیان به قیمت روز') : (up ? '💱 سود فروش' : '💱 زیان فروش'), 'به حساب ' + own];
@@ -17544,6 +17579,10 @@ function say(e) {
     if (!rv.q) return '💬 قیمت «' + esc(u) + '» از ' + nb(fmt(rv.p0)) + ' به ' + nb(fmt(rv.p)) + ' ریال رسید؛ آن روز چیزی از آن نداشتید، پس سود و زیانی نداشت.';
     return '💬 قیمت «' + esc(u) + '» از ' + nb(fmt(rv.p0)) + ' به ' + nb(fmt(rv.p)) + ' ریال ' + (rv.p >= rv.p0 ? 'رسید' : 'افتاد') + '؛ با ' + nb(H.fmtq ? H.fmtq(rv.q) : String(rv.q)) + ' که مال شماست، ارزشش ' +
       nb(fmt(Math.round(Math.abs(rv.v)))) + ' ریال ' + (rv.v >= 0 ? 'بیشتر شد ← <b>سود ارزیابی</b>' : 'کم شد ← <b>زیان ارزیابی</b>') + ' (اگر همین الان به این قیمت بفروشید). امانی‌ها حساب نشده‌اند.';
+  }
+  if (/^payout:/.test(String(e.auto || ''))) {
+    const cl = (App.db.special || {}).CLEAR;
+    return '💬 سود «' + esc(e.dr) + '» پرداخت شد: ' + nb(fmt(Math.round(N(e.amt)))) + ' ریال از حسابش کم شد و به خودش رسید — ' + (e.cr === cl ? 'بیرون از بانک‌ها' : 'از «' + esc(e.cr) + '»') + '.';
   }
   if (e.auto === 'reval-day' || e.auto === 'real-day') {
     const own = (App.db.meta || {}).owner || '', up = e.cr === own;
@@ -17955,6 +17994,72 @@ App.revalNote = function () {
 const oi = App.init;
 if (typeof oi === 'function') App.init = function () { const r = oi.apply(this, arguments); setTimeout(fixNow, 1500); return r; };
 ['replaceDb', 'mergeApply'].forEach(k => { const o = App[k]; if (typeof o === 'function') App[k] = function () { const r = o.apply(this, arguments); setTimeout(fixNow, 1200); return r; }; });
+})();
+/* ---------------------------------------------------------------- v49.2 — «پرداخت سود» really pays
+   the owner (1405/08/20): «— چرا موجودی‌اش ۲ میلیارد نیست؟ سودش را پرداخت کردم … چرا باز آنجا آمده؟».
+   The button «✎ پرداخت سود» (and the profit registered by itself on the due day) only ADDED the profit to the member's capital and took it from
+   the owner's — nothing left the member's account, so a member who is paid every month kept it as if it stayed with him.
+   · each member has a choice: «روی سرمایه‌اش بماند» (as before) or «پرداخت شد از …» (a bank, or «تسویه سوابق» = outside the banks);
+   · when a profit is registered for a member who is paid, its payment is written in the same change: بد the member / بس that account —
+     so his balance stays (Amir: 2,000,000,000), and «↩ بازگردانی» takes both back;
+   · the choice is in the window of «✎ پرداخت سود» and of «💰 ثبت سود»; it is remembered for the next months (also for the ones registered by
+     themselves); a new name of the member keeps it. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const N = v => +v || 0, esc = H.esc;
+const sp = () => (App.db && App.db.special) || {};
+const accOk = (db, n) => !!n && (db.accounts || []).some(a => a.name === n);
+App.profitPayOf = function (nm, db) { db = db || App.db; const v = ((db && db.meta && db.meta.profitPay) || {})[nm]; return accOk(db, v) ? v : ''; };
+App.profitPaySet = function (db, nm, v) { const pp = db.meta.profitPay = Object.assign({}, db.meta.profitPay || {}); if (v) pp[nm] = v; else delete pp[nm]; };
+const payWord = v => !v ? '' : v === sp().CLEAR ? 'بیرون از بانک‌ها (تسویه سوابق)' : '«' + v + '»';
+App.profitPayWord = payWord;
+/* the choice, for a window */
+App.profitPaySelect = function (nm, id) {
+  const db = App.db, cur = App.profitPayOf(nm), C = App.C, G = App.G;
+  const banks = App.sortAcc ? App.sortAcc(db.accounts.filter(a => a.group === G.CASH || a.group === G.BRK)).map(a => a.name) : db.accounts.filter(a => a.group === G.CASH).map(a => a.name);
+  const o = (v, t) => '<option value="' + esc(v) + '"' + (v === cur ? ' selected' : '') + '>' + esc(t) + '</option>';
+  return '<div class="field pp-f"><label>این سود چه شد؟</label><select id="' + id + '" class="yellow" style="font-size:1.12rem">' +
+    o('', '↩ روی سرمایه‌اش بماند (به حسابش اضافه شود)') +
+    '<optgroup label="💸 به خودش پرداخت شد — از:">' + o(sp().CLEAR, '💸 پرداخت شد — بیرون از بانک‌ها (تسویه سوابق)') + banks.map(b => o(b, '💸 پرداخت شد از «' + b + '»' + (C && C.accts.has(b) ? '  (مانده ' + H.fmt(Math.round(C.balance(b))) + ')' : ''))).join('') + '</optgroup></select>' +
+    '<div class="hint pp-h">«پرداخت شد»: همان مبلغ از حساب ' + esc(nm) + ' هم کم می‌شود (به خودش رسید)، پس مانده‌اش همان می‌ماند. برای ماه‌های بعد همین یادش می‌ماند.</div></div>';
+};
+/* inside the change that registers a profit: its payment, for a member who is paid */
+function payouts(db, before) {
+  const own = db.meta && db.meta.owner; let n = 0;
+  (db.entries || []).slice().forEach(e => {
+    if (!e || before.has(e.id)) return;
+    const m = /^profit:(.+)$/.exec(String(e.auto || '')); if (!m || !e.cr || e.cr === own || !(N(e.amt) > 0)) return;
+    const pay = App.profitPayOf(e.cr, db); if (!pay || pay === e.cr) return;
+    const tag = 'payout:' + m[1] + ':' + e.cr; if (db.entries.some(x => x && x.auto === tag)) return;
+    const mon = String(e.desc || '').replace(/^\s*سود\s*/, '').trim();
+    const x = { date: e.date, desc: 'پرداخت سود ' + mon + ' به ' + e.cr + (pay === (db.special || {}).CLEAR ? ' (بیرون از بانک‌ها)' : ' — از «' + pay + '»'), dr: e.cr, cr: pay, amt: N(e.amt), qty: null, price: null, fee: null, loc: null, dest: null, src: 'user', auto: tag };
+    x.id = db.meta.nextId++; App.insertEntry(db, x); n++;
+  });
+  return n;
+}
+App.profitPayouts = payouts;
+const oc = App.commit;
+if (typeof oc === 'function') App.commit = function (label, fn) {
+  if (typeof fn !== 'function') return oc.apply(this, arguments);
+  return oc.call(this, label, function (db) {
+    let before = null; try { before = new Set((db.entries || []).map(e => e && e.id)); } catch (e) { }
+    const r = fn.apply(this, arguments);
+    try { if (before) payouts(db, before); } catch (e) { console.error(e); }
+    return r;
+  });
+};
+/* a new name keeps everything that belongs to the member's profit */
+const orm = App.renameMore;
+App.renameMore = function (db, oldName, nn) {
+  if (typeof orm === 'function') { try { orm.apply(this, arguments); } catch (e) { console.error(e); } }
+  try {
+    (db.entries || []).forEach(e => { const a = String((e && e.auto) || ''), m = /^(profit-owner|payout):([^:]+):(.*)$/.exec(a); if (m && m[3] === oldName) e.auto = m[1] + ':' + m[2] + ':' + nn; });
+    if (Array.isArray(db.members)) db.members = db.members.map(x => x === oldName ? nn : x);
+    if (db.fullnames && typeof db.fullnames === 'object' && !Array.isArray(db.fullnames) && db.fullnames[oldName] != null) { db.fullnames = Object.assign({}, db.fullnames); db.fullnames[nn] = db.fullnames[oldName]; delete db.fullnames[oldName]; }
+    if (db.meta && db.meta.profitPay && db.meta.profitPay[oldName] != null) { const pp = db.meta.profitPay = Object.assign({}, db.meta.profitPay); pp[nn] = pp[oldName]; delete pp[oldName]; }
+  } catch (e) { console.error(e); }
+};
 })();
 
 
@@ -18999,7 +19104,7 @@ function autoPass(items, batch) {
   const C0 = App.C, before = {}, exp = {}, ids = [];
   const nat = n => { const a = C0.accts.get(n); return a && a.nature === 'بستانکار' ? 'cr' : 'dr'; };
   const touch = (n, side, amt) => { if (!n || !C0.accts.has(n)) return; if (!(n in before)) before[n] = C0.balance(n); exp[n] = (exp[n] || 0) + (nat(n) === side ? amt : -amt); };
-  items.forEach(x => { if (x.kind === 'loan') { touch(x.title, 'dr', x.amt); touch(x.bank, 'cr', x.amt); touch(ownerNm(), 'dr', x.amt); }   /* v44.2: every installment also comes off the owner's capital (and «کسر وام‌ها») */ else { touch(x.nm, 'cr', x.amt); touch(ownerNm(), 'dr', x.amt); } });
+  items.forEach(x => { if (x.kind === 'loan') { touch(x.title, 'dr', x.amt); touch(x.bank, 'cr', x.amt); touch(ownerNm(), 'dr', x.amt); }   /* v44.2: every installment also comes off the owner's capital (and «کسر وام‌ها») */ else { touch(x.nm, 'cr', x.amt); touch(ownerNm(), 'dr', x.amt); const pw = App.profitPayOf ? App.profitPayOf(x.nm) : ''; if (pw && pw !== x.nm) { touch(x.nm, 'dr', x.amt); touch(pw, 'cr', x.amt); } } });
   App.commit('ثبت خودکار قسط و سود', db => {
     const sm = db.meta.autoSel || {};
     items.forEach(x => {
@@ -19055,7 +19160,7 @@ const selBtns = it => {
   return '<span class="asel noprint"><button type="button" class="asb yes' + (it.eff === 'yes' ? ' on' : '') + '" data-act="auto-sel" data-key="' + esc(it.key) + '" data-v="yes">✔ خودکار ثبت شود</button><button type="button" class="asb no' + (it.eff !== 'yes' ? ' on' : '') + '" data-act="auto-sel" data-key="' + esc(it.key) + '" data-v="no">✋ خودم دستی می‌زنم</button></span>';
 };
 function itemSub(it) {
-  if (it.kind === 'profit') return 'سررسید ' + esc(it.date) + ' · به حساب عضو اضافه و از سرمایهٔ ' + esc(ownerNm()) + ' کم می‌شود';
+  if (it.kind === 'profit') { const pw = App.profitPayOf ? App.profitPayOf(it.nm) : ''; return 'سررسید ' + esc(it.date) + ' · از سرمایهٔ ' + esc(ownerNm()) + ' کم می‌شود و ' + (pw ? '<b>به خودش پرداخت می‌شود</b> (از ' + esc(App.profitPayWord(pw)) + ') — ماندهٔ او عوض نمی‌شود' : '<b>روی سرمایه‌اش می‌ماند</b> (به حسابش اضافه می‌شود)'); }
   return 'سررسید ' + esc(it.date) + ' · قسط ' + it.k + ' از ' + it.n + ' · ' + (!it.bank ? '<span class="abd">بانک مشخص نیست</span>' : it.isMem ? 'به حساب سرمایهٔ «' + esc(it.bank) + '» اضافه و از حساب «' + esc(ownerNm()) + '» کم می‌شود' : 'از «' + esc(it.bank) + '»' + (it.defBank ? ' <small>(بانکِ آخرین قسط؛ اگر بانک دیگری است «✎ ویرایش و پرداخت»)</small>' : '') + ' و از حساب «' + esc(ownerNm()) + '» · موجودی ' + fmt(it.bal) + (it.low ? ' <span class="abd">⚠ کافی نیست</span>' : ''));
 }
 const itemTitle = it => it.kind === 'loan' ? 'قسط «' + esc(it.title) + '»' : 'سود «' + esc(it.nm) + '» برای ' + E.MONTHS[it.m - 1];
@@ -19077,7 +19182,7 @@ function payModal(key, fromAlert) {
     '<div class="field"><label>تاریخ ثبت</label><input type="text" id="ap_date" class="yellow num" value="' + esc(it.dueSer > App.today ? E.serToText(App.today) : it.date) + '" style="font-size:1.25rem"></div>';
   if (it.kind === 'loan') b += '<div class="field"><label>پرداخت از (بانک یا حساب سرمایه)</label><select id="ap_bank" class="yellow" style="font-size:1.15rem">' + bankOpts(cur) + '</select></div>' +
     '<div class="hint">مبلغ همان قسط است؛ اگر کمتر یا بیشتر پرداخته‌ای همین‌جا درستش کن.</div>';
-  else b += '<div class="hint">سود به حساب «' + esc(it.nm) + '» اضافه و همان مبلغ از سرمایهٔ ' + esc(ownerNm()) + ' کم می‌شود. مبلغ و تاریخ را می‌شود عوض کرد.</div>';
+  else b += (App.profitPaySelect ? App.profitPaySelect(it.nm, 'ap_pay') : '') + '<div class="hint">سود از سرمایهٔ ' + esc(ownerNm()) + ' کم می‌شود؛ یا روی سرمایهٔ «' + esc(it.nm) + '» می‌ماند یا (اگر «پرداخت شد» را بزنید) به خودش داده شده و ماندهٔ او همان می‌ماند. مبلغ و تاریخ را می‌شود عوض کرد.</div>';
   App.modal('✎ ' + (it.kind === 'loan' ? 'پرداخت قسط' : 'پرداخت سود'), b, '<button class="btn green big" data-act="auto-pay-do" data-key="' + esc(key) + '">✔ ثبت</button><button class="btn ghost" data-act="modal-close">بستن</button>', { width: '640px' });
 }
 function payDo(key) {
@@ -19093,7 +19198,9 @@ function payDo(key) {
       const lb = db.meta.loanBank = db.meta.loanBank || {}; lb[it.title] = bank; if (!isMem) lb._all = bank;
     });
   } else {
+    const pv = ($('#ap_pay') || {}).value;
     App.commit('پرداخت سود ' + it.nm, db => {
+      if (pv != null && App.profitPaySet) App.profitPaySet(db, it.nm, pv);   // v49.2: paid to him (from …) or kept on his capital — remembered
       const tag = 'profit:' + monthKey(it.y, it.m), mn = E.MONTHS[it.m - 1];
       const e = mk(date, 'سود ' + mn + ' ' + it.y, db.special.CLEAR, it.nm, Math.round(amt), tag); e.id = db.meta.nextId++; App.insertEntry(db, e);
       const o = mk(date, 'سود ' + it.nm + ' ' + mn + ' ' + it.y, db.meta.owner, db.special.CLEAR, Math.round(amt), 'profit-owner:' + monthKey(it.y, it.m) + ':' + it.nm); o.id = db.meta.nextId++; App.insertEntry(db, o);
