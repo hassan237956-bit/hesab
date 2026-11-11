@@ -4194,6 +4194,9 @@ html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-size:1.18rem!important;paddin
 html .tm-fly .tm-list a.tm-r:not(.k-trust):not(.tm-x2){flex-wrap:wrap!important;row-gap:6px!important}
 html .tm-fly .tm-list a.tm-r:not(.k-trust) .nm{flex:1 1 0!important;min-width:min-content!important}
 html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-size:1.12rem!important;padding:6px 10px!important;max-width:100%}
+/* v50.4 — the people of an asset under its line, when it is open */
+.hr-pbi{padding:4px 16px 2px}
+.hr-pbi .pb{margin:6px 0 2px}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -4201,7 +4204,7 @@ html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-size:1.12rem!important;paddin
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "50.3"; window.APP_BUILD = "1405/08/20 20:29";
+window.APP_VERSION = "50.4"; window.APP_BUILD = "1405/08/20 20:57";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -17252,11 +17255,15 @@ function rowD(a, opt) {
     '<span class="hr-ic">' + (KI[a.k] || KI.fx) + '</span><span class="hr-n">' + esc(a.disp) + '</span>' +
     '<span class="hr-q"><b class="num">' + q4(a.tot) + '</b> ' + esc(UU(a.u)) + '</span>' +
     '<span class="hr-st ' + (nb ? 'bad' : 'ok') + '">' + (nb ? '⚠ ' + fa(nb) : '✔') + '</span>' +
-    '<span class="hr-v">' + (Math.abs(tr) > EPS ? '<span class="hr-pb">' + peopleBreak(a.own, a.ppl.map(x => ({ p: x.p, q: x.q })), a.tot, a.u) + '</span>' : '<i>همه مال خودم</i>') +
+    '<span class="hr-v">' + (Math.abs(tr) > EPS ? '' : '<i>همه مال خودم</i>') +
       (pr > 0 ? '<span>سهم من <b class="num">' + money(a.own * pr) + '</b> ریال</span>' : '') + '</span>' +
-    '</summary>' + twoPart(a, opt) + '</details>';
+    /* v50.4 (the owner: «این کادر بسته نمی‌شود»): the people one under the other are inside the line — a tap closes it to one line */
+    '</summary>' + (Math.abs(tr) > EPS ? '<div class="hr-pb hr-pbi">' + peopleBreak(a.own, a.ppl.map(x => ({ p: x.p, q: x.q })), a.tot, a.u) + '</div>' : '') + twoPart(a, opt) + '</details>';
 }
 function panel(kind, L, opt) {
+  /* v50.4 (the owner: «در صفحهٔ خانه دارایی‌ها بر اساس مبلغ مرتب شوند — بیشترین به کمترین»): by the rial value of my share (then of all of it) */
+  const rv = a => { const p = priceOf(a.name); return [a.own * p, a.tot * p]; };
+  L = L.slice().sort((x, y) => { const X = rv(x), Y = rv(y); return (Y[0] - X[0]) || (Y[1] - X[1]); });
   const val = L.reduce((s, a) => s + a.own * priceOf(a.name), 0), nb = L.reduce((s, a) => s + bads(a), 0);
   return '<section class="hp hp-' + kind + '"><header class="hp-h"><h2>' + (kind === 'gold' ? '🥇 طلا و سکه' : '💱 ارز') + '</h2>' +
     (nb ? '<span class="hr-st bad">⚠ ' + fa(nb) + ' مغایرت</span>' : '') +
