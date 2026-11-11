@@ -4173,7 +4173,7 @@ html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-size:1.08rem!important;paddin
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "50.2"; window.APP_BUILD = "1405/08/20 19:50";
+window.APP_VERSION = "50.2"; window.APP_BUILD = "1405/08/20 19:57";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -17573,7 +17573,7 @@ const lget = () => { let v = ''; try { v = localStorage.getItem(LKEY) || ''; } c
 function lapply() { const v = lget(), D = document.documentElement; LF.forEach(x => D.classList.toggle('lf-' + x[0], x[0] === v)); document.querySelectorAll('.lf-t').forEach(b => b.classList.toggle('on', b.dataset.v === v)); }
 App.letterFont = v => { try { localStorage.setItem(LKEY, v); } catch (e) { } lapply(); };
 App.letterBar = () => '<div class="nfbox lfbox"><div class="nf-h">🅰 فونت نوشته‌ها <small style="font-weight:700;color:#64748B">— برای «لاجورد و زر»؛ روی هر کدام بزنید</small></div><div class="lf-g">' +
-  LF.map(([k, n, sub]) => '<button type="button" class="lf-t' + (lget() === k ? ' on' : '') + '" data-act="lfont" data-v="' + k + '"><span class="lf-s">' + n + ' — سلام حسن جان ۱۲٬۳۷۳</span><small>' + sub + '</small></button>').join('') + '</div></div>';
+  LF.map(([k, n, sub]) => '<button type="button" class="lf-t' + (lget() === k ? ' on' : '') + '" data-act="lfont" data-v="' + k + '"><span class="lf-s">' + n + ' — سرمایهٔ خالص من ۱۲٬۳۷۳</span><small>' + sub + '</small></button>').join('') + '</div></div>';
 document.addEventListener('click', ev => {
   const b = ev.target && ev.target.closest ? ev.target.closest('[data-act="lfont"]') : null; if (!b) return;
   ev.preventDefault(); ev.stopPropagation(); App.letterFont(b.dataset.v);
