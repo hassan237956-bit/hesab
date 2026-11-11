@@ -4076,6 +4076,75 @@ html.th-lux #modalBg.show{animation:lxFade .2s ease-out}
 @media (prefers-reduced-motion:reduce){html.th-lux #modalBg.show .modal,html.th-lux #modalBg.show{animation:none!important}}
 /* the tables of gold / currency by place keep fitting a phone */
 @media (max-width:520px){html.th-lux #page .sgt th,html.th-lux #page .sgt td,html.th-lux #page .sgt thead th,html.th-lux #page .sgt tbody td,html.th-lux #page .sgt tfoot td{padding:6px 3px!important}}
+
+/* v50.1 (the owner: «سرتیتر جدول‌ها قلم سفید است و اصلاً معلوم نیست — در همهٔ جدول‌ها درست کن»): some tables have their own light head
+   (طلا و ارز به تفکیک محل، ارزش ریالی …) that was stronger than the lapis one — the lapis head is now stronger than all of them */
+html.th-lux #page table:not(#lx) thead th,html.th-lux #page table:not(#lx) thead td{background:var(--lx-lap2)!important;background-image:none!important;color:#fff!important;border:0!important;border-bottom:2px solid var(--lx-gold)!important;border-left:1px solid rgba(255,255,255,.08)!important;text-shadow:none!important;opacity:1!important}
+html.th-lux #page table:not(#lx) thead th *,html.th-lux #page table:not(#lx) thead td *{color:inherit!important;opacity:1!important}
+html.th-lux #page table:not(#lx) thead th small,html.th-lux #page table:not(#lx) thead th .muted{color:#C9D3E8!important}
+html.th-lux #page table:not(#lx) thead th.dep{color:#A7F0CF!important}html.th-lux #page table:not(#lx) thead th.wd{color:#FFC2CC!important}html.th-lux #page table:not(#lx) thead th.bal{color:var(--lx-goldn)!important}
+html.th-lux #page table:not(#lx) thead tr+tr th{background:#1B3566!important}
+/* the sums at the foot of a table: dark letters on the light gold (never gold on gold) */
+html.th-lux #page table:not(#lx) tfoot td,html.th-lux #page table:not(#lx) tfoot th{background:var(--lx-goldt)!important;background-image:none!important;color:var(--lx-ink)!important;border-top:2px solid var(--lx-gold)!important;font-weight:800!important}
+html.th-lux #page table:not(#lx) tfoot td *,html.th-lux #page table:not(#lx) tfoot th *{color:inherit!important}
+html.th-lux #page table:not(#lx) tfoot .rv-m,html.th-lux #page table:not(#lx) tfoot .neg,html.th-lux #page table:not(#lx) tfoot .wd{color:var(--lx-ga)!important}
+html.th-lux #page table:not(#lx) tfoot .rv-p,html.th-lux #page table:not(#lx) tfoot .pos,html.th-lux #page table:not(#lx) tfoot .dep{color:var(--lx-em)!important}
+html.th-lux #page .sgt .sg-0{color:#98A2B6!important}
+html.th-lux #page .bk-z{color:#7A859C!important}
+
+/* ================================================================ v50.1 — whose it is: one under the other, each person in his colour (every look)
+   the owner: «من، دایی حسین، الف ردیفی زیر هم؛ عددها قشنگ زیر هم و جمع ستون با آن‌ها موازی … هر کدام یک رنگ شاد و بولد» */
+.pb{display:grid;grid-template-columns:minmax(0,1fr) max-content;row-gap:6px;margin:8px 0 4px;max-width:520px;font-size:1.02rem;text-align:start}
+.pb-r{display:contents}
+.pb-r>.pb-n,.pb-r>.pb-v{padding:8px 12px;background:#F6F8FB;background:color-mix(in srgb,var(--pc,#64748B) 9%,#fff)}
+.pb-r>.pb-n{display:flex;align-items:center;gap:9px;min-width:0;border-radius:0 12px 12px 0;border-inline-start:5px solid var(--pc,#64748B);color:var(--pc,#13203B)!important;font-weight:800;overflow-wrap:anywhere}
+.pb-r>.pb-n i{flex:none;width:12px;height:12px;border-radius:50%;background:var(--pc);box-shadow:0 0 0 3px rgba(0,0,0,.06);box-shadow:0 0 0 3px color-mix(in srgb,var(--pc) 22%,#fff)}
+.pb-r>.pb-v{border-radius:12px 0 0 12px;color:var(--pc,#13203B)!important;font-weight:900;font-size:1.14rem;direction:ltr;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums lining-nums;display:flex;align-items:center;justify-content:flex-end}
+.pb-t>.pb-n,.pb-t>.pb-v{background:transparent!important;border-inline-start:0!important;border-radius:0!important;border-top:2px solid #13203B;padding-top:10px;color:#13203B!important;font-weight:900}
+.pb-t>.pb-v{font-size:1.28rem}
+.pb-t>.pb-n small{color:#5D6781;font-weight:700;margin-inline-start:4px}
+.pb-x>.pb-n,.pb-x>.pb-v{background:#F3F6FC!important;border-inline-start:5px solid #1E3A70;color:#1E3A70!important}
+.pb-x>.pb-n small{color:#5D6781;font-weight:700}
+.pb-x.pb-ok>.pb-n,.pb-x.pb-ok>.pb-v{background:#E4F4EC!important;border-inline-start-color:#0C7A56;color:#0C7A56!important}
+.pb-x.pb-bad>.pb-n,.pb-x.pb-bad>.pb-v{background:#FBE8EB!important;border-inline-start-color:#AE2740;color:#AE2740!important}
+.pb-x>.pb-v{border-inline-start:0}
+.hr-v .hr-pb{flex:1 1 100%;display:block}
+.hr-v .hr-pb .pb{margin:6px 0 4px}
+.fd-pb{margin:12px 0 2px}
+.fd-cap{font-weight:800;color:#5D6781;font-size:.92rem;margin:0 2px 4px}
+.smm-p .pb{margin-top:8px}
+/* the tables of gold / currency: each person's column, and his row of the rial value, in his colour */
+html #page .sgt td.pcol b,html #page .sgt td.pcol .num,html .modal .sgt td.pcol b{color:var(--pc)!important}
+html #page .sgt th.pcol,html .modal .sgt th.pcol{box-shadow:inset 0 -4px 0 var(--pc)!important}
+html:not(.th-lux) #page .sgt thead th.pcol{color:var(--pc)!important}
+html #page .sgv tr.pcol th,html #page .sgv tr.pcol td b,html #page .sgv tr.pcol td{color:var(--pc)!important}
+html #page .sgv tr.pcol th{box-shadow:inset -5px 0 0 var(--pc)!important}
+html.th-lux #page table:not(#lx) tfoot td.pcol,html.th-lux #page table:not(#lx) tfoot td.pcol *{color:var(--pc)!important}
+.pb-r>.pb-n small{white-space:nowrap}
+.pb-x>.pb-n{flex-wrap:wrap;row-gap:2px}
+.pb-x>.pb-n small{flex-basis:100%;font-size:.86rem}
+
+/* v50.1 (the owner: «بانک هم مبلغش چپ‌چین و وسط باشد؛ هر بانک با یک رنگ، مبلغش با همان رنگ جلویش، بولد و ایتالیک»):
+   the panel of a group — the name and its amount on one line (the amount at the left, in the middle of the line), each row its own colour */
+.tm-fly .tm-list a.tm-r{--rc:#2563EB}
+.tm-fly .tm-list a.tm-r:nth-child(8n+2){--rc:#DB2777}.tm-fly .tm-list a.tm-r:nth-child(8n+3){--rc:#0F766E}.tm-fly .tm-list a.tm-r:nth-child(8n+4){--rc:#C2410C}
+.tm-fly .tm-list a.tm-r:nth-child(8n+5){--rc:#7C3AED}.tm-fly .tm-list a.tm-r:nth-child(8n+6){--rc:#0369A1}.tm-fly .tm-list a.tm-r:nth-child(8n+7){--rc:#A16207}.tm-fly .tm-list a.tm-r:nth-child(8n+8){--rc:#9D174D}
+html .tm-fly a.tm-r:not(.k-trust):not(.tm-x2){flex-wrap:nowrap!important;align-items:center!important;row-gap:0!important}
+html .tm-fly a.tm-r:not(.k-trust) .nm{flex:1 1 auto!important;min-width:0!important;color:var(--rc)!important;font-weight:900!important;overflow-wrap:anywhere!important}
+html .tm-fly a.tm-r .av{background:var(--rc)!important;color:#fff!important}
+html .tm-fly a.tm-r:not(.k-trust) .b{flex:none!important;margin-inline-start:auto!important;align-self:center!important;color:var(--rc)!important;font-weight:900!important;font-style:italic!important;font-size:1.14rem!important;background:#fff!important;background:color-mix(in srgb,var(--rc) 9%,#fff)!important;border:1px solid color-mix(in srgb,var(--rc) 28%,#fff)!important;box-shadow:none!important;border-radius:12px!important;padding:4px 12px!important;direction:ltr;white-space:nowrap}
+html .tm-fly a.tm-r:not(.k-trust) .b.neg{color:#AE2740!important;background:#FBE8EB!important;border-color:#F1C3CB!important}
+html .tm-fly a.tm-r.k-trust .nm{color:var(--rc)!important}
+html .tm-fly a.tm-r.k-trust .bs .b{font-style:italic!important;font-weight:900!important}
+html .tm-fly .tm-list a.tm-r:not(.k-trust) .b,html .tm-fly .tm-list a.tm-r:not(.k-trust) .b.pos{color:var(--rc)!important}
+html .tm-fly .tm-list a.tm-r:not(.k-trust) .b.neg{color:#AE2740!important}
+html .tm-fly .tm-list a.tm-r .av.av{background:var(--rc)!important;color:#fff!important}
+/* v50.1 (the owner: «سرمایه‌گذاری‌ها، بدهکاران، بستانکاران و همه: مبلغ چپ‌چین و وسط، مستقیم جلوی حساب، در یک کادر برجسته و بولد»):
+   every group's panel — the amount in a raised box of the row's colour, at the left, in the middle of the line */
+html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{background:#fff!important;border:1.5px solid var(--rc)!important;border-color:color-mix(in srgb,var(--rc) 45%,#fff)!important;
+  box-shadow:0 3px 0 color-mix(in srgb,var(--rc) 30%,#fff),0 6px 14px rgba(19,32,59,.10)!important;border-radius:14px!important;padding:6px 14px!important;font-size:1.16rem!important;min-width:5.5em;text-align:center}
+html .tm-fly .tm-list a.tm-r.k-trust .bs .b{background:#fff!important;border:1.5px solid color-mix(in srgb,var(--rc) 45%,#fff)!important;box-shadow:0 3px 0 color-mix(in srgb,var(--rc) 30%,#fff)!important;color:var(--rc)!important;border-radius:12px!important}
+html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-size:1.08rem!important;padding:6px 11px!important;min-width:0!important}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -4083,7 +4152,7 @@ html.th-lux #modalBg.show{animation:lxFade .2s ease-out}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "50.0"; window.APP_BUILD = "1405/08/20 18:44";
+window.APP_VERSION = "50.1"; window.APP_BUILD = "1405/08/20 19:08";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -17032,6 +17101,29 @@ const bads = a => checks(a).filter(x => x.lvl === 'bad').length;
 
 App.sumState = () => { const A = assets(); return { A, bad: A.reduce((s, a) => s + bads(a), 0) }; };
 
+/* ================================================================ v50.1 — whose it is, one under the other, each person in his own colour
+   the owner (1405/08/20): «مال من، دایی حسین، الف ردیفی زیر هم بیاید، عددها قشنگ زیر هم و جمع ستون با آن‌ها موازی؛ افقی نباشد …
+   در صفحهٔ خانه همهٔ طلا و دلار و … را اینطور می‌خواهم … هر کدام یک رنگ: من یک رنگ، الف یک رنگ، دایی حسین یک رنگ — شاد و بولد».
+   · من (the owner) always blue; every other person a colour of his own, the same on every page (by the order of «🤝 امانی‌ها»);
+   · a row a person — a dot and the name in his colour, the amount in one column (the units under the units); the last row «جمع» under a rule;
+     extra lines (the statement of a fund, the difference) continue the same column. */
+const PC = ['#2563EB', '#DB2777', '#C2410C', '#7C3AED', '#0F766E', '#A16207', '#0369A1', '#9D174D'];
+App.personColor = function (p) {
+  const own = (App.db && App.db.meta && App.db.meta.owner) || '';
+  if (!p || p === 'من' || p === own) return PC[0];
+  const L = []; ((App.db && App.db.trusts) || []).forEach(t => { const n = t && t.person; if (n && L.indexOf(n) < 0) L.push(n); });
+  let i = L.indexOf(p); if (i < 0) { i = 0; String(p).split('').forEach(ch => { i = (i * 31 + ch.charCodeAt(0)) % 9973; }); }
+  return PC[1 + (i % (PC.length - 1))];
+};
+function peopleBreak(own, tm, tot, u, extra) {
+  const P2 = (tm || []).map(t => ({ p: t.p || t.person, q: N(t.q) })).filter(t => Math.abs(t.q) > EPS).sort((x, y) => y.q - x.q);
+  const row = (n, q, c) => '<div class="pb-r" style="--pc:' + c + '"><span class="pb-n"><i></i>' + esc(n) + '</span><b class="num pb-v">' + q4(q) + '</b></div>';
+  return '<div class="pb">' + row('من', own, App.personColor('من')) + P2.map(t => row(t.p, t.q, App.personColor(t.p))).join('') +
+    '<div class="pb-r pb-t"><span class="pb-n">جمع' + (u ? ' <small>(' + esc(u) + ')</small>' : '') + '</span><b class="num pb-v">' + q4(tot) + '</b></div>' +
+    (extra || []).map(x => '<div class="pb-r pb-x ' + (x.cls || '') + '"><span class="pb-n">' + x.n + '</span><b class="pb-v' + (x.num === false ? '' : ' num') + '">' + x.v + '</b></div>').join('') + '</div>';
+}
+App.peopleBreak = peopleBreak;
+
 /* ================================================================ v48.3 — two parts: «🔢 مقدار» (mine, each person's trust, the sum, each with its rial value) |
    «📍 محل» (every place; a tap = into that place: every record there with ✏️) — grouped «🥇 طلا و سکه» / «💱 ارز»; each asset is one line that
    opens and closes (the owner 1405/08/18: «خلاصه وضعیت را دوتکه کن: یک طرف تعداد، یک طرف محل … مال خودم جدا، امانی‌ها جدا … روی سکه بزنم ارزش ریالی‌اش
@@ -17053,18 +17145,18 @@ function cellQ(v) { return Math.abs(N(v)) > EPS ? '<b class="num">' + q4(v) + '<
 function ownTable(a) {
   const ppl = a.ppl.filter(p => Math.abs(p.q) > EPS), one = !ppl.length;
   let h = '<div class="sg-w"><table class="sgt"><thead><tr><th class="sg-l">' + hd('📍', 'محل', 'محل') + '</th>' + (one ? '<th>مقدار <small>(' + esc(a.u) + ')</small></th>' :
-    '<th>' + hd('👤', 'مال من', 'من') + '</th>' + ppl.map(p => '<th title="' + esc(p.p) + '">' + hd('🤝', p.p, shortName(p.p)) + '</th>').join('') + '<th class="sg-t">جمع</th>') + '</tr></thead><tbody>';
+    '<th class="pcol" style="--pc:' + App.personColor('من') + '">' + hd('👤', 'مال من', 'من') + '</th>' + ppl.map(p => '<th class="pcol" title="' + esc(p.p) + '" style="--pc:' + App.personColor(p.p) + '">' + hd('🤝', p.p, shortName(p.p)) + '</th>').join('') + '<th class="sg-t">جمع</th>') + '</tr></thead><tbody>';
   a.rows.forEach(r => {
     const none = r.loc === 'محل نامشخص';
     const place = none ? '<button type="button" class="sg-pl" data-act="move-new" data-asset="' + esc(a.name) + '" data-from="">📍 بدون محل — مشخص کن</button>'
       : '<button type="button" class="sg-pl" data-act="pl-edit" data-asset="' + esc(a.name) + '" data-loc="' + esc(r.loc) + '" title="همهٔ ثبت‌های این محل، با ✏️ ویرایش">' + esc(r.loc) + ' <i>✏️</i></button>';
     h += '<tr><th class="sg-l" scope="row">' + place + '</th>';
     if (one) h += '<td>' + cellQ(r.tot) + '</td>';
-    else h += '<td class="sg-me">' + cellQ(r.own) + '</td>' + ppl.map(p => { const t = (r.tm || []).find(x => x.p === p.p); return '<td class="sg-tr">' + cellQ(t ? t.q : 0) + '</td>'; }).join('') + '<td class="sg-t">' + cellQ(r.tot) + '</td>';
+    else h += '<td class="sg-me pcol" style="--pc:' + App.personColor('من') + '">' + cellQ(r.own) + '</td>' + ppl.map(p => { const t = (r.tm || []).find(x => x.p === p.p); return '<td class="sg-tr pcol" style="--pc:' + App.personColor(p.p) + '">' + cellQ(t ? t.q : 0) + '</td>'; }).join('') + '<td class="sg-t">' + cellQ(r.tot) + '</td>';
     h += '</tr>';
   });
   h += '</tbody><tfoot><tr><th class="sg-l" scope="row">جمع</th>' + (one ? '<td>' + cellQ(a.tot) + '</td>' :
-    '<td class="sg-me">' + cellQ(a.own) + '</td>' + ppl.map(p => '<td class="sg-tr">' + cellQ(p.q) + '</td>').join('') + '<td class="sg-t">' + cellQ(a.tot) + '</td>') + '</tr></tfoot></table></div>';
+    '<td class="sg-me pcol" style="--pc:' + App.personColor('من') + '">' + cellQ(a.own) + '</td>' + ppl.map(p => '<td class="sg-tr pcol" style="--pc:' + App.personColor(p.p) + '">' + cellQ(p.q) + '</td>').join('') + '<td class="sg-t">' + cellQ(a.tot) + '</td>') + '</tr></tfoot></table></div>';
   return h;
 }
 function valTable(a) {
@@ -17072,9 +17164,9 @@ function valTable(a) {
   if (!(pr > 0)) return '<div class="smp-pr">برای «' + esc(a.disp) + '» هنوز «قیمت روز» ثبت نشده؛ ارزش ریالی بعد از ثبت قیمت می‌آید.</div>';
   const d = p.lastDate ? (typeof p.lastDate === 'number' ? E.serToText(p.lastDate) : String(p.lastDate)) : '';
   const ppl = a.ppl.filter(x => Math.abs(x.q) > EPS);
-  const rows = [['👤 مال من', a.own]].concat(ppl.map(x => ['🤝 ' + esc(x.p), x.q])).concat(ppl.length ? [['جمع نزد من', a.tot]] : []);
+  const rows = [['👤 مال من', a.own, App.personColor('من')]].concat(ppl.map(x => ['🤝 ' + esc(x.p), x.q, App.personColor(x.p)])).concat(ppl.length ? [['جمع نزد من', a.tot]] : []);
   return '<div class="sg-w"><table class="sgt sgv"><thead><tr><th class="sg-l">💰 ارزش ریالی</th><th>به قیمت روز' + (d ? ' <b class="num">' + esc(d) + '</b>' : '') + ' — هر ' + esc(a.u) + ' <b class="num">' + money(pr) + '</b> ریال</th></tr></thead><tbody>' +
-    rows.map((x, k) => '<tr' + (ppl.length && k === rows.length - 1 ? ' class="sg-sum"' : '') + '><th class="sg-l" scope="row">' + x[0] + '</th><td><b class="num">' + money(x[1] * pr) + '</b> ریال</td></tr>').join('') + '</tbody></table></div>';
+    rows.map((x, k) => '<tr' + (ppl.length && k === rows.length - 1 ? ' class="sg-sum"' : ' class="pcol" style="--pc:' + x[2] + '"') + '><th class="sg-l" scope="row">' + x[0] + '</th><td><b class="num">' + money(x[1] * pr) + '</b> ریال</td></tr>').join('') + '</tbody></table></div>';
 }
 function cntTable(a) {
   let h = '<div class="sg-w"><table class="sgt sgc"><thead><tr><th class="sg-l">🔍 مغایرت‌گیری</th><th>برنامه</th><th>شمارش من</th><th>اختلاف</th><th></th></tr></thead><tbody>';
@@ -17105,7 +17197,7 @@ function rowD(a, opt) {
     '<span class="hr-ic">' + (KI[a.k] || KI.fx) + '</span><span class="hr-n">' + esc(a.disp) + '</span>' +
     '<span class="hr-q"><b class="num">' + q4(a.tot) + '</b> ' + esc(a.u) + '</span>' +
     '<span class="hr-st ' + (nb ? 'bad' : 'ok') + '">' + (nb ? '⚠ ' + fa(nb) : '✔') + '</span>' +
-    '<span class="hr-v">' + (Math.abs(tr) > EPS ? '<i>مال من <b class="num">' + q4(a.own) + '</b> · امانی <b class="num">' + q4(tr) + '</b></i>' : '<i>همه مال خودم</i>') +
+    '<span class="hr-v">' + (Math.abs(tr) > EPS ? '<span class="hr-pb">' + peopleBreak(a.own, a.ppl.map(x => ({ p: x.p, q: x.q })), a.tot, a.u) + '</span>' : '<i>همه مال خودم</i>') +
       (pr > 0 ? '<span>سهم من <b class="num">' + money(a.own * pr) + '</b> ریال</span>' : '') + '</span>' +
     '</summary>' + twoPart(a, opt) + '</details>';
 }
@@ -17131,10 +17223,12 @@ P.fund = function () {
   L.forEach(({ a, r }) => {
     const c = cnt(a.name, r.loc), d = c ? N(c.q) - r.tot : 0, A = ' data-a="' + esc(a.name) + '" data-l="' + esc(r.loc) + '"';
     h += '<div class="box fd"><h2>🏦 ' + esc(r.loc) + ' <small>— ' + esc(a.disp) + '</small></h2>' +
-      '<button type="button" class="btn navy big fd-b" data-act="sm-fund"' + A + '>⚖ مغایرت‌گیری با صورتحساب صندوق</button><div class="fd-g">' +
-      '<div><span>در برنامه</span><b class="num">' + q4(r.tot) + '</b> ' + esc(a.u || '') + (r.tm && r.tm.length ? '<small>من ' + q4(r.own) + r.tm.map(t => ' · ' + esc(t.p) + ' ' + q4(t.q)).join('') + '</small>' : '') + '</div>' +
-      '<div><span>آخرین صورتحساب</span>' + (c ? '<b class="num">' + q4(c.q) + '</b> ' + esc(a.u || '') + (c.d ? '<small>' + esc(c.d) + '</small>' : '') : '<b class="sg-0">هنوز نزده‌اید</b>') + '</div>' +
-      '<div><span>اختلاف</span>' + (c ? (Math.abs(d) <= EPS ? '<b class="sg-v">✔ یکی است</b>' : '<b class="num sg-x">' + (d > 0 ? '+' : '−') + q4(Math.abs(d)) + '</b>') : '<b class="sg-0">—</b>') + '</div></div>' +
+      '<button type="button" class="btn navy big fd-b" data-act="sm-fund"' + A + '>⚖ مغایرت‌گیری با صورتحساب صندوق</button>' +
+      '<div class="fd-pb"><div class="fd-cap">در برنامه — مال چه کسی</div>' +
+      peopleBreak(r.own, r.tm || [], r.tot, a.u || '', [
+        { n: '📄 آخرین صورتحساب صندوق' + (c && c.d ? ' <small class="num">' + esc(c.d) + '</small>' : ''), v: c ? q4(c.q) : 'هنوز نزده‌اید', num: !!c, cls: 'pb-st' },
+        { n: 'اختلاف', v: c ? (Math.abs(d) <= EPS ? '✔ یکی است' : (d > 0 ? '+' : '−') + q4(Math.abs(d))) : '—', num: !!(c && Math.abs(d) > EPS), cls: c ? (Math.abs(d) <= EPS ? 'pb-ok' : 'pb-bad') : '' }]) +
+      '</div>' +
       '</div>';
   });
   return { title: '⚖ مغایرت صندوق ارزی', sub: 'موجودی برنامه را با صورتحساب صندوق (مانا و …) مقایسه کنید', html: h + '</div>' };
@@ -17160,9 +17254,9 @@ P.sum = function () {
 function rowOf(a, l) { const A = assets().find(x => x.name === a); return { A, r: A ? A.rows.find(x => x.loc === l) : null }; }
 function cntWin(a, l) {
   const { A, r } = rowOf(a, l), prog = r ? r.tot : 0, c = cnt(a, l), u = A ? A.u : '';
-  const parts = r && r.tm && r.tm.length ? ' <small>(من ' + q4(r.own) + r.tm.map(t => ' · ' + esc(t.p) + ' ' + q4(t.q)).join('') + ')</small>' : '';
+  const parts = '';
   App.modal('✏️ شمارش من — ' + esc(A ? A.disp : a) + ' در «' + esc(l) + '»',
-    '<div class="smm"><div class="smm-p">برنامه می‌گوید: <b class="num">' + q4(prog) + '</b> ' + esc(u) + parts + '</div>' +
+    '<div class="smm"><div class="smm-p">برنامه می‌گوید:' + (r && r.tm && r.tm.length ? peopleBreak(r.own, r.tm, prog, u) : ' <b class="num">' + q4(prog) + '</b> ' + esc(u) + parts) + '</div>' +
     '<label class="smm-f">واقعاً چقدر است؟ (' + esc(u) + ')<input id="smc_q" type="text" inputmode="decimal" autocomplete="off" data-asset="' + esc(a) + '" value="' + (c ? esc(String(c.q)) : '') + '"></label>' +
     '<label class="smm-f">تاریخ شمارش<input id="smc_d" type="text" inputmode="numeric" value="' + esc(c && c.d ? c.d : today()) + '"></label>' +
     (isFund(l) ? '<div class="smm-n">برای صندوق: همان <b>موجودی صورتحساب صندوق</b> را بنویسید. بعد از ذخیره، اختلاف را برای ثبت سود (یا پرسیدن بابت کاهش) نشان می‌دهد.</div>' : '<div class="smm-n">فقط یادداشت شما است؛ به هیچ حسابی دست نمی‌زند. اگر فرق کند، در خلاصه وضعیت ⚠ می‌آید.</div>') + '</div>',
@@ -17179,7 +17273,7 @@ function setCount(db, a, l, q, d) { const C = db.counts = db.counts || {}; (C[a]
 function fundWin(a, l) {
   const { A, r } = rowOf(a, l), prog = r ? r.tot : 0, c = cnt(a, l), u = A ? A.u : '';
   App.modal('⚖ مغایرت‌گیری «' + esc(l) + '» — ' + esc(A ? A.disp : a),
-    '<div class="smm"><div class="smm-p">در دفتر: <b class="num">' + q4(prog) + '</b> ' + esc(u) + (r && r.tm && r.tm.length ? ' <small>(من ' + q4(r.own) + r.tm.map(t => ' · ' + esc(t.p) + ' ' + q4(t.q)).join('') + ')</small>' : '') + '</div>' +
+    '<div class="smm"><div class="smm-p">در دفتر:' + (r && r.tm && r.tm.length ? peopleBreak(r.own, r.tm, prog, u) : ' <b class="num">' + q4(prog) + '</b> ' + esc(u)) + '</div>' +
     '<label class="smm-f">📄 موجودی طبق صورتحساب صندوق (' + esc(u) + ')<input id="smf_q" type="text" inputmode="decimal" autocomplete="off" data-asset="' + esc(a) + '" value="' + (c ? esc(String(c.q)) : '') + '"></label>' +
     '<label class="smm-f">تاریخ صورتحساب<input id="smf_d" type="text" inputmode="numeric" value="' + esc(c && c.d ? c.d : today()) + '"></label>' +
     '<div id="smf_res"></div></div>',
