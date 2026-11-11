@@ -3727,6 +3727,35 @@ html #page table.bk-t tfoot td[data-l]:not([data-l=""])::before{color:#475569!im
 .fd-g small{color:#64748B;font-weight:600;font-size:.82rem}
 .fd-b{width:100%;justify-content:center;font-size:1.1rem}
 @media (max-width:560px){.fd-g{grid-template-columns:minmax(0,1fr)}}
+/* v49.0 · «📈 سود و زیان تغییر قیمت‌ها» (68_reval) */
+.rv-p{color:#15803D!important;font-weight:800}.rv-m{color:#B91C1C!important;font-weight:800}.rv-z{color:#64748B}
+.rv-say{line-height:1.9;margin:4px 0 8px;font-size:1.02rem}
+.rv-sum{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:0 0 14px}
+.rv-sum>div{background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.rv-sum span{font-size:.84rem;color:#64748B;font-weight:700}.rv-sum b{font-size:1.2rem}.rv-sum small{font-size:.76rem;color:#94A3B8}
+@media (max-width:700px){.rv-sum{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.rv-tw{overflow-x:auto}
+.rv-t{width:100%;border-collapse:collapse}
+.rv-t th{background:#F1F5F9;color:#475569;font-size:.84rem;padding:7px 8px;text-align:right;border-bottom:2px solid #E2E8F0}
+.rv-t td{padding:8px;border-bottom:1px solid #EEF2F7}
+.rv-t td:not(:first-child),.rv-t th:not(:first-child){text-align:left;white-space:nowrap}
+.rv-t.big td{font-size:1.02rem}
+html #page table.rv-t tfoot td,html #page table.rv-t tfoot td *{color:#0F172A}
+html #page table.rv-t tfoot td{background:#E2E8F0!important;font-weight:800}
+html #page table.rv-t tfoot td.rv-p{color:#15803D!important}html #page table.rv-t tfoot td.rv-m{color:#B91C1C!important}
+.rv-d>summary{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 4px;cursor:pointer;border-bottom:1px solid #EEF2F7;list-style:none}
+.rv-d>summary::-webkit-details-marker{display:none}
+.rv-d>summary small{color:#64748B;font-weight:700}
+#toast .t.rv-toast.m{background:#7F1D1D}#toast .t.rv-toast.p{background:#14532D}
+@media (max-width:640px){
+ .rv-t thead{display:none}.rv-t,.rv-t tbody,.rv-t tfoot{display:block}
+ .rv-t tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 10px;padding:8px 4px;border-bottom:1px solid #E2E8F0}
+ .rv-t td{display:block;border:0!important;padding:1px 2px;text-align:right!important;white-space:normal!important}
+ .rv-t td:first-child{grid-column:1/-1;font-weight:800}
+ .rv-t td[data-l]:not([data-l=""])::before{content:attr(data-l);display:block;font-size:.72rem;color:#64748B;font-weight:700}
+ .rv-t td:empty{display:none}
+}
+@media (max-width:640px){.rv-sum b{font-size:1rem;letter-spacing:-.2px;overflow-wrap:anywhere}.rv-sum>div{padding:8px 9px}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3734,7 +3763,7 @@ html #page table.bk-t tfoot td[data-l]:not([data-l=""])::before{color:#475569!im
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.9"; window.APP_BUILD = "1405/08/20 15:37";
+window.APP_VERSION = "49.0"; window.APP_BUILD = "1405/08/20 16:00";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -4263,7 +4292,7 @@ function balanceSheet(C) {
   const eq = [
     { key: 'others', label: 'سرمایه اعضای دیگر (مال خودشان)', v: grp('اعضا') - own },
     { key: 'ownnet', label: 'سرمایهٔ من پس از کسر اقساط وام‌ها', v: own - cb(sp.CONTRA) },
-    { key: 'unreal', label: 'سود/زیان ارزیابی طلا و ارز (هنوز به حساب کسی نرفته)', v: fxUn - cb(sp.RESERVE) - ta.reval },
+    { key: 'unreal', label: 'سود/زیان طلا و ارز به قیمت روز (مال من — فرض فروش همه به آخرین قیمت)', v: fxUn - cb(sp.RESERVE) - ta.reval },
     { key: 'real', label: 'سود و زیان تحقق‌یافته و سایر', v: cb(sp.PL_REAL) + cb(sp.PL_OTH) },
   ];
   const totalE = eq.reduce((s, x) => s + x.v, 0);
@@ -6522,7 +6551,7 @@ P.bs = function () {
   h += '<div class="bsgrid bstotals"><div class="bst a"><span>جمع دارایی‌ها</span><b class="num">' + fmt(bs.totalA) + '</b></div><div class="bst l"><span>جمع بدهی‌ها + سرمایه</span><b class="num">' + fmt(bs.totalL + bs.totalE) + '</b></div></div>';
   h += '<div class="status ' + (okBs ? 'ok' : 'bad') + '" style="margin:10px 0 16px;font-size:1.1rem;text-align:center">' + (okBs ? '✓ ترازنامه متوازن است — دو طرف با هم برابرند' : '⚠ مغایرت ' + fmt(bs.diff) + ' ریال — ثبت‌های ناقص را در دفتر روزنامه ببینید') + '</div>';
   h += fxReclassBox(bs);
-  h += '<div class="box"><h2>ℹ️ این خط‌های سرمایه یعنی چه؟</h2><div style="line-height:1.9"><b>سود/زیان ارزیابی (تحقق‌نیافته):</b> فرق قیمت روز طلا و ارزی که هنوز نفروخته‌اید با قیمت خریدشان — سودِ روی کاغذ است.<br><b>سود و زیان تحقق‌یافته و سایر:</b> سودِ واقعیِ فروش طلا/ارز (قیمت فروش − قیمت خرید، وقتی به حساب کسی نرفته) به‌اضافهٔ «سایر درآمدها و هزینه‌ها» که با دکمهٔ «هزینه (فقط سود و زیان)» یا «درآمد» ثبت شده است.</div></div>';
+  h += '<div class="box"><h2>ℹ️ این خط‌های سرمایه یعنی چه؟</h2><div style="line-height:1.9"><b>سود/زیان طلا و ارز به قیمت روز:</b> فرق آخرین «قیمت روز» طلا و ارزی که دارید با قیمت خریدشان — یعنی اگر همه را همین الان به این قیمت بفروشید، این سود یا زیان مال شماست (مثل تحقق‌یافته). هر تغییرش را در «📈 سود و زیان تغییر قیمت‌ها» ببینید.<br><b>سود و زیان تحقق‌یافته و سایر:</b> سودِ واقعیِ فروش طلا/ارز (قیمت فروش − قیمت خرید، وقتی به حساب کسی نرفته) به‌اضافهٔ «سایر درآمدها و هزینه‌ها» که با دکمهٔ «هزینه (فقط سود و زیان)» یا «درآمد» ثبت شده است.</div></div>';
   // banks under the balance sheet, each one opens its own turnover right here
   h += bankStrip();
   h += '<div class="row"><div class="col"><div class="box"><h2>ترکیب دارایی‌ها</h2>' + donut(bs.assets.map(a => ({ label: a.label.split(' (')[0], v: a.v })), 230, '') + '</div></div>' +
@@ -6536,7 +6565,7 @@ function myNetBox(bs) {
   const a = bs.eq[1].v, b = bs.eq[2].v, c = bs.eq[3].v, tot = bs.myReal, own = App.db.meta.owner;
   const r = (l, v) => '<tr><td>' + l + '</td><td class="n bal' + (v < -0.5 ? ' neg' : '') + '">' + fmt(v) + '</td></tr>';
   return '<div class="box" style="border:3px solid #15803D;background:#F0FDF4"><h2>💎 سرمایهٔ خالص ' + esc(own) + ' — جمع سه خط بالا</h2><table class="tbl"><tbody>' +
-    r('سرمایه ' + esc(own) + ' پس از کسر اقساط وام‌ها', a) + r('+ سود/زیان ارزیابی ارز و طلا (تحقق‌نیافته)', b) + r('+ سود و زیان تحقق‌یافته و سایر', c) +
+    r('سرمایه ' + esc(own) + ' پس از کسر اقساط وام‌ها', a) + r('+ سود/زیان طلا و ارز به قیمت روز (فرض فروش همه)', b) + r('+ سود و زیان تحقق‌یافته و سایر', c) +
     '</tbody><tfoot><tr><td>سرمایهٔ خالص من</td><td class="n">' + fmt(tot) + '</td></tr></tfoot></table>' +
     (a < -0.5 ? '<div class="hint" style="margin-top:8px;line-height:1.8">⚠ خط اول منفی است یعنی وام‌های بانکی از سرمایهٔ ثبت‌شدهٔ حساب شما بیشتر است؛ سودِ ارزیابی ارز و طلا (که هنوز نفروخته‌اید) آن را جبران می‌کند. اشتباه حسابداری نیست و ثروت خالص شما همان عدد پایین است.</div>' : '') + '</div>';
 }
@@ -15225,7 +15254,7 @@ const COL = {
   n_bank: ['#1D4ED8', '#60A5FA'], n_brk: ['#6D28D9', '#A78BFA'], n_mem: ['#047857', '#34D399'], n_fx: ['#B45309', '#FBBF24'], n_loan: ['#B91C1C', '#F87171'],
   n_debt: ['#0E7490', '#22D3EE'], n_cred: ['#9D174D', '#F472B6'], n_trust: ['#92400E', '#F59E0B'], n_inv: ['#0F766E', '#5EEAD4'],
   s_rep: ['#4338CA', '#818CF8'], s_set: ['#334155', '#94A3B8'],
-  '/home': ['#B45309', '#FCD34D'], '/look': ['#BE185D', '#F9A8D4'], '/gl': ['#0F766E', '#5EEAD4'], '/trial': ['#4338CA', '#A5B4FC'], '/fund': ['#1E3A8A', '#93C5FD'], '/bs': ['#1E3A8A', '#93C5FD'], '/journal': ['#7C2D12', '#FDBA74'], '/tasks': ['#15803D', '#86EFAC'],
+  '/home': ['#B45309', '#FCD34D'], '/look': ['#BE185D', '#F9A8D4'], '/gl': ['#0F766E', '#5EEAD4'], '/trial': ['#4338CA', '#A5B4FC'], '/fund': ['#1E3A8A', '#93C5FD'], '/reval': ['#047857', '#6EE7B7'], '/bs': ['#1E3A8A', '#93C5FD'], '/journal': ['#7C2D12', '#FDBA74'], '/tasks': ['#15803D', '#86EFAC'],
   '/archive': ['#475569', '#CBD5E1'], '/settings': ['#6D28D9', '#C4B5FD'], '/backup': ['#0F172A', '#64748B'], '/trust': ['#92400E', '#F59E0B']
 };
 const FA = s => String(s).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
@@ -16448,7 +16477,7 @@ P.pl = function (arg, q) {
   const row = (cls, t, v, sub, d) => '<details class="plr ' + cls + '"' + (d ? '' : ' data-nod="1"') + '><summary><span class="plr-n">' + t + (sub ? '<small>' + sub + '</small>' : '') + '</span><b class="num' + (v < -0.5 ? ' neg' : '') + '">' + money(v) + '</b></summary>' + (d || '') + '</details>';
   const net = R.net, good = net >= 0;
   const incRows = row('i', '💱 سود فروش ارز و طلا', R.rT, 'تحقق‌یافته — فروخته شده', det(R.real, R.disp)) +
-    row('i', '📊 سود ارزیابی ارز و طلا', R.uT, 'تغییر ارزش روز، هنوز نفروخته', det(R.unreal, R.disp)) +
+    row('i', '📊 سود/زیان ارزیابی به قیمت روز', R.uT, 'فرض فروش همه به آخرین قیمت — مثل تحقق‌یافته', det(R.unreal, R.disp) + '<div class="pld"><a data-act="go" data-to="/reval">📈 هر تغییر قیمت به تفکیک ←</a></div>') +
     (Math.abs(R.othI) > 0.5 ? row('i', '➕ سایر درآمدها', R.othI, '«' + esc(sp().PL_OTH || '') + '»', '') : '');
   const expRows = row('x', '👥 سود سرمایه‌گذاران و بستانکاران', R.iT, 'از سرمایهٔ من به حسابشان رفته', det(R.inv)) +
     (Math.abs(R.othE) > 0.5 ? row('x', '➖ سایر هزینه‌ها', R.othE, '«' + esc(sp().PL_OTH || '') + '»', '') : '');
@@ -17420,6 +17449,7 @@ function kindOf(e) {
 }
 function kind0(e) {
   const r = rmap().get(e.id), X = r ? r.X : 0, kn = (E.KIND_NAMES && E.KIND_NAMES[X]) || '';
+  if (X === 6) { const v = revOf(r); return v > 0.5 ? ['in', '📈 سود ارزیابی', e.dr || ''] : v < -0.5 ? ['out', '📉 زیان ارزیابی', e.dr || ''] : ['tr', '🏷 قیمت روز', e.dr || '']; }
   const dm = money(e.dr), cm = money(e.cr), sub = [kn && kn !== 'ثبت عمومی' ? kn : '', e.cat || ''].filter(Boolean).join(' · ');
   if (dm && cm) return ['tr', '🔁 انتقال', sub, kn];
   if (dm) return ['in', '🔺 واریز', sub || ('به ' + e.dr), kn];
@@ -17443,8 +17473,15 @@ const seqOf = e => {
   return SEQ.get(e.id) || 0;
 };
 App.journalSeq = seqOf;
+/* v48.10 (the owner: «هر بار قیمت را عوض می‌کنم، سود و زیانش را بگو»): a price record = «ارزیابی به قیمت روز»: what the new price made of
+   what is his (the program's own numbers: the previous price, the quantity he had, the change of value) */
+const REV = 'سود و زیان ارزیابی (به قیمت روز)';
+function revOf(r) { if (!r || r.X !== 6) return 0; const p0 = N(r.pprev), p = N(r.H), q = N(r.pqty); return p0 > 0 && q ? N(r.M) || q * (p - p0) : 0; }
+App.revalOf = e => { const r = rmap().get(e && e.id); return r && r.X === 6 ? { p0: N(r.pprev), p: N(r.H), q: N(r.pqty), v: revOf(r), a: r.item || e.dr } : null; };
 function legs(e) {
   const r = rmap().get(e.id); let L = [];
+  if (r && r.X === 6) { const v = revOf(r); if (Math.abs(v) >= 0.5) { const a = r.item || e.dr; L = v > 0 ? [{ a, v }, { a: REV, v: -v }] : [{ a: REV, v: -v }, { a, v }]; }
+    return { all: L, dr: L.filter(x => x.v > 0), cr: L.filter(x => x.v < 0).map(x => ({ a: x.a, v: -x.v })) }; }
   if (r && r.a) r.a.forEach((a, i) => { const v = N(r.m[i]); if (a && Math.abs(v) >= 0.5) L.push({ a, v }); });
   if (!L.length && e.dr && e.cr) { const v = amountOf(e); L = [{ a: e.dr, v }, { a: e.cr, v: -v }]; }
   const M = []; L.forEach(x => { const o = M.find(y => y.a === x.a && (y.v > 0) === (x.v > 0)); if (o) o.v += x.v; else M.push({ a: x.a, v: x.v }); });   // one line per account and side
@@ -17455,7 +17492,7 @@ function voucher(e, o) {
   o = o || {};
   const K = kindOf(e), q = N(e.qty), pr = N(e.price), L = legs(e), n = seqOf(e);
   const code = App.trackCode ? App.trackCode(e) : '', reg = App.regText ? App.regText(e) : '';
-  const acc = (nm, sd) => '<span class="jv-a jv-' + sd + '"><em title="' + (sd === 'dr' ? 'بدهکار' : 'بستانکار') + '">' + (sd === 'dr' ? 'بد' : 'بس') + '</em> ' + (nm ? '<a data-act="go" data-to="' + esc(App.accountRoute ? App.accountRoute(nm) : '/acc/' + H.slug(nm)) + '">' + esc(nm) + '</a>' : '<i>—</i>') + '</span>';
+  const acc = (nm, sd) => '<span class="jv-a jv-' + sd + '"><em title="' + (sd === 'dr' ? 'بدهکار' : 'بستانکار') + '">' + (sd === 'dr' ? 'بد' : 'بس') + '</em> ' + (nm ? '<a data-act="go" data-to="' + esc(nm === REV ? '/reval' : App.accountRoute ? App.accountRoute(nm) : '/acc/' + H.slug(nm)) + '">' + esc(nm) + '</a>' : '<i>—</i>') + '</span>';
   const tD = L.dr.reduce((a, x) => a + x.v, 0), tC = L.cr.reduce((a, x) => a + x.v, 0), many = L.dr.length + L.cr.length > 2;
   return '<article class="jv jv-' + K[0] + '" data-id="' + esc(String(e.id)) + '">' +
     '<header class="jv-h">' + (n ? '<span class="jv-rn" title="ردیف در دفتر روزنامه (به ترتیب تاریخ)">ردیف ' + nb(String(n)) + '</span>' : '') + '<span class="jv-k">' + K[1] + (K[2] ? ' <small>· ' + esc(K[2]) + '</small>' : '') + '</span>' +
@@ -17467,7 +17504,7 @@ function voucher(e, o) {
       L.cr.map(x => acc(x.a, 'cr') + '<span class="jv-am"></span><span class="jv-am jv-v">' + nb(fmt(Math.round(x.v))) + '</span>').join('') +
       (many ? '<span class="jv-a jv-tot">جمع <small>' + (Math.abs(tD - tC) < 1 ? '✓ بد = بس' : '⚠ برابر نیست') + '</small></span><span class="jv-am jv-v jv-tot">' + nb(fmt(Math.round(tD))) + '</span><span class="jv-am jv-v jv-tot">' + nb(fmt(Math.round(tC))) + '</span>' : '') +
     '</div>' +
-    (say(e) ? '<div class="jv-say">' + say(e) + '</div>' : '') + (o.bal ? '<div class="jv-bal">' + o.bal + '</div>' : '') +
+    (say(e) ? '<div class="jv-say">' + say(e) + '</div>' : '') + (App.revalOf(e) && L.all.length ? '<div class="jv-q">📈 ارزیابی به قیمت روز — در «صورت سود و زیان» و «ترازنامه» حساب می‌شود؛ گزارش همه: <a data-act="go" data-to="/reval">سود و زیان تغییر قیمت‌ها</a></div>' : '') + (o.bal ? '<div class="jv-bal">' + o.bal + '</div>' : '') +
     (q && pr ? '<div class="jv-q">مقدار ' + nb(H.fmtq ? H.fmtq(q) : String(q)) + ' × نرخ ' + nb(fmt(pr)) + '</div>' : '') +
     '<div class="jv-s"><b>شرح:</b> ' + (esc(e.desc || '') || '<i>—</i>') + (e.auto || e.by === 'auto' ? ' <small class="jv-au">🤖 خودکار</small>' : '') + '</div>' +
     '<div class="jv-m">' + (code ? '<span>🧾 کد پیگیری ' + nb(App.trackFmt(code)) + '</span>' : '') + (reg ? '<span>🕒 ثبت: ' + nb(reg.replace(' ساعت ', ' · ')) + '</span>' : '') +
@@ -17490,6 +17527,14 @@ function side(n, dr) {
   return dr ? 'به ' + q + ' اضافه شد' : 'از ' + q + ' کم شد';
 }
 function say(e) {
+  const rv = App.revalOf(e);
+  if (rv) {
+    const u = rv.a;
+    if (!(rv.p0 > 0)) return '💬 اولین قیمت «' + esc(u) + '»: ' + nb(fmt(rv.p)) + ' ریال.';
+    if (!rv.q) return '💬 قیمت «' + esc(u) + '» از ' + nb(fmt(rv.p0)) + ' به ' + nb(fmt(rv.p)) + ' ریال رسید؛ آن روز چیزی از آن نداشتید، پس سود و زیانی نداشت.';
+    return '💬 قیمت «' + esc(u) + '» از ' + nb(fmt(rv.p0)) + ' به ' + nb(fmt(rv.p)) + ' ریال ' + (rv.p >= rv.p0 ? 'رسید' : 'افتاد') + '؛ با ' + nb(H.fmtq ? H.fmtq(rv.q) : String(rv.q)) + ' که مال شماست، ارزشش ' +
+      nb(fmt(Math.round(Math.abs(rv.v)))) + ' ریال ' + (rv.v >= 0 ? 'بیشتر شد ← <b>سود ارزیابی</b>' : 'کم شد ← <b>زیان ارزیابی</b>') + ' (اگر همین الان به این قیمت بفروشید). امانی‌ها حساب نشده‌اند.';
+  }
   const LG = legs(e); if (!LG.dr.length || !LG.cr.length) return '';
   const r = rmap().get(e.id), X = r ? r.X : 0, kn = (E.KIND_NAMES && E.KIND_NAMES[X]) || '', d = String(e.desc || '').trim();
   const why = (X === 3 || X === 4 || X === 5) ? kn : (e.cat || (d ? (d.length > 42 ? d.slice(0, 40) + '…' : d) : (kn !== 'ثبت عمومی' ? kn : '')));
@@ -17715,6 +17760,106 @@ App.afterRender = function (r) {
     const pg = document.getElementById('page'); if (!pg || pg.querySelector(':scope > .bk-tabs')) return;
     const head = pg.querySelector(':scope > .phead'); const html = App.jtabs(r.page);
     if (head) head.insertAdjacentHTML('afterend', html); else pg.insertAdjacentHTML('afterbegin', html);
+  } catch (e) { console.error(e); }
+};
+})();
+/* ---------------------------------------------------------------- v48.10 — «📈 سود و زیان تغییر قیمت‌ها» (ارزیابی به قیمت روز)
+   the owner (1405/08/20): «قیمت روز دلار و یورو را زدم؛ فقط ثبت قیمت زد — نگفت چقدر سود یا ضرر کردم … می‌خواهم با فرض اینکه همه را با این
+   قیمت الان بفروشم، سود و زیانش همان لحظه در سود و زیان و ترازنامه بنشیند (ظاهراً تحقق‌یافته) … هر بار قیمت عوض می‌کنم، سود و زیان را
+   به تفکیک و جمع بگوید (این روز چقدر ضرر کردم) … مثلاً در صورت وضعیت طلا و ارز یک ردیف: آخرین ارزیابی با قیمت فلان، به تفکیک و جمع».
+   · every price record: (new price − previous price) × what was his that day (trusts not counted) = his profit / loss of the new price
+     (the program's own numbers, the same as «📊 سود ارزیابی» of the profit and loss);
+   · after a price is saved: a note «📉 دلار: … ریال · جمع امروز: …» (a tap opens the report);
+   · the report /reval: the last valuation (each asset, then the total), the totals (today · this month · since the start of the book · against
+     the price paid), and day by day before it; the same box «آخرین ارزیابی» on «📊 خلاصه وضعیت»;
+   · the balance sheet and the profit and loss call it «به قیمت روز (فرض فروش همه)» and count it as his (patches.py). */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const esc = H.esc, fmt = H.fmt, P = App.pages, N = v => +v || 0;
+const nb = t => '<bdi dir="ltr" class="num">' + esc(t) + '</bdi>';
+const sg = v => (v > 0.5 ? '+' : v < -0.5 ? '−' : '') + fmt(Math.round(Math.abs(v)));
+const cls = v => v > 0.5 ? 'rv-p' : v < -0.5 ? 'rv-m' : 'rv-z';
+const qf = v => H.fmtq ? H.fmtq(Math.round(N(v) * 10000) / 10000) : String(v);
+
+function rows() {
+  return (App.C.rows || []).filter(r => r && r.X === 6 && r.e).map(r => {
+    const p0 = N(r.pprev), p = N(r.H), q = N(r.pqty), v = p0 > 0 && q ? (N(r.M) || q * (p - p0)) : 0;
+    return { e: r.e, a: r.item || r.e.dr, d: r.e.date || '', T: N(r.T), k: r.k, p0, p, q, v };
+  });
+}
+function days() {
+  const M = new Map(); rows().forEach(x => { let d = M.get(x.d); if (!d) { d = { d: x.d, T: x.T, L: [], v: 0 }; M.set(x.d, d); } d.L.push(x); d.v += x.v; });
+  return [...M.values()].sort((a, b) => b.T - a.T);
+}
+App.revalDays = days;
+function dayTable(D, big) {
+  const L = D.L.slice().sort((a, b) => a.k - b.k);
+  return '<div class="rv-tw"><table class="rv-t' + (big ? ' big' : '') + '"><thead><tr><th>دارایی</th><th>قیمت قبلی</th><th>قیمت تازه</th><th>مقدار من</th><th>سود / زیان (ریال)</th></tr></thead><tbody>' +
+    L.map(x => '<tr><td data-l="">' + esc(x.a) + '</td><td data-l="قیمت قبلی">' + (x.p0 > 0 ? nb(fmt(x.p0)) : '—') + '</td><td data-l="قیمت تازه">' + nb(fmt(x.p)) + '</td><td data-l="مقدار من">' + (x.q ? nb(qf(x.q)) : '—') + '</td>' +
+      '<td data-l="سود / زیان" class="' + cls(x.v) + '">' + nb(sg(x.v)) + '</td></tr>').join('') +
+    '</tbody><tfoot><tr><td data-l="">جمع ' + nb(D.d) + '</td><td></td><td></td><td></td><td data-l="جمع" class="' + cls(D.v) + '">' + nb(sg(D.v)) + '</td></tr></tfoot></table></div>';
+}
+function word(v) { return v > 0.5 ? '<b class="rv-p">سود ' + nb(fmt(Math.round(v))) + ' ریال</b>' : v < -0.5 ? '<b class="rv-m">زیان ' + nb(fmt(Math.round(-v))) + ' ریال</b>' : '<b>بدون سود و زیان</b>'; }
+/* «آخرین ارزیابی» — a box for /reval and «📊 خلاصه وضعیت» */
+App.revalBox = function (withLink) {
+  const D = days()[0]; if (!D) return '';
+  return '<div class="box rv-box"><h2>' + (D.v < -0.5 ? '📉' : '📈') + ' آخرین ارزیابی به قیمت روز — ' + nb(D.d) + '</h2>' +
+    '<div class="rv-say">با قیمت‌های تازهٔ این روز، اگر همه را همین الان بفروشید نسبت به قیمت‌های قبلی: ' + word(D.v) + '.</div>' + dayTable(D, true) +
+    (withLink ? '<div class="bar noprint"><a class="btn sm" data-act="go" data-to="/reval">📈 گزارش کامل سود و زیان تغییر قیمت‌ها ←</a></div>' : '') + '</div>';
+};
+P.reval = function () {
+  const Ds = days(), j = E.serToJ(App.today), m0 = E.monthStart(j[0], j[1]);
+  let month = 0, all = 0; Ds.forEach(D => { all += D.v; if (D.T >= m0) month += D.v; });
+  const bs = E.balanceSheet(App.C), un = ((bs.eq || []).find(x => x.key === 'unreal') || {}).v || 0;
+  let h = '<div class="bk-in">هر بار که «قیمت روز» می‌دهید، برنامه حساب می‌کند: (قیمت تازه − قیمت قبلی) × مقداری که <b>مال خودتان</b> است (امانی‌ها نه). ' +
+    'این یعنی اگر همه را همین الان به این قیمت بفروشید، چقدر سود یا زیان کرده‌اید. همین عددها در «📈 صورت سود و زیان» (سود و زیان ارزیابی به قیمت روز) و در «⚖ ترازنامه» (در سرمایهٔ شما) می‌آید.</div>';
+  if (!Ds.length) return { title: '📈 سود و زیان تغییر قیمت‌ها', sub: '', html: h + '<div class="box">هنوز «قیمت روز» ثبت نشده.</div>' };
+  h += '<div class="rv-sum"><div><span>آخرین روز (' + nb(Ds[0].d) + ')</span><b class="' + cls(Ds[0].v) + '">' + nb(sg(Ds[0].v)) + '</b></div>' +
+    '<div><span>این ماه</span><b class="' + cls(month) + '">' + nb(sg(month)) + '</b></div>' +
+    '<div><span>از اولین قیمت</span><b class="' + cls(all) + '">' + nb(sg(all)) + '</b></div>' +
+    '<div><span>الان نسبت به قیمت خرید</span><b class="' + cls(un) + '">' + nb(sg(un)) + '</b><small>اگر همه را الان بفروشید</small></div></div>';
+  h += App.revalBox(false);
+  if (Ds.length > 1) {
+    h += '<div class="box"><h2>📅 روزهای قبل</h2>' + Ds.slice(1, 60).map(D => '<details class="rv-d" data-k="rv:' + esc(D.d) + '"><summary><span>' + nb(D.d) + ' <small>' + D.L.length + ' قیمت</small></span><b class="' + cls(D.v) + '">' + nb(sg(D.v)) + '</b></summary>' + dayTable(D) + '</details>').join('') + '</div>';
+  }
+  h += '<div class="bar noprint"><a class="btn" data-act="go" data-to="/pl?p=month">📈 صورت سود و زیان</a><a class="btn" data-act="go" data-to="/bs">⚖ ترازنامه</a><a class="btn" data-act="go" data-to="/sum">📊 خلاصه وضعیت</a></div>';
+  return { title: '📈 سود و زیان تغییر قیمت‌ها', sub: 'ارزیابی طلا و ارز به قیمت روز — هر روز به تفکیک و جمع', html: h };
+};
+
+/* after a price is saved: its profit / loss and the day's total */
+const oc = App.commit;
+if (typeof oc === 'function') App.commit = function () {
+  let before = null; try { before = new Set((App.db.entries || []).map(e => e.id)); } catch (e) { }
+  const res = oc.apply(this, arguments);
+  try {
+    if (before) {
+      const nu = (App.db.entries || []).filter(e => !before.has(e.id)), ids = new Set(nu.map(e => e.id));
+      const R = rows().filter(x => ids.has(x.e.id)); if (R.length) setTimeout(() => note(R), 450);
+    }
+  } catch (e) { console.error(e); }
+  return res;
+};
+function note(R) {
+  const d = R[0].d, D = days().find(x => x.d === d), parts = R.filter(x => x.p0 > 0).map(x => (x.v < -0.5 ? '📉 ' : '📈 ') + x.a + ': ' + sg(x.v));
+  if (!parts.length) return;
+  const msg = parts.join(' · ') + ' ریال' + (D && D.L.length > R.length ? ' — جمع ' + d + ': ' + sg(D.v) + ' ریال' : '') + ' (اگر همین الان بفروشید) — برای گزارش روی همین بزنید';
+  try {
+    App.toast(msg, false);
+    const ts = document.querySelectorAll('#toast .t'), t = ts[ts.length - 1];
+    if (t) { t.classList.add('rv-toast', (D ? D.v : R[0].v) < -0.5 ? 'm' : 'p'); t.style.cursor = 'pointer'; t.onclick = () => { try { App.go('/reval'); } catch (e) { } t.remove(); }; setTimeout(() => { try { t.remove(); } catch (e) { } }, 9000); }
+  } catch (e) { console.error(e); }
+}
+
+/* «آخرین ارزیابی» on «📊 خلاصه وضعیت» */
+const oa = App.afterRender;
+App.afterRender = function (r) {
+  if (typeof oa === 'function') { try { oa.apply(this, arguments); } catch (e) { console.error(e); } }
+  try {
+    if (!r || r.page !== 'sum') return;
+    const pg = document.getElementById('page'); if (!pg || pg.querySelector('.rv-box')) return;
+    const at = pg.querySelector('.hps'); const h = App.revalBox(true); if (!h) return;
+    if (at) at.insertAdjacentHTML('afterend', h); else pg.insertAdjacentHTML('beforeend', h);
   } catch (e) { console.error(e); }
 };
 })();
@@ -20366,7 +20511,7 @@ function renderNav(r) {
   };
   const fxItems = E.fxPositions(C).filter(x => !App.isArchived(x.name)).map(x => ({ to: '/asset/' + H.slug(x.name), label: x.display || x.name, bal: '<span class="b num">' + H.fmtq(x.qty) + '</span>' }));
   { const na = App.archiveCount(['asset']); if (na) fxItems.push({ to: '/archive?g=asset', label: '🗄 بایگانی (' + na + ')' }); }
-  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + (App.pages.look ? simple('/look', '🎨', 'انتخاب طرح و ظاهر') : '') + (App.pages.fund ? simple('/fund', '⚖', 'مغایرت صندوق ارزی') : '') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + (App.pages.gl ? simple('/gl', '📚', 'دفتر کل') + simple('/trial', '🧮', 'تراز آزمایشی') : '') + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
+  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + (App.pages.look ? simple('/look', '🎨', 'انتخاب طرح و ظاهر') : '') + (App.pages.fund ? simple('/fund', '⚖', 'مغایرت صندوق ارزی') : '') + (App.pages.reval ? simple('/reval', '📈', 'سود و زیان تغییر قیمت‌ها') : '') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + (App.pages.gl ? simple('/gl', '📚', 'دفتر کل') + simple('/trial', '🧮', 'تراز آزمایشی') : '') + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
   h += group('n_bank', '/banks', '🏦', 'بانک‌ها', accItems([G.CASH]).concat([{ to: '/recon', label: '⚖ مغایرت‌گیری بانک‌ها' }]), G.CASH, 'بانک جدید');
   h += group('n_brk', '/banks', '📊', 'کارگزاری‌ها', accItems([G.BRK]), G.BRK, 'کارگزاری جدید');
   h += group('n_mem', '/members', '👥', 'سرمایه‌گذاران', accItems([G.MEM]), G.MEM, 'سرمایه‌گذار جدید');
@@ -20404,7 +20549,7 @@ function renderTop() {
 /* ------------------------------------------------------------- v38 design layer
    (presentation only): quick find · card-style tables on phones · print header */
 const QPAGES = [
-  ['/home', '🏠', 'خانه', 'صفحه اصلی نمای کلی'], ['/look', '🎨', 'انتخاب طرح و ظاهر', 'طرح ظاهر رنگ تم داشبورد دیزاین فونت'], ['/gl', '📚', 'دفتر کل', 'دفتر کل سرفصل حساب کل معین گردش'], ['/fund', '⚖', 'مغایرت صندوق ارزی', 'مغایرت صندوق ارزی سود سپرده دلار ابطال'], ['/trial', '🧮', 'تراز آزمایشی', 'تراز آزمایشی چهارستونی گردش مانده بدهکار بستانکار'], ['/bs', '⚖', 'تراز کل', 'ترازنامه دارایی بدهی سرمایه'], ['/journal', '📒', 'دفتر روزنامه', 'همه ثبت ها اسناد'],
+  ['/home', '🏠', 'خانه', 'صفحه اصلی نمای کلی'], ['/look', '🎨', 'انتخاب طرح و ظاهر', 'طرح ظاهر رنگ تم داشبورد دیزاین فونت'], ['/gl', '📚', 'دفتر کل', 'دفتر کل سرفصل حساب کل معین گردش'], ['/fund', '⚖', 'مغایرت صندوق ارزی', 'مغایرت صندوق ارزی سود سپرده دلار ابطال'], ['/reval', '📈', 'سود و زیان تغییر قیمت‌ها', 'سود زیان ارزیابی قیمت روز دلار یورو طلا سکه تسعیر'], ['/trial', '🧮', 'تراز آزمایشی', 'تراز آزمایشی چهارستونی گردش مانده بدهکار بستانکار'], ['/bs', '⚖', 'تراز کل', 'ترازنامه دارایی بدهی سرمایه'], ['/journal', '📒', 'دفتر روزنامه', 'همه ثبت ها اسناد'],
   ['/reports', '🗂', 'همهٔ گزارش‌ها', 'گزارش مرکز گزارش'], ['/daily', '📅', 'وقایع روزانه', 'گزارش روزانه'], ['/mreport', '🗓', 'وقایع ماهانه', 'گزارش ماهانه'],
   ['/rep/cash', '📑', 'هزینه‌ها و درآمدها', 'گزارش هزینه درآمد دسته'], ['/rep/banks', '🏦', 'گردش بانک‌ها', 'گزارش بانک'], ['/rep/brokers', '📊', 'گردش کارگزاری‌ها', 'گزارش کارگزاری'],
   ['/rep/fx', '💱', 'وضعیت و گردش ارز و طلا', 'دلار طلا سکه گزارش'], ['/rep/loans', '🏛', 'وضعیت و گردش وام‌ها', 'وام قسط گزارش'], ['/rep/debtors', '🤝', 'گزارش بدهکاران', 'بدهکار طلب'],
