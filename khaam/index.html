@@ -3756,6 +3756,10 @@ html #page table.rv-t tfoot td.rv-p{color:#15803D!important}html #page table.rv-
  .rv-t td:empty{display:none}
 }
 @media (max-width:640px){.rv-sum b{font-size:1rem;letter-spacing:-.2px;overflow-wrap:anywhere}.rv-sum>div{padding:8px 9px}}
+/* v49.1 — the valuation into his account */
+.rv-sum{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+@media (max-width:700px){.rv-sum{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.rb-note a{font-weight:800;text-decoration:underline;cursor:pointer}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3763,7 +3767,7 @@ html #page table.rv-t tfoot td.rv-p{color:#15803D!important}html #page table.rv-
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "49.0"; window.APP_BUILD = "1405/08/20 16:00";
+window.APP_VERSION = "49.1"; window.APP_BUILD = "1405/08/20 17:17";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -3895,6 +3899,7 @@ function compute(db, todaySer) {
     if (dr === '' && cr === '') X = (r.desc !== '' && noAmt) ? 8 : 0;
     else if (cr === '' && noAmt && r.desc !== '') X = 8;
     else if (isA(dr) && cr === '' && !emp(H)) X = 6;
+    else if (e.auto === 'reval-day' || e.auto === 'real-day') X = 7;
     else if (isL(dr)) X = 3; else if (isA(dr)) X = 4; else if (isA(cr)) X = 5; else if (isM(cr)) X = 1; else if (isM(dr)) X = 2; else X = 7;
     r.X = X;
     r.item = X === 0 ? '' : [cr, dr, dr, dr, cr, dr, dr, dr][X - 1];
@@ -4292,7 +4297,7 @@ function balanceSheet(C) {
   const eq = [
     { key: 'others', label: 'سرمایه اعضای دیگر (مال خودشان)', v: grp('اعضا') - own },
     { key: 'ownnet', label: 'سرمایهٔ من پس از کسر اقساط وام‌ها', v: own - cb(sp.CONTRA) },
-    { key: 'unreal', label: 'سود/زیان طلا و ارز به قیمت روز (مال من — فرض فروش همه به آخرین قیمت)', v: fxUn - cb(sp.RESERVE) - ta.reval },
+    { key: 'unreal', label: 'سود/زیان طلا و ارز به قیمت روز که هنوز به حساب من نرفته (هر روز خودکار به حساب من می‌رود)', v: fxUn - cb(sp.RESERVE) - ta.reval },
     { key: 'real', label: 'سود و زیان تحقق‌یافته و سایر', v: cb(sp.PL_REAL) + cb(sp.PL_OTH) },
   ];
   const totalE = eq.reduce((s, x) => s + x.v, 0);
@@ -4330,6 +4335,7 @@ function kindOfEntry(C, e) {
   if (dr === '' && cr === '') return (desc !== '' && noAmt) ? 8 : 0;
   if (cr === '' && noAmt && desc !== '') return 8;
   if (C.isA(dr) && cr === '' && !emp(e.price)) return 6;
+  if (e.auto === 'reval-day' || e.auto === 'real-day') return 7;
   if (C.isL(dr)) return 3; if (C.isA(dr)) return 4; if (C.isA(cr)) return 5; if (C.isM(cr)) return 1; if (C.isM(dr)) return 2; return 7;
 }
 
@@ -6550,8 +6556,8 @@ P.bs = function () {
   h += '<div class="bsgrid"><div>' + sect(bs.assets, bs.totalA, '#1D4ED8', 'دارایی‌ها') + '</div><div>' + sect(bs.liab, bs.totalL, '#C81E1E', 'بدهی‌ها') + sect(bs.eq, bs.totalE, '#15803D', 'سرمایه (حقوق صاحبان)') + myNetBox(bs) + '</div></div>';
   h += '<div class="bsgrid bstotals"><div class="bst a"><span>جمع دارایی‌ها</span><b class="num">' + fmt(bs.totalA) + '</b></div><div class="bst l"><span>جمع بدهی‌ها + سرمایه</span><b class="num">' + fmt(bs.totalL + bs.totalE) + '</b></div></div>';
   h += '<div class="status ' + (okBs ? 'ok' : 'bad') + '" style="margin:10px 0 16px;font-size:1.1rem;text-align:center">' + (okBs ? '✓ ترازنامه متوازن است — دو طرف با هم برابرند' : '⚠ مغایرت ' + fmt(bs.diff) + ' ریال — ثبت‌های ناقص را در دفتر روزنامه ببینید') + '</div>';
-  h += fxReclassBox(bs);
-  h += '<div class="box"><h2>ℹ️ این خط‌های سرمایه یعنی چه؟</h2><div style="line-height:1.9"><b>سود/زیان طلا و ارز به قیمت روز:</b> فرق آخرین «قیمت روز» طلا و ارزی که دارید با قیمت خریدشان — یعنی اگر همه را همین الان به این قیمت بفروشید، این سود یا زیان مال شماست (مثل تحقق‌یافته). هر تغییرش را در «📈 سود و زیان تغییر قیمت‌ها» ببینید.<br><b>سود و زیان تحقق‌یافته و سایر:</b> سودِ واقعیِ فروش طلا/ارز (قیمت فروش − قیمت خرید، وقتی به حساب کسی نرفته) به‌اضافهٔ «سایر درآمدها و هزینه‌ها» که با دکمهٔ «هزینه (فقط سود و زیان)» یا «درآمد» ثبت شده است.</div></div>';
+  h += (App.revalNote ? App.revalNote() : '');
+  h += '<div class="box"><h2>ℹ️ این خط‌های سرمایه یعنی چه؟</h2><div style="line-height:1.9"><b>سود/زیان طلا و ارز به قیمت روز:</b> فرق آخرین «قیمت روز» طلا و ارزی که دارید با قیمت خریدشان — یعنی اگر همه را همین الان به این قیمت بفروشید. مثل تحقق‌یافته، هر بار که قیمت می‌دهید یا طلا و ارز می‌خرید و می‌فروشید، خودکار با سند «📈 سود / 📉 زیان طلا و ارز به قیمت روز» <b>به حساب خودتان</b> می‌رود (روزی یک سند)؛ پس در «سرمایه … پس از کسر اقساط» هست و این خط معمولاً صفر است. هر تغییرش را در «📈 سود و زیان تغییر قیمت‌ها» ببینید.<br><b>سود و زیان تحقق‌یافته و سایر:</b> سودِ فروش طلا/ارز هم خودکار به حساب خودتان می‌رود (سند «💱 سود فروش طلا و ارز»)؛ این خط «سایر درآمدها و هزینه‌ها» که با دکمهٔ «هزینه (فقط سود و زیان)» یا «درآمد» ثبت شده است.</div></div>';
   // banks under the balance sheet, each one opens its own turnover right here
   h += bankStrip();
   h += '<div class="row"><div class="col"><div class="box"><h2>ترکیب دارایی‌ها</h2>' + donut(bs.assets.map(a => ({ label: a.label.split(' (')[0], v: a.v })), 230, '') + '</div></div>' +
@@ -7244,7 +7250,7 @@ function memberEvents(name) {
       const e = r.e || {}, auto = String(e.auto || ''), d = nrm(r.desc), viaClr = (r.dr === CLR || r.cr === CLR);
       const isProf = auto.indexOf('profit') === 0 || d.indexOf('سود') === 0 || (viaClr && d.indexOf('سود') >= 0);
       let cls;
-      if (r.X === 5 || r.X === 6) cls = 'fxg';
+      if (r.X === 5 || r.X === 6 || auto === 'reval-day' || auto === 'real-day') cls = 'fxg';
       else if (eff > 0) cls = isProf ? 'prof' : 'dep';
       else cls = (auto.indexOf('profit-owner:') === 0 || (viaClr && isProf)) ? 'own' : 'wd';
       /* the opening balance of the books («مانده اول دوره») is not a deposit of the period: it becomes the opening balance */
@@ -17449,6 +17455,10 @@ function kindOf(e) {
 }
 function kind0(e) {
   const r = rmap().get(e.id), X = r ? r.X : 0, kn = (E.KIND_NAMES && E.KIND_NAMES[X]) || '';
+  if (e.auto === 'reval-day' || e.auto === 'real-day') {   // v49.1: the valuation / the gain of a sale, into his account (69_revbook)
+    const own = (App.db.meta || {}).owner || '', up = e.cr === own, rv = e.auto === 'reval-day';
+    return [up ? 'in' : 'out', rv ? (up ? '📈 سود به قیمت روز' : '📉 زیان به قیمت روز') : (up ? '💱 سود فروش' : '💱 زیان فروش'), 'به حساب ' + own];
+  }
   if (X === 6) { const v = revOf(r); return v > 0.5 ? ['in', '📈 سود ارزیابی', e.dr || ''] : v < -0.5 ? ['out', '📉 زیان ارزیابی', e.dr || ''] : ['tr', '🏷 قیمت روز', e.dr || '']; }
   const dm = money(e.dr), cm = money(e.cr), sub = [kn && kn !== 'ثبت عمومی' ? kn : '', e.cat || ''].filter(Boolean).join(' · ');
   if (dm && cm) return ['tr', '🔁 انتقال', sub, kn];
@@ -17534,6 +17544,11 @@ function say(e) {
     if (!rv.q) return '💬 قیمت «' + esc(u) + '» از ' + nb(fmt(rv.p0)) + ' به ' + nb(fmt(rv.p)) + ' ریال رسید؛ آن روز چیزی از آن نداشتید، پس سود و زیانی نداشت.';
     return '💬 قیمت «' + esc(u) + '» از ' + nb(fmt(rv.p0)) + ' به ' + nb(fmt(rv.p)) + ' ریال ' + (rv.p >= rv.p0 ? 'رسید' : 'افتاد') + '؛ با ' + nb(H.fmtq ? H.fmtq(rv.q) : String(rv.q)) + ' که مال شماست، ارزشش ' +
       nb(fmt(Math.round(Math.abs(rv.v)))) + ' ریال ' + (rv.v >= 0 ? 'بیشتر شد ← <b>سود ارزیابی</b>' : 'کم شد ← <b>زیان ارزیابی</b>') + ' (اگر همین الان به این قیمت بفروشید). امانی‌ها حساب نشده‌اند.';
+  }
+  if (e.auto === 'reval-day' || e.auto === 'real-day') {
+    const own = (App.db.meta || {}).owner || '', up = e.cr === own;
+    return '💬 ' + (e.auto === 'reval-day' ? 'سود و زیان طلا و ارز به قیمت روز (اگر همه را همین الان به آخرین قیمت بفروشید)' : 'سود و زیان فروش طلا و ارز (تحقق‌یافته)') + ': ' + nb(fmt(Math.round(N(e.amt)))) + ' ریال ' +
+      (up ? '<b>به حساب «' + esc(own) + '» اضافه شد</b>' : '<b>از حساب «' + esc(own) + '» کم شد</b>') + '.';
   }
   const LG = legs(e); if (!LG.dr.length || !LG.cr.length) return '';
   const r = rmap().get(e.id), X = r ? r.X : 0, kn = (E.KIND_NAMES && E.KIND_NAMES[X]) || '', d = String(e.desc || '').trim();
@@ -17811,14 +17826,15 @@ App.revalBox = function (withLink) {
 P.reval = function () {
   const Ds = days(), j = E.serToJ(App.today), m0 = E.monthStart(j[0], j[1]);
   let month = 0, all = 0; Ds.forEach(D => { all += D.v; if (D.T >= m0) month += D.v; });
-  const bs = E.balanceSheet(App.C), un = ((bs.eq || []).find(x => x.key === 'unreal') || {}).v || 0;
+  const bs = E.balanceSheet(App.C), un = N(bs.fxUn) - N(bs.trust && bs.trust.reval), bk = App.revalBooked ? App.revalBooked() : null;
   let h = '<div class="bk-in">هر بار که «قیمت روز» می‌دهید، برنامه حساب می‌کند: (قیمت تازه − قیمت قبلی) × مقداری که <b>مال خودتان</b> است (امانی‌ها نه). ' +
-    'این یعنی اگر همه را همین الان به این قیمت بفروشید، چقدر سود یا زیان کرده‌اید. همین عددها در «📈 صورت سود و زیان» (سود و زیان ارزیابی به قیمت روز) و در «⚖ ترازنامه» (در سرمایهٔ شما) می‌آید.</div>';
+    'این یعنی اگر همه را همین الان به این قیمت بفروشید، چقدر سود یا زیان کرده‌اید. همین عددها در «📈 صورت سود و زیان» می‌آید و <b>همان روز خودکار به حساب خودتان می‌رود</b> (سند «📈 سود / 📉 زیان طلا و ارز به قیمت روز»، روزی یک سند) — پس ماندهٔ حساب شما و «⚖ ترازنامه» همان لحظه عوض می‌شود.</div>';
   if (!Ds.length) return { title: '📈 سود و زیان تغییر قیمت‌ها', sub: '', html: h + '<div class="box">هنوز «قیمت روز» ثبت نشده.</div>' };
   h += '<div class="rv-sum"><div><span>آخرین روز (' + nb(Ds[0].d) + ')</span><b class="' + cls(Ds[0].v) + '">' + nb(sg(Ds[0].v)) + '</b></div>' +
     '<div><span>این ماه</span><b class="' + cls(month) + '">' + nb(sg(month)) + '</b></div>' +
     '<div><span>از اولین قیمت</span><b class="' + cls(all) + '">' + nb(sg(all)) + '</b></div>' +
-    '<div><span>الان نسبت به قیمت خرید</span><b class="' + cls(un) + '">' + nb(sg(un)) + '</b><small>اگر همه را الان بفروشید</small></div></div>';
+    '<div><span>الان نسبت به قیمت خرید</span><b class="' + cls(un) + '">' + nb(sg(un)) + '</b><small>اگر همه را الان بفروشید</small></div>' +
+    (bk ? '<div><span>به حساب شما رفته</span><b class="' + cls(bk.v) + '">' + nb(sg(bk.v)) + '</b><small>جمع سندهای «به قیمت روز»</small></div>' : '') + '</div>';
   h += App.revalBox(false);
   if (Ds.length > 1) {
     h += '<div class="box"><h2>📅 روزهای قبل</h2>' + Ds.slice(1, 60).map(D => '<details class="rv-d" data-k="rv:' + esc(D.d) + '"><summary><span>' + nb(D.d) + ' <small>' + D.L.length + ' قیمت</small></span><b class="' + cls(D.v) + '">' + nb(sg(D.v)) + '</b></summary>' + dayTable(D) + '</details>').join('') + '</div>';
@@ -17843,7 +17859,7 @@ if (typeof oc === 'function') App.commit = function () {
 function note(R) {
   const d = R[0].d, D = days().find(x => x.d === d), parts = R.filter(x => x.p0 > 0).map(x => (x.v < -0.5 ? '📉 ' : '📈 ') + x.a + ': ' + sg(x.v));
   if (!parts.length) return;
-  const msg = parts.join(' · ') + ' ریال' + (D && D.L.length > R.length ? ' — جمع ' + d + ': ' + sg(D.v) + ' ریال' : '') + ' (اگر همین الان بفروشید) — برای گزارش روی همین بزنید';
+  const msg = parts.join(' · ') + ' ریال' + (D && D.L.length > R.length ? ' — جمع ' + d + ': ' + sg(D.v) + ' ریال' : '') + ' (اگر همین الان بفروشید) — به حساب شما رفت. برای گزارش روی همین بزنید';
   try {
     App.toast(msg, false);
     const ts = document.querySelectorAll('#toast .t'), t = ts[ts.length - 1];
@@ -17862,6 +17878,83 @@ App.afterRender = function (r) {
     if (at) at.insertAdjacentHTML('afterend', h); else pg.insertAdjacentHTML('beforeend', h);
   } catch (e) { console.error(e); }
 };
+})();
+/* ---------------------------------------------------------------- v49.1 — the profit / loss of the day prices goes INTO his account
+   the owner (1405/08/20): «گفتم با فرض اینکه با این قیمت تحقق پیدا کرده؛ باز هم در ترازنامه ماندهٔ من تغییر نمی‌کند — چرا نباید تغییر کند؟
+   تحقق‌یافته شده دیگر».
+   · the change of «value at the last day price − price paid» of the gold and currencies that are his (trusts not counted) is booked into his
+     own account (the owner), one record a day: «📈 سود / 📉 زیان طلا و ارز به قیمت روز — …» (بد «سود ارزیابی ثبت‌شده در دفاتر» / بس
+     «سرمایهٔ خودش», or the other way for a loss). The first record brings everything up to today (value − price paid); after that each day only
+     its change. So his balance, the balance sheet («سرمایه … پس از کسر اقساط») and the Excel show it at once;
+   · the gain of a sale that was not sent to anyone («سود و زیان تحقق‌یافته (تراز)») goes to his account the same way, so that a sale does
+     not move it out of his account;
+   · it is done inside the same change that caused it (a new price, a buy, a sale, an edit …), so «↩ بازگردانی» undoes both together; once
+     when the program opens (data from an older version or from another device); the «📈 سود و زیان» of the period is not changed by it. */
+(function () {
+'use strict';
+const App = window.App, E = window.Engine, H = App && App.H; if (!App || !E || !H) return;
+const N = v => +v || 0, TAG = 'reval-day', TAGR = 'real-day';
+const r0 = v => Math.round(N(v));
+function todayTxt() { return E.serToText(App.today); }
+function sync(db, C) {   // adds / changes today's records in db so that nothing of the valuation is left outside his account
+  const sp = db.special || {}, own = db.meta && db.meta.owner; if (!own || !sp.RESERVE) return 0;
+  C = C || E.compute(db, App.today); if (!C.accts.get(own) || !C.accts.get(sp.RESERVE)) return 0;
+  const bs = E.balanceSheet(C), U = r0(((bs.eq || []).find(x => x.key === 'unreal') || {}).v);
+  let Rc = 0; if (sp.PL_REAL && C.accts.get(sp.PL_REAL)) { const t = C.turnover(sp.PL_REAL); Rc = r0(N(t.cr) - N(t.dr)); }
+  const d = todayTxt(); let n = 0;
+  const put = (tag, acc, add, first) => {
+    if (Math.abs(add) < 1) return;
+    const ex = db.entries.find(e => e && e.auto === tag && e.date === d);
+    const S = ex ? (ex.dr === acc ? N(ex.amt) : -N(ex.amt)) : 0, T = r0(S + add);
+    const desc = tag === TAG ? (T >= 0 ? '📈 سود' : '📉 زیان') + ' طلا و ارز به قیمت روز — به حساب ' + own + (first ? ' (از قیمت خرید تا امروز، فرض فروش همه)' : ' (فرض فروش همه)')
+      : '💱 سود فروش طلا و ارز (تحقق‌یافته) — به حساب ' + own;
+    if (ex) {
+      if (Math.abs(T) < 1) { db.entries.splice(db.entries.indexOf(ex), 1); n++; return; }
+      ex.dr = T > 0 ? acc : own; ex.cr = T > 0 ? own : acc; ex.amt = Math.abs(T); ex.desc = desc; n++; return;
+    }
+    const e = { date: d, desc, dr: add > 0 ? acc : own, cr: add > 0 ? own : acc, amt: Math.abs(add), qty: null, price: null, fee: null, loc: null, dest: null, src: 'user', auto: tag };
+    e.id = db.meta.nextId++; App.insertEntry(db, e); n++;
+  };
+  const first = !db.entries.some(e => e && e.auto === TAG);
+  put(TAG, sp.RESERVE, U, first);
+  if (Rc) put(TAGR, sp.PL_REAL, Rc, false);
+  return n;
+}
+let busy = false;
+const oc = App.commit;
+if (typeof oc === 'function') App.commit = function (label, fn) {
+  if (busy) return oc.apply(this, arguments);
+  return oc.call(this, label, function (db) { const r = fn.apply(this, arguments); try { sync(db); } catch (e) { console.error(e); } return r; });
+};
+function fixNow() {   // once: data from an older version / another device
+  try {
+    const db = App.db, C = App.C; if (!db || !C || !db.meta || !db.meta.owner) return;
+    const bs = E.balanceSheet(C), U = N(((bs.eq || []).find(x => x.key === 'unreal') || {}).v);
+    const sp = db.special || {}; let Rc = 0; if (sp.PL_REAL && C.accts.get(sp.PL_REAL)) { const t = C.turnover(sp.PL_REAL); Rc = N(t.cr) - N(t.dr); }
+    if (Math.abs(U) < 1 && Math.abs(Rc) < 1) return;
+    busy = true;
+    try { App.commit('📈 سود و زیان به قیمت روز به حساب من', d => { sync(d); }); } finally { busy = false; }
+  } catch (e) { console.error(e); busy = false; }
+}
+App.revalSync = fixNow;
+App.revalBookTags = [TAG, TAGR];
+/* what of it is in his account: every record of these two (+ into his account, − out of it) */
+App.revalBooked = function (db) {
+  db = db || App.db; const own = db.meta && db.meta.owner; let v = 0, r = 0, last = null;
+  (db.entries || []).forEach(e => { if (!e || (e.auto !== TAG && e.auto !== TAGR)) return; const x = (e.cr === own ? 1 : e.dr === own ? -1 : 0) * N(e.amt); if (e.auto === TAG) { v += x; if (!last || E.jser(e.date) >= E.jser(last.date)) last = e; } else r += x; });
+  return { v, r, last, lastV: last ? (last.cr === own ? 1 : -1) * N(last.amt) : 0 };
+};
+/* on the balance sheet, in place of the old «move it out of his account» box */
+App.revalNote = function () {
+  const db = App.db, own = (db.meta && db.meta.owner) || '', b = App.revalBooked(db); if (!b.last && !b.r) return '';
+  const f = v => '<b class="num">' + (v < -0.5 ? '−' : v > 0.5 ? '+' : '') + H.fmt(Math.round(Math.abs(v))) + '</b>';
+  return '<div class="status ok rb-note" style="margin-bottom:14px;line-height:1.9">✓ سود/زیان طلا و ارز به قیمت روز (فرض فروش همه به آخرین قیمت) <b>به حساب ' + H.esc(own) + '</b> رفته و در «سرمایه … پس از کسر اقساط» هست: جمع ' + f(b.v) + ' ریال' +
+    (b.last ? ' — آخرین سند ' + '<bdi class="num">' + H.esc(b.last.date) + '</bdi>: ' + f(b.lastV) + ' ریال' : '') + (Math.abs(b.r) > 0.5 ? '؛ سود فروش (تحقق‌یافته): ' + f(b.r) + ' ریال' : '') +
+    ' · <a data-act="go" data-to="/reval">📈 گزارش</a></div>';
+};
+const oi = App.init;
+if (typeof oi === 'function') App.init = function () { const r = oi.apply(this, arguments); setTimeout(fixNow, 1500); return r; };
+['replaceDb', 'mergeApply'].forEach(k => { const o = App[k]; if (typeof o === 'function') App[k] = function () { const r = o.apply(this, arguments); setTimeout(fixNow, 1200); return r; }; });
 })();
 
 
