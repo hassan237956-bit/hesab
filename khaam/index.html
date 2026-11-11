@@ -4166,6 +4166,34 @@ html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-size:1.08rem!important;paddin
 .lf-t.on{outline:2px solid #C9A24E;border-color:#C9A24E;background:#FBF5E6}
 .lf-t[data-v="vazir"] .lf-s{font-family:"LXV",sans-serif!important}.lf-t[data-v="naskh"] .lf-s{font-family:"LXN",serif!important}
 .lf-t[data-v="sahel"] .lf-s{font-family:"LXS",sans-serif!important}.lf-t[data-v="shabnam"] .lf-s{font-family:"LXB",sans-serif!important}
+
+/* ================================================================ v50.3 — «ریال» beside every rial amount; the box of the amounts
+   the owner: «هر عددی که ریال است کنارش ریال بخورد … مانده‌ها ایتالیک نباشد، دو درجه درشت‌تر و بولدتر، یا فرورفته» */
+.cur,.jv-v:not(:empty)::after,.sxt .sxt-v::after,.hero2 .h2-chips b::after,.ax-kpi:not(.ax-loan) .card .v::after,.ax-loan .card.c-rose .v::after,.ax-loan .card.c-green .v::after,.ax-loan .card.c-slate .v::after,.bsgrid td.bal::after,
+.tm-fly[data-g="n_bank"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_brk"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_mem"] .tm-list a.tm-r:not(.k-trust) .b::after,
+.tm-fly[data-g="n_debt"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_cred"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_inv"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_loan"] .tm-list a.tm-r:not(.k-trust) .b::after{
+  font-size:.62em;font-weight:700;font-style:normal;opacity:.72;margin-inline-start:4px;letter-spacing:0;vertical-align:baseline;white-space:nowrap}
+.jv-v:not(:empty)::after,.sxt .sxt-v::after,.hero2 .h2-chips b::after,.ax-kpi:not(.ax-loan) .card .v::after,.ax-loan .card.c-rose .v::after,.ax-loan .card.c-green .v::after,.ax-loan .card.c-slate .v::after,.bsgrid td.bal::after,
+.tm-fly[data-g="n_bank"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_brk"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_mem"] .tm-list a.tm-r:not(.k-trust) .b::after,
+.tm-fly[data-g="n_debt"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_cred"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_inv"] .tm-list a.tm-r:not(.k-trust) .b::after,.tm-fly[data-g="n_loan"] .tm-list a.tm-r:not(.k-trust) .b::after{content:'ریال'}
+.jv-v.jv-tot:not(:empty)::after{opacity:.6}
+/* the amounts of the groups' panels: upright (not italic), larger and bolder; sunken (default) or raised (⚙ 🎨) */
+html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-style:normal!important;font-size:1.26rem!important;font-weight:900!important;direction:rtl!important;padding:7px 13px!important}
+html:not(.ab-raised) .tm-fly .tm-list a.tm-r:not(.k-trust) .b{background:#EEF1F6!important;background:color-mix(in srgb,var(--rc) 9%,#EEF1F6)!important;border:1px solid color-mix(in srgb,var(--rc) 22%,#E3E7EF)!important;
+  box-shadow:inset 0 2px 6px rgba(19,32,59,.18),inset 0 -1px 0 rgba(255,255,255,.9)!important}
+html .tm-fly .tm-list a.tm-r.k-trust .bs .b{font-style:normal!important}
+.ab-t .ab-pv{display:inline-block;padding:6px 12px;border-radius:12px;font-weight:900;font-size:1.15rem;color:#3B5B92}
+.ab-t .ab-pv small{font-size:.62em;opacity:.72}
+.ab-t.ab-inset .ab-pv{background:#E9EDF5;box-shadow:inset 0 2px 6px rgba(19,32,59,.18),inset 0 -1px 0 #fff}
+.ab-t.ab-raised .ab-pv{background:#fff;border:1.5px solid #B9C6DD;box-shadow:0 3px 0 #C9D3E5,0 6px 14px rgba(19,32,59,.1)}
+.ab-t b{font-weight:800}
+/* the name breaks between words only; the amount a little smaller so the name keeps room */
+html .tm-fly .tm-list a.tm-r:not(.k-trust) .nm{overflow-wrap:normal!important;word-break:normal!important;min-width:6.5em!important}
+html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-size:1.18rem!important;padding:6px 10px!important}
+/* the name gets the room it needs (it breaks between words); if the amount still does not fit, it goes under it, at the left */
+html .tm-fly .tm-list a.tm-r:not(.k-trust):not(.tm-x2){flex-wrap:wrap!important;row-gap:6px!important}
+html .tm-fly .tm-list a.tm-r:not(.k-trust) .nm{flex:1 1 0!important;min-width:min-content!important}
+html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-size:1.12rem!important;padding:6px 10px!important;max-width:100%}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -4173,7 +4201,7 @@ html .tm-fly .tm-list a.tm-r:not(.k-trust) .b{font-size:1.08rem!important;paddin
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "50.2"; window.APP_BUILD = "1405/08/20 19:57";
+window.APP_VERSION = "50.3"; window.APP_BUILD = "1405/08/20 20:29";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -15767,7 +15795,7 @@ function fly(key) {
     rows += c.outerHTML;
   });
   const back = document.createElement('div'); back.id = 'tmBack'; back.className = 'tm-back'; back.addEventListener('click', shut);
-  const box = document.createElement('div'); box.id = 'tmFly'; box.className = 'tm-fly'; box.setAttribute('role', 'dialog');
+  const box = document.createElement('div'); box.id = 'tmFly'; box.className = 'tm-fly'; box.dataset.g = key; box.setAttribute('role', 'dialog');
   box.innerHTML = '<div class="tm-fh"' + sty(key) + '><span class="tm-i">' + esc(ico) + '</span><b>' + esc(lab) + '</b>' + (cnt ? '<em>' + FA(cnt) + '</em>' : '') +
     '<button type="button" class="tm-fx" aria-label="بستن">✕</button></div>' + all + '<div class="tm-list">' + rows + '</div>';
   $('.tm-fx', box).addEventListener('click', shut);
@@ -17092,6 +17120,12 @@ const today = () => E.serToText(App.today);
 const isFund = l => /صندوق\s*ارزی/.test(String(l || ''));
 const fundCat = l => (/مانا/.test(String(l || '')) ? 'سود سپرده ارزی مانا' : 'سود ' + String(l || '').replace(/^صندوق ارزی/, 'سپرده ارزی'));
 const fundLoss = l => (/مانا/.test(String(l || '')) ? 'کارمزد و زیان صندوق ارزی' : 'کارمزد و زیان ' + String(l || ''));
+/* v50.3 (the owner: «برای دلار و یورو علامت اختصاری‌اش را بزن — استاندارد»): $ € ₮ in place of the words */
+/* v50.3 (the owner: «برای طلا و سکه هم اگر اصطلاح یا مخفف استاندارد بین‌المللی دارد بگذار»): gram g, ounce oz, kilogram kg; coins stay «عدد» (no international sign) */
+const SYM = [[/^(دلار|USD|دلار آمریکا)$/i, '$'], [/^(یورو|EUR)$/i, '€'], [/^(تتر|USDT)$/i, '₮'], [/^(پوند|GBP)$/i, '£'], [/^(درهم|AED)$/i, 'AED'], [/^(لیر|TRY)$/i, '₺'], [/^(یوان|CNY)$/i, '¥'], [/^(روبل|RUB)$/i, '₽'],
+  [/^(گرم|g|gr)$/i, 'g'], [/^(اونس|oz)$/i, 'oz'], [/^(کیلوگرم|کیلو|kg)$/i, 'kg']];
+const UU = u => { const t = String(u == null ? '' : u).trim(), m = SYM.find(x => x[0].test(t)); return m ? m[1] : t; };
+App.unitSym = UU;
 const KC = { usd: '#15803D', eur: '#1D4ED8', usdt: '#0F766E', gold: '#B45309', coin: '#A16207', fx: '#0F2748' };
 const KI = { usd: '💵', eur: '💶', usdt: '₮', gold: '🥇', coin: '🪙', fx: '💱' };
 const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
@@ -17106,7 +17140,7 @@ const cnt = (a, l) => { const c = counts()[a]; return c && c[l] ? c[l] : null; }
 function checks(a) {
   const L = [];
   a.rows.forEach(r => {
-    if (r.loc === 'محل نامشخص') { if (Math.abs(r.tot) > EPS) L.push({ lvl: 'info', t: '<b class="num">' + q4(r.tot) + '</b> ' + esc(a.u) + ' بدون محل ثبت شده — در «📍 دارایی در هر محل» مشخص کنید کجاست' }); return; }
+    if (r.loc === 'محل نامشخص') { if (Math.abs(r.tot) > EPS) L.push({ lvl: 'info', t: '<b class="num">' + q4(r.tot) + '</b> ' + esc(UU(a.u)) + ' بدون محل ثبت شده — در «📍 دارایی در هر محل» مشخص کنید کجاست' }); return; }
     if (r.own < -EPS) L.push({ lvl: 'bad', t: 'در «' + esc(r.loc) + '» سهم خودم منفی شده (<b class="num">' + q4(r.own) + '</b>) — بیشتر از آنچه آنجا بوده برداشته یا امانی زده شده' });
     else if (r.tot < -EPS) L.push({ lvl: 'bad', t: 'در «' + esc(r.loc) + '» جمع منفی است (<b class="num">' + q4(r.tot) + '</b>)' });
     const c = cnt(a.name, r.loc);
@@ -17140,7 +17174,7 @@ function peopleBreak(own, tm, tot, u, extra) {
   const P2 = (tm || []).map(t => ({ p: t.p || t.person, q: N(t.q) })).filter(t => Math.abs(t.q) > EPS).sort((x, y) => y.q - x.q);
   const row = (n, q, c) => '<div class="pb-r" style="--pc:' + c + '"><span class="pb-n"><i></i>' + esc(n) + '</span><b class="num pb-v">' + q4(q) + '</b></div>';
   return '<div class="pb">' + row('من', own, App.personColor('من')) + P2.map(t => row(t.p, t.q, App.personColor(t.p))).join('') +
-    '<div class="pb-r pb-t"><span class="pb-n">جمع' + (u ? ' <small>(' + esc(u) + ')</small>' : '') + '</span><b class="num pb-v">' + q4(tot) + '</b></div>' +
+    '<div class="pb-r pb-t"><span class="pb-n">جمع' + (u ? ' <small>(' + esc(UU(u)) + ')</small>' : '') + '</span><b class="num pb-v">' + q4(tot) + '</b></div>' +
     (extra || []).map(x => '<div class="pb-r pb-x ' + (x.cls || '') + '"><span class="pb-n">' + x.n + '</span><b class="pb-v' + (x.num === false ? '' : ' num') + '">' + x.v + '</b></div>').join('') + '</div>';
 }
 App.peopleBreak = peopleBreak;
@@ -17154,7 +17188,7 @@ function priceLine(a) {
   const p = posOf(a.name), pr = p ? N(p.price) : 0;
   if (!(pr > 0)) return '<div class="smp-pr">برای «' + esc(a.disp) + '» هنوز «قیمت روز» ثبت نشده؛ ارزش ریالی بعد از ثبت قیمت می‌آید.</div>';
   const d = p.lastDate ? (typeof p.lastDate === 'number' ? E.serToText(p.lastDate) : String(p.lastDate)) : '';
-  return '<div class="smp-pr">💰 قیمت روز' + (d ? ' <b class="num">' + esc(d) + '</b>' : '') + ': هر ' + esc(a.u) + ' <b class="num">' + money(pr) + '</b> ریال</div>';
+  return '<div class="smp-pr">💰 قیمت روز' + (d ? ' <b class="num">' + esc(d) + '</b>' : '') + ': هر ' + esc(UU(a.u)) + ' <b class="num">' + money(pr) + '</b> ریال</div>';
 }
 /* v48.5 (the owner 1405/08/18: «طلا و محلش را با خط‌کشی و جدول مشخص کن») — one ruled table: a row per place, a column per owner
    (مال من, each person's trust) and «جمع»; the last row the sums. Under it: the rial value of each column (a small ruled table), and with the
@@ -17165,7 +17199,7 @@ const hd = (ic, full, short) => '<span class="sg-ic">' + ic + ' </span><span cla
 function cellQ(v) { return Math.abs(N(v)) > EPS ? '<b class="num">' + q4(v) + '</b>' : '<span class="sg-0">—</span>'; }
 function ownTable(a) {
   const ppl = a.ppl.filter(p => Math.abs(p.q) > EPS), one = !ppl.length;
-  let h = '<div class="sg-w"><table class="sgt"><thead><tr><th class="sg-l">' + hd('📍', 'محل', 'محل') + '</th>' + (one ? '<th>مقدار <small>(' + esc(a.u) + ')</small></th>' :
+  let h = '<div class="sg-w"><table class="sgt"><thead><tr><th class="sg-l">' + hd('📍', 'محل', 'محل') + '</th>' + (one ? '<th>مقدار <small>(' + esc(UU(a.u)) + ')</small></th>' :
     '<th class="pcol" style="--pc:' + App.personColor('من') + '">' + hd('👤', 'مال من', 'من') + '</th>' + ppl.map(p => '<th class="pcol" title="' + esc(p.p) + '" style="--pc:' + App.personColor(p.p) + '">' + hd('🤝', p.p, shortName(p.p)) + '</th>').join('') + '<th class="sg-t">جمع</th>') + '</tr></thead><tbody>';
   a.rows.forEach(r => {
     const none = r.loc === 'محل نامشخص';
@@ -17186,7 +17220,7 @@ function valTable(a) {
   const d = p.lastDate ? (typeof p.lastDate === 'number' ? E.serToText(p.lastDate) : String(p.lastDate)) : '';
   const ppl = a.ppl.filter(x => Math.abs(x.q) > EPS);
   const rows = [['👤 مال من', a.own, App.personColor('من')]].concat(ppl.map(x => ['🤝 ' + esc(x.p), x.q, App.personColor(x.p)])).concat(ppl.length ? [['جمع نزد من', a.tot]] : []);
-  return '<div class="sg-w"><table class="sgt sgv"><thead><tr><th class="sg-l">💰 ارزش ریالی</th><th>به قیمت روز' + (d ? ' <b class="num">' + esc(d) + '</b>' : '') + ' — هر ' + esc(a.u) + ' <b class="num">' + money(pr) + '</b> ریال</th></tr></thead><tbody>' +
+  return '<div class="sg-w"><table class="sgt sgv"><thead><tr><th class="sg-l">💰 ارزش ریالی</th><th>به قیمت روز' + (d ? ' <b class="num">' + esc(d) + '</b>' : '') + ' — هر ' + esc(UU(a.u)) + ' <b class="num">' + money(pr) + '</b> ریال</th></tr></thead><tbody>' +
     rows.map((x, k) => '<tr' + (ppl.length && k === rows.length - 1 ? ' class="sg-sum"' : ' class="pcol" style="--pc:' + x[2] + '"') + '><th class="sg-l" scope="row">' + x[0] + '</th><td><b class="num">' + money(x[1] * pr) + '</b> ریال</td></tr>').join('') + '</tbody></table></div>';
 }
 function cntTable(a) {
@@ -17216,7 +17250,7 @@ function rowD(a, opt) {
   const nb = bads(a), pr = priceOf(a.name), k = (opt.tools ? 'sum:' : 'hp:') + a.name, open = nb || foldGet()[k], tr = a.tot - a.own;
   return '<details class="hpr ' + (nb ? 'bad' : 'ok') + '" data-k="' + esc(k) + (nb ? ':bad' : '') + '"' + (open ? ' open' : '') + ' style="--k:' + (KC[a.k] || KC.fx) + '"><summary>' +
     '<span class="hr-ic">' + (KI[a.k] || KI.fx) + '</span><span class="hr-n">' + esc(a.disp) + '</span>' +
-    '<span class="hr-q"><b class="num">' + q4(a.tot) + '</b> ' + esc(a.u) + '</span>' +
+    '<span class="hr-q"><b class="num">' + q4(a.tot) + '</b> ' + esc(UU(a.u)) + '</span>' +
     '<span class="hr-st ' + (nb ? 'bad' : 'ok') + '">' + (nb ? '⚠ ' + fa(nb) : '✔') + '</span>' +
     '<span class="hr-v">' + (Math.abs(tr) > EPS ? '<span class="hr-pb">' + peopleBreak(a.own, a.ppl.map(x => ({ p: x.p, q: x.q })), a.tot, a.u) + '</span>' : '<i>همه مال خودم</i>') +
       (pr > 0 ? '<span>سهم من <b class="num">' + money(a.own * pr) + '</b> ریال</span>' : '') + '</span>' +
@@ -17277,8 +17311,8 @@ function cntWin(a, l) {
   const { A, r } = rowOf(a, l), prog = r ? r.tot : 0, c = cnt(a, l), u = A ? A.u : '';
   const parts = '';
   App.modal('✏️ شمارش من — ' + esc(A ? A.disp : a) + ' در «' + esc(l) + '»',
-    '<div class="smm"><div class="smm-p">برنامه می‌گوید:' + (r && r.tm && r.tm.length ? peopleBreak(r.own, r.tm, prog, u) : ' <b class="num">' + q4(prog) + '</b> ' + esc(u) + parts) + '</div>' +
-    '<label class="smm-f">واقعاً چقدر است؟ (' + esc(u) + ')<input id="smc_q" type="text" inputmode="decimal" autocomplete="off" data-asset="' + esc(a) + '" value="' + (c ? esc(String(c.q)) : '') + '"></label>' +
+    '<div class="smm"><div class="smm-p">برنامه می‌گوید:' + (r && r.tm && r.tm.length ? peopleBreak(r.own, r.tm, prog, u) : ' <b class="num">' + q4(prog) + '</b> ' + esc(UU(u)) + parts) + '</div>' +
+    '<label class="smm-f">واقعاً چقدر است؟ (' + esc(UU(u)) + ')<input id="smc_q" type="text" inputmode="decimal" autocomplete="off" data-asset="' + esc(a) + '" value="' + (c ? esc(String(c.q)) : '') + '"></label>' +
     '<label class="smm-f">تاریخ شمارش<input id="smc_d" type="text" inputmode="numeric" value="' + esc(c && c.d ? c.d : today()) + '"></label>' +
     (isFund(l) ? '<div class="smm-n">برای صندوق: همان <b>موجودی صورتحساب صندوق</b> را بنویسید. بعد از ذخیره، اختلاف را برای ثبت سود (یا پرسیدن بابت کاهش) نشان می‌دهد.</div>' : '<div class="smm-n">فقط یادداشت شما است؛ به هیچ حسابی دست نمی‌زند. اگر فرق کند، در خلاصه وضعیت ⚠ می‌آید.</div>') + '</div>',
     '<button type="button" class="btn green" data-act="smc-save" data-a="' + esc(a) + '" data-l="' + esc(l) + '">✔ ذخیرهٔ شمارش</button>' +
@@ -17294,8 +17328,8 @@ function setCount(db, a, l, q, d) { const C = db.counts = db.counts || {}; (C[a]
 function fundWin(a, l) {
   const { A, r } = rowOf(a, l), prog = r ? r.tot : 0, c = cnt(a, l), u = A ? A.u : '';
   App.modal('⚖ مغایرت‌گیری «' + esc(l) + '» — ' + esc(A ? A.disp : a),
-    '<div class="smm"><div class="smm-p">در دفتر:' + (r && r.tm && r.tm.length ? peopleBreak(r.own, r.tm, prog, u) : ' <b class="num">' + q4(prog) + '</b> ' + esc(u)) + '</div>' +
-    '<label class="smm-f">📄 موجودی طبق صورتحساب صندوق (' + esc(u) + ')<input id="smf_q" type="text" inputmode="decimal" autocomplete="off" data-asset="' + esc(a) + '" value="' + (c ? esc(String(c.q)) : '') + '"></label>' +
+    '<div class="smm"><div class="smm-p">در دفتر:' + (r && r.tm && r.tm.length ? peopleBreak(r.own, r.tm, prog, u) : ' <b class="num">' + q4(prog) + '</b> ' + esc(UU(u))) + '</div>' +
+    '<label class="smm-f">📄 موجودی طبق صورتحساب صندوق (' + esc(UU(u)) + ')<input id="smf_q" type="text" inputmode="decimal" autocomplete="off" data-asset="' + esc(a) + '" value="' + (c ? esc(String(c.q)) : '') + '"></label>' +
     '<label class="smm-f">تاریخ صورتحساب<input id="smf_d" type="text" inputmode="numeric" value="' + esc(c && c.d ? c.d : today()) + '"></label>' +
     '<div id="smf_res"></div></div>',
     '<button type="button" class="btn ghost" data-act="modal-close">بستن</button>', { width: '620px' });
@@ -17311,13 +17345,13 @@ function fundRes() {
   if (d > 0) {
     const tm = App.trustMemoAt ? App.trustMemoAt(S.l, S.a) : [], side = tm.map(t => ({ p: t.person, q: N(t.q) - N(t.qb) })).filter(t => t.q > EPS);
     const sh = side.map(t => esc(t.p) + ' ' + q4(d * t.q / S.prog)).join(' · ');
-    box.innerHTML = '<div class="smf up">➕ صندوق <b class="num">' + q4(d) + '</b> ' + esc(S.u) + ' بیشتر از دفتر است ← <b>' + esc(fundCat(S.l)) + '</b></div>' +
-      '<label class="smm-f">نرخ هر ' + esc(S.u) + ' (ریال)<input id="smf_p" type="text" inputmode="decimal" value="' + (pr > 0 ? H.fmt(Math.round(pr)) : '') + '"></label>' +
+    box.innerHTML = '<div class="smf up">➕ صندوق <b class="num">' + q4(d) + '</b> ' + esc(UU(S.u)) + ' بیشتر از دفتر است ← <b>' + esc(fundCat(S.l)) + '</b></div>' +
+      '<label class="smm-f">نرخ هر ' + esc(UU(S.u)) + ' (ریال)<input id="smf_p" type="text" inputmode="decimal" value="' + (pr > 0 ? H.fmt(Math.round(pr)) : '') + '"></label>' +
       (side.length && S.prog > EPS ? '<label class="smm-ck"><input type="checkbox" id="smf_sp"> سهم امانی‌ها از این سود به خودشان برسد (به نسبت: ' + sh + ')</label>' : '') +
       '<button type="button" class="btn green big" data-act="smf-up">✔ ثبت به‌عنوان «' + esc(fundCat(S.l)) + '»</button>' +
-      '<div class="smm-n">درآمد در «صورت سود و زیان» می‌آید و ' + esc(S.u) + 'ها به موجودی همین صندوق اضافه می‌شود.</div>';
+      '<div class="smm-n">درآمد در «صورت سود و زیان» می‌آید و ' + esc(UU(S.u)) + 'ها به موجودی همین صندوق اضافه می‌شود.</div>';
   } else {
-    box.innerHTML = '<div class="smf dn">➖ صندوق <b class="num">' + q4(-d) + '</b> ' + esc(S.u) + ' کمتر از دفتر است. <b>این کاهش بابت چیست؟</b></div>' +
+    box.innerHTML = '<div class="smf dn">➖ صندوق <b class="num">' + q4(-d) + '</b> ' + esc(UU(S.u)) + ' کمتر از دفتر است. <b>این کاهش بابت چیست؟</b></div>' +
       '<div class="smf-ops"><button type="button" class="btn teal" data-act="smf-out">🔄 ابطال — به محل دیگر رفت</button>' +
       '<button type="button" class="btn gold" data-act="smf-sell">💱 ابطال و فروش (ریال گرفتم)</button>' +
       '<button type="button" class="btn red" data-act="smf-loss">📉 کارمزد / زیان صندوق</button>' +
@@ -17353,7 +17387,7 @@ function fundLossPost() {
   const q = readQ('smf_q'), dt = readD('smf_d'), d = S.prog - q; if (isNaN(q) || !(d > EPS)) return;
   const p = posOf(S.a), avg = p && N(p.qty) > EPS ? Math.round(N(p.cost) / N(p.qty)) : Math.round(priceOf(S.a));
   const DR = (App.db.special || {}).PL_OTH || App.C.owner, cat = fundLoss(S.l);
-  App.confirm(q4(d) + ' ' + esc(S.u) + ' به‌عنوان <b>' + esc(cat) + '</b> از «' + esc(S.l) + '» کم شود؟ (به بهای تمام‌شدهٔ میانگین، هر ' + esc(S.u) + ' ' + money(avg) + ' ریال)', 'بله، ثبت کن', () => {
+  App.confirm(q4(d) + ' ' + esc(UU(S.u)) + ' به‌عنوان <b>' + esc(cat) + '</b> از «' + esc(S.l) + '» کم شود؟ (به بهای تمام‌شدهٔ میانگین، هر ' + esc(UU(S.u)) + ' ' + money(avg) + ' ریال)', 'بله، ثبت کن', () => {
     App.commit(cat, db => {
       setCount(db, S.a, S.l, q, dt);
       const e = { date: dt, desc: cat + ' — مغایرت‌گیری با صورتحساب صندوق (موجودی صندوق ' + q4(q) + ' · دفتر ' + q4(S.prog) + ')', dr: DR, cr: S.a, amt: null, qty: Math.round(d * 1e4) / 1e4, price: avg || null, fee: null, loc: S.l, dest: null, cat, ck: 'exp', src: 'fx' };
@@ -17580,13 +17614,25 @@ document.addEventListener('click', ev => {
   try { App.toast('✔ فونت نوشته‌ها: ' + (LF.find(x => x[0] === lget()) || [])[1]); } catch (e) { }
 }, true);
 if (document.documentElement) lapply();
+/* v50.3 (the owner: «مانده‌ها ایتالیک نباشد، کمی درشت‌تر و بولدتر؛ یا به جای برجستگی، فرورفتگی — بگذار ببینم کدام را دوست دارم»): the box of the amounts */
+const ABKEY = 'hesabk_amtbox', AB = [['inset', 'فرورفته', 'مبلغ در یک گودی'], ['raised', 'برجسته', 'مبلغ روی یک کادر بالا آمده']];
+const abget = () => { let v = ''; try { v = localStorage.getItem(ABKEY) || ''; } catch (e) { } return AB.some(x => x[0] === v) ? v : 'inset'; };
+function abapply() { const v = abget(); document.documentElement.classList.toggle('ab-raised', v === 'raised'); document.querySelectorAll('.ab-t').forEach(b => b.classList.toggle('on', b.dataset.v === v)); }
+App.amtBox = v => { try { localStorage.setItem(ABKEY, v); } catch (e) { } abapply(); };
+App.amtBoxBar = () => '<div class="nfbox abbox"><div class="nf-h">🔲 کادر مبلغ‌ها <small style="font-weight:700;color:#64748B">— در منوی بانک‌ها، سرمایه‌گذاری‌ها، بدهکاران …</small></div><div class="lf-g">' +
+  AB.map(([k, n, sub]) => '<button type="button" class="lf-t ab-t ab-' + k + (abget() === k ? ' on' : '') + '" data-act="amtbox" data-v="' + k + '"><span class="ab-pv">۲۰۰٬۰۰۰٬۰۰۰ <small>ریال</small></span><b>' + n + '</b><small>' + sub + '</small></button>').join('') + '</div></div>';
+document.addEventListener('click', ev => {
+  const b = ev.target && ev.target.closest ? ev.target.closest('[data-act="amtbox"]') : null; if (!b) return;
+  ev.preventDefault(); ev.stopPropagation(); App.amtBox(b.dataset.v); try { App.toast('✔ کادر مبلغ‌ها: ' + (AB.find(x => x[0] === abget()) || [])[1]); } catch (e) { }
+}, true);
+if (document.documentElement) abapply();
 App.theme = v => { set(v); apply(); };
 App.themeNow = get;
 App.themeBar = () => {
   const v = get();
   return '<div class="nfbox thbox"><div class="nf-h">🎨 ظاهر برنامه <small style="font-weight:700;color:#64748B">— روی هر کدام بزنید؛ همهٔ صفحه‌ها عوض می‌شود</small></div><div class="th-g">' +
     LOOKS.map(([k, name, sub, ac]) => '<button type="button" class="th-t' + (v === k ? ' on' : '') + '" data-act="theme" data-v="' + k + '"><span class="th-p th-' + (ac || 'classic') + '"><i></i><i></i><i></i></span><b>' + name + '</b><small>' + sub + '</small></button>').join('') +
-    '</div></div>' + (App.letterBar ? App.letterBar() : '');
+    '</div></div>' + (App.letterBar ? App.letterBar() : '') + (App.amtBoxBar ? App.amtBoxBar() : '');
 };
 const swText = () => { const v = get(), i = LOOKS.findIndex(l => l[0] === v), n = LOOKS[(i + 1) % LOOKS.length]; return '🎨 ظاهر: <b>' + BY[v][1] + '</b> — برو به «' + n[1] + '»'; };
 document.addEventListener('click', ev => {
@@ -18116,7 +18162,7 @@ function todayBox(box) {
   const out = rs.map(r => {
     const b = r.querySelector('[data-act="edit-entry"][data-id]'), e = b ? entry(b.dataset.id) : null; if (!e) return '';
     const up = r.classList.contains('up'), am = txt(r.querySelector('.ax-ra')).replace(/^[▲▼]\s*/, ''), sm = [...r.querySelectorAll('.ax-rd small')].filter(x => !x.classList.contains('ax-dd') && !x.closest('.rc-c,.rcp')).map(txt).filter(Boolean)[0] || '';
-    return voucher(e, { bal: '<b class="' + (up ? 'jv-up' : 'jv-dn') + '">' + (up ? '▲ ' : '▼ ') + nb(am) + '</b>' + (sm ? ' — ' + esc(sm) : ''), noDel: true });
+    return voucher(e, { bal: '<b class="' + (up ? 'jv-up' : 'jv-dn') + '">' + (up ? '▲ ' : '▼ ') + nb(am) + (/^[\d,.\s]+$/.test(am) ? ' <small class="cur">ریال</small>' : '') + '</b>' + (sm ? ' — ' + esc(sm) : ''), noDel: true });
   }).filter(Boolean);
   if (!out.length) return;
   box.dataset.jv = '1';
