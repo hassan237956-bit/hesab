@@ -3716,6 +3716,17 @@ html #page table.bk-t tfoot td{background:#E2E8F0!important;font-weight:800}
 html #page table.bk-t tfoot td[data-l]:not([data-l=""])::before{color:#475569!important}
 @media (max-width:640px){.bk-t td{min-width:0;overflow:hidden}.bk-t tfoot td,.bk-t tr.bk-gh td{font-size:.86rem}.bk-t td .num{letter-spacing:-.2px}}
 @media (max-width:640px){.bk-t tfoot tr{grid-template-columns:minmax(0,1fr)}.bk-t tfoot td{font-size:1rem}.bk-t tfoot td[data-l]:not([data-l=""]){display:flex;justify-content:space-between;align-items:baseline;gap:8px}.bk-t tfoot td[data-l]:not([data-l=""])::before{display:inline}}
+/* v48.9 · «⚖ مغایرت صندوق ارزی» */
+.hp-fd{padding:10px 12px 12px;border-top:1px dashed #CBD5E1}
+.hp-fd .btn{width:100%;justify-content:center;font-size:1.02rem}
+.fd h2 small{font-size:.9rem;color:#64748B;font-weight:700}
+.fd-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 12px}
+.fd-g>div{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.fd-g span{font-size:.84rem;color:#64748B;font-weight:700}
+.fd-g b{font-size:1.25rem}
+.fd-g small{color:#64748B;font-weight:600;font-size:.82rem}
+.fd-b{width:100%;justify-content:center;font-size:1.1rem}
+@media (max-width:560px){.fd-g{grid-template-columns:minmax(0,1fr)}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -3723,7 +3734,7 @@ html #page table.bk-t tfoot td[data-l]:not([data-l=""])::before{color:#475569!im
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.8"; window.APP_BUILD = "1405/08/20 08:07";
+window.APP_VERSION = "48.9"; window.APP_BUILD = "1405/08/20 15:37";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -15214,7 +15225,7 @@ const COL = {
   n_bank: ['#1D4ED8', '#60A5FA'], n_brk: ['#6D28D9', '#A78BFA'], n_mem: ['#047857', '#34D399'], n_fx: ['#B45309', '#FBBF24'], n_loan: ['#B91C1C', '#F87171'],
   n_debt: ['#0E7490', '#22D3EE'], n_cred: ['#9D174D', '#F472B6'], n_trust: ['#92400E', '#F59E0B'], n_inv: ['#0F766E', '#5EEAD4'],
   s_rep: ['#4338CA', '#818CF8'], s_set: ['#334155', '#94A3B8'],
-  '/home': ['#B45309', '#FCD34D'], '/look': ['#BE185D', '#F9A8D4'], '/gl': ['#0F766E', '#5EEAD4'], '/trial': ['#4338CA', '#A5B4FC'], '/bs': ['#1E3A8A', '#93C5FD'], '/journal': ['#7C2D12', '#FDBA74'], '/tasks': ['#15803D', '#86EFAC'],
+  '/home': ['#B45309', '#FCD34D'], '/look': ['#BE185D', '#F9A8D4'], '/gl': ['#0F766E', '#5EEAD4'], '/trial': ['#4338CA', '#A5B4FC'], '/fund': ['#1E3A8A', '#93C5FD'], '/bs': ['#1E3A8A', '#93C5FD'], '/journal': ['#7C2D12', '#FDBA74'], '/tasks': ['#15803D', '#86EFAC'],
   '/archive': ['#475569', '#CBD5E1'], '/settings': ['#6D28D9', '#C4B5FD'], '/backup': ['#0F172A', '#64748B'], '/trust': ['#92400E', '#F59E0B']
 };
 const FA = s => String(s).replace(/\d/g, d => '۰۱۲۳۴۵۶۷۸۹'[d]);
@@ -16717,8 +16728,31 @@ function panel(kind, L, opt) {
   return '<section class="hp hp-' + kind + '"><header class="hp-h"><h2>' + (kind === 'gold' ? '🥇 طلا و سکه' : '💱 ارز') + '</h2>' +
     (nb ? '<span class="hr-st bad">⚠ ' + fa(nb) + ' مغایرت</span>' : '') +
     '<div class="hp-v"><small>ارزش سهم من</small><b class="num">' + money(val) + '</b><small>ریال</small></div></header>' +
-    '<div class="hp-l">' + L.map(a => rowD(a, opt)).join('') + '</div></section>';
+    '<div class="hp-l">' + L.map(a => rowD(a, opt)).join('') + '</div>' +
+    (kind === 'cur' && funds().length ? '<div class="hp-fd noprint"><a class="btn navy" data-act="go" data-to="/fund">⚖ مغایرت صندوق ارزی' + (funds().some(x => /مانا/.test(x.r.loc)) ? ' مانا' : '') + '</a></div>' : '') + '</section>';
 }
+/* v48.9 (the owner 1405/08/20: «گفتم صندوق ارزی را یک مغایرت هم بگذار … کجاست الان مغایرت؟»): the reconciliation of a currency fund
+   was only a small ⚖ inside the table of a currency — now it has its own page «⚖ مغایرت صندوق ارزی» (main menu, and a button under «💱 ارز»):
+   for each fund: what the program has, the last statement, the difference, and one big button that opens the reconciliation
+   (more → «سود سپرده ارزی مانا»; less → asks what it was: ابطال، برداشت، فروش، کارمزد). */
+function funds() { const L = []; assets().forEach(a => (a.rows || []).forEach(r => { if (isFund(r.loc)) L.push({ a, r }); })); return L; }
+App.fundPlaces = funds;
+P.fund = function () {
+  const L = funds();
+  let h = '<div class="smw"><div class="bk-in">صورتحساب صندوق را از اپ بانک یا سایت صندوق ببینید و <b>موجودی (تعداد واحد/دلار)</b> را اینجا بنویسید. ' +
+    'اگر صندوق <b>بیشتر</b> از برنامه بود، تفاوت به‌عنوان «<b>سود سپرده ارزی مانا</b>» ثبت می‌شود؛ اگر <b>کمتر</b> بود، می‌پرسد بابت چیست (ابطال، برداشت، فروش، کارمزد).</div>';
+  if (!L.length) h += '<div class="box">هنوز محلی به اسم «صندوق ارزی …» برای ارزها ثبت نشده. اول دلارهای صندوق را با محل «صندوق ارزی» ثبت کنید.</div>';
+  L.forEach(({ a, r }) => {
+    const c = cnt(a.name, r.loc), d = c ? N(c.q) - r.tot : 0, A = ' data-a="' + esc(a.name) + '" data-l="' + esc(r.loc) + '"';
+    h += '<div class="box fd"><h2>🏦 ' + esc(r.loc) + ' <small>— ' + esc(a.disp) + '</small></h2>' +
+      '<button type="button" class="btn navy big fd-b" data-act="sm-fund"' + A + '>⚖ مغایرت‌گیری با صورتحساب صندوق</button><div class="fd-g">' +
+      '<div><span>در برنامه</span><b class="num">' + q4(r.tot) + '</b> ' + esc(a.u || '') + (r.tm && r.tm.length ? '<small>من ' + q4(r.own) + r.tm.map(t => ' · ' + esc(t.p) + ' ' + q4(t.q)).join('') + '</small>' : '') + '</div>' +
+      '<div><span>آخرین صورتحساب</span>' + (c ? '<b class="num">' + q4(c.q) + '</b> ' + esc(a.u || '') + (c.d ? '<small>' + esc(c.d) + '</small>' : '') : '<b class="sg-0">هنوز نزده‌اید</b>') + '</div>' +
+      '<div><span>اختلاف</span>' + (c ? (Math.abs(d) <= EPS ? '<b class="sg-v">✔ یکی است</b>' : '<b class="num sg-x">' + (d > 0 ? '+' : '−') + q4(Math.abs(d)) + '</b>') : '<b class="sg-0">—</b>') + '</div></div>' +
+      '</div>';
+  });
+  return { title: '⚖ مغایرت صندوق ارزی', sub: 'موجودی برنامه را با صورتحساب صندوق (مانا و …) مقایسه کنید', html: h + '</div>' };
+};
 function panels(opt) {
   const A = assets(), G = A.filter(isGold), F = A.filter(a => !isGold(a));
   if (!A.length) return '';
@@ -20332,7 +20366,7 @@ function renderNav(r) {
   };
   const fxItems = E.fxPositions(C).filter(x => !App.isArchived(x.name)).map(x => ({ to: '/asset/' + H.slug(x.name), label: x.display || x.name, bal: '<span class="b num">' + H.fmtq(x.qty) + '</span>' }));
   { const na = App.archiveCount(['asset']); if (na) fxItems.push({ to: '/archive?g=asset', label: '🗄 بایگانی (' + na + ')' }); }
-  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + (App.pages.look ? simple('/look', '🎨', 'انتخاب طرح و ظاهر') : '') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + (App.pages.gl ? simple('/gl', '📚', 'دفتر کل') + simple('/trial', '🧮', 'تراز آزمایشی') : '') + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
+  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + (App.pages.look ? simple('/look', '🎨', 'انتخاب طرح و ظاهر') : '') + (App.pages.fund ? simple('/fund', '⚖', 'مغایرت صندوق ارزی') : '') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + (App.pages.gl ? simple('/gl', '📚', 'دفتر کل') + simple('/trial', '🧮', 'تراز آزمایشی') : '') + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
   h += group('n_bank', '/banks', '🏦', 'بانک‌ها', accItems([G.CASH]).concat([{ to: '/recon', label: '⚖ مغایرت‌گیری بانک‌ها' }]), G.CASH, 'بانک جدید');
   h += group('n_brk', '/banks', '📊', 'کارگزاری‌ها', accItems([G.BRK]), G.BRK, 'کارگزاری جدید');
   h += group('n_mem', '/members', '👥', 'سرمایه‌گذاران', accItems([G.MEM]), G.MEM, 'سرمایه‌گذار جدید');
@@ -20370,7 +20404,7 @@ function renderTop() {
 /* ------------------------------------------------------------- v38 design layer
    (presentation only): quick find · card-style tables on phones · print header */
 const QPAGES = [
-  ['/home', '🏠', 'خانه', 'صفحه اصلی نمای کلی'], ['/look', '🎨', 'انتخاب طرح و ظاهر', 'طرح ظاهر رنگ تم داشبورد دیزاین فونت'], ['/gl', '📚', 'دفتر کل', 'دفتر کل سرفصل حساب کل معین گردش'], ['/trial', '🧮', 'تراز آزمایشی', 'تراز آزمایشی چهارستونی گردش مانده بدهکار بستانکار'], ['/bs', '⚖', 'تراز کل', 'ترازنامه دارایی بدهی سرمایه'], ['/journal', '📒', 'دفتر روزنامه', 'همه ثبت ها اسناد'],
+  ['/home', '🏠', 'خانه', 'صفحه اصلی نمای کلی'], ['/look', '🎨', 'انتخاب طرح و ظاهر', 'طرح ظاهر رنگ تم داشبورد دیزاین فونت'], ['/gl', '📚', 'دفتر کل', 'دفتر کل سرفصل حساب کل معین گردش'], ['/fund', '⚖', 'مغایرت صندوق ارزی', 'مغایرت صندوق ارزی سود سپرده دلار ابطال'], ['/trial', '🧮', 'تراز آزمایشی', 'تراز آزمایشی چهارستونی گردش مانده بدهکار بستانکار'], ['/bs', '⚖', 'تراز کل', 'ترازنامه دارایی بدهی سرمایه'], ['/journal', '📒', 'دفتر روزنامه', 'همه ثبت ها اسناد'],
   ['/reports', '🗂', 'همهٔ گزارش‌ها', 'گزارش مرکز گزارش'], ['/daily', '📅', 'وقایع روزانه', 'گزارش روزانه'], ['/mreport', '🗓', 'وقایع ماهانه', 'گزارش ماهانه'],
   ['/rep/cash', '📑', 'هزینه‌ها و درآمدها', 'گزارش هزینه درآمد دسته'], ['/rep/banks', '🏦', 'گردش بانک‌ها', 'گزارش بانک'], ['/rep/brokers', '📊', 'گردش کارگزاری‌ها', 'گزارش کارگزاری'],
   ['/rep/fx', '💱', 'وضعیت و گردش ارز و طلا', 'دلار طلا سکه گزارش'], ['/rep/loans', '🏛', 'وضعیت و گردش وام‌ها', 'وام قسط گزارش'], ['/rep/debtors', '🤝', 'گزارش بدهکاران', 'بدهکار طلب'],
