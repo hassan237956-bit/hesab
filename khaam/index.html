@@ -3723,7 +3723,7 @@ html #page table.bk-t tfoot td[data-l]:not([data-l=""])::before{color:#475569!im
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "48.7"; window.APP_BUILD = "1405/08/19 22:52";
+window.APP_VERSION = "48.8"; window.APP_BUILD = "1405/08/20 08:07";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -19751,10 +19751,11 @@ function patchXml(xml, edits) {
     }
     const gt = xml.indexOf('>', i); const selfClose = xml.charCodeAt(gt - 1) === 47;
     const end = selfClose ? gt + 1 : xml.indexOf('</c>', i) + 4;
-    const seg = xml.slice(i, end); if (seg.indexOf('<f') >= 0) throw new Error('formula in ' + ed.ref);
+    const seg = xml.slice(i, end); if (seg.indexOf('<f') >= 0 && !ed.f) throw new Error('formula in ' + ed.ref);
     const sm = /\ss="(\d+)"/.exec(seg.slice(0, gt - i + 1)); const st = sm ? ' s="' + sm[1] + '"' : '';
     let nc;
-    if (ed.v === null || ed.v === '' || ed.v === undefined) nc = '<c r="' + ed.ref + '"' + st + '/>';
+    if (ed.f) nc = '<c r="' + ed.ref + '"' + st + '><f>' + xesc(ed.f) + '</f></c>';
+    else if (ed.v === null || ed.v === '' || ed.v === undefined) nc = '<c r="' + ed.ref + '"' + st + '/>';
     else if (typeof ed.v === 'number') nc = '<c r="' + ed.ref + '"' + st + ' t="n"><v>' + (Math.round(ed.v * 100) / 100) + '</v></c>';
     else nc = '<c r="' + ed.ref + '"' + st + ' t="inlineStr"><is><t xml:space="preserve">' + xesc(ed.v) + '</t></is></c>';
     xml = xml.slice(0, i) + nc + xml.slice(end);
@@ -19860,7 +19861,29 @@ App.buildLegacyXlsx = async function () {
       E.ledger(C, n).forEach(x => { net += (+x.dr || 0) - (+x.cr || 0); if (x.row && x.row.e && x.row.e.id > cut) fresh.push({ id: x.row.e.id, date: x.date || '', dr: +x.dr || 0, cr: +x.cr || 0, desc: ((App.isTrustAcc && App.isTrustAcc(n)) ? '🤝 امانت — مال دیگران نزد ماست: ' : '') + (x.desc || '') }); });
     }
     let expect = mm.net; fresh.forEach(f => expect += f.dr - f.cr);
-    if (Math.abs(net - expect) >= 1) (info.ledMismatch = info.ledMismatch || []).push(L.g);
+    if (Math.abs(net - expect) >= 1) {
+      const gap = Math.round(net - expect), want = Math.abs(gap); let pick = null;
+      try {
+        const fx = M.files.find(x => x[0] === file), fs = M.files.find(x => x[0] === 'xl/sharedStrings.xml');
+        const xml = fx ? dec.decode(await fileData(P, fx)) : '', sx = fs ? dec.decode(await fileData(P, fs)) : '';
+        const unx = t => String(t || '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, '&');
+        const SS = []; sx.replace(/<si>([\s\S]*?)<\/si>/g, (m0, si) => { let t = ''; si.replace(/<t[^>]*>([\s\S]*?)<\/t>/g, (m1, x) => { t += x; return ''; }); SS.push(unx(t)); return ''; });
+        const cells = {}; xml.replace(/<c r="([A-Z]+)(\d+)"([^>]*?)(?:\/>|>([\s\S]*?)<\/c>)/g, (m0, c, r, at, inner) => {
+          inner = inner || ''; const v = (inner.match(/<v>([\s\S]*?)<\/v>/) || [])[1]; let val = null;
+          if (/t="s"/.test(at)) val = v != null ? SS[+v] : null; else if (/t="inlineStr"/.test(at)) val = unx((inner.match(/<t[^>]*>([\s\S]*?)<\/t>/) || [])[1]); else if (/t="str"/.test(at)) val = unx(v); else val = v != null ? +v : null;
+          (cells[r] = cells[r] || {})[c] = val; return ''; });
+        const C0 = L.cols, rows = [];
+        for (let r = 1; r <= mm.last; r++) { const x = cells[r]; if (!x || !x[C0[0]]) continue; const a = +x[C0[2]] || 0, b = +x[C0[3]] || 0; const [dr, cr] = L.dc(a, b); if (dr || cr) rows.push({ date: String(x[C0[0]]), desc: String(x[C0[1]] || '').trim(), v: gap > 0 ? cr - dr : dr - cr }); }
+        const cand = rows.filter(r => r.v > 0 && r.v <= want + 0.5).sort((a, b) => b.v - a.v); let steps = 0;
+        const go = (i, left, used) => { if (Math.abs(left) < 1) return used; if (i >= cand.length || ++steps > 200000) return null; let rest = 0; for (let k = i; k < cand.length; k++) rest += cand[k].v; if (rest < left - 0.5) return null;
+          if (cand[i].v <= left + 0.5) { const w = go(i + 1, left - cand[i].v, used.concat([cand[i]])); if (w) return w; } return go(i + 1, left, used); };
+        pick = go(0, want, []);
+      } catch (e) { console.error(e); pick = null; }
+      const trustWord = d => /امان/.test(d) || (App.db.trusts || []).some(t => t && t.person && d.indexOf(String(t.person).split(' ')[0]) >= 0);
+      const rowsFix = (pick && pick.length ? pick : [{ v: want, desc: '', date: '' }]).map(r => ({ id: 0, date: todayTxt, dr: gap > 0 ? r.v : 0, cr: gap < 0 ? r.v : 0,
+        desc: r.desc ? 'خروج از ' + L.g + ': «' + r.desc + '» (' + r.date + ') — در برنامه ' + (trustWord(r.desc) ? 'امانی است (فقط انتظامی، بدون ریال)' : 'بسته یا اصلاح شده') : 'اصلاح تا مانده با برنامه یکی شود (ثبت‌های قبلی در برنامه ویرایش، حذف یا امانی شد)' }));
+      fresh = rowsFix.concat(fresh); (info.ledFixed = info.ledFixed || []).push(L.g + ': ' + rowsFix.length + ' ردیف اصلاح، جمع ' + want);
+    }
     fresh.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.id - b.id));
     /* v44.2: the sheet has room for (cap - last) new rows.  When there are more new entries than rows, the last free row carries the SUM of the rest
        («جمع N ثبت … (ریز آن در برنامه)»): the totals and the running balance of the Excel stay right, and there is no red warning. */
@@ -19898,6 +19921,21 @@ App.buildLegacyXlsx = async function () {
   }
   if (spk.REZA_A && C.accts.get(spk.REZA_A) && M.rezaA !== undefined) {
     extraOK.add(spk.REZA_A); const b = Math.round(C.balance(spk.REZA_A)); if (b !== Math.round(M.rezaA)) { add(tzs, 'D17', b); info.rezaA = b; }
+  }
+  /* v48.8: the Excel's balance sheet = the program's (new members, «تسویه سوابق», the revaluation basis) */
+  if (tzs) {
+    const spare = ['نفر 13', 'نفر 14', 'نفر 15'].filter(n => M.sheets[n]); let k = 0;
+    [...C.memSet].filter(n => !M.members[n] && (Math.abs(C.balance(n)) >= 1 || E.memberLedger(C, n).length)).forEach(name => {
+      const sn = spare[k]; if (!sn) { (info.memOver = info.memOver || []).push(name); return; }
+      const rows = E.memberLedger(C, name).map(r => ({ date: r.date || '', v: [r.date || '', r.eff < 0 ? -r.eff : 0, r.eff > 0 ? r.eff : 0, r.desc || ''] }));
+      mergeRows(name, M.sheets[sn], { tail: [], last: 3, bal: 0 }, MCOLS, rows); add(tzs, 'A' + (48 + ['نفر 13', 'نفر 14', 'نفر 15'].indexOf(sn)), name + ' (برگهٔ «' + sn + '»)');
+      (info.memNew = info.memNew || []).push(name + ' → ' + sn); k++;
+    });
+    const bs0 = E.balanceSheet(C), clr = Math.round(-(+bs0.clr || 0));
+    if (Math.abs(clr) >= 1) { add(tzs, 'G15', 'تسویه سوابق (اصلاحات برنامه روی ثبت‌های قدیمی — مثل ترازنامهٔ برنامه)'); add(tzs, 'J15', clr); info.clr = clr; }
+    const un = (bs0.eq || []).find(x => x.key === 'unreal');
+    if (un) { tzs && (edits[tzs] = edits[tzs] || []).push({ ref: 'H22', v: null, f: 'ROUND(H31-' + Math.round(+un.v || 0) + ',0)' }); add(tzs, 'G22', 'تفاوت مبنای قیمت تمام‌شده با برنامه →'); info.unreal = Math.round(+un.v || 0); }
+    edits[tzs].push({ ref: 'D19', v: null, f: 'IF(ABS(ROUND(J18-D18,0))<=5,0,ROUND(J18-D18,0))' });   // a few rials of rounding are not a difference
   }
   /* 2. balance sheet inputs: banks, brokers, cash */
   const tz = M.sheets['تراز کلی'], sums = {};
