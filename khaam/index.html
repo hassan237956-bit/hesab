@@ -4256,7 +4256,7 @@ button.plx-ir:hover,button.plx-ir:focus-visible{background:#F6F8FB;outline:none}
 .plx-act{margin-top:9px;display:flex;flex-wrap:wrap;gap:6px}
 .plx-act{display:grid!important;grid-template-columns:1fr 1fr}
 .plx-act .btn{font-size:.86rem!important;padding:6px 6px!important;min-height:0!important;width:100%!important;margin:0!important;justify-content:center;white-space:normal!important;line-height:1.5}
-.plx-act .btn:only-child,.plx-act .btn:nth-child(3){grid-column:1/-1}
+.plx-act .btn:last-child:nth-child(odd){grid-column:1/-1}
 .plx-pu{display:block;margin-top:1px}
 .plx-bar{justify-content:center;flex-wrap:wrap}
 .hp-plx{margin:10px 0 4px;text-align:center}
@@ -4270,7 +4270,7 @@ button.plx-ir:hover,button.plx-ir:focus-visible{background:#F6F8FB;outline:none}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "50.5"; window.APP_BUILD = "1405/08/21 13:08";
+window.APP_VERSION = "50.6"; window.APP_BUILD = "1405/08/21 13:40";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -15489,6 +15489,28 @@ function saSplit(db) {
   placesAdd(db);
 }
 const coinsOut = db => { const A = new Set((db.assets || []).map(a => a.name).filter(isCoin)); return (db.entries || []).filter(e => e && N(e.qty) > 0 && A.has(e.dr) && e.loc !== SK); };
+/* v50.6 (the owner 1405/08/21: «صندوق امانات بانک ملی را زدم: طلای دایی حسین تویش است، یک نیم سکه، یک سکه گرمی … چرا آنجا نیامد؟»):
+   he moved the half coin and the gram coin to the box today but wrote it «صندوق امانات بانک ملی نیاوران» — a new name, so the report showed
+   two boxes. They are one box: «صندوق امانات بانک ملی» becomes «صندوق امانات بانک ملی نیاوران» everywhere (records, moves, trusts, counts). */
+const SMN = 'صندوق امانات بانک ملی نیاوران';
+const lk = l => String(l || '').replace(/[\s\u200c]+/g, '').replace(/ي/g, 'ی').replace(/ك/g, 'ک');
+function melliUsed(db, name) {
+  const k = lk(name), is = l => !!l && lk(l) === k;
+  return (db.entries || []).some(e => e && (is(e.loc) || is(e.dest))) || (db.moves || []).some(m => m && (is(m.from) || is(m.to))) ||
+    (db.trusts || []).some(t => t && (t.moves || []).some(m => m && is(m.loc))) || Object.keys(db.counts || {}).some(a => Object.keys(db.counts[a] || {}).some(is));
+}
+const melliTwo = db => melliUsed(db, SM) && melliUsed(db, SMN);
+function melliOne(db) {
+  const is = l => !!l && lk(l) === lk(SM), now = new Date().toISOString();
+  (db.entries || []).forEach(e => { if (!e) return; let ch = false; if (is(e.loc)) { e.loc = SMN; ch = true; } if (is(e.dest)) { e.dest = SMN; ch = true; } if (ch) e.m = now; });
+  (db.moves || []).forEach(m => { if (!m) return; let ch = false; if (is(m.from)) { m.from = SMN; ch = true; } if (is(m.to)) { m.to = SMN; ch = true; } if (ch) m.m = now; });
+  (db.trusts || []).forEach(t => t && (t.moves || []).forEach(m => { if (m && is(m.loc)) m.loc = SMN; }));
+  Object.keys(db.counts || {}).forEach(a => { const C = db.counts[a] || {}; Object.keys(C).forEach(l => { if (is(l)) { if (!C[SMN]) C[SMN] = C[l]; delete C[l]; } }); });
+  const L = db.locations = db.locations || [], i = L.findIndex(l => l && is(l.name)), j = L.findIndex(l => l && lk(l.name) === lk(SMN));
+  if (i >= 0 && j >= 0) { L[j] = Object.assign({}, L[j], { pinned: !!(L[i].pinned || L[j].pinned) }); L.splice(i, 1); }
+  else if (i >= 0) L[i] = Object.assign({}, L[i], { name: SMN }); else if (j < 0) L.push({ name: SMN, pinned: true });
+  db.locGone = Array.from(new Set((db.locGone || []).filter(x => lk(x) !== lk(SMN)).concat([SM])));
+}
 const FIXES = [
   { id: 'v455-negar-gold-10g', text: 'قیمت ۱۰ گرم طلای امانی (۱۴۰۵/۰۷/۳۰) درست شد: هر گرم ۲۶۵٬۸۰۰٬۰۰۰ ریال (به‌جای ۲۶٬۵۸۰٬۰۰۰)',
     need: db => { const r = goldFind(db); return !!(r.m || r.e); }, sticky: true,
@@ -15532,6 +15554,8 @@ const FIXES = [
         new name) — 263,900,000 taken from his account twice; the second one is taken out;
      2) «✎ پرداخت سود» only added Amir's Mehr profit to his capital; the payment itself (he pays it every month, always outside the banks —
         «تسویه سوابق») was never written: it is written now, and his next months are paid the same way (70_profitpay) */
+  { id: 'v506-melli-box-one', text: '«صندوق امانات بانک ملی» و «صندوق امانات بانک ملی نیاوران» یکی شد: «صندوق امانات بانک ملی نیاوران» — طلای امانیِ دایی حسین، نیم سکه و سکه گرمی همه در همان صندوق',
+    need: db => melliTwo(db), apply: db => melliOne(db), sticky: true },
   { id: 'v492-profit-owner-renamed', text: 'سود مهر ۱۴۰۵ یکی از اعضا که اسمش عوض شده بود دو بار از حساب شما کم شده بود؛ سند تکراری (۲۶۳٬۹۰۰٬۰۰۰ ریال) برداشته شد',
     need: db => ownerDups(db).length > 0, apply: db => { const D = new Set(ownerDups(db)); db.entries = db.entries.filter(e => !D.has(e)); }, sticky: true },
   { id: 'v492-amir-mehr-payout', text: 'پرداخت سود مهر ۱۴۰۵ — (۴۹٬۳۰۰٬۰۰۰ ریال، مثل ماه‌های قبل بیرون از بانک‌ها) ثبت شد؛ مانده‌اش ۲٬۰۰۰٬۰۰۰٬۰۰۰ شد',
@@ -17397,6 +17421,8 @@ function placeItem(it, g) {
   h += '<div class="plx-act noprint">' + (g.none ? '<button type="button" class="btn xs orange" data-act="move-new" data-asset="' + esc(a.name) + '" data-from="">📍 محلش را مشخص کن</button>'
     : '<button type="button" class="btn xs violet" data-act="pl-edit" data-asset="' + esc(a.name) + '" data-loc="' + esc(r.loc) + '" title="همهٔ ثبت‌های این دارایی در این محل، با ✏️ ویرایش">✏️ ثبت‌ها</button>' +
       '<button type="button" class="btn xs ghost" data-act="sm-cnt"' + A + '>🔢 شمارش من</button>' +
+      /* v50.6 (the owner: «سکه‌ها در صندوق امانات بانک ملی است؛ چرا آنجا نیامد؟» — they were written with Karafarin): move it to its real place from here */
+      (r.own > EPS ? '<button type="button" class="btn xs teal" data-act="move-new" data-asset="' + esc(a.name) + '" data-from="' + esc(r.loc) + '" title="این دارایی را به محل دیگری ببرید">🔀 جابه‌جایی به محل دیگر</button>' : '') +
       (isFund(r.loc) ? '<button type="button" class="btn xs navy" data-act="sm-fund"' + A + '>⚖ مغایرت با صورتحساب</button>' : '')) + '</div>';
   return h + '</div>';
 }
