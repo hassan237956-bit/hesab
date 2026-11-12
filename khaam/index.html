@@ -4263,6 +4263,22 @@ button.plx-ir:hover,button.plx-ir:focus-visible{background:#F6F8FB;outline:none}
 .hp-plx .btn{display:inline-flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:4px 8px;max-width:100%;text-decoration:none}
 .hp-plx .btn small{font-weight:600;opacity:.85}
 @media print{.plx-c{break-inside:avoid;box-shadow:none}.plx-hd,.plx-ch{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+/* v50.7 — the tools of a section: in its menu group above the accounts, and at the head of its page */
+.tm-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 2px 12px}
+.tm-tool{display:flex;align-items:center;gap:9px;min-height:54px;padding:9px 12px;border-radius:15px;background:#F3F6FC;border:1px solid #D5E0F3;color:#1E3A70!important;text-decoration:none!important;cursor:pointer;box-shadow:0 1px 2px rgba(19,32,59,.05)}
+.tm-tool b{font-weight:800;font-size:.98rem;line-height:1.45;color:#13203B!important}
+.tm-ti{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#fff;border:1px solid #D5E0F3;font-size:1.15rem}
+.tm-tool.here{background:#E9EFF9;border-color:#C9A24E;box-shadow:inset 0 -3px 0 #C9A24E}
+.tm-tool:hover,.tm-tool:focus-visible{background:#E9EFF9;outline:none}
+.tm-tools .tm-tool:last-child:nth-child(odd){grid-column:1/-1}
+html.th-lux .tm-fly .tm-tools{margin:0 12px 12px!important}
+.sct{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:0 0 14px}
+.sct-i{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"i b" "i s";align-items:center;gap:0 9px;padding:10px 12px;border-radius:16px;background:#fff;border:1px solid #DDE2EC;border-top:3px solid #C9A24E;text-decoration:none!important;cursor:pointer;box-shadow:0 1px 2px rgba(19,32,59,.05),0 4px 12px rgba(19,32,59,.05)}
+.sct-ic{grid-area:i;display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#E9EFF9;font-size:1.25rem}
+.sct-i b{grid-area:b;font-weight:900;font-size:.98rem;color:#13203B!important;line-height:1.45}
+.sct-i small{grid-area:s;font-weight:600;font-size:.8rem;color:#5D6781!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sct-i:hover,.sct-i:focus-visible{background:#F6F8FB;outline:none}
+@media (max-width:420px){.sct{grid-template-columns:1fr 1fr}.sct .sct-i:last-child:nth-child(odd){grid-column:1/-1}.sct-i{grid-template-areas:"i b"}.sct-i small{display:none}}
 </style>
 <link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="icon-192.png"></head><body>
 <div id="app"></div><div id="modalBg"></div><div id="toast"></div>
@@ -4270,7 +4286,7 @@ button.plx-ir:hover,button.plx-ir:focus-visible{background:#F6F8FB;outline:none}
 <script id="initial-data" type="application/json">{"meta": {"owner": "من", "openDate": "1405/01/01", "inflation": 0.3, "flags": {"expToOwner": 1, "fxReclass": 1, "unitsFix": 1, "undoTestP": 1, "profitAuto": 1, "loanAuto": 1, "prepaidFix": 1}}, "special": {"CLEAR": "تسویه", "RESERVE": "سود/زیان ارزیابی (تحقق‌نیافته)", "PL_REAL": "سود/زیان تحقق‌یافته", "PL_OTH": "سایر درآمدها و هزینه‌ها", "CONTRA": "کسر وام‌ها", "LINK": "حساب رابط", "NO_DEST": "— بدون ثبت —", "REZA_L": "وام کوتاه‌مدت", "REZA_A": "وام کوتاه‌مدت (دارایی)", "A_INV": "سرمایه گذاری ها", "A_DEBT": "حساب بدهکاران", "A_CRED": "حساب بستانکاران", "A_TEN": "ودیعه مستاجران"}, "groups": [], "accounts": [{"name": "من", "group": "اعضا", "nature": "بستانکار"}, {"name": "تسویه", "group": "تسویه", "nature": "بستانکار"}, {"name": "سود/زیان ارزیابی (تحقق‌نیافته)", "group": "ذخیره ارزیابی", "nature": "بدهکار"}, {"name": "سود/زیان تحقق‌یافته", "group": "نتیجه عملیات", "nature": "بستانکار"}, {"name": "سایر درآمدها و هزینه‌ها", "group": "سایر", "nature": "بدهکار"}, {"name": "کسر وام‌ها", "group": "کسر وام‌ها", "nature": "بدهکار"}, {"name": "حساب رابط", "group": "سایر", "nature": "بدهکار"}], "assets": [], "entries": [], "rates": [], "loans": [], "units": [], "locations": [{"name": "صندوق", "pinned": false}], "members": [], "patches": []}</script>
 <script id="xl-pack" type="text/plain"></script>
 <script>
-window.APP_VERSION = "50.6"; window.APP_BUILD = "1405/08/21 13:40";
+window.APP_VERSION = "50.7"; window.APP_BUILD = "1405/08/21 13:55";
 /* Accounting engine — a faithful port of the verified workbook logic (journal → legs → balances, member profit, FX average cost, loans, balance sheet).
    Pure functions, no DOM. Works in the browser and in node (for the comparison tests). */
 (function (root) {
@@ -15875,9 +15891,11 @@ function fly(key) {
   shut(); cur = key;
   try { document.documentElement.style.setProperty('--sideW', Math.round(side.getBoundingClientRect().width) + 'px'); } catch (e) { }
   const ico = txt($('.ico', g)), lab = txt(g.children[1]), cnt = $('.cnt', g) ? txt($('.cnt', g)) : '';
-  let all = '', rows = '';
+  let all = '', rows = '', tools = '';
   Array.prototype.slice.call(sub.children).forEach(a => {
     if (a.classList.contains('all')) { all = '<a class="tm-all" data-act="go" data-to="' + esc(a.dataset.to || '') + '">' + esc(txt(a)) + '<span>←</span></a>'; return; }
+    /* v50.7 (the owner: «هر چیزی در قسمت خودش، همان اول»): the tools of the section — big chips above its accounts */
+    if (a.classList.contains('tool')) { tools += '<a class="tm-tool' + (a.classList.contains('on') ? ' here' : '') + '" data-act="go" data-to="' + esc(a.dataset.to || '') + '"><span class="tm-ti">' + esc(txt($('.ico', a))) + '</span><b>' + esc(txt($('.nm', a))) + '</b></a>'; return; }
     const c = a.cloneNode(true); c.classList.add('tm-r'); c.classList.remove('on');
     if (a.classList.contains('on')) c.classList.add('here');
     const bs = $$('.b', c);
@@ -15890,7 +15908,7 @@ function fly(key) {
   const back = document.createElement('div'); back.id = 'tmBack'; back.className = 'tm-back'; back.addEventListener('click', shut);
   const box = document.createElement('div'); box.id = 'tmFly'; box.className = 'tm-fly'; box.dataset.g = key; box.setAttribute('role', 'dialog');
   box.innerHTML = '<div class="tm-fh"' + sty(key) + '><span class="tm-i">' + esc(ico) + '</span><b>' + esc(lab) + '</b>' + (cnt ? '<em>' + FA(cnt) + '</em>' : '') +
-    '<button type="button" class="tm-fx" aria-label="بستن">✕</button></div>' + all + '<div class="tm-list">' + rows + '</div>';
+    '<button type="button" class="tm-fx" aria-label="بستن">✕</button></div>' + all + (tools ? '<div class="tm-tools">' + tools + '</div>' : '') + '<div class="tm-list">' + rows + '</div>';
   $('.tm-fx', box).addEventListener('click', shut);
   document.body.appendChild(back); document.body.appendChild(box);
   const t = $('#side .tm-g[data-tmg="' + key + '"]'); if (t) t.classList.add('open');
@@ -18741,6 +18759,44 @@ App.renameMore = function (db, oldName, nn) {
   } catch (e) { console.error(e); }
 };
 })();
+/* ---------------------------------------------------------------- v50.7 — everything in its own section
+   the owner (1405/08/21): «خیلی پخش و پلا شد؛ سر و سامانش بده: بانک‌ها، مغایرت بانک‌ها، صندوق‌های ارزی، صندوق امانات … هر کدام در قسمت خودش بیاید
+   که همان‌جا راحت دسترس باشد. مثلاً در طلا بروم، محل‌ها بیاید — همان اول. کاربرپسند و ساده و روان، که هی نچرخم کجاست».
+   · the tools of a section live in that section, first: in its group of the menu (above its accounts) and at the head of its page;
+     🏦 بانک‌ها: مغایرت‌گیری، گردش بانک‌ها · 👥 سرمایه‌گذاران: سود ماهانه، نرخ سود ·
+     💱 ارز و طلا: به تفکیک محل (صندوق امانات، صندوق ارزی …)، خلاصه وضعیت، مغایرت صندوق ارزی، سود و زیان تغییر قیمت، دفتر ریز;
+   · «اصلی» keeps only the books (خانه، تراز، روزنامه، دفتر کل، تراز آزمایشی، کارهای ماهانه); ظاهر و فونت under ⚙ تنظیمات. */
+(function () {
+'use strict';
+const App = window.App, H = App && App.H; if (!App || !H || !App.pages) return;
+const P = App.pages, esc = H.esc;
+const T = {
+  banks: () => [['/recon', '⚖', 'مغایرت‌گیری بانک‌ها', 'با صورتحساب بانک'], ['/rep/banks', '📊', 'گردش بانک‌ها', 'واریز و برداشت هر بانک']],
+  members: () => [['/monthly', '💹', 'سود ماهانهٔ اعضا', 'جدول سود هر ماه'], ['/rates', '🔢', 'نرخ سود سرمایه‌گذاران', 'درصد سود هر نفر']],
+  fx: () => {
+    const F = App.fundPlaces ? App.fundPlaces() : [], mana = F.some(x => /مانا/.test(x.r.loc));
+    return [['/places', '📍', 'دارایی‌ها به تفکیک محل', 'صندوق امانات، صندوق ارزی، منزل …'], ['/sum', '📊', 'خلاصه وضعیت و مغایرت', 'مال من، امانی‌ها، شمارش'],
+      F.length ? ['/fund', '⚖', 'مغایرت صندوق ارزی' + (mana ? ' مانا' : ''), 'با صورتحساب صندوق'] : null,
+      ['/reval', '📈', 'سود و زیان تغییر قیمت', 'به قیمت روز'], ['/fxled', '📒', 'دفتر ریز طلا و ارز', 'هر خرید و فروش']].filter(Boolean);
+  }
+};
+const has = to => { const k = to.slice(1).split(/[/?]/)[0]; return typeof P[k] === 'function'; };
+const list = k => { try { return (T[k] ? T[k]() : []).filter(x => has(x[0])); } catch (e) { console.error(e); return []; } };
+App.secTools = k => list(k).map(([to, ico, label]) => ({ to, ico, label, tool: true }));
+App.secToolsList = list;
+/* at the head of the page of the section: one row of big chips */
+const strip = k => { const L = list(k); return L.length ? '<nav class="sct noprint" aria-label="ابزارهای همین بخش">' + L.map(([to, ico, label, sub]) =>
+  '<a class="sct-i" data-act="go" data-to="' + esc(to) + '"><span class="sct-ic">' + ico + '</span><b>' + esc(label) + '</b><small>' + esc(sub) + '</small></a>').join('') + '</nav>' : ''; };
+App.secStrip = strip;
+[['fx', 'fx'], ['banks', 'banks'], ['members', 'members']].forEach(([pg, k]) => {
+  const o = P[pg]; if (typeof o !== 'function') return;
+  P[pg] = function () {
+    const r = o.apply(this, arguments);
+    try { if (r && typeof r.html === 'string') return Object.assign({}, r, { html: strip(k) + r.html }); if (typeof r === 'string') return strip(k) + r; } catch (e) { console.error(e); }
+    return r;
+  };
+});
+})();
 
 
 /* daily and monthly event reports: records that were entered + what changed in the program */
@@ -21372,8 +21428,8 @@ function renderNav(r) {
     const isAr = i => i.to.startsWith('/archive');
     const isOn = here(to) || items.some(i => !isAr(i) && here(i.to));
     const open = !!navOpen[key];
-    let h = '<div class="grp' + (open ? ' open' : '') + (isOn ? ' on' : '') + '" data-act="toggle-nav" data-key="' + key + '" data-to="' + to + '" data-solo="1"><span class="ico">' + ico + '</span><span>' + label + '</span><span class="cnt">' + items.filter(i => !i.to.startsWith('/recon') && !isAr(i)).length + '</span><span class="arrow">◀</span></div>';
-    h += '<div class="sub' + (open ? ' open' : '') + '"><a data-act="go" data-to="' + to + '" class="all' + (here(to) ? ' on' : '') + '"><span>📋 نمای کلی ' + label + '</span></a>' + items.map(i => '<a data-act="go" data-to="' + i.to + '" class="' + (!isAr(i) && here(i.to) ? 'on' : '') + (i.cls ? ' ' + i.cls : '') + (isAr(i) ? ' arch' : '') + '">' + (i.av ? '<span class="av">' + esc(i.av) + '</span>' : '') + '<span class="nm">' + esc(i.label) + '</span>' + (i.bal || '') + '</a>').join('') + (newGroup ? '<a class="add" data-act="new-acc" data-group="' + esc(newGroup) + '">＋ ' + newLabel + '</a>' : '') + '</div>';
+    let h = '<div class="grp' + (open ? ' open' : '') + (isOn ? ' on' : '') + '" data-act="toggle-nav" data-key="' + key + '" data-to="' + to + '" data-solo="1"><span class="ico">' + ico + '</span><span>' + label + '</span><span class="cnt">' + items.filter(i => !i.tool && !i.to.startsWith('/recon') && !isAr(i)).length + '</span><span class="arrow">◀</span></div>';
+    h += '<div class="sub' + (open ? ' open' : '') + '"><a data-act="go" data-to="' + to + '" class="all' + (here(to) ? ' on' : '') + '"><span>📋 نمای کلی ' + label + '</span></a>' + items.map(i => '<a data-act="go" data-to="' + i.to + '" class="' + (!isAr(i) && here(i.to) ? 'on' : '') + (i.cls ? ' ' + i.cls : '') + (i.tool ? ' tool' : '') + (isAr(i) ? ' arch' : '') + '">' + (i.tool && i.ico ? '<span class="ico">' + i.ico + '</span>' : '') + (i.av ? '<span class="av">' + esc(i.av) + '</span>' : '') + '<span class="nm">' + esc(i.label) + '</span>' + (i.bal || '') + '</a>').join('') + (newGroup ? '<a class="add" data-act="new-acc" data-group="' + esc(newGroup) + '">＋ ' + newLabel + '</a>' : '') + '</div>';
     return h;
   }
   const accItems = gs => {
@@ -21390,12 +21446,12 @@ function renderNav(r) {
       '<div class="sub s' + (open ? ' open' : '') + '">' + items.map(i => '<a data-act="go" data-to="' + i.to + '" class="' + (here(i.to) ? 'on' : '') + '"><span class="ico">' + i.ico + '</span><span>' + i.label + '</span></a>').join('') + '</div>';
   };
   const fxItems = E.fxPositions(C).filter(x => !App.isArchived(x.name)).map(x => ({ to: '/asset/' + H.slug(x.name), label: x.display || x.name, bal: '<span class="b num">' + H.fmtq(x.qty) + '</span>' }));
-  if (App.pages.places) fxItems.unshift({ to: '/places', label: '📍 دارایی‌ها به تفکیک محل' });
+  if (App.secTools) fxItems.unshift(...App.secTools('fx'));
   { const na = App.archiveCount(['asset']); if (na) fxItems.push({ to: '/archive?g=asset', label: '🗄 بایگانی (' + na + ')' }); }
-  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + (App.pages.look ? simple('/look', '🎨', 'انتخاب طرح و ظاهر') : '') + (App.pages.fund ? simple('/fund', '⚖', 'مغایرت صندوق ارزی') : '') + (App.pages.reval ? simple('/reval', '📈', 'سود و زیان تغییر قیمت‌ها') : '') + (App.pages.places ? simple('/places', '📍', 'دارایی‌ها به تفکیک محل') : '') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + (App.pages.gl ? simple('/gl', '📚', 'دفتر کل') + simple('/trial', '🧮', 'تراز آزمایشی') : '') + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
-  h += group('n_bank', '/banks', '🏦', 'بانک‌ها', accItems([G.CASH]).concat([{ to: '/recon', label: '⚖ مغایرت‌گیری بانک‌ها' }]), G.CASH, 'بانک جدید');
+  h += '<div class="navq" data-act="qfind"><span>🔍</span><span>جستجوی صفحه یا حساب…</span><kbd>Ctrl K</kbd></div><div class="sec">اصلی</div>' + simple('/home', '🏠', 'خانه') + simple('/bs', '⚖', 'تراز') + '<a data-act="go" data-to="/journal" class="' + (here('/journal') || here('/daily') ? 'on' : '') + '"><span class="ico">📒</span><span>دفتر روزنامه</span></a>' + (App.pages.gl ? simple('/gl', '📚', 'دفتر کل') + simple('/trial', '🧮', 'تراز آزمایشی') : '') + simple('/tasks', '✅', 'کارهای ماهانه' + (() => { const n = App.tasksAlertCount ? App.tasksAlertCount() : 0; return n ? ' <span class="nbadge">' + n + '</span>' : ''; })()) + '<div class="sec">حساب‌ها</div>';
+  h += group('n_bank', '/banks', '🏦', 'بانک‌ها', (App.secTools ? App.secTools('banks') : [{ to: '/recon', label: '⚖ مغایرت‌گیری بانک‌ها' }]).concat(accItems([G.CASH])), G.CASH, 'بانک جدید');
   h += group('n_brk', '/banks', '📊', 'کارگزاری‌ها', accItems([G.BRK]), G.BRK, 'کارگزاری جدید');
-  h += group('n_mem', '/members', '👥', 'سرمایه‌گذاران', accItems([G.MEM]), G.MEM, 'سرمایه‌گذار جدید');
+  h += group('n_mem', '/members', '👥', 'سرمایه‌گذاران', (App.secTools ? App.secTools('members') : []).concat(accItems([G.MEM])), G.MEM, 'سرمایه‌گذار جدید');
   h += group('n_fx', '/fx', '💱', 'ارز و طلا', fxItems, G.ASSET, 'ارز یا طلای جدید');
   h += group('n_loan', '/loans', '🏛', 'وام‌ها', accItems([G.LOAN]), null, '');
   h += group('n_debt', '/debtors', '🤝', 'بدهکاران', accItems([G.DEBT]), G.DEBT, 'بدهکار جدید');
@@ -21404,9 +21460,8 @@ function renderNav(r) {
   h += group('n_inv', '/invest', '📈', 'سایر سرمایه‌گذاری‌ها', accItems([G.INV]), G.INV, 'سرمایه‌گذاری جدید');
   { const na = App.archiveInfo ? App.archiveInfo().list.length : 0; if (na) h += simple('/archive', '🗄', 'بایگانی حساب‌ها <span class="cnt">' + na + '</span>'); }
   h += '<div class="sec">گزارش و ابزار</div>';
-  h += sgrp('s_rep', '📊', 'گزارش‌ها', [{ to: '/reports', ico: '🗂', label: 'همهٔ گزارش‌ها' }, { to: '/mreport', ico: '🗓', label: 'وقایع ماهانه' }, { to: '/rep/cash', ico: '📑', label: 'هزینه‌ها و درآمدها' }, { to: '/rep/banks', ico: '🏦', label: 'گردش بانک‌ها' }, { to: '/recon', ico: '⚖', label: 'مغایرت‌گیری بانک‌ها' }, { to: '/send', ico: '📤', label: 'ارسال گزارش' }]);
-  h += sgrp('s_set', '⚙', 'تنظیمات', [{ to: '/rates', ico: '🔢', label: 'نرخ سود سرمایه‌گذاران' }, { to: '/chart', ico: '🗂', label: 'فهرست حساب‌ها' }, { to: '/sync', ico: '🔄', label: 'همگام‌سازی با اکسل' }, { to: '/settings', ico: '💾', label: 'ذخیره‌سازی و نمایش' }]);
-  h += simple('/settings?nf=1', '🔤', 'فونت عددها');
+  h += sgrp('s_rep', '📊', 'گزارش‌ها', [{ to: '/reports', ico: '🗂', label: 'همهٔ گزارش‌ها' }, { to: '/mreport', ico: '🗓', label: 'وقایع ماهانه' }, { to: '/rep/cash', ico: '📑', label: 'هزینه‌ها و درآمدها' }, { to: '/send', ico: '📤', label: 'ارسال گزارش' }]);
+  h += sgrp('s_set', '⚙', 'تنظیمات', [(App.pages.look ? { to: '/look', ico: '🎨', label: 'ظاهر برنامه و فونت نوشته‌ها' } : null), { to: '/settings?nf=1', ico: '🔤', label: 'فونت عددها' }, { to: '/chart', ico: '🗂', label: 'فهرست حساب‌ها' }, { to: '/sync', ico: '🔄', label: 'همگام‌سازی با اکسل' }, { to: '/settings', ico: '💾', label: 'ذخیره‌سازی و نمایش' }].filter(Boolean));
   h += simple('/backup', '🛡', 'پشتیبان و بازیابی');
   h += '</div>';
   const side = $('#side'); const st = side.scrollTop; side.innerHTML = h; side.scrollTop = st;
