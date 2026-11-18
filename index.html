@@ -126,7 +126,7 @@
   /* ---------- building the page and starting it ---------- */
   var HEAD_ADD = '<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#0F2748"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="صورت‌های مالی"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="apple-touch-icon" href="apple-touch-icon.png">';
   var TAIL = '<script id="pwa-tail">(' + function () {
-    var DBN = 'hesab_pwa', ST = 'kv', CHECK = 20 * 60 * 1000;
+    var DBN = 'hesab_pwa', ST = 'kv', CHECK = 10 * 60 * 1000;
     function idb() { return new Promise(function (res, rej) { var r = indexedDB.open(DBN, 1); r.onupgradeneeded = function () { r.result.createObjectStore(ST); }; r.onsuccess = function () { res(r.result); }; r.onerror = function () { rej(r.error); }; }); }
     function get(k) { return idb().then(function (db) { return new Promise(function (res, rej) { var q = db.transaction(ST, 'readonly').objectStore(ST).get(k); q.onsuccess = function () { res(q.result); }; q.onerror = function () { rej(q.error); }; }); }); }
     function put(k, v) { return idb().then(function (db) { return new Promise(function (res, rej) { var t = db.transaction(ST, 'readwrite'); t.objectStore(ST).put(v, k); t.oncomplete = function () { res(); }; t.onerror = function () { rej(t.error); }; }); }); }
@@ -136,15 +136,34 @@
     var forgot = false;
     function forget() { try { if (forgot || !localStorage.getItem('hesab_db_v1')) return; forgot = true; get('cfg').then(function (c) { if (c && c.snap) { c.snap = null; return put('cfg', c); } }); } catch (e) { } }
     [6000, 15000, 40000, 90000].forEach(function (ms) { setTimeout(forget, ms); });
-    /* 2) a newer version is fetched quietly; it starts by itself the next time the icon is opened, or at once from the green button */
+    /* 2) a newer version is fetched quietly and applied BY ITSELF a few seconds later (v52.4 — «خودش اتوماتیک اعمال کنه، نیاز نباشه من بزنم»):
+          never while a record is being typed or a copy is on its way to Drive; the data is saved first, then the page opens again with the new version */
+    function idle() {
+      try {
+        var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return false;
+        if (window.App && App.form) return false;
+        if (window.App && ((App.allBusy && App.allBusy()) || (App.gd && App.gd.busy) || (App.tg && App.tg.busy) || (App.gdState && App.gdState().busy))) return false;   // a file is being sent
+      } catch (e) { }
+      return true;
+    }
+    var applying = false, waitSince = 0;
+    function apply() {
+      if (applying) return;
+      if (!waitSince) waitSince = Date.now();
+      if (!idle() && Date.now() - waitSince < 15 * 60 * 1000) { setTimeout(apply, 3000); return; }
+      applying = true;
+      var t = document.getElementById('pwaNewT'); if (t) t.textContent = '⏳ در حال اعمال نسخهٔ تازه …';
+      var p; try { p = Promise.resolve(window.App && App.saveNow ? App.saveNow() : 0); } catch (e) { p = Promise.resolve(); }
+      p.catch(function () { }).then(function () { setTimeout(function () { location.reload(); }, 700); });
+    }
     function banner(v) {
       if (document.getElementById('pwaNew')) return;
-      var d = document.createElement('div'); d.id = 'pwaNew';
+      var d = document.createElement('div'); d.id = 'pwaNew'; d.setAttribute('data-auto', '1');
       d.setAttribute('style', 'position:fixed;left:8px;right:8px;bottom:max(10px,env(safe-area-inset-bottom));z-index:2147483000;background:#0F2748;color:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 6px 24px rgba(0,0,0,.4);font:800 1.15rem/1.9 system-ui,Tahoma,sans-serif;text-align:center;direction:rtl');
-      d.innerHTML = '✔ نسخهٔ تازهٔ برنامه آماده است' + (v && v.v ? ' (' + String(v.v).replace(/[<>&]/g, '') + ')' : '') + '<br><button id="pwaNewGo" style="margin-top:6px;font:inherit;border:0;border-radius:14px;padding:12px 22px;background:#15803D;color:#fff;font-weight:800">همین حالا اعمال کن</button> <button id="pwaNewLater" style="margin-top:6px;font:inherit;border:0;border-radius:14px;padding:12px 18px;background:#475569;color:#fff;font-weight:700">بعداً</button>';
+      d.innerHTML = '<span id="pwaNewT">⬆ نسخهٔ تازهٔ برنامه' + (v && v.v ? ' (' + String(v.v).replace(/[<>&]/g, '') + ')' : '') + ' رسید — چند ثانیه دیگر خودش اعمال می‌شود؛ اطلاعات سر جایش است.</span><br><button id="pwaNewGo" style="margin-top:6px;font:inherit;border:0;border-radius:14px;padding:12px 22px;background:#15803D;color:#fff;font-weight:800">همین حالا اعمال کن</button>';
       document.body.appendChild(d);
-      document.getElementById('pwaNewGo').onclick = function () { location.reload(); };
-      document.getElementById('pwaNewLater').onclick = function () { d.remove(); };
+      document.getElementById('pwaNewGo').onclick = function () { waitSince = 1; apply(); };
+      setTimeout(apply, 6000);
     }
     var busy = false;
     function check() {
