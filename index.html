@@ -140,6 +140,7 @@
           never while a record is being typed or a copy is on its way to Drive; the data is saved first, then the page opens again with the new version */
     function idle() {
       try {
+        if (document.getElementById('lockScr')) return true;                       // the password screen: nothing typed there to lose — apply now
         var a = document.activeElement; if (a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)) return false;
         if (window.App && App.form) return false;
         if (window.App && ((App.allBusy && App.allBusy()) || (App.gd && App.gd.busy) || (App.tg && App.tg.busy) || (App.gdState && App.gdState().busy))) return false;   // a file is being sent
@@ -163,7 +164,7 @@
       d.innerHTML = '<span id="pwaNewT">⬆ نسخهٔ تازهٔ برنامه' + (v && v.v ? ' (' + String(v.v).replace(/[<>&]/g, '') + ')' : '') + ' رسید — چند ثانیه دیگر خودش اعمال می‌شود؛ اطلاعات سر جایش است.</span><br><button id="pwaNewGo" style="margin-top:6px;font:inherit;border:0;border-radius:14px;padding:12px 22px;background:#15803D;color:#fff;font-weight:800">همین حالا اعمال کن</button>';
       document.body.appendChild(d);
       document.getElementById('pwaNewGo').onclick = function () { waitSince = 1; apply(); };
-      setTimeout(apply, 6000);
+      setTimeout(apply, document.getElementById('lockScr') ? 1500 : 6000);
     }
     var busy = false;
     function check() {
