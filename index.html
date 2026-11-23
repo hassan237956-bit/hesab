@@ -66,9 +66,12 @@
   }
 
   /* ---------- the encrypted program on the server ---------- */
+  /* v2: each version also has a file of its own (app-<sha>.enc, named in version.json): a download that runs while a newer one is being
+     published still gets the bytes of the version it asked for */
+  function encUrl(v) { return v.file && /^app-[0-9a-f]{12}\.enc$/.test(v.file) ? v.file + '?k=1' : 'app.enc?v=' + String(v.sha).slice(0, 12); }
   function download() {
     return fetch('version.json?t=' + Date.now(), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('version ' + r.status); return r.json(); }).then(function (v) {
-      return fetch('app.enc?v=' + String(v.sha).slice(0, 12), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('app ' + r.status); return r.arrayBuffer(); }).then(function (buf) {
+      return fetch(encUrl(v), { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('app ' + r.status); return r.arrayBuffer(); }).then(function (buf) {
         return sha256(buf).then(function (h) { if (h !== v.sha) throw new Error('فایل ناقص دانلود شد'); return { buf: buf, sha: h, v: v.v, build: v.build }; });
       });
     });
@@ -191,7 +194,7 @@
           if (app && app.v && cmpv(v.v, app.v) <= 0) return;   // a stale copy of version.json never brings an older program back
           if (next && next.sha === v.sha) return banner(v);
           window.__pwaSt = { t: 'get', pct: 0, at: Date.now(), v: v.v };
-          return grab('app.enc?v=' + String(v.sha).slice(0, 12) + '&t=' + Date.now(), v.size, 240000).then(function (buf) {
+          return grab((v.file && /^app-[0-9a-f]{12}\.enc$/.test(v.file) ? v.file + '?t=' : 'app.enc?v=' + String(v.sha).slice(0, 12) + '&t=') + Date.now(), v.size, 240000).then(function (buf) {
             return crypto.subtle.digest('SHA-256', buf).then(function (h) {
               if (hex(h) !== v.sha) throw 0;
               window.__pwaSt = { t: 'ok', pct: 100, at: Date.now(), v: v.v };
@@ -232,7 +235,7 @@
       var lbl = '⬆ نسخهٔ تازهٔ برنامه (' + String(v.v || '').replace(/[<>&]/g, '') + ') در حال آمدن…';
       busy(lbl);
       var c = new AbortController(), tt = setTimeout(function () { c.abort(); }, 90000);   /* v2: 90 s (a slow VPN), with its % */
-      return fetch('app.enc?v=' + String(v.sha).slice(0, 12) + '&t=' + Date.now(), { cache: 'no-store', signal: c.signal }).then(function (r) {
+      return fetch(encUrl(v) + '&t=' + Date.now(), { cache: 'no-store', signal: c.signal }).then(function (r) {
         if (!r.ok) throw new Error('app ' + r.status); if (!r.body || !r.body.getReader || !v.size) return r.arrayBuffer();
         var rd = r.body.getReader(), parts = [], got = 0, m = box.querySelector('.msg');
         function pump() { return rd.read().then(function (x) { if (x.done) return; parts.push(x.value); got += x.value.length; if (m) m.innerHTML = '<span class="spin"></span> ' + esc(lbl) + ' <b>' + String(Math.min(99, Math.floor(got * 100 / v.size))).replace(/\d/g, function (d) { return '۰۱۲۳۴۵۶۷۸۹'[d]; }) + '٪</b>'; return pump(); }); }
