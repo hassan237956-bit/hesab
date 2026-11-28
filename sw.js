@@ -13,6 +13,7 @@ self.addEventListener('fetch', function (e) {
   var r = e.request; if (r.method !== 'GET') return;
   var u = new URL(r.url); if (u.origin !== location.origin) return;
   if (u.pathname.indexOf('/khaam/') >= 0) return;   /* the blank copy for other people has its own worker */
+  if (u.pathname.indexOf('/v2/') >= 0) return;   /* the trial version 2 (v2/index.html) has its own page */
   var key = r.mode === 'navigate' ? abs('index.html') : u.origin + u.pathname;
   var isShell = r.mode === 'navigate' || SHELL.some(function (p) { return abs(p) === key; });
   if (!isShell) return;
